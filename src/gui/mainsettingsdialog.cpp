@@ -129,6 +129,7 @@ MainSettingsDialog::MainSettingsDialog(AntiMicroSettings *settings, QList<InputD
     populateAutoProfiles();
     fillAllAutoProfilesTable();
     fillGUIDComboBox();
+    ui->autoProfileDisabledInfo->hide();
 #endif
 
     QString autoProfileActive = settings->value("AutoProfiles/AutoProfilesActive", "").toString();
