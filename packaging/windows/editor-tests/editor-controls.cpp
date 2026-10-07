@@ -12,6 +12,7 @@
 #include "joybuttontypes/joycontrolstickbutton.h"
 #include "gui/joystickstatuswindow.h"
 #include <QProgressBar>
+#include <QPointer>
 #include <QScrollArea>
 #include <QScrollBar>
 #include "gui/aboutdialog.h"
@@ -113,7 +114,12 @@ int main(int argc,char **argv) {
             }
             check(control<QScrollArea>(dialog,"axesScrollArea")->widget()->findChildren<QProgressBar*>().count()>=6,"Axis rows missing");
             int buttonRows=0;for(auto *w:control<QScrollArea>(dialog,"buttonsScrollArea")->widget()->findChildren<QWidget*>())if(w->isVisible()&&w->height()>=20)++buttonRows;check(buttonRows>=12,"Button rows missing");
-            closeDialog(dialog);delete statusjoy;
+            // Status reject() explicitly schedules deletion, independent of
+            // WA_DeleteOnClose. Do not use closeDialog's post-click raw pointer.
+            QPointer<JoystickStatusWindow> statusGuard(dialog);
+            click(control<QDialogButtonBox>(dialog,"buttonBox")->button(QDialogButtonBox::Close));
+            check(statusGuard.isNull(),"Status Close did not delete dialog");
+            delete statusjoy;
         } else if(test=="about") {
             auto *dialog=new AboutDialog;capture(dialog,output,test);
             check(control<QLabel>(dialog,"versionLabel")->text()=="Development build","About display version is not Development build");
