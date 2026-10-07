@@ -23,17 +23,17 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <property name="spacing">
-      <number>40</number>
+      <number>24</number>
      </property>
      <item>
       <layout class="QVBoxLayout" name="verticalLayout_3" stretch="0,2,0,1">
        <property name="spacing">
-        <number>20</number>
+        <number>12</number>
        </property>
        <item>
         <widget class="QLabel" name="label">
          <property name="text">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pad makes use of the &lt;a href=&quot;https://wiki.libsdl.org/CategoryGameController&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;Game Controller API&lt;/span&gt;&lt;/a&gt; provided by SDL 2 in order to abstract various gamepads to fit a unified standard. In order to make a button assignment, please highlight the mapping cell for the appropriate button row below. You can then press a button or move an axis on your gamepad and the cell will update with the physical button or axis that will be used.&lt;/p&gt;&lt;p&gt;Pad will use the mapping that you specify to save a mapping string that will be loaded into SDL.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#9d9da5;&quot;&gt;Pad makes use of the &lt;a href=&quot;https://wiki.libsdl.org/CategoryGameController&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#e8e8eb;&quot;&gt;Game Controller API&lt;/span&gt;&lt;/a&gt; provided by SDL 2 in order to abstract various gamepads to fit a unified standard. In order to make a button assignment, please highlight the mapping cell for the appropriate button row below. You can then press a button or move an axis on your gamepad and the cell will update with the physical button or axis that will be used.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; color:#9d9da5;&quot;&gt;Pad will use the mapping that you specify to save a mapping string that will be loaded into SDL.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="wordWrap">
           <bool>true</bool>
@@ -285,100 +285,141 @@
       </layout>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
+      <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0,0,0,0,1">
        <property name="spacing">
-        <number>20</number>
+        <number>12</number>
        </property>
-       <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
-        <widget class="GameControllerExample" name="gameControllerDisplayWidget" native="true">
-         <property name="minimumSize">
-          <size>
-           <width>300</width>
-           <height>200</height>
-          </size>
-         </property>
-        </widget>
-       </item>
        <item>
-        <layout class="QVBoxLayout" name="verticalLayout">
-         <item>
-          <widget class="QLabel" name="label_4">
-           <property name="text">
-            <string>Last Axis Event:</string>
-           </property>
-          </widget>
+        <layout class="QHBoxLayout" name="controllerArtRow">
+<item>
+          <spacer>
+           <property name="orientation"><enum>Qt::Horizontal</enum></property>
+           <property name="sizeType"><enum>QSizePolicy::Expanding</enum></property>
+           <property name="sizeHint" stdset="0"><size><width>0</width><height>0</height></size></property>
+          </spacer>
          </item>
          <item>
-          <widget class="QLineEdit" name="lastAxisEventLineEdit">
-           <property name="readOnly">
-            <bool>true</bool>
-           </property>
-          </widget>
+        <widget class="GameControllerExample" name="gameControllerDisplayWidget" native="true">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>300</width>
+                     <height>200</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>300</width>
+                     <height>200</height>
+                    </size>
+                   </property>
+                  </widget>
+                 
          </item>
-         <item>
-          <widget class="QLabel" name="label_3">
-           <property name="text">
-            <string>Current Axis Detection Dead Zone:</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QComboBox" name="axisDeadZoneComboBox">
-           <item>
-            <property name="text">
-             <string>5000</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>10000</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>15000</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>20000</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>25000</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>30000</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>32000</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-         <item>
-          <spacer name="verticalSpacer">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeType">
-            <enum>QSizePolicy::Fixed</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>20</width>
-             <height>130</height>
-            </size>
-           </property>
+<item>
+          <spacer>
+           <property name="orientation"><enum>Qt::Horizontal</enum></property>
+           <property name="sizeType"><enum>QSizePolicy::Expanding</enum></property>
+           <property name="sizeHint" stdset="0"><size><width>0</width><height>0</height></size></property>
           </spacer>
          </item>
         </layout>
        </item>
+               <item>
+         <widget class="QLabel" name="label_4">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Last Axis Event:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="lastAxisEventLineEdit">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_3">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Current Axis Detection Dead Zone:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="axisDeadZoneComboBox">
+          <item>
+           <property name="text">
+            <string>5000</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>10000</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>15000</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>20000</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>25000</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>30000</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>32000</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item>
+         <widget class="QWidget" name="bottomFill" native="true">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+       
+      
       </layout>
      </item>
     </layout>

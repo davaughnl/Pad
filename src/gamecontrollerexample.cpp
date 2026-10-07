@@ -32,30 +32,30 @@ struct ButtonImagePlacement
 };
 
 static ButtonImagePlacement buttonLocations[] = {
-    {225, 98, GameControllerExample::Button},  // SDL_CONTROLLER_BUTTON_A
-    {252, 77, GameControllerExample::Button},  // SDL_CONTROLLER_BUTTON_B
-    {200, 77, GameControllerExample::Button},  // SDL_CONTROLLER_BUTTON_X
-    {227, 59, GameControllerExample::Button},  // SDL_CONTROLLER_BUTTON_Y
+    {221, 98, GameControllerExample::Button},  // SDL_CONTROLLER_BUTTON_A
+    {248, 77, GameControllerExample::Button},  // SDL_CONTROLLER_BUTTON_B
+    {196, 77, GameControllerExample::Button},  // SDL_CONTROLLER_BUTTON_X
+    {223, 59, GameControllerExample::Button},  // SDL_CONTROLLER_BUTTON_Y
     {102, 77, GameControllerExample::Button},  // SDL_CONTROLLER_BUTTON_BACK
     {169, 77, GameControllerExample::Button},  // SDL_CONTROLLER_BUTTON_START
     {137, 77, GameControllerExample::Button},  // SDL_CONTROLLER_BUTTON_GUIDE
     {45, 23, GameControllerExample::Button},   // SDL_CONTROLLER_BUTTON_LEFTSHOULDER
     {232, 21, GameControllerExample::Button},  // SDL_CONTROLLER_BUTTON_RIGHTSHOULDER
     {44, 90, GameControllerExample::Button},   // SDL_CONTROLLER_BUTTON_LEFTSTICK
-    {179, 135, GameControllerExample::Button}, // SDL_CONTROLLER_BUTTON_RIGHTSTICK
+    {179, 123, GameControllerExample::Button}, // SDL_CONTROLLER_BUTTON_RIGHTSTICK
 
     {44, 90, GameControllerExample::AxisX},   // SDL_CONTROLLER_AXIS_LEFTX
     {44, 90, GameControllerExample::AxisY},   // SDL_CONTROLLER_AXIS_LEFTY
-    {179, 135, GameControllerExample::AxisX}, // SDL_CONTROLLER_AXIS_RIGHTX
-    {179, 135, GameControllerExample::AxisY}, // SDL_CONTROLLER_AXIS_RIGHTY
+    {179, 123, GameControllerExample::AxisX}, // SDL_CONTROLLER_AXIS_RIGHTX
+    {179, 123, GameControllerExample::AxisY}, // SDL_CONTROLLER_AXIS_RIGHTY
 
     {53, 0, GameControllerExample::Button},  // SDL_CONTROLLER_AXIS_TRIGGERLEFT
     {220, 0, GameControllerExample::Button}, // SDL_CONTROLLER_AXIS_TRIGGERRIGHT
 
-    {90, 110, GameControllerExample::Button},  // SDL_CONTROLLER_BUTTON_DPAD_UP
-    {68, 127, GameControllerExample::Button},  // SDL_CONTROLLER_BUTTON_DPAD_DOWN
-    {90, 146, GameControllerExample::Button},  // SDL_CONTROLLER_BUTTON_DPAD_LEFT
-    {109, 127, GameControllerExample::Button}, // SDL_CONTROLLER_BUTTON_DPAD_RIGHT
+    {94, 109, GameControllerExample::Button},  // SDL_CONTROLLER_BUTTON_DPAD_UP
+    {94, 135, GameControllerExample::Button},  // SDL_CONTROLLER_BUTTON_DPAD_DOWN
+    {80, 122, GameControllerExample::Button},  // SDL_CONTROLLER_BUTTON_DPAD_LEFT
+    {108, 122, GameControllerExample::Button}, // SDL_CONTROLLER_BUTTON_DPAD_RIGHT
 };
 
 GameControllerExample::GameControllerExample(QWidget *parent)
