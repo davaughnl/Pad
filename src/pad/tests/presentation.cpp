@@ -23,6 +23,10 @@
 #include <QComboBox>
 #include <QAbstractSpinBox>
 #include <QFontInfo>
+#include <QGroupBox>
+#include <QCheckBox>
+#include <QScrollArea>
+#include <QScrollBar>
 #include <cstdio>
 #include <stdexcept>
 static void check(bool ok,const char *msg) { if(!ok) throw std::runtime_error(msg); }
@@ -76,6 +80,16 @@ int main(int argc,char **argv) {
         check(w->height()==40,"uniform settings control height");
     } dialog->grab().save(QString(tmp.filePath("settings-page-%1.png")).arg(i));}
   for(auto *w:dialog->findChildren<QWidget *>()){check(w->font().weight()==QFont::Normal,"regular weight");check(QFontInfo(w->font()).family()=="Geist","Geist loaded");}
+  // Exercise the longest Windows page even in Linux fixture builds.
+  cats->setCurrentRow(0); dialog->resize(840,640);
+  auto *repeat=dialog->findChild<QGroupBox *>("keyRepeatGroupBox");
+  auto *startup=dialog->findChild<QCheckBox *>("launchAtWinStartupCheckBox");
+  check(repeat&&startup,"Windows controls exist");repeat->show();startup->show();spin();
+  auto *scroll=qobject_cast<QScrollArea *>(pages->currentWidget());
+  check(scroll&&scroll->verticalScrollBar()->maximum()>0,"long settings page scrolls");
+  scroll->verticalScrollBar()->setValue(scroll->verticalScrollBar()->maximum());spin();
+  check(scroll->viewport()->rect().contains(repeat->mapTo(scroll->viewport(),repeat->rect().bottomRight())),"complete Key Repeat group reachable");
+
   dialog->close();spin();tab.grab().save(tmp.filePath("table.png"));
   puts("PASS real Qt table: original editors/context menu, sets, refresh columns, names, direction mode, live action/behavior, hide-empty, all settings pages, Geist Regular");
  }catch(const std::exception &e){fprintf(stderr,"FAIL %s\n",e.what());return 1;}

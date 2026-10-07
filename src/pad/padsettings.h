@@ -13,6 +13,7 @@
 #include <QPushButton>
 #include <QRegularExpression>
 #include <QSpinBox>
+#include <QScrollArea>
 #include <QStackedWidget>
 #include <QVBoxLayout>
 
@@ -100,6 +101,26 @@ inline void polishSettings(QDialog *dialog)
     for (auto *group : dialog->findChildren<QGroupBox *>()) {
         if (group->layout()) group->layout()->invalidate();
         group->setMinimumHeight(group->sizeHint().height());
+    }
+    // Keep the action buttons and category rail fixed while long pages scroll.
+    // Wrapping preserves the native page widgets, signal targets and indices.
+    if (stack) {
+        const int currentIndex = stack->currentIndex();
+        for (int i = 0; i < stack->count(); ++i) {
+            QWidget *page = stack->widget(i);
+            stack->removeWidget(page);
+            auto *scroll = new QScrollArea(stack);
+            scroll->setObjectName(QStringLiteral("padSettingsPageScroll"));
+            scroll->setFrameShape(QFrame::NoFrame);
+            scroll->setWidgetResizable(true);
+            scroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+            scroll->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+            scroll->setWidget(page);
+            stack->insertWidget(i, scroll);
+        }
+        stack->setMinimumSize(0, 0);
+        stack->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Ignored);
+        stack->setCurrentIndex(currentIndex);
     }
 }
 }
