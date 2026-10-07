@@ -10,6 +10,11 @@
 #include "joycontrolstick.h"
 #include "joybuttontypes/joybutton.h"
 #include "joybuttontypes/joycontrolstickbutton.h"
+#include "gui/joysensoreditdialog.h"
+#include "sensors/joysensor.h"
+#include "sensors/joysensorpreset.h"
+#include <QLabel>
+#include <cmath>
 #include "gui/buttoneditdialog.h"
 #include "gui/advancebuttondialog.h"
 #include "gui/joycontrolstickeditdialog.h"
@@ -58,6 +63,13 @@ static void closeDialog(QDialog *dialog) {
     click(control<QDialogButtonBox>(dialog,"buttonBox")->button(QDialogButtonBox::Close));
     check(!dialog->isVisible(), "Close failed"); delete dialog;
 }
+// Test-only capability adapter. No claim of physical sensor hardware.
+class SensorFixtureJoystick : public Joystick {
+public:
+    using Joystick::Joystick;
+    bool hasRawSensor(JoySensorType) override { return true; }
+    double getRawSensorRate(JoySensorType) override { return 200.0; }
+};
 int main(int argc,char **argv) {
     QApplication app(argc,argv); PadUi::initializeApplicationStyle(); Logger::createInstance(nullptr,Logger::LOG_NONE);
     QThread worker;
@@ -68,13 +80,33 @@ int main(int argc,char **argv) {
         const int index=SDL_JoystickAttachVirtual(SDL_JOYSTICK_TYPE_UNKNOWN,2,4,1); check(index>=0,"SDL virtual attach failed");
         AntKeyMapper::getInstance("sendinput"); check(EventHandlerFactory::getInstance("sendinput")->handler()->init(),"SendInput init failed");
         auto *settings=new AntiMicroSettings(temp.filePath("settings.ini"),QSettings::IniFormat);
-        auto *joystick=new Joystick(SDL_JoystickOpen(index),index,settings,nullptr);
+        auto *joystick=new SensorFixtureJoystick(SDL_JoystickOpen(index),index,settings,nullptr);
+        if(test.startsWith("sensor-")) for(auto *current:joystick->getJoystick_sets()) current->refreshSensors();
         auto *set=joystick->getSetJoystick(0); auto *button=set->getJoyButton(0);
         for(auto *current:joystick->getJoystick_sets())
             current->addControlStick(0,new JoyControlStick(current->getJoyAxis(0),current->getJoyAxis(1),0,current->getIndex(),current));
         auto *stick=set->getJoyStick(0);
         joystick->moveToThread(&worker); worker.start();
-        if(test=="button" || test=="keyboard-mouse") {
+        if(test=="sensor-accel" || test=="sensor-gyro") {
+            auto *sensor=set->getSensor(test=="sensor-accel"?ACCELEROMETER:GYROSCOPE);check(sensor,"Sensor model absent");
+            auto *dialog=new JoySensorEditDialog(sensor);capture(dialog,output,test);
+            auto *presets=control<QComboBox>(dialog,"presetsComboBox");
+            check(presets->currentData().toInt()==int(JoySensorPreset::PRESET_NONE),"Fresh sensor preset is not None");
+            if(test=="sensor-accel") {
+                check(std::isnan(sensor->calculatePitch(0,0,0))&&std::isnan(sensor->calculateRoll(0,0,0)),"Zero vector math not invalid");
+                check(control<QLabel>(dialog,"pitchValue")->text()=="Unavailable"&&control<QLabel>(dialog,"rollValue")->text()=="Unavailable","Zero vector UI not Unavailable");
+            }
+            control<QDoubleSpinBox>(dialog,"deadZoneSpinBox")->setValue(12);settle();check(std::abs(sensor->getDeadZone()-12)<.01,"Sensor dead zone failed");
+            for(int n=0;n<presets->count();++n) {
+                presets->setCurrentIndex(n);settle();JoySensorPreset actual(sensor);
+                check(int(actual.currentPreset())==presets->itemData(n).toInt(),"Sensor preset assignments mismatch");
+                auto *reopened=new JoySensorEditDialog(sensor);reopened->setAttribute(Qt::WA_DeleteOnClose,false);reopened->show();settle();
+                check(control<QComboBox>(reopened,"presetsComboBox")->currentData()==presets->itemData(n),"Sensor reopen preset mismatch");
+                closeDialog(reopened);
+            }
+            presets->setCurrentIndex(presets->findData(int(JoySensorPreset::PRESET_NONE)));settle();check(!sensor->hasSlotsAssigned(),"Sensor None did not clear");
+            closeDialog(dialog);
+        } else if(test=="button" || test=="keyboard-mouse") {
             auto *dialog=new ButtonEditDialog(button,joystick,false); capture(dialog,output,"button");
             if(test=="button") {
                 toggle(dialog,"toggleCheckBox"); check(button->getToggleState(),"Button toggle did not reach model");
