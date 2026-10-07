@@ -121,10 +121,13 @@ void polishController(QWidget *page)
 }
 }
 
-void PadUi::install(QMainWindow *window, QWidget *central, QStackedWidget *stack,
-                    QTabWidget *controllers, QAction *refresh, QAction *settings)
+void PadUi::initializeApplicationStyle()
 {
+    static bool initialized = false;
+    if (initialized) return;
+    initialized = true;
     qApp->setStyle(new PadStyle);
+    qApp->setWindowIcon(QIcon(QStringLiteral(":/images/pad.png")));
     const int geistId = QFontDatabase::addApplicationFont(QStringLiteral(":/pad/Geist.ttf"));
     const QStringList families = QFontDatabase::applicationFontFamilies(geistId);
     QFont appFont = QFontDatabase::systemFont(QFontDatabase::GeneralFont);
@@ -148,6 +151,12 @@ void PadUi::install(QMainWindow *window, QWidget *central, QStackedWidget *stack
     qApp->setPalette(palette);
     QFile sheet(QStringLiteral(":/pad/pad.qss"));
     if (sheet.open(QIODevice::ReadOnly)) qApp->setStyleSheet(QString::fromUtf8(sheet.readAll()).replace(QStringLiteral("\"Geist\""), QStringLiteral("\"%1\"").arg(appFont.family())));
+}
+
+void PadUi::install(QMainWindow *window, QWidget *central, QStackedWidget *stack,
+                    QTabWidget *controllers, QAction *refresh, QAction *settings)
+{
+    initializeApplicationStyle();
     window->setStyleSheet(QString()); // Remove the upstream blue/green widget overrides.
     window->setMinimumSize(940, 680);
     window->resize(1180, 800);

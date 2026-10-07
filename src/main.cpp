@@ -22,6 +22,7 @@
 #include "autoprofileinfo.h"
 #include "commandlineutility.h"
 #include "common.h"
+#include "pad/padshell.h"
 #include "inputdaemon.h"
 #include "inputdevice.h"
 #include "joybuttonslot.h"
@@ -168,61 +169,31 @@ static void deleteInputDevices(QMap<SDL_JoystickID, InputDevice *> *joysticks)
     joysticks->clear();
 }
 
-/**
- * @brief Function used for copying settings used by antimicro and
- * previous revisions of antimicrox to provide backward compatibility
- */
+/** Copy previous settings once, without changing the original installation. */
 void importLegacySettingsIfExist()
 {
-    const QFileInfo config(PadderCommon::configFilePath());
-    const bool configExists = config.exists() && config.isFile();
-    if (configExists)
-    {
-        DEBUG() << "Found settings file: " << PadderCommon::configFilePath();
+    const auto result = PadderCommon::importSettings(PadderCommon::configFilePath(),
+                                                    PadderCommon::upstreamSettingsPaths());
+    if (result.status == PadderCommon::SettingsImportStatus::ExistingSettings ||
+        result.status == PadderCommon::SettingsImportStatus::NoSource)
         return;
-    }
-    // 'antimicroX'
-    const QFileInfo legacyConfig(PadderCommon::configLegacyFilePath());
-    const bool legacyConfigExists = legacyConfig.exists() && legacyConfig.isFile();
-    // 'antimicro'
-    const QFileInfo legacyAntimicroConfig(PadderCommon::configAntimicroLegacyFilePath());
-    const bool legacyAntimicroConfigExists = legacyAntimicroConfig.exists() && legacyAntimicroConfig.isFile();
 
-    const bool requireMigration = !configExists && (legacyConfigExists || legacyAntimicroConfigExists);
-    if (requireMigration)
+    QMessageBox msgBox;
+    msgBox.setWindowTitle(QObject::tr("Pad settings"));
+    msgBox.setTextFormat(Qt::PlainText);
+    msgBox.setText(PadderCommon::settingsImportMessage(result));
+    if (result.status == PadderCommon::SettingsImportStatus::Failed)
     {
-        const QFileInfo fileToCopy = legacyConfigExists ? legacyConfig : legacyAntimicroConfig;
-#if defined(Q_OS_WIN)
-        const QString location = PadderCommon::configPath();
-#else
-        const QString location = "~/.config/antimicrox";
-#endif
-        QDir(PadderCommon::configPath()).mkpath(PadderCommon::configPath());
-        const bool copySuccess = QFile::copy(fileToCopy.canonicalFilePath(), PadderCommon::configFilePath());
-        DEBUG() << "Legacy settings found";
-        const QString successMessage =
-            QObject::tr("Your original settings (previously stored in %1) have been copied to\n%2\n If you want you can "
-                        "delete the original directory or leave it as it is.")
-                .arg(fileToCopy.canonicalFilePath(), location);
-        const QString errorMessage =
-            QObject::tr("Some problem with settings migration occurred.\nOriginal configs are stored in \n%1\n but their "
-                        "new location is: \n%2\nYou can copy the original settings file manually to: \n%3.")
-                .arg(fileToCopy.canonicalFilePath(), location, PadderCommon::configFilePath());
-
-        QMessageBox msgBox;
-        if (copySuccess)
-        {
-            DEBUG() << "Legacy settings copied";
-            msgBox.setText(successMessage);
-        } else
-        {
-            WARN() << "Problem with importing settings from: " << fileToCopy.canonicalFilePath()
-                   << " to: " << PadderCommon::configFilePath();
-            msgBox.setText(errorMessage);
-        }
-        msgBox.exec();
+        WARN() << "Problem with importing settings from:" << result.source << "to:" << result.destination;
+        msgBox.setIcon(QMessageBox::Warning);
+    } else
+    {
+        DEBUG() << "Settings copied to:" << result.destination;
+        msgBox.setIcon(QMessageBox::Information);
     }
+    msgBox.exec();
 }
+
 
 int main(int argc, char *argv[])
 {
@@ -253,6 +224,7 @@ int main(int argc, char *argv[])
     }
 
 #endif
+    PadUi::initializeApplicationStyle();
     importLegacySettingsIfExist();
     AntiMicroSettings settings(PadderCommon::configFilePath(), QSettings::IniFormat);
     CommandLineUtility cmdutility;

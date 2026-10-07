@@ -7,6 +7,7 @@ class QStackedWidget;
 class QTabWidget;
 class QAction;
 namespace PadUi {
+void initializeApplicationStyle();
 void install(QMainWindow *window, QWidget *central, QStackedWidget *stack,
              QTabWidget *controllers, QAction *refresh, QAction *settings);
 }

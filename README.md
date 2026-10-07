@@ -22,7 +22,7 @@ cmake --build build --parallel
 
 ## Compatibility
 
-Existing AntiMicroX `.amgp` profiles are supported. Settings and translation resource paths remain compatible with upstream for this first milestone.
+Existing AntiMicroX `.amgp` profiles are supported. Pad uses its own settings file and copies compatible settings on first run without changing the original. Translation resource paths remain compatible with upstream.
 
 ## License and credits
 
