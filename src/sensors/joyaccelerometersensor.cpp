@@ -165,6 +165,12 @@ void JoyAccelerometerSensor::populateButtons()
  */
 JoySensorDirection JoyAccelerometerSensor::calculateSensorDirection()
 {
+    // Unavailable orientation must not activate a direction or poison shock history.
+    double pitch = calculatePitch();
+    double roll = calculateRoll();
+    if (!std::isfinite(pitch) || !std::isfinite(roll))
+        return SENSOR_CENTERED;
+
     double abs_sum = abs(m_current_value[0]) + abs(m_current_value[1]) + abs(m_current_value[2]);
     if (m_shock_filter.process(abs_sum) > SHOCK_DETECT_THRESHOLD)
     {
@@ -176,19 +182,12 @@ JoySensorDirection JoyAccelerometerSensor::calculateSensorDirection()
         return SENSOR_CENTERED;
     }
 
-    double pitch = calculatePitch();
-    double roll = calculateRoll();
     double pitch_abs = abs(pitch);
     double roll_abs = abs(roll);
 
     double range = M_PI / 4 - m_diagonal_range / 2;
     bool inPitch = pitch_abs < m_dead_zone;
     bool inRoll = roll_abs < range;
-
-    if (std::isnan(roll))
-    {
-        return SENSOR_CENTERED;
-    }
 
     if (!inPitch)
     {

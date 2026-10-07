@@ -31,6 +31,7 @@
 #include <QPainter>
 #include <QPainterPath>
 #include <QSizePolicy>
+#include <cmath>
 
 JoySensorStatusBox::JoySensorStatusBox(QWidget *parent)
     : QWidget(parent)
@@ -112,8 +113,13 @@ void JoySensorStatusBox::drawArtificialHorizon()
         type = m_sensor->getType();
         if (type == ACCELEROMETER)
         {
-            pitch = -JoySensor::radToDeg(m_sensor->calculatePitch());
-            roll = JoySensor::radToDeg(m_sensor->calculateRoll());
+            pitch = m_sensor->calculatePitch();
+            roll = m_sensor->calculateRoll();
+            if (std::isfinite(pitch) && std::isfinite(roll))
+            {
+                pitch = -JoySensor::radToDeg(pitch);
+                roll = JoySensor::radToDeg(roll);
+            }
             yaw = 0;
         } else
         {
@@ -127,6 +133,15 @@ void JoySensorStatusBox::drawArtificialHorizon()
         pitch = 0;
         roll = 0;
         yaw = 0;
+    }
+
+    // Do not draw a neutral horizon or feed non-finite values to QPainter.
+    if (!std::isfinite(pitch) || !std::isfinite(roll) || !std::isfinite(yaw))
+    {
+        painter.restore();
+        paint.setPen(palette().text().color());
+        paint.drawText(rect(), Qt::AlignCenter, tr("Unavailable"));
+        return;
     }
 
     pitch = qBound(-180.0, pitch, 180.0);

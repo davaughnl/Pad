@@ -78,6 +78,9 @@ class JoySensor : public QObject
     double calculateZDistanceFromDeadZone(double x, double y, double z) const;
     double calculateDistance() const;
     double calculateDistance(double x, double y, double z) const;
+    // Orientation angles are in radians. Both overloads return quiet NaN for
+    // zero/non-finite vectors or a zero/non-finite calculated distance.
+    // Callers must check std::isfinite before using or converting either angle.
     double calculatePitch() const;
     double calculatePitch(double x, double y, double z) const;
     double calculateRoll() const;

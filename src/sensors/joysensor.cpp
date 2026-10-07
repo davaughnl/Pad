@@ -25,6 +25,7 @@
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>
 #include <cmath>
+#include <limits>
 
 JoySensor::JoySensor(JoySensorType type, int originset, SetJoystick *parent_set, QObject *parent)
     : QObject(parent)
@@ -418,9 +419,9 @@ double JoySensor::calculateDistance() const
 double JoySensor::calculateDistance(double x, double y, double z) const { return sqrt(x * x + y * y + z * z); }
 
 /**
- * @brief Calculate the pitch angle (in degrees) corresponding to the current
+ * @brief Calculate the pitch angle (in radians) corresponding to the current
  *   position of controller.
- * @return Pitch (in degrees)
+ * @return Pitch in radians, or quiet NaN when orientation is unavailable.
  */
 double JoySensor::calculatePitch() const
 {
@@ -428,7 +429,7 @@ double JoySensor::calculatePitch() const
 }
 
 /**
- * @brief Calculate the pitch angle (in degrees) corresponding to the current
+ * @brief Calculate the pitch angle (in radians) corresponding to the current
  *   passed X, Y and Z axes values associated with the sensor.
  *   position of controller.
  *   See https://www.nxp.com/files-static/sensors/doc/app_note/AN3461.pdf
@@ -436,11 +437,16 @@ double JoySensor::calculatePitch() const
  * @param X axis value
  * @param Y axis value
  * @param Z axis value
- * @return Pitch (in degrees)
+ * @return Pitch in radians, or quiet NaN when orientation is unavailable.
  */
 double JoySensor::calculatePitch(double x, double y, double z) const
 {
+    if (!std::isfinite(x) || !std::isfinite(y) || !std::isfinite(z))
+        return std::numeric_limits<double>::quiet_NaN();
+
     double rad = calculateDistance(x, y, z);
+    if (!std::isfinite(rad) || rad == 0.0)
+        return std::numeric_limits<double>::quiet_NaN();
     double pitch = -atan2(z / rad, y / rad) - M_PI / 2;
     if (pitch < -M_PI)
         pitch += 2 * M_PI;
@@ -448,14 +454,14 @@ double JoySensor::calculatePitch(double x, double y, double z) const
 }
 
 /**
- * @brief Calculate the roll angle (in degrees) corresponding to the current
+ * @brief Calculate the roll angle (in radians) corresponding to the current
  *   position of controller.
- * @return Roll (in degrees)
+ * @return Roll in radians, or quiet NaN when orientation is unavailable.
  */
 double JoySensor::calculateRoll() const { return calculateRoll(m_current_value[0], m_current_value[1], m_current_value[2]); }
 
 /**
- * @brief Calculate the roll angle (in degrees) corresponding to the current
+ * @brief Calculate the roll angle (in radians) corresponding to the current
  *   passed X, Y and Z axes values associated with the sensor.
  *   position of controller.
  *   See https://www.nxp.com/files-static/sensors/doc/app_note/AN3461.pdf
@@ -463,11 +469,16 @@ double JoySensor::calculateRoll() const { return calculateRoll(m_current_value[0
  * @param X axis value
  * @param Y axis value
  * @param Z axis value
- * @return Roll (in degrees)
+ * @return Roll in radians, or quiet NaN when orientation is unavailable.
  */
 double JoySensor::calculateRoll(double x, double y, double z) const
 {
+    if (!std::isfinite(x) || !std::isfinite(y) || !std::isfinite(z))
+        return std::numeric_limits<double>::quiet_NaN();
+
     double rad = calculateDistance(x, y, z);
+    if (!std::isfinite(rad) || rad == 0.0)
+        return std::numeric_limits<double>::quiet_NaN();
 
     double xp, yp, zp;
     xp = x / rad;
