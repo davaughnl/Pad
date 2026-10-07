@@ -18,6 +18,7 @@
 
 #include "joycontrolstickeditdialog.h"
 #include "ui_joycontrolstickeditdialog.h"
+#include "pad/paddialogpresentation.h"
 
 #include "antkeymapper.h"
 #include "buttoneditdialog.h"
@@ -180,6 +181,7 @@ JoyControlStickEditDialog::JoyControlStickEditDialog(JoyControlStick *stick, boo
     connect(ui->modifierZoneSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), stick,
             &JoyControlStick::setModifierZone);
     connect(ui->modifierZoneInvertedCheckBox, &QCheckBox::toggled, stick, &JoyControlStick::setModifierZoneInverted);
+    PadUi::compactDialog(this);
 }
 
 // for tests

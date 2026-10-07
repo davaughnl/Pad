@@ -117,9 +117,10 @@ QGroupBox::indicator { width: 16px; height: 16px; border: 1px solid #45454d; bor
 QGroupBox::indicator:checked { background: #f4f4f5; image: url(:/pad/icons/check-dark.svg); }
 
 /* ---------- menus, bars, misc ---------- */
-QMenuBar { background: #0e0e10; border-bottom: 1px solid #222226; padding: 2px; }
-QMenuBar::item { padding: 5px 10px; background: transparent; border-radius: 4px; }
+QMenuBar { background: #0e0e10; border-bottom: 1px solid #222226; padding: 4px 8px; min-height: 32px; }
+QMenuBar::item { padding: 6px 12px; margin: 0 1px; background: transparent; border-radius: 4px; }
 QMenuBar::item:selected { background: #26262c; }
+QMenuBar::item:pressed { background: #2e2e35; }
 QMenu { background: #1c1c21; border: 1px solid #333338; border-radius: 6px; padding: 4px; }
 QMenu::item { padding: 6px 24px 6px 12px; border-radius: 4px; }
 QMenu::item:selected { background: #333339; }

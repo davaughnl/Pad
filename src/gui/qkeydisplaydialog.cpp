@@ -18,6 +18,7 @@
 
 #include "qkeydisplaydialog.h"
 #include "ui_qkeydisplaydialog.h"
+#include "pad/paddialogpresentation.h"
 
 #include "antkeymapper.h"
 #include "eventhandlerfactory.h"
@@ -46,6 +47,7 @@ QKeyDisplayDialog::QKeyDisplayDialog(QWidget *parent)
 
     BaseEventHandler *handler = EventHandlerFactory::getInstance()->handler();
     ui->eventHandlerLabel->setText(handler->getName());
+    PadUi::compactDialog(this);
 }
 
 QKeyDisplayDialog::~QKeyDisplayDialog() { delete ui; }

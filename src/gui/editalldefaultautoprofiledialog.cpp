@@ -18,6 +18,7 @@
 
 #include "editalldefaultautoprofiledialog.h"
 #include "ui_editalldefaultautoprofiledialog.h"
+#include "pad/paddialogpresentation.h"
 
 #include "antimicrosettings.h"
 #include "autoprofileinfo.h"
@@ -47,6 +48,7 @@ EditAllDefaultAutoProfileDialog::EditAllDefaultAutoProfileDialog(AutoProfileInfo
             &EditAllDefaultAutoProfileDialog::openProfileBrowseDialog);
     connect(this, &EditAllDefaultAutoProfileDialog::accepted, this,
             &EditAllDefaultAutoProfileDialog::saveAutoProfileInformation);
+    PadUi::compactDialogFill(this);
 }
 
 EditAllDefaultAutoProfileDialog::~EditAllDefaultAutoProfileDialog() { delete ui; }

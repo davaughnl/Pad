@@ -18,6 +18,7 @@
 
 #include "gamecontrollermappingdialog.h"
 #include "ui_gamecontrollermappingdialog.h"
+#include "pad/paddialogpresentation.h"
 
 #include "antimicrosettings.h"
 #include "common.h"
@@ -158,6 +159,7 @@ GameControllerMappingDialog::GameControllerMappingDialog(InputDevice *device, An
     PadderCommon::unlockInputDevices();
     qInfo() << "Opened GameControllerMappingDialog for mapping device: " << device->getSDLName() << " (#"
             << device->getRealJoyNumber() << ")";
+    PadUi::compactDialogFill(this);
 }
 
 GameControllerMappingDialog::~GameControllerMappingDialog() { delete ui; }

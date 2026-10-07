@@ -18,6 +18,7 @@
 
 #include "axiseditdialog.h"
 #include "ui_axiseditdialog.h"
+#include "pad/paddialogpresentation.h"
 
 #include "antkeymapper.h"
 #include "axisvaluebox.h"
@@ -168,6 +169,7 @@ AxisEditDialog::AxisEditDialog(JoyAxis *axis, bool keypadUnlocked, QWidget *pare
 
     connect(ui->hapticTriggerComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this,
             &AxisEditDialog::implementHapticTrigger);
+    PadUi::compactDialog(this);
 }
 
 // for tests

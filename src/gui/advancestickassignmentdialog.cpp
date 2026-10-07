@@ -18,6 +18,7 @@
 
 #include "advancestickassignmentdialog.h"
 #include "ui_advancestickassignmentdialog.h"
+#include "pad/paddialogpresentation.h"
 
 #include "globalvariables.h"
 #include "joycontrolstick.h"
@@ -115,6 +116,7 @@ AdvanceStickAssignmentDialog::AdvanceStickAssignmentDialog(Joystick *joystick, Q
     connect(ui->vdpadRightPushButton, &QPushButton::clicked, this, &AdvanceStickAssignmentDialog::openAssignVDPadRight);
 
     connect(this, &AdvanceStickAssignmentDialog::finished, this, &AdvanceStickAssignmentDialog::reenableButtonEvents);
+    PadUi::compactDialogFill(this);
 }
 
 // for tests

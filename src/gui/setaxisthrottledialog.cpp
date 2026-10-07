@@ -18,6 +18,7 @@
 
 #include "setaxisthrottledialog.h"
 #include "ui_setaxisthrottledialog.h"
+#include "pad/paddialogpresentation.h"
 
 #include "joyaxis.h"
 
@@ -37,6 +38,7 @@ SetAxisThrottleDialog::SetAxisThrottleDialog(JoyAxis *axis, QWidget *parent)
 
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &SetAxisThrottleDialog::propogateThrottleChange);
     connect(this, &SetAxisThrottleDialog::initiateSetAxisThrottleChange, axis, &JoyAxis::propogateThrottleChange);
+    PadUi::compactDialog(this);
 }
 
 SetAxisThrottleDialog::~SetAxisThrottleDialog() { delete ui; }

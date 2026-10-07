@@ -18,6 +18,7 @@
 
 #include "calibration.h"
 #include "ui_calibration.h"
+#include "pad/paddialogpresentation.h"
 
 #include "globalvariables.h"
 #include "inputdevice.h"
@@ -93,6 +94,7 @@ Calibration::Calibration(InputDevice *joystick, QDialog *parent)
     }
 
     update();
+    PadUi::compactDialog(this);
 }
 
 Calibration::~Calibration() { delete m_ui; }

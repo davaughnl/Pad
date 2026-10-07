@@ -75,8 +75,8 @@ public static class PadWindowProbe {
     }
     public static void SelectLanguage() {
         Rect r; GetWindowRect(SettingsWindow, out r);
-        // Category rail: 24px top margin, 48px rows; third row is Language.
-        SetCursorPos(r.Left+120, r.Top+32+24+48*2+24);
+        // Focus the first category. Select by keyboard below, not stale row height.
+        SetCursorPos(r.Left+120, r.Top+80);
         mouse_event(0x0002,0,0,0,UIntPtr.Zero); mouse_event(0x0004,0,0,0,UIntPtr.Zero);
     }
     public static bool HasSettingsWindow(int process) {
@@ -107,6 +107,7 @@ public static class PadWindowProbe {
     Start-Sleep -Seconds 1
     Save-Desktop "$output/windows-settings-general-bottom.png"
     [PadWindowProbe]::SelectLanguage()
+    [System.Windows.Forms.SendKeys]::SendWait('{HOME}{DOWN}{DOWN}')
     Start-Sleep -Seconds 1
     Save-Desktop "$output/windows-settings-language.png"
     "PASS: extracted portable zip; --version and --list exit 0; GUI window created and remains running; Settings dialog opened via Ctrl+S and captured. Physical controller and input injection not tested." |

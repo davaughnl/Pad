@@ -18,6 +18,7 @@
 
 #include "setnamesdialog.h"
 #include "ui_setnamesdialog.h"
+#include "pad/paddialogpresentation.h"
 
 #include "globalvariables.h"
 #include "inputdevice.h"
@@ -43,6 +44,7 @@ SetNamesDialog::SetNamesDialog(InputDevice *device, QWidget *parent)
     }
 
     connect(this, &SetNamesDialog::accepted, this, &SetNamesDialog::saveSetNameChanges);
+    PadUi::compactDialogFill(this);
 }
 
 SetNamesDialog::~SetNamesDialog() { delete ui; }

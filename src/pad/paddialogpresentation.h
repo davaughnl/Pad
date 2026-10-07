@@ -11,6 +11,8 @@
 #include <QGroupBox>
 #include <QLabel>
 #include <QLineEdit>
+#include <QListWidget>
+#include <QStackedWidget>
 #include <QPushButton>
 #include <QSlider>
 #include <QScrollArea>
@@ -21,11 +23,11 @@ inline void compactDialog(QDialog *dialog)
 {
     dialog->setProperty("padCompactDialog", true);
     // Remove native local sheets so monochrome application styling wins.
-    dialog->setStyleSheet(QStringLiteral(
+    dialog->setStyleSheet(dialog->styleSheet() + QStringLiteral(
         "QGroupBox { padding: 16px; margin-top: 16px; }"
         "QGroupBox::title { color: #b8b8bf; left: 16px; }"
         "QFrame[frameShape=\"4\"] { background: #303035; color: #303035; }"
-        "QComboBox, QLineEdit, QSpinBox, QDoubleSpinBox, QPushButton { min-height: 30px; max-height: 30px; padding: 0 12px; }"
+        "QComboBox, QLineEdit, QSpinBox, QDoubleSpinBox, QPushButton { min-height: 32px; max-height: 32px; padding: 0 12px; }"
         "QSpinBox QLineEdit, QDoubleSpinBox QLineEdit { min-height: 0; max-height: 16777215px; padding: 0; border: none; background: transparent; }"
         "QFrame[frameShape=\"4\"] { color: #303035; background: #303035; max-height: 1px; border: none; }"));
     for (auto *layout : dialog->findChildren<QLayout *>()) {
@@ -51,6 +53,55 @@ inline void compactDialog(QDialog *dialog)
             if (frame->frameShape() == QFrame::HLine) frame->hide();
         if (auto *group = qobject_cast<QGroupBox *>(widget))
             group->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
+    }
+}
+
+// Expanding-content variant: same normalization, but native layout expansion is
+// restored so browsers, tables and slot lists fill the dialog instead of
+// clamping to their size hint with dead space below.
+inline void compactDialogFill(QDialog *dialog)
+{
+    compactDialog(dialog);
+    for (auto *layout : dialog->findChildren<QVBoxLayout *>()) layout->setAlignment(Qt::Alignment());
+}
+inline void polishAboutDialog(QDialog *dialog)
+{
+    compactDialogFill(dialog);
+    // Redundant with the title row logo + name; renders as stray floating text.
+    if (auto *brand = dialog->findChild<QLabel *>(QStringLiteral("copyrightLabel"))) brand->hide();
+}
+inline void polishAdvanceDialog(QDialog *dialog)
+{
+    compactDialogFill(dialog);
+    // Section rail sizes to its four rows instead of a full-height empty card.
+    if (auto *rail = dialog->findChild<QListWidget *>(QStringLiteral("listWidget"))) {
+        const int row = rail->sizeHintForRow(0) > 0 ? rail->sizeHintForRow(0) : 40;
+        rail->setFixedHeight(rail->count() * (row + 8) + 20);
+        rail->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        rail->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    }
+    // The assignment stack fills the remaining height.
+    if (auto *stack = dialog->findChild<QStackedWidget *>(QStringLiteral("stackedWidget")))
+        stack->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    if (auto *root = qobject_cast<QVBoxLayout *>(dialog->layout())) root->setStretch(0, 1);
+    if (auto *body = dialog->findChild<QHBoxLayout *>(QStringLiteral("horizontalLayout")))
+        body->setAlignment(dialog->findChild<QListWidget *>(QStringLiteral("listWidget")), Qt::AlignTop);
+    if (auto *slotList = dialog->findChild<QListWidget *>(QStringLiteral("slotListWidget"))) {
+        slotList->setMaximumHeight(QWIDGETSIZE_MAX);
+        slotList->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    }
+    if (auto *controls = dialog->findChild<QStackedWidget *>(QStringLiteral("slotControlsStackedWidget"))) {
+        // A stack otherwise reserves the tallest inactive page even for the
+        // single Time row, leaving an empty band in Assignments.
+        auto fitControls = [controls](int row) {
+            auto *page = controls->widget(row);
+            if (page && page->layout()) {
+                page->layout()->activate();
+                controls->setFixedHeight(page->layout()->sizeHint().height());
+            }
+        };
+        QObject::connect(controls, &QStackedWidget::currentChanged, dialog, fitControls);
+        fitControls(controls->currentIndex());
     }
 }
 inline void polishSensorDialog(QDialog *dialog)

@@ -18,6 +18,7 @@
 
 #include "dpadeditdialog.h"
 #include "ui_dpadeditdialog.h"
+#include "pad/paddialogpresentation.h"
 
 #include "antkeymapper.h"
 #include "common.h"
@@ -89,6 +90,7 @@ DPadEditDialog::DPadEditDialog(JoyDPad *dpad, QWidget *parent)
             &DPadEditDialog::updateDPadDelaySlider);
 
     connect(dpad, &JoyDPad::dpadNameChanged, this, &DPadEditDialog::updateWindowTitleDPadName);
+    PadUi::compactDialog(this);
 }
 
 DPadEditDialog::~DPadEditDialog() { delete ui; }

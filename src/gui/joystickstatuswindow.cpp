@@ -18,6 +18,7 @@
 
 #include "joystickstatuswindow.h"
 #include "ui_joystickstatuswindow.h"
+#include "pad/paddialogpresentation.h"
 
 #include "common.h"
 #include "globalvariables.h"
@@ -300,6 +301,7 @@ JoystickStatusWindow::JoystickStatusWindow(InputDevice *joystick, QWidget *paren
 
     connect(joystick, &InputDevice::destroyed, this, &JoystickStatusWindow::obliterate);
     connect(this, &JoystickStatusWindow::finished, this, &JoystickStatusWindow::restoreButtonStates);
+    PadUi::compactDialogFill(this);
 }
 
 void JoystickStatusWindow::reject() { this->deleteLater(); }

@@ -18,6 +18,7 @@
 
 #include "quicksetdialog.h"
 #include "ui_quicksetdialog.h"
+#include "pad/paddialogpresentation.h"
 
 #include "buttoneditdialog.h"
 #include "inputdevice.h"
@@ -62,6 +63,7 @@ QuickSetDialog::QuickSetDialog(InputDevice *joystick, QWidget *parent)
     connectBtnForDialog(currentset);
 
     connect(this, &QuickSetDialog::finished, this, &QuickSetDialog::restoreJoystickState);
+    PadUi::compactDialogFill(this);
 }
 
 QuickSetDialog::QuickSetDialog(InputDevice *joystick, ButtonEditDialogHelper *helper, const char *invokeString, int code,
@@ -102,6 +104,7 @@ QuickSetDialog::QuickSetDialog(InputDevice *joystick, ButtonEditDialogHelper *he
     connectBtnForDialog(currentset);
 
     connect(this, &QuickSetDialog::finished, this, &QuickSetDialog::restoreJoystickState);
+    PadUi::compactDialogFill(this);
 }
 
 void QuickSetDialog::connectSticksForDialog(SetJoystick *currentset)

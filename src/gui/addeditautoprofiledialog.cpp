@@ -18,6 +18,7 @@
 
 #include "addeditautoprofiledialog.h"
 #include "ui_addeditautoprofiledialog.h"
+#include "pad/paddialogpresentation.h"
 
 #include "antimicrosettings.h"
 #include "autoprofileinfo.h"
@@ -139,6 +140,7 @@ AddEditAutoProfileDialog::AddEditAutoProfileDialog(AutoProfileInfo *info, AntiMi
     connect(this, &AddEditAutoProfileDialog::accepted, this, &AddEditAutoProfileDialog::saveAutoProfileInformation);
 
     ui->asDefaultCheckBox->setChecked(info->isCurrentDefault());
+    PadUi::compactDialog(this);
 }
 
 // created for tests

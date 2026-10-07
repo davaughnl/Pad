@@ -213,12 +213,14 @@ void PadUi::install(QMainWindow *window, QWidget *central, QStackedWidget *stack
     body->addSpacing(8);
     auto *overview = new QFrame(workspace); overview->setObjectName("padOverview");
     auto *overviewLayout = new QHBoxLayout(overview); overviewLayout->setContentsMargins(20, 14, 20, 14);
-    auto *details = new QVBoxLayout();
+    auto *details = new QVBoxLayout(); details->setSpacing(2); details->setAlignment(Qt::AlignVCenter);
     auto *deviceName = text(QObject::tr("No controller connected"), "padDeviceName", overview);
     deviceName->setWordWrap(true); details->addWidget(deviceName);
     auto *profileName = text(QString(), "padSubtitle", overview); profileName->setWordWrap(true); details->addWidget(profileName);
-    details->addStretch(); details->addWidget(text(QObject::tr("Keyboard + mouse"), "padSubtitle", overview));
-    overviewLayout->addLayout(details, 1); overviewLayout->addWidget(new ControllerOutline(overview), 1);
+    details->addSpacing(10); details->addWidget(text(QObject::tr("Keyboard + mouse"), "padSubtitle", overview));
+    overviewLayout->addLayout(details, 1);
+    auto *outline = new ControllerOutline(overview); outline->setFixedSize(260, 96);
+    overviewLayout->addWidget(outline, 0, Qt::AlignRight | Qt::AlignVCenter);
     body->addWidget(overview); body->addWidget(stack, 1); layout->addWidget(workspace, 1);
     root->insertWidget(0, shell, 1);
     if (auto *bar = controllers->findChild<QTabBar *>()) bar->hide();

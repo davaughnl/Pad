@@ -18,6 +18,7 @@
 
 #include "extraprofilesettingsdialog.h"
 #include "ui_extraprofilesettingsdialog.h"
+#include "pad/paddialogpresentation.h"
 
 #include "inputdevice.h"
 
@@ -45,6 +46,7 @@ ExtraProfileSettingsDialog::ExtraProfileSettingsDialog(InputDevice *device, QWid
 
     connect(ui->keyPressHorizontalSlider, &QSlider::valueChanged, this, &ExtraProfileSettingsDialog::changeDeviceKeyPress);
     connect(ui->profileNameLineEdit, &QLineEdit::textChanged, device, &InputDevice::setProfileName);
+    PadUi::compactDialog(this);
 }
 
 ExtraProfileSettingsDialog::~ExtraProfileSettingsDialog() { delete ui; }

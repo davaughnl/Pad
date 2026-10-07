@@ -18,6 +18,7 @@
 
 #include "aboutdialog.h"
 #include "ui_aboutdialog.h"
+#include "pad/paddialogpresentation.h"
 
 #include "common.h"
 #include "eventhandlerfactory.h"
@@ -48,6 +49,7 @@ AboutDialog::AboutDialog(QWidget *parent)
     if (licenseFile.open(QIODevice::ReadOnly | QIODevice::Text))
         legalNotice += QString::fromUtf8(licenseFile.readAll());
     ui->textBrowser_2->setPlainText(legalNotice);
+    PadUi::polishAboutDialog(this);
 }
 
 AboutDialog::~AboutDialog() { delete ui; }

@@ -18,6 +18,7 @@
 
 #include "advancebuttondialog.h"
 #include "ui_advancebuttondialog.h"
+#include "pad/paddialogpresentation.h"
 
 #include "event.h"
 #include "globalvariables.h"
@@ -82,8 +83,8 @@ AdvanceButtonDialog::AdvanceButtonDialog(JoyButton *button, QWidget *parent)
     ui->stackedWidget->setCurrentWidget(ui->page);
     // Match the top-level footprint to the active page, with Close always outside the content.
     auto fitPage = [this](int row) {
-        const int pageHeight = row == 0 ? 440 : (row == 2 ? 360 : 320);
-        setMinimumHeight(row == 0 ? 400 : 280);
+        const int pageHeight = row == 0 ? 360 : (row == 2 ? 360 : 320);
+        setMinimumHeight(row == 0 ? 340 : 280);
         resize(960, pageHeight);
     };
     connect(ui->listWidget, &QListWidget::currentRowChanged, this, fitPage);
@@ -317,6 +318,7 @@ AdvanceButtonDialog::AdvanceButtonDialog(JoyButton *button, QWidget *parent)
             &AdvanceButtonDialog::setButtonTurboMode);
     connect(ui->loadProfilePushButton, &QPushButton::clicked, this, &AdvanceButtonDialog::showSelectProfileWindow);
     connect(ui->execToolButton, &QToolButton::clicked, this, &AdvanceButtonDialog::showFindExecutableWindow);
+    PadUi::polishAdvanceDialog(this);
 }
 
 // for tests
