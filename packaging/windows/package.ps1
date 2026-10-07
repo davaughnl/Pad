@@ -24,6 +24,12 @@ Copy-Item "$build/bin/pad.exe" $bin
 Copy-Item "$sdl/lib/x64/SDL2.dll" $bin
 & "$qt/bin/windeployqt.exe" --release --no-compiler-runtime --no-opengl-sw --no-system-d3d-compiler "$bin/pad.exe"
 if ($LASTEXITCODE -ne 0) { throw 'windeployqt failed' }
+# Release link-time optimization can remove an unused linked Qt module from
+# the import table, so windeployqt may omit it. Include the declared Qt runtime
+# set explicitly, keeping the distribution's dependency contract predictable.
+foreach ($module in @('Core', 'Gui', 'Widgets', 'Network', 'Concurrent')) {
+    Copy-Item "$qt/bin/Qt5$module.dll" $bin -Force
+}
 # App-local MSVC runtime: the recipient does not need Visual Studio or an installer.
 if (-not $env:VCToolsRedistDir) { throw 'Run in an MSVC developer environment (VCToolsRedistDir missing)' }
 $crt = Get-ChildItem "$env:VCToolsRedistDir/x64" -Directory -Filter 'Microsoft.VC*.CRT' | Sort-Object Name -Descending | Select-Object -First 1
