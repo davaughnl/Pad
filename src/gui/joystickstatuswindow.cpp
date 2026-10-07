@@ -302,6 +302,23 @@ JoystickStatusWindow::JoystickStatusWindow(InputDevice *joystick, QWidget *paren
     connect(joystick, &InputDevice::destroyed, this, &JoystickStatusWindow::obliterate);
     connect(this, &JoystickStatusWindow::finished, this, &JoystickStatusWindow::restoreButtonStates);
     PadUi::compactDialogFill(this);
+    // Native status rows need a real scroll-content layout, not a layout on
+    // QScrollArea itself: its viewport does not contribute that size hint.
+    for (auto *scroll : {ui->axesScrollArea, ui->buttonsScrollArea}) {
+        if (auto *rows = scroll->layout()) scroll->widget()->setLayout(rows);
+        scroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        scroll->widget()->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    }
+    for (auto *label : ui->axesScrollArea->findChildren<QLabel *>()) {
+        label->setMinimumHeight(24);
+        label->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
+    }
+    for (auto *bar : findChildren<QProgressBar *>()) bar->setFixedHeight(24);
+    ui->axesScrollArea->widget()->layout()->activate();
+    ui->axesScrollArea->setMinimumHeight(ui->axesScrollArea->widget()->layout()->sizeHint().height());
+    ui->buttonsScrollArea->widget()->layout()->activate();
+    ui->buttonsScrollArea->setMinimumHeight(ui->buttonsScrollArea->widget()->layout()->sizeHint().height());
+    resize(720, sizeHint().height());
 }
 
 void JoystickStatusWindow::reject() { this->deleteLater(); }

@@ -218,14 +218,14 @@ int main(int argc,char **argv) {
             names=new SetNamesDialog(j); show(names); widget<QTableWidget>(names,"setNamesTableWidget")->item(0,0)->setText("QA Set"); closeButton(names,QDialogButtonBox::Ok); check(set->getName()=="QA Set","set save failed"); delete names;
         } else if(test=="settings") {
             settings->setValue("NumberRecentProfiles",5);
-            auto *d=new MainSettingsDialog(settings,new QList<InputDevice*>{j}); show(d); check(!d->findChild<QLabel*>("label_8"),"Language narrative remains"); spin(d,"numberRecentProfileSpinBox",8); closeButton(d,QDialogButtonBox::Cancel); check(settings->value("NumberRecentProfiles").toInt()==5,"settings cancel committed"); delete d;
+            auto *d=new MainSettingsDialog(settings,new QList<InputDevice*>{j}); show(d); check(!d->findChild<QLabel*>("label_8"),"Language narrative remains"); check(!d->findChild<QLabel*>("label_translation_help"),"Language help paragraph remains"); spin(d,"numberRecentProfileSpinBox",8); closeButton(d,QDialogButtonBox::Cancel); check(settings->value("NumberRecentProfiles").toInt()==5,"settings cancel committed"); delete d;
             d=new MainSettingsDialog(settings,new QList<InputDevice*>{j}); show(d);
             auto *table=widget<QTableWidget>(d,"controllerMappingsTableWidget"); int rows=table->rowCount();
             click(widget<QPushButton>(d,"mappngInsertPushButton")); check(table->rowCount()==rows+1,"mapping row add failed");
             table->setCurrentCell(rows,0); click(widget<QPushButton>(d,"mappingDeletePushButton")); check(table->rowCount()==rows,"mapping row remove failed");
             toggle(d,"keyRepeatEnableCheckBox"); check(widget<QSpinBox>(d,"keyDelaySpinBox")->isEnabled(),"key repeat dependent controls not enabled");
             toggle(d,"keyRepeatEnableCheckBox"); check(!widget<QSpinBox>(d,"keyDelaySpinBox")->isEnabled(),"key repeat dependent controls not disabled");
-            check(!d->findChild<QLabel*>("label_8"),"Language narrative remains"); spin(d,"numberRecentProfileSpinBox",8); toggle(d,"attachNumKeypadCheckbox"); closeButton(d,QDialogButtonBox::Ok); check(settings->value("NumberRecentProfiles").toInt()==8,"settings save failed"); check(settings->value("AttachNumKeypad").toString()=="1","settings keypad save failed"); delete d;
+            check(!d->findChild<QLabel*>("label_8"),"Language narrative remains"); check(!d->findChild<QLabel*>("label_translation_help"),"Language help paragraph remains"); spin(d,"numberRecentProfileSpinBox",8); toggle(d,"attachNumKeypadCheckbox"); closeButton(d,QDialogButtonBox::Ok); check(settings->value("NumberRecentProfiles").toInt()==8,"settings save failed"); check(settings->value("AttachNumKeypad").toString()=="1","settings keypad save failed"); delete d;
         } else if(test=="calibration") {
             auto *d=new Calibration(j); show(d); check(widget<QComboBox>(d,"deviceComboBox")->count()==1,"calibration stick missing");
             check(!widget<QPushButton>(d,"saveBtn")->isEnabled(),"unsampled calibration Save enabled");

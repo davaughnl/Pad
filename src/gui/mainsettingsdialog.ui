@@ -706,19 +706,7 @@ Settings will not take affect until you either refresh all joysticks or unplug t
            </item>
           </widget>
          </item>
-         <item>
-          <widget class="QLabel" name="label_translation_help">
-           <property name="text">
-            <string>Help translate Pad by contributing translation files through the &lt;a href=&quot;https://github.com/davaughnl/Pad&quot;&gt;Pad repository&lt;/a&gt;.</string>
-           </property>
-           <property name="textFormat">
-            <enum>Qt::TextFormat::RichText</enum>
-           </property>
-           <property name="openExternalLinks">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
+
         </layout>
        </widget>
        <widget class="QWidget" name="autoProfileSettingsPage">
