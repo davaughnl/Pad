@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<joystick configversion="19" appversion="3.6.1">
+ <profilename>Pad deterministic input regression</profilename>
+ <sets><set index="1"><name>Regression</name>
+  <button index="1"><slots><slot><code>0x41</code><mode>keyboard</mode></slot></slots></button>
+  <button index="2"><slots><slot><code>1</code><mode>mousebutton</mode></slot></slots></button>
+  <axis index="1"><deadZone>8000</deadZone><throttle>normal</throttle>
+   <axisbutton index="1"><slots><slot><code>0x42</code><mode>keyboard</mode></slot></slots></axisbutton>
+   <axisbutton index="2"><slots><slot><code>0x43</code><mode>keyboard</mode></slot></slots></axisbutton>
+  </axis>
+ </set></sets>
+</joystick>
