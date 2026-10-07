@@ -1,0 +1,64 @@
+name: Pad Linux Package
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: pad-linux-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  deb:
+    name: Ubuntu 22.04 amd64 / Qt5 / DEB
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install build and test dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y extra-cmake-modules qtbase5-dev qttools5-dev qttools5-dev-tools libsdl2-dev libxi-dev libxtst-dev libx11-dev itstool gettext dpkg-dev xvfb xauth xdotool imagemagick
+      - name: Configure and build
+        run: |
+          cmake -S . -B build -G 'Unix Makefiles' -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DUSE_QT6_BY_DEFAULT=OFF -DCHECK_FOR_UPDATES=OFF -DCPACK_GENERATOR=DEB
+          cmake --build build --parallel 4
+      - name: Build functional fixtures
+        run: |
+          python3 tests/pad/build_harness.py build build/pad-tests
+          python3 tests/pad/build_dialog_harness.py build
+          python3 tests/pad/build_sensor_harness.py build build/pad-tests
+      - name: Functional gates
+        run: |
+          set -o pipefail
+          mkdir -p evidence
+          xvfb-run -a -s '-screen 0 1024x768x24' sh -ec '
+            build/pad-tests/profile-roundtrip tests/pad/mapping.amgp
+            python3 tests/pad/input_regression.py build/bin/pad build/pad-tests
+            python3 tests/pad/run_dialog_tests.py build/pad-tests/dialog-controls
+            build/pad-tests/sensor-orientation evidence/sensor-invalid.png evidence/sensor-valid.png
+          ' 2>&1 | tee evidence/functional.log
+          python3 tests/pad_branding_test.py 2>&1 | tee evidence/branding.log
+      - name: Package
+        run: bash packaging/linux/package.sh build dist '${{ github.sha }}'
+      - name: Install and test distribution
+        run: |
+          set -o pipefail
+          sudo apt-get install -y ./dist/*.deb
+          xvfb-run -a -s '-screen 0 1024x768x24' python3 packaging/linux/smoke.py "$(find dist -name '*.deb')" evidence
+          xvfb-run -a -s '-screen 0 1024x768x24' python3 tests/pad/input_regression.py /usr/bin/pad build/pad-tests 2>&1 | tee evidence/installed-input.log
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Pad-Linux-amd64-${{ github.sha }}
+          path: dist/
+          if-no-files-found: error
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Pad-Linux-evidence-${{ github.sha }}
+          path: evidence/
+          if-no-files-found: warn
+          retention-days: 14

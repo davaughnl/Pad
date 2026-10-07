@@ -857,12 +857,10 @@ endif()
 
 # Building .deb package
 if(CPACK_GENERATOR STREQUAL "DEB")
-    if(QT_VERSION_MAJOR EQUAL 5)
-        # TODO use regular, not dev packages
-        set(CPACK_DEBIAN_PACKAGE_DEPENDS "libqt5widgets5 (>= ${QT_REQUIRED_VERSION}), libsdl2-2.0-0 (>= ${SDL_REQUIRED_VERSION}), libc6")
-    else()
-        set(CPACK_DEBIAN_PACKAGE_DEPENDS "libqt6widgets6 (>= ${QT_REQUIRED_VERSION}), libsdl2-2.0-0 (>= ${SDL_REQUIRED_VERSION}), libc6")
-    endif(QT_VERSION_MAJOR EQUAL 5)
+    # Resolve dependencies from the actual packaged ELF, including X11/XTest.
+    set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
+    set(CPACK_DEBIAN_PACKAGE_NAME "pad")
+    set(CPACK_DEBIAN_PACKAGE_SECTION "games")
     set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Pad contributors")
     set(CPACK_DEBIAN_PACKAGE_DESCRIPTION "Pad maps controller buttons to keyboard, mouse, scripts and macros.")
 
