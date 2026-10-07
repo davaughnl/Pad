@@ -68,7 +68,7 @@ public static class PadWindowProbe {
         EnumWindows((window, param) => {
             uint owner; GetWindowThreadProcessId(window, out owner);
             var title = new StringBuilder(512); GetWindowText(window, title, title.Capacity);
-            if (owner == process && IsWindowVisible(window) && title.ToString() == "Edit Settings") found = true;
+            if (owner == process && IsWindowVisible(window) && (title.ToString() == "Settings" || title.ToString() == "Edit Settings")) found = true;
             return true;
         }, IntPtr.Zero);
         return found;
