@@ -42,11 +42,11 @@ jobs:
           cache: true
       - name: Install OpenSSL 1.1.1 (Qt 5.15 HTTPS runtime)
         run: |
-          python -m pip install --quiet aqtinstall
-          python -m aqt list-tool windows desktop tools_openssl_x64
-          python -m aqt install-tool windows desktop tools_openssl_x64 qt.tools.openssl.win_x64 --outputdir "$env:RUNNER_TEMP/aqt-tools"
-          if ($LASTEXITCODE -ne 0) { throw 'OpenSSL install failed' }
-          Get-ChildItem "$env:RUNNER_TEMP/aqt-tools" -Recurse -Filter 'libssl*.dll' | ForEach-Object FullName
+          choco install openssl --version=1.1.1.2100 -y --no-progress
+          $dir = 'C:\Program Files\OpenSSL-Win64'
+          Get-ChildItem $dir -Filter 'lib*.dll' -Recurse | ForEach-Object FullName
+          if (-not (Test-Path "$dir\libssl-1_1-x64.dll")) { throw 'libssl-1_1-x64.dll missing' }
+          "OPENSSL_DIR=$dir" | Out-File -Append -Encoding utf8 $env:GITHUB_ENV
       - name: Install SDL2
         run: ./packaging/windows/get-sdl2.ps1 -Destination "$env:RUNNER_TEMP/sdl2"
       - name: Configure
@@ -69,7 +69,7 @@ jobs:
           cmake --build build --target antimicrox updateqm --parallel 4
           if ($LASTEXITCODE -ne 0) { throw 'CMake build failed' }
       - name: Stage portable distribution
-        run: ./packaging/windows/package.ps1 -BuildDir build -QtDir "$env:QT_ROOT_DIR" -SdlDir "$env:RUNNER_TEMP/sdl2" -OutputDir dist -Revision '${{ github.sha }}' -Version $env:PAD_VERSION -OpenSslDir "$env:RUNNER_TEMP/aqt-tools"
+        run: ./packaging/windows/package.ps1 -BuildDir build -QtDir "$env:QT_ROOT_DIR" -SdlDir "$env:RUNNER_TEMP/sdl2" -OutputDir dist -Revision '${{ github.sha }}' -Version $env:PAD_VERSION -OpenSslDir "$env:OPENSSL_DIR"
       - name: Smoke test extracted zip
         run: ./packaging/windows/smoke-test.ps1 -Archive "dist/Pad-$env:PAD_VERSION-Windows-x64.zip" -OutputDir smoke
       - name: Build installer
