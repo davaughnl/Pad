@@ -3,10 +3,12 @@
 #include <QDebug>
 #include <QTemporaryDir>
 #include <QUuid>
+#include <cstdio>
+#include <cstdlib>
 
 static void require(bool ok, const char *message)
 {
-    if (!ok) qFatal("%s", message);
+    if (!ok) { std::fprintf(stderr, "FAIL: %s\n", message); std::fflush(stderr); std::exit(EXIT_FAILURE); }
 }
 int main(int argc, char **argv)
 {
@@ -14,16 +16,16 @@ int main(int argc, char **argv)
     QTemporaryDir temp;
     require(temp.isValid(), "Temporary fixture directory failed");
 #ifdef Q_OS_WIN
-    const QString root = "HKEY_CURRENT_USER/Software/PadAssociationTests/" + QUuid::createUuid().toString(QUuid::WithoutBraces);
+    const QString root = "HKEY_CURRENT_USER\\Software\\PadAssociationTests\\" + QUuid::createUuid().toString(QUuid::WithoutBraces);
     const auto format = QSettings::NativeFormat;
 #else
     const QString root = temp.path() + "/registry";
     const auto format = QSettings::IniFormat;
 #endif
     const QString exe = "C:/Pad folder/bin/pad.exe";
-    QSettings extension(root + "/.amgp", format);
-    QSettings upstream(root + "/AntiMicro.amgp", format);
-    QSettings otherOpen(root + "/.amgp/OpenWithProgids", format);
+    QSettings extension(PadProfileAssociation::settingsPath(root, ".amgp", format), format);
+    QSettings upstream(PadProfileAssociation::settingsPath(root, "AntiMicro.amgp", format), format);
+    QSettings otherOpen(PadProfileAssociation::settingsPath(root, ".amgp/OpenWithProgids", format), format);
     upstream.setValue("Default", "AntiMicro Profile");
     upstream.setValue("shell/open/command/Default", "upstream-command");
     otherOpen.setValue("Other.Profile", "foreign-value");
@@ -40,7 +42,7 @@ int main(int argc, char **argv)
         require(extension.value("Default").toString() == original, "Extension default was hijacked");
         require(upstream.value("shell/open/command/Default").toString() == "upstream-command", "Upstream command changed");
         require(otherOpen.value("Other.Profile").toString() == "foreign-value", "Foreign Open With changed");
-        QSettings program(root + "/" + PadProfileAssociation::progId(), format);
+        QSettings program(PadProfileAssociation::settingsPath(root, PadProfileAssociation::progId(), format), format);
         require(program.value("shell/open/command/Default").toString() == PadProfileAssociation::command(exe), "Command quoting incorrect");
         require(PadProfileAssociation::unregisterProfile(root, format), "Unregister failed");
         require(!PadProfileAssociation::contains(root, format), "Unregister did not remove own Open With");
@@ -53,7 +55,7 @@ int main(int argc, char **argv)
     extension.setValue("Default", PadProfileAssociation::progId()); extension.sync();
     require(PadProfileAssociation::registerProfile(root, format, exe), "Pad default register failed");
     require(PadProfileAssociation::unregisterProfile(root, format), "Pad default unregister failed");
-    QSettings program(root + "/" + PadProfileAssociation::progId(), format);
+    QSettings program(PadProfileAssociation::settingsPath(root, PadProfileAssociation::progId(), format), format);
     require(program.contains("shell/open/command/Default"), "User-selected Pad default now dangles");
     // An unmarked same-name key must not be stolen or deleted.
     program.remove(""); program.setValue("Default", "Unverified same-name registration"); program.sync();
@@ -63,6 +65,6 @@ int main(int argc, char **argv)
 #ifdef Q_OS_WIN
     QSettings cleanup(root, format); cleanup.remove(""); cleanup.sync();
 #endif
-    qInfo() << "PASS: Pad Open With registration preserves all foreign/default associations";
+    std::puts("PASS: Pad Open With registration preserves all foreign/default associations");
     return 0;
 }

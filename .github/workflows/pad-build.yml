@@ -15,6 +15,19 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  branding:
+    name: Pad branding and resource regression tests
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prepare configure-generated resource and run tests
+        run: |
+          # Root CMake copies this file to src during configure. This test-only
+          # job does not configure Qt, so prepare the same generated resource.
+          cp CHANGELOG.md src/CHANGELOG.md
+          python3 -m unittest discover -s tests -p 'pad_branding_test.py' -v
+
   windows:
     name: Windows x64 / Qt5 / MSVC
     runs-on: windows-2022

@@ -10,6 +10,17 @@
 // user's default selection; registration only adds Pad to Open With.
 namespace PadProfileAssociation {
 inline QString progId() { return QStringLiteral("io.github.davaughnl.Pad.amgp"); }
+inline QString settingsPath(const QString &root, const QString &subkey, QSettings::Format format)
+{
+    QString path = root + "/" + subkey;
+#ifdef Q_OS_WIN
+    if (format == QSettings::NativeFormat)
+        path.replace('/', '\\'); // QSettings registry constructor requires backslash separators.
+#else
+    Q_UNUSED(format)
+#endif
+    return path;
+}
 inline QString marker() { return QStringLiteral("io.github.davaughnl.Pad"); }
 inline QString command(const QString &executable)
 {
@@ -17,13 +28,13 @@ inline QString command(const QString &executable)
 }
 inline bool contains(const QString &root, QSettings::Format format)
 {
-    QSettings program(root + "/" + progId(), format);
-    QSettings openWith(root + "/.amgp/OpenWithProgids", format);
+    QSettings program(settingsPath(root, progId(), format), format);
+    QSettings openWith(settingsPath(root, ".amgp/OpenWithProgids", format), format);
     return program.value("PadOwner").toString() == marker() && openWith.contains(progId());
 }
 inline bool registerProfile(const QString &root, QSettings::Format format, const QString &executable)
 {
-    QSettings program(root + "/" + progId(), format);
+    QSettings program(settingsPath(root, progId(), format), format);
     // A matching name alone is not ownership. Do not overwrite unmarked keys.
     if (!program.allKeys().isEmpty() && program.value("PadOwner").toString() != marker())
         return false;
@@ -34,17 +45,17 @@ inline bool registerProfile(const QString &root, QSettings::Format format, const
     program.sync();
     if (program.status() != QSettings::NoError)
         return false;
-    QSettings openWith(root + "/.amgp/OpenWithProgids", format);
+    QSettings openWith(settingsPath(root, ".amgp/OpenWithProgids", format), format);
     openWith.setValue(progId(), QString());
     openWith.sync();
     return openWith.status() == QSettings::NoError;
 }
 inline bool unregisterProfile(const QString &root, QSettings::Format format)
 {
-    QSettings program(root + "/" + progId(), format);
+    QSettings program(settingsPath(root, progId(), format), format);
     if (program.value("PadOwner").toString() != marker())
         return false;
-    QSettings openWith(root + "/.amgp/OpenWithProgids", format);
+    QSettings openWith(settingsPath(root, ".amgp/OpenWithProgids", format), format);
     openWith.remove(progId());
     openWith.sync();
     // Keep Pad's ProgID: Windows UserChoice or a user-selected default may
