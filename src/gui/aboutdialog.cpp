@@ -38,7 +38,7 @@ AboutDialog::AboutDialog(QWidget *parent)
     , ui(new Ui::AboutDialog)
 {
     ui->setupUi(this);
-    ui->versionLabel->setText(PadderCommon::programVersion);
+    ui->versionLabel->setText(PadderCommon::displayVersion);
     fillInfoTextBrowser();
 }
 
@@ -48,7 +48,7 @@ void AboutDialog::fillInfoTextBrowser()
 {
     QStringList finalInfoText = QStringList();
 
-    finalInfoText.append(tr("Program Version %1").arg(PadderCommon::programVersion));
+    finalInfoText.append(tr("Program Version %1").arg(PadderCommon::displayVersion));
 #ifdef ANTIMICROX_PKG_VERSION
     finalInfoText.append(tr("Compiled from packaging: %1").arg(ANTIMICROX_PKG_VERSION));
 #else
@@ -114,5 +114,5 @@ void AboutDialog::retranslateUi()
 {
     ui->retranslateUi(this);
 
-    ui->versionLabel->setText(PadderCommon::programVersion);
+    ui->versionLabel->setText(PadderCommon::displayVersion);
 }

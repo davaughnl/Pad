@@ -201,7 +201,7 @@ int main(int argc, char *argv[])
 
     QApplication antimicrox(argc, argv);
     QCoreApplication::setApplicationName("Pad");
-    QCoreApplication::setApplicationVersion(PadderCommon::programVersion);
+    QCoreApplication::setApplicationVersion(PadderCommon::displayVersion);
 
     QTextStream outstream(stdout);
     Logger *appLogger = Logger::createInstance(&outstream, Logger::LogLevel::LOG_WARNING);

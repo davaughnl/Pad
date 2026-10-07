@@ -49,6 +49,9 @@ const QString mouseDeviceName("Pad Mouse Emulation");
 const QString keyboardDeviceName("Pad Keyboard Emulation");
 const QString springMouseDeviceName("Pad Abs Mouse Emulation");
 
+// Display label is deliberately separate from the legacy XML compatibility version.
+const QString displayVersion = QStringLiteral("Development build");
+
 const int ANTIMICROX_MAJOR_VERSION = PROJECT_MAJOR_VERSION;
 const int ANTIMICROX_MINOR_VERSION = PROJECT_MINOR_VERSION;
 const int ANTIMICROX_PATCH_VERSION = PROJECT_PATCH_VERSION;

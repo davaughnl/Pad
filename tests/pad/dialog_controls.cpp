@@ -289,7 +289,7 @@ int main(int argc,char **argv) {
             auto *loaded=j->getActiveSetJoystick()->getJoyButton(0); check(loaded->getAssignedSlots()->size()==1&&loaded->getAssignedSlots()->first()->getSlotCodeAlias()==Qt::Key_B,"Load didn't restore saved mapping");
             delete tab;
         } else if(test=="about") {
-            auto *d=new AboutDialog; show(d); auto *tabs=widget<QTabWidget>(d,"tabWidget"); check(tabs->count()>=4,"about tabs missing"); for(int n=0;n<tabs->count();n++){tabs->setCurrentIndex(n);settle();check(tabs->currentIndex()==n,"about tab switch failed");} check(!widget<QTextBrowser>(d,"infoTextBrowser")->toPlainText().isEmpty(),"about info empty"); closeButton(d,QDialogButtonBox::Close); delete d;
+            auto *d=new AboutDialog; show(d); check(widget<QLabel>(d,"versionLabel")->text()=="Development build","About exposes an unchosen release version"); check(!widget<QTextBrowser>(d,"infoTextBrowser")->toPlainText().contains("3.6.1"),"About exposes inherited upstream version"); auto *tabs=widget<QTabWidget>(d,"tabWidget"); check(tabs->count()>=4,"about tabs missing"); for(int n=0;n<tabs->count();n++){tabs->setCurrentIndex(n);settle();check(tabs->currentIndex()==n,"about tab switch failed");} check(!widget<QTextBrowser>(d,"infoTextBrowser")->toPlainText().isEmpty(),"about info empty"); closeButton(d,QDialogButtonBox::Close); delete d;
         } else throw std::runtime_error("unknown test");
         fprintf(stdout,"PASS dialog %s\n",argv[1]); fflush(stdout);
         QMetaObject::invokeMethod(j,[j]{delete j;},Qt::BlockingQueuedConnection); worker.quit(); worker.wait(); delete settings;
