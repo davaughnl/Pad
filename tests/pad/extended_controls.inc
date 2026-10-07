@@ -40,7 +40,23 @@ static bool extended(const QString &test,Joystick *j,AntiMicroSettings *settings
         text(d,"sensorNameLineEdit","QA Sensor");check(sensor->getSensorName()=="QA Sensor","sensor rename failed");
         auto *presets=widget<QComboBox>(d,"presetsComboBox");
         presets->setCurrentIndex(presets->findData(int(JoySensorPreset::PRESET_NONE)));settle();
-        for(int n=0;n<presets->count();++n){presets->setCurrentIndex(n);settle();JoySensorPreset p(sensor);check(int(p.currentPreset())==presets->itemData(n).toInt(),"sensor preset actual assignments mismatch");}
+        for(int n=0;n<presets->count();++n) {
+            presets->setCurrentIndex(n);settle();JoySensorPreset p(sensor);check(int(p.currentPreset())==presets->itemData(n).toInt(),"sensor preset actual assignments mismatch");
+            auto snapshot=[sensor] {
+                QMap<int,QStringList> result;
+                QMetaObject::invokeMethod(sensor,[sensor,&result] {
+                    for(auto it=sensor->getButtons()->cbegin();it!=sensor->getButtons()->cend();++it) {
+                        QStringList values;
+                        for(auto *slot:*it.value()->getAssignedSlots()) values.append(QString("%1:%2:%3:%4:%5").arg(int(slot->getSlotMode())).arg(slot->getSlotCode()).arg(slot->getSlotCodeAlias()).arg(slot->getTextData()).arg(slot->getExtraData().toString()));
+                        result.insert(int(it.key()),values);
+                    }
+                },Qt::BlockingQueuedConnection);
+                return result;
+            };
+            auto before=snapshot();auto *reopened=new JoySensorEditDialog(sensor);show(reopened);
+            check(widget<QComboBox>(reopened,"presetsComboBox")->currentData()==presets->itemData(n),"reopened sensor preset selection mismatch");
+            check(before==snapshot(),"sensor dialog reopen mutated slot contents/order");closeButton(reopened,QDialogButtonBox::Close);delete reopened;
+        }
         presets->setCurrentIndex(presets->findData(int(JoySensorPreset::PRESET_NONE)));settle();check(!sensor->hasSlotsAssigned(),"sensor None didn't clear");
         click(widget<QPushButton>(d,"mouseSettingsPushButton"));
         auto *mouse=d->findChild<MouseSensorSettingsDialog*>();check(mouse&&mouse->isVisible(),"sensor mouse route didn't open");mouse->setAttribute(Qt::WA_DeleteOnClose,false);

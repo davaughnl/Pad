@@ -48,3 +48,10 @@ settings and XML state. No Windows, Wayland, uinput, haptics, browser-link menus
 tray Quit/update routes, every contextual menu, all mixed-slot combinations,
 all timing edges, or real script execution. This is not exhaustive certification
 that every control everywhere works, and makes no visual/layout quality claim.
+
+Additional reopen assertions: after applying each available preset for each
+sensor type, reopen the real dialog and assert selected preset data matches.
+Worker-thread snapshots compare each direction's ordered slot mode, code,
+alias, text and extra-data before/after reopen. Constructor must not mutate
+mappings. This absorbs the UI lane's behavioral assertions without its
+pixel-review fixture or relying on summary labels alone.
