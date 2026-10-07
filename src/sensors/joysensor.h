@@ -145,8 +145,9 @@ class JoySensor : public QObject
     static const size_t ACTIVE_BUTTON_COUNT = 3;
     JoySensorButton *m_active_button[ACTIVE_BUTTON_COUNT];
 
-    float m_current_value[3];
-    float m_pending_value[3];
+    // No sensor sample exists at construction. Keep initial stats deterministic.
+    float m_current_value[3] = {};
+    float m_pending_value[3] = {};
     bool m_calibrated;
     double m_calibration_value[3];
     bool m_pending_event;

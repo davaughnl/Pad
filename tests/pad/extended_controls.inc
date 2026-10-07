@@ -14,6 +14,19 @@ static void persistCalibration(Joystick *j,const QString &path,const QByteArray 
 }
 static bool extended(const QString &test,Joystick *j,AntiMicroSettings *settings,const QTemporaryDir &tmp) {
     auto *set=j->getActiveSetJoystick();auto *button=set->getJoyButton(0);
+    if(test=="sensor-fresh-state") {
+        // Controlled recycled-storage patterns expose constructor omissions without reading outside the object.
+        for(unsigned char pattern:{0x3f,0x40,0x00}) {
+            void *storage=::operator new(sizeof(JoyAccelerometerSensor));std::memset(storage,pattern,sizeof(JoyAccelerometerSensor));
+            auto *sensor=new(storage) JoyAccelerometerSensor(200,0,set,nullptr);sensor->moveToThread(j->thread());
+            auto *d=new JoySensorEditDialog(sensor);show(d);
+            fprintf(stdout,"FRESH storage=%02x x=%s y=%s z=%s magnitude=%s pitch=%s roll=%s\n",pattern,widget<QLabel>(d,"xCoordinateValue")->text().toUtf8().constData(),widget<QLabel>(d,"yCoordinateValue")->text().toUtf8().constData(),widget<QLabel>(d,"zCoordinateValue")->text().toUtf8().constData(),widget<QLabel>(d,"accelerationValue")->text().toUtf8().constData(),widget<QLabel>(d,"pitchValue")->text().toUtf8().constData(),widget<QLabel>(d,"rollValue")->text().toUtf8().constData());fflush(stdout);
+            for(const char *name:{"xCoordinateValue","yCoordinateValue","zCoordinateValue","accelerationValue"}) {bool ok=false;double value=widget<QLabel>(d,name)->text().toDouble(&ok);check(ok&&value==0,"fresh sensor exposed recycled-storage data before first sample");}
+            check(widget<QLabel>(d,"pitchValue")->text()=="Unavailable"&&widget<QLabel>(d,"rollValue")->text()=="Unavailable","fresh sensor reported false-valid orientation before first sample");
+            closeButton(d,QDialogButtonBox::Close);delete d;QMetaObject::invokeMethod(sensor,[sensor]{sensor->~JoyAccelerometerSensor();},Qt::BlockingQueuedConnection);::operator delete(storage);
+        }
+        return true;
+    }
     if(test=="sensor-zero-vector") {
         auto *sensor=set->getSensor(ACCELEROMETER);check(sensor,"sensor fixture missing");auto *d=new JoySensorEditDialog(sensor);show(d);
         check(widget<QLabel>(d,"pitchValue")->text()=="Unavailable"&&widget<QLabel>(d,"rollValue")->text()=="Unavailable","initial zero-vector stats must be Unavailable");

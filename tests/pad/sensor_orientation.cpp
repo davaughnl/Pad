@@ -16,6 +16,8 @@
 #include <random>
 #include <cstdio>
 #include <stdexcept>
+#include <cstring>
+#include <new>
 
 static void check(bool ok, const char *message) { if (!ok) throw std::runtime_error(message); }
 class Probe : public JoyAccelerometerSensor {
@@ -43,6 +45,14 @@ int main(int argc,char **argv) {
         AntKeyMapper::getInstance("xtest"); check(EventHandlerFactory::getInstance("xtest")->handler()->init(),"XTest init failed");
         auto *settings=new AntiMicroSettings(tmp.filePath("settings.ini"),QSettings::IniFormat);
         auto *joystick=new Joystick(SDL_JoystickOpen(index),index,settings,nullptr);
+        // Poison raw storage before construction: first-state values must not depend on heap bytes.
+        alignas(Probe) unsigned char storage[sizeof(Probe)];
+        std::memset(storage, 0x3f, sizeof(storage));
+        auto *fresh = new (storage) Probe(joystick->getSetJoystick(0));
+        bool initialized = fresh->getXCoordinate() == 0 && fresh->getYCoordinate() == 0 && fresh->getZCoordinate() == 0;
+        bool unavailable = std::isnan(fresh->calculatePitch()) && std::isnan(fresh->calculateRoll());
+        fresh->~Probe();
+        check(initialized && unavailable, "fresh sensor exposes uninitialized current sample before first event");
         Probe sensor(joystick->getSetJoystick(0)), control(joystick->getSetJoystick(0));
         const double inf=std::numeric_limits<double>::infinity(), nan=std::numeric_limits<double>::quiet_NaN();
         const double big=std::numeric_limits<double>::max(), tiny=std::numeric_limits<double>::denorm_min();
