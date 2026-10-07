@@ -29,7 +29,10 @@ history guards.
 Linux black-box tests deliver real XTest keyboard/mouse press and release
 from an SDL virtual controller. Axis dead zone/centering, held-output release
 on disconnect, reconnect/profile reload and stable native XML roundtrips
-are checked. The Linux package gate repeats input tests against the installed
+are checked. Keyboard viewport tests scroll every visible key fully into view
+at 800x520 with/without keypad, check hit targets and click the rightmost key
+to verify its assigned alias. These run in Linux and native Windows fixtures.
+The Linux package gate repeats input tests against the installed
 binary and checks extracted-package startup/Settings and dependencies.
 
 Windows gate builds Qt5/MSVC Release, checks profile association behavior,
@@ -48,7 +51,6 @@ neither visual review nor these tests certify every possible control path.
   targets and anti-cheat compatibility.
 - Wayland, uinput device permissions, haptics and force feedback.
 - Every mixed-slot/timing/script route and all contextual/tray actions.
-- Every rightmost key's internal-scroll reachability on small Windows screens.
 - Other Linux distributions/architectures and macOS.
 
 Before calling this a broadly hardware-tested stable release, run a physical

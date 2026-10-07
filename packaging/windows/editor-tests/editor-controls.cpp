@@ -72,6 +72,7 @@ public:
     bool hasRawSensor(JoySensorType) override { return true; }
     double getRawSensorRate(JoySensorType) override { return 200.0; }
 };
+#include "../../../tests/pad/keyboard_reachability.h"
 int main(int argc,char **argv) {
     QApplication app(argc,argv); PadUi::initializeApplicationStyle(); Logger::createInstance(nullptr,Logger::LOG_NONE);
     QThread worker;
@@ -126,6 +127,7 @@ int main(int argc,char **argv) {
                 closeDialog(dialog);
             } else {
                 auto *keyboard=dialog->findChild<VirtualKeyboardMouseWidget*>();check(keyboard,"Keyboard absent");
+                verifyKeyboardReachability(dialog,button,output);keyboard=dialog->findChild<VirtualKeyboardMouseWidget*>("padVirtualInputs");
                 VirtualKeyPushButton *key=nullptr;
                 for(auto *candidate:keyboard->findChildren<VirtualKeyPushButton*>()) if(candidate->getQkeyalias()==Qt::Key_A) {key=candidate;break;}
                 check(key,"A key absent");click(key);

@@ -115,6 +115,7 @@ static void mouseTest(QDialog *d,const QList<JoyButton*> &buttons) {
     closeButton(d,QDialogButtonBox::Close); delete d;
 }
 #include "extended_controls.inc"
+#include "keyboard_reachability.h"
 int main(int argc,char **argv) {
     QApplication app(argc,argv); PadUi::initializeApplicationStyle(); Logger::createInstance(nullptr,Logger::LOG_NONE);
     QThread worker;
@@ -147,6 +148,7 @@ int main(int argc,char **argv) {
         } else if(test=="keyboard") {
             auto *d=new ButtonEditDialog(button,j,false); show(d);
             auto *kb=d->findChild<VirtualKeyboardMouseWidget*>(); check(kb,"keyboard widget missing");
+            verifyKeyboardReachability(d,button);kb=d->findChild<VirtualKeyboardMouseWidget*>("padVirtualInputs");
             VirtualKeyPushButton *key=nullptr;
             for(auto *k:kb->findChildren<VirtualKeyPushButton*>()) if(k->getQkeyalias()==Qt::Key_A) {key=k;break;}
             check(key,"A virtual key missing"); click(key);

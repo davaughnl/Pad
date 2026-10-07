@@ -147,6 +147,9 @@ bool VirtualKeyboardMouseWidget::isLaptop()
 void VirtualKeyboardMouseWidget::setupVirtualKeyboardLayout()
 {
     QVBoxLayout *finalVBoxLayout = new QVBoxLayout(keyboardTab);
+    // Let the scroll container see the real minimum key-layout extent.
+    // A tab page otherwise accepts less width and silently clips its last keys.
+    finalVBoxLayout->setSizeConstraint(QLayout::SetMinimumSize);
     finalVBoxLayout->setContentsMargins(0, 16, 0, 0);
     finalVBoxLayout->setSpacing(8);
     QVBoxLayout *tempMainKeyLayout = setupMainKeyboardLayout();

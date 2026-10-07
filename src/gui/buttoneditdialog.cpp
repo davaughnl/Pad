@@ -193,10 +193,10 @@ void ButtonEditDialog::setupVirtualKeyboardMouseTabWidget()
     {
         scroll->takeWidget();
     }
-    ui->virtualKeyMouseTabWidget->setMinimumWidth(m_isNumKeypad ? 1200 : 1032);
+    ui->virtualKeyMouseTabWidget->setMinimumWidth(ui->virtualKeyMouseTabWidget->minimumSizeHint().width());
     scroll->setWidget(ui->virtualKeyMouseTabWidget);
-    connect(ui->virtualKeyMouseTabWidget, &QTabWidget::currentChanged, this, [this](int index) {
-        ui->virtualKeyMouseTabWidget->setMinimumWidth(index == 0 ? (m_isNumKeypad ? 1200 : 1032) : 0);
+    connect(ui->virtualKeyMouseTabWidget, &QTabWidget::currentChanged, this, [this](int) {
+        ui->virtualKeyMouseTabWidget->setMinimumWidth(ui->virtualKeyMouseTabWidget->minimumSizeHint().width());
     });
 
     PadderCommon::inputDaemonMutex.unlock();
