@@ -1,0 +1,33 @@
+name: Publish release (owner-approved)
+
+# Pushing a tag named publish/vX.Y.Z flips the existing DRAFT release vX.Y.Z to published.
+# It builds nothing and changes no code: it only checks the draft's four assets and publishes it.
+on:
+  push:
+    tags: ['publish/v[0-9]+.[0-9]+.[0-9]+']
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - name: Publish the draft
+        run: |
+          set -euo pipefail
+          tag="${GITHUB_REF_NAME#publish/}"
+          ver="${tag#v}"
+          gh release view "$tag" --json isDraft,tagName,assets > rel.json
+          cat rel.json
+          [ "$(jq -r .isDraft rel.json)" = "true" ] || { echo "::error::$tag is not a draft"; exit 1; }
+          for n in "Pad-$ver-Windows-x64-Setup.exe" "Pad-$ver-Windows-x64-Setup.exe.sha256" "Pad-$ver-Windows-x64.zip" "Pad-$ver-Windows-x64.zip.sha256"; do
+            jq -e --arg n "$n" '.assets | map(.name) | index($n)' rel.json >/dev/null || { echo "::error::missing asset $n"; exit 1; }
+          done
+          echo "Tag $tag points at: $(gh api "repos/$GH_REPO/commits/$tag" --jq .sha)"
+          gh release edit "$tag" --draft=false --latest
+          gh release view "$tag" --json isDraft,url,publishedAt,assets --jq '{isDraft,url,publishedAt,assets:[.assets[]|{name,size}]}'

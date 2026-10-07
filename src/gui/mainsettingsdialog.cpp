@@ -18,6 +18,7 @@
  */
 
 #include "mainsettingsdialog.h"
+#include "pad/paddriversettings.h"
 
 #include "addeditautoprofiledialog.h"
 #include "antimicrosettings.h"
@@ -292,6 +293,11 @@ MainSettingsDialog::MainSettingsDialog(AntiMicroSettings *settings, QList<InputD
     // End Advanced Tab
 
     settings->getLock()->unlock();
+    // Experimental driver mode lives at the bottom of the Advanced page.
+    driverSection = new PadUi::DriverModeSection(settings->value(PadDriverMode::SettingsKey, false).toBool(), ui->Advanced);
+    if (auto *advanced = qobject_cast<QVBoxLayout *>(ui->Advanced->layout()))
+        advanced->addWidget(driverSection);
+    if (!driverSection->supported()) driverSection->hide();
     PadUi::polishSettings(this);
 
     connect(ui->categoriesListWidget, &QListWidget::currentRowChanged, ui->stackedWidget, &QStackedWidget::setCurrentIndex);
@@ -707,6 +713,7 @@ void MainSettingsDialog::saveNewSettings()
 
     // Advanced Tab
     settings->setValue("LogFile", ui->logFilePathEdit->text());
+    if (driverSection) settings->setValue(PadDriverMode::SettingsKey, driverSection->isChecked());
     int logLevel = ui->logLevelComboBox->currentIndex();
     if (logLevel < 0)
     {

@@ -25,6 +25,7 @@
 #include <QSettings>
 
 class AntiMicroSettings;
+namespace PadUi { class DriverModeSection; }
 class InputDevice;
 class QWidget;
 class AutoProfileInfo;
@@ -104,6 +105,7 @@ class MainSettingsDialog : public QDialog
     Ui::MainSettingsDialog *ui;
 
     AntiMicroSettings *settings;
+    PadUi::DriverModeSection *driverSection = nullptr;
 
     QMap<QString, AutoProfileInfo *> defaultAutoProfiles;       // Default profiles assigned to a specific device
     QMap<QString, QList<AutoProfileInfo *>> deviceAutoProfiles; // Profiles assigned with an association with an application
