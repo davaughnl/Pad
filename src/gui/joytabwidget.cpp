@@ -17,6 +17,7 @@
  */
 
 #include "joytabwidget.h"
+#include "pad/padmapping.h"
 
 #include "advancestickassignmentdialog.h"
 #include "antimicrosettings.h"
@@ -415,7 +416,7 @@ JoyTabWidget::JoyTabWidget(InputDevice *joystick, AntiMicroSettings *settings, Q
 
     refreshSetButtons();
 
-    verticalLayout->addLayout(horizontalLayout_2);
+    verticalLayout->insertLayout(1, horizontalLayout_2);
 
     spacer3 = new QSpacerItem(20, 5, QSizePolicy::Fixed, QSizePolicy::Fixed);
     verticalLayout->addItem(spacer3);
@@ -473,6 +474,20 @@ JoyTabWidget::JoyTabWidget(InputDevice *joystick, AntiMicroSettings *settings, Q
 
     verticalLayout->addLayout(horizontalLayout_3);
 
+    verticalLayout->setSpacing(8);
+    verticalLayout->setStretchFactor(configHorizontalLayout, 0);
+    verticalLayout->setStretchFactor(stackedWidget_2, 1);
+    horizontalLayout_2->setSpacing(0);
+    for (auto *setButton : {setPushButton1, setPushButton2, setPushButton3, setPushButton4,
+                           setPushButton5, setPushButton6, setPushButton7, setPushButton8}) {
+        setButton->setProperty("padSetTab", true);
+        setButton->setFixedHeight(40);
+    }
+    for (auto *scroll : stackedWidget_2->findChildren<QScrollArea *>()) {
+        scroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        scroll->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        scroll->parentWidget()->layout()->setContentsMargins(0, 0, 0, 0);
+    }
     displayingNames = false;
 
     stickAssignPushButton->setEnabled(false);
@@ -2302,6 +2317,7 @@ void JoyTabWidget::fillSetButtons(SetJoystick *set)
                                          "disable hiding empty buttons."));
         current_layout->addWidget(newlabel, 0, 0, Qt::AlignCenter);
     }
+    PadUi::makeMappingTable(current_layout);
 }
 
 void JoyTabWidget::removeSetButtons(SetJoystick *set)
@@ -2353,6 +2369,8 @@ void JoyTabWidget::removeSetButtons(SetJoystick *set)
     while (current_layout && ((child = current_layout->takeAt(0)) != nullptr))
     {
         current_layout->removeWidget(child->widget());
+        // Models can be reset before deferred widget deletion runs.
+        PadUi::retireMappingTable(child->widget());
         child->widget()->deleteLater();
         delete child;
         child = nullptr;

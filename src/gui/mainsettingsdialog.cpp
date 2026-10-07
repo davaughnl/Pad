@@ -37,6 +37,7 @@
 #endif
 
 #include <QApplication>
+#include "pad/padsettings.h"
 #include <QComboBox>
 #include <QDebug>
 #include <QDir>
@@ -290,6 +291,7 @@ MainSettingsDialog::MainSettingsDialog(AntiMicroSettings *settings, QList<InputD
     // End Advanced Tab
 
     settings->getLock()->unlock();
+    PadUi::polishSettings(this);
 
     connect(ui->categoriesListWidget, &QListWidget::currentRowChanged, ui->stackedWidget, &QStackedWidget::setCurrentIndex);
     connect(ui->controllerMappingsTableWidget, &QTableWidget::itemChanged, this,

@@ -74,3 +74,27 @@ QSpinBox::down-button, QDoubleSpinBox::down-button { subcontrol-origin: border; 
 QSpinBox::up-arrow, QDoubleSpinBox::up-arrow { image: url(:/pad/icons/chevron-up.svg); width: 12px; height: 12px; }
 QSpinBox::down-arrow, QDoubleSpinBox::down-arrow { image: url(:/pad/icons/chevron-down.svg); width: 12px; height: 12px; }
 QSpinBox, QDoubleSpinBox { padding-right: 24px; }
+
+/* Mapping table: shared 40px rows, 32px action targets, aligned columns. */
+QTreeWidget#padMappingTable { background: #171719; border: 1px solid #303035; border-radius: 8px; }
+QTreeWidget#padMappingTable::item { height: 40px; padding-left: 16px; border-bottom: 1px solid #26262b; }
+QTreeWidget#padMappingTable::item:selected { background: #242428; }
+QTreeWidget#padMappingTable::item:hover { background: #202024; }
+QTreeWidget#padMappingTable QHeaderView::section { background: #1c1c20; color: #929298; height: 32px; padding: 8px 16px; border-bottom: 1px solid #303035; font-weight: normal; }
+QPushButton[padMappingAction="true"] { background: transparent; border: none; border-radius: 4px; text-align: left; padding: 0 12px; margin: 0; color: #c2c2c8; min-height: 0; }
+QPushButton[padMappingAction="true"]:hover { background: #303035; color: #fafafa; }
+QPushButton[padMappingAction="true"]:focus { border: 1px solid #767680; }
+QPushButton[padMappingAction="true"][padActive="true"] { background: #e8e8eb; color: #111113; }
+QLabel#padBehavior { color: #85858e; padding-left: 16px; }
+QPushButton[padSetTab="true"] { background: transparent; color: #929298; border: none; border-bottom: 2px solid #29292d; border-radius: 0; padding: 0 12px; min-height: 0; }
+QPushButton[padSetTab="true"][setActive="true"] { background: transparent; color: #fafafa; border-bottom: 2px solid #eeeeef; }
+QPushButton[padSetTab="true"]:hover { background: #202024; }
+/* Settings category rail. */
+QDialog#padSettings { background: #111113; }
+QDialog#padSettings QListWidget#categoriesListWidget { background: #171719; border: 1px solid #29292d; border-radius: 8px; padding: 8px; }
+QDialog#padSettings QListWidget#categoriesListWidget::item { padding: 0 12px; margin: 0; border-radius: 6px; color: #a3a3aa; }
+QDialog#padSettings QListWidget#categoriesListWidget::item:selected { background: #303035; color: #fafafa; }
+QDialog#padSettings QListWidget#categoriesListWidget::item:hover { background: #252529; color: #e8e8eb; }
+QDialog#padSettings QLabel { font-weight: normal; }
+QDialog#padSettings QComboBox, QDialog#padSettings QLineEdit, QDialog#padSettings QSpinBox, QDialog#padSettings QDoubleSpinBox { min-height: 38px; max-height: 38px; padding: 0 12px; }
+QDialog#padSettings QPushButton { min-height: 38px; max-height: 38px; padding: 0 12px; }

@@ -76,8 +76,8 @@ class ControllerOutline : public QWidget
 public:
     explicit ControllerOutline(QWidget *parent) : QWidget(parent)
     {
-        setMinimumSize(240, 126);
-        setMaximumHeight(160);
+        setMinimumSize(240, 104);
+        setMaximumHeight(112);
         setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
         setAccessibleName(tr("Controller illustration"));
     }
@@ -198,7 +198,7 @@ void PadUi::install(QMainWindow *window, QWidget *central, QStackedWidget *stack
     });
     layout->addWidget(sidebar);
     auto *workspace = new QWidget(shell); workspace->setObjectName("padWorkspace");
-    auto *body = new QVBoxLayout(workspace); body->setContentsMargins(24, 22, 24, 16); body->setSpacing(16);
+    auto *body = new QVBoxLayout(workspace); body->setContentsMargins(24, 24, 24, 16); body->setSpacing(8);
     body->addWidget(text(QObject::tr("Controller mapping"), "padTitle", workspace));
     body->addWidget(text(QObject::tr("Assign keyboard and mouse inputs to your controller."), "padSubtitle", workspace));
     auto *overview = new QFrame(workspace); overview->setObjectName("padOverview");
