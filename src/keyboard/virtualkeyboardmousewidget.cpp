@@ -151,7 +151,7 @@ void VirtualKeyboardMouseWidget::setupVirtualKeyboardLayout()
     // A tab page otherwise accepts less width and silently clips its last keys.
     finalVBoxLayout->setSizeConstraint(QLayout::SetMinimumSize);
     finalVBoxLayout->setContentsMargins(0, 16, 0, 0);
-    finalVBoxLayout->setSpacing(8);
+    finalVBoxLayout->setSpacing(4);
     QVBoxLayout *tempMainKeyLayout = setupMainKeyboardLayout();
     QVBoxLayout *tempAuxKeyLayout = new QVBoxLayout();
     QVBoxLayout *tempNumKeyPadLayout = new QVBoxLayout();
@@ -169,7 +169,7 @@ void VirtualKeyboardMouseWidget::setupVirtualKeyboardLayout()
     }
 
     QHBoxLayout *tempHBoxLayout = new QHBoxLayout();
-    tempHBoxLayout->setSpacing(16);
+    tempHBoxLayout->setSpacing(8);
     tempHBoxLayout->addLayout(tempMainKeyLayout);
 
     if (m_isNumKeypad)
@@ -189,14 +189,14 @@ void VirtualKeyboardMouseWidget::setupVirtualKeyboardLayout()
 QVBoxLayout *VirtualKeyboardMouseWidget::setupMainKeyboardLayout()
 {
     QHBoxLayout *tempHBoxLayout = new QHBoxLayout();
-    tempHBoxLayout->setSpacing(8);
+    tempHBoxLayout->setSpacing(4);
 
     QVBoxLayout *tempVBoxLayout = new QVBoxLayout();
-    tempVBoxLayout->setSpacing(8);
+    tempVBoxLayout->setSpacing(4);
 
     QVBoxLayout *finalVBoxLayout = new QVBoxLayout();
     if (!m_isNumKeypad)
-        finalVBoxLayout->setSpacing(8);
+        finalVBoxLayout->setSpacing(4);
 
     tempHBoxLayout->addWidget(createNewKey("Escape"));
 
@@ -237,7 +237,7 @@ QVBoxLayout *VirtualKeyboardMouseWidget::setupMainKeyboardLayout()
         finalVBoxLayout->addSpacerItem(new QSpacerItem(8, 16, QSizePolicy::Minimum, QSizePolicy::Fixed));
 
     tempHBoxLayout = new QHBoxLayout();
-    tempHBoxLayout->setSpacing(8);
+    tempHBoxLayout->setSpacing(4);
     tempHBoxLayout->addWidget(createNewKey("grave"));
 
     for (int i = 1; i <= 9; i++)
@@ -258,7 +258,7 @@ QVBoxLayout *VirtualKeyboardMouseWidget::setupMainKeyboardLayout()
     tempVBoxLayout->addLayout(tempHBoxLayout);
 
     QVBoxLayout *tempMiddleVLayout = new QVBoxLayout();
-    tempMiddleVLayout->setSpacing(8);
+    tempMiddleVLayout->setSpacing(4);
 
     QHBoxLayout *tempMiddleHLayout = new QHBoxLayout();
     tempHBoxLayout = new QHBoxLayout();
@@ -294,7 +294,7 @@ QVBoxLayout *VirtualKeyboardMouseWidget::setupMainKeyboardLayout()
     }
 
     tempHBoxLayout = new QHBoxLayout();
-    tempHBoxLayout->setSpacing(8);
+    tempHBoxLayout->setSpacing(4);
     tempHBoxLayout->addWidget(createNewKey("Caps_Lock"));
     tempHBoxLayout->addWidget(createNewKey("a"));
     tempHBoxLayout->addWidget(createNewKey("s"));
@@ -317,7 +317,7 @@ QVBoxLayout *VirtualKeyboardMouseWidget::setupMainKeyboardLayout()
     {
         tempMiddleVLayout->addLayout(tempHBoxLayout);
         tempMiddleHLayout->addLayout(tempMiddleVLayout);
-        tempMiddleHLayout->setSpacing(8);
+        tempMiddleHLayout->setSpacing(4);
         tempMiddleHLayout->addWidget(createNewKey("Return"));
 
         tempVBoxLayout->addLayout(tempMiddleHLayout);
@@ -333,7 +333,7 @@ QVBoxLayout *VirtualKeyboardMouseWidget::setupMainKeyboardLayout()
     }
 
     tempHBoxLayout = new QHBoxLayout();
-    tempHBoxLayout->setSpacing(8);
+    tempHBoxLayout->setSpacing(4);
     tempHBoxLayout->addWidget(createNewKey("Shift_L"));
 
     if (QLocale::system().language() == QLocale::French)
@@ -362,7 +362,7 @@ QVBoxLayout *VirtualKeyboardMouseWidget::setupMainKeyboardLayout()
     tempVBoxLayout->addLayout(tempHBoxLayout);
 
     tempHBoxLayout = new QHBoxLayout();
-    tempHBoxLayout->setSpacing(8);
+    tempHBoxLayout->setSpacing(4);
     tempHBoxLayout->addWidget(createNewKey("Control_L"));
     tempHBoxLayout->addWidget(createNewKey("Super_L"));
     tempHBoxLayout->addWidget(createNewKey("Alt_L"));
@@ -417,9 +417,9 @@ QVBoxLayout *VirtualKeyboardMouseWidget::setupAuxKeyboardLayout()
     QVBoxLayout *tempVBoxLayout = new QVBoxLayout();
     QGridLayout *tempGridLayout = new QGridLayout();
 
-    tempHBoxLayout->setSpacing(8);
-    tempVBoxLayout->setSpacing(8);
-    tempGridLayout->setSpacing(8);
+    tempHBoxLayout->setSpacing(4);
+    tempVBoxLayout->setSpacing(4);
+    tempGridLayout->setSpacing(4);
 
     tempHBoxLayout->addWidget(createNewKey("Print"));
     tempHBoxLayout->addWidget(createNewKey("Scroll_Lock"));
@@ -452,16 +452,16 @@ QVBoxLayout *VirtualKeyboardMouseWidget::setupAuxKeyboardLayout()
 QVBoxLayout *VirtualKeyboardMouseWidget::setupKeyboardNumPadLayout()
 {
     QHBoxLayout *tempHBoxLayout = new QHBoxLayout();
-    tempHBoxLayout->setSpacing(8);
+    tempHBoxLayout->setSpacing(4);
 
     QVBoxLayout *tempVBoxLayout = new QVBoxLayout();
-    tempVBoxLayout->setSpacing(8);
+    tempVBoxLayout->setSpacing(4);
 
     QGridLayout *tempGridLayout = new QGridLayout();
-    tempGridLayout->setSpacing(8);
+    tempGridLayout->setSpacing(4);
 
     QVBoxLayout *finalVBoxLayout = new QVBoxLayout();
-    finalVBoxLayout->setSpacing(8);
+    finalVBoxLayout->setSpacing(4);
 
     QPushButton *othersKeysButton = createOtherKeysMenu();
 
@@ -472,7 +472,7 @@ QVBoxLayout *VirtualKeyboardMouseWidget::setupKeyboardNumPadLayout()
     finalVBoxLayout->addSpacerItem(new QSpacerItem(0, 29, QSizePolicy::Minimum, QSizePolicy::MinimumExpanding));
 
     tempHBoxLayout = new QHBoxLayout();
-    tempHBoxLayout->setSpacing(8);
+    tempHBoxLayout->setSpacing(4);
     tempHBoxLayout->addWidget(createNewKey("Num_Lock"));
     tempHBoxLayout->addWidget(createNewKey("KP_Divide"));
     tempHBoxLayout->addWidget(createNewKey("KP_Multiply"));
@@ -480,7 +480,7 @@ QVBoxLayout *VirtualKeyboardMouseWidget::setupKeyboardNumPadLayout()
     tempVBoxLayout->addLayout(tempHBoxLayout);
 
     tempHBoxLayout = new QHBoxLayout();
-    tempHBoxLayout->setSpacing(8);
+    tempHBoxLayout->setSpacing(4);
     tempGridLayout->addWidget(createNewKey("KP_7"), 1, 1, 1, 1);
     tempGridLayout->addWidget(createNewKey("KP_8"), 1, 2, 1, 1);
     tempGridLayout->addWidget(createNewKey("KP_9"), 1, 3, 1, 1);
@@ -492,10 +492,10 @@ QVBoxLayout *VirtualKeyboardMouseWidget::setupKeyboardNumPadLayout()
     tempVBoxLayout->addLayout(tempHBoxLayout);
 
     tempHBoxLayout = new QHBoxLayout();
-    tempHBoxLayout->setSpacing(8);
+    tempHBoxLayout->setSpacing(4);
 
     tempGridLayout = new QGridLayout();
-    tempGridLayout->setSpacing(8);
+    tempGridLayout->setSpacing(4);
     tempGridLayout->addWidget(createNewKey("KP_1"), 1, 1, 1, 1);
     tempGridLayout->addWidget(createNewKey("KP_2"), 1, 2, 1, 1);
     tempGridLayout->addWidget(createNewKey("KP_3"), 1, 3, 1, 1);
@@ -688,7 +688,7 @@ VirtualKeyPushButton *VirtualKeyboardMouseWidget::createNewKey(QString xcodestri
         pushButton->setText(keyLabels.value(xcodestring));
     }
     pushButton->setObjectName(xcodestring);
-    pushButton->setMinimumSize(qMax(40, ((width + 7) / 8) * 8), qMax(40, ((height + 7) / 8) * 8));
+    pushButton->setMinimumSize(qMax(36, ((width + 7) / 8) * 8), qMax(36, ((height + 7) / 8) * 8));
     pushButton->setFont(font1);
     pushButton->setProperty("padTall", height > 40);
 
@@ -698,7 +698,7 @@ VirtualKeyPushButton *VirtualKeyboardMouseWidget::createNewKey(QString xcodestri
 QPushButton *VirtualKeyboardMouseWidget::createNoneKey()
 {
     QPushButton *pushButton = new QPushButton(tr("None"), this);
-    pushButton->setMinimumSize(80, 40);
+    pushButton->setMinimumSize(72, 36);
     QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
     pushButton->setSizePolicy(sizePolicy);
     QFont font1 = font();
@@ -959,7 +959,7 @@ void VirtualKeyboardMouseWidget::setButtonFontSizes()
 QPushButton *VirtualKeyboardMouseWidget::createOtherKeysMenu()
 {
     QPushButton *otherKeysPushbutton = new QPushButton(tr("Other keys"), this);
-    otherKeysPushbutton->setMinimumSize(80, 40);
+    otherKeysPushbutton->setMinimumSize(72, 36);
     QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
     otherKeysPushbutton->setSizePolicy(sizePolicy);
     QFont font1 = font();

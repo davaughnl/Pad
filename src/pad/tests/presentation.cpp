@@ -77,7 +77,7 @@ int main(int argc,char **argv) {
   check(cats->currentRow()==0&&pages->currentIndex()==0,"initial settings page matches");
   for(int i=0;i<cats->count();i++){cats->setCurrentRow(i);spin();check(pages->currentIndex()==i,"settings category route");for(auto *w:pages->currentWidget()->findChildren<QWidget *>()) {
       if((qobject_cast<QAbstractSpinBox *>(w)||qobject_cast<QComboBox *>(w)||qobject_cast<QPushButton *>(w)) && w->isVisible())
-        check(w->height()==40,"uniform settings control height");
+        check(w->height()==32,"uniform settings control height");
     } dialog->grab().save(QString(tmp.filePath("settings-page-%1.png")).arg(i));}
   for(auto *w:dialog->findChildren<QWidget *>()){check(w->font().weight()==QFont::Normal,"regular weight");check(QFontInfo(w->font()).family()=="Geist","Geist loaded");}
   // Exercise the longest Windows page even in Linux fixture builds.

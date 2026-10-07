@@ -416,6 +416,8 @@ JoyTabWidget::JoyTabWidget(InputDevice *joystick, AntiMicroSettings *settings, Q
 
     refreshSetButtons();
 
+    setsMenuButton->setFixedHeight(30);
+    horizontalLayout_2->addStretch(1);
     verticalLayout->insertLayout(1, horizontalLayout_2);
 
     spacer3 = new QSpacerItem(20, 5, QSizePolicy::Fixed, QSizePolicy::Fixed);
@@ -481,7 +483,7 @@ JoyTabWidget::JoyTabWidget(InputDevice *joystick, AntiMicroSettings *settings, Q
     for (auto *setButton : {setPushButton1, setPushButton2, setPushButton3, setPushButton4,
                            setPushButton5, setPushButton6, setPushButton7, setPushButton8}) {
         setButton->setProperty("padSetTab", true);
-        setButton->setFixedHeight(40);
+        setButton->setFixedSize(36, 30);
     }
     for (auto *scroll : stackedWidget_2->findChildren<QScrollArea *>()) {
         scroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);

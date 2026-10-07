@@ -25,12 +25,12 @@ inline void compactDialog(QDialog *dialog)
         "QGroupBox { padding: 16px; margin-top: 16px; }"
         "QGroupBox::title { color: #b8b8bf; left: 16px; }"
         "QFrame[frameShape=\"4\"] { background: #303035; color: #303035; }"
-        "QComboBox, QLineEdit, QSpinBox, QDoubleSpinBox, QPushButton { min-height: 38px; max-height: 38px; padding: 0 12px; }"
+        "QComboBox, QLineEdit, QSpinBox, QDoubleSpinBox, QPushButton { min-height: 30px; max-height: 30px; padding: 0 12px; }"
         "QSpinBox QLineEdit, QDoubleSpinBox QLineEdit { min-height: 0; max-height: 16777215px; padding: 0; border: none; background: transparent; }"
         "QFrame[frameShape=\"4\"] { color: #303035; background: #303035; max-height: 1px; border: none; }"));
     for (auto *layout : dialog->findChildren<QLayout *>()) {
         const bool root = layout == dialog->layout();
-        layout->setContentsMargins(root ? 24 : 0, root ? 24 : 0, root ? 24 : 0, root ? 24 : 0);
+        layout->setContentsMargins(root ? 20 : 0, root ? 20 : 0, root ? 20 : 0, root ? 20 : 0);
         layout->setSpacing(8);
         if (auto *vertical = qobject_cast<QVBoxLayout *>(layout)) {
             vertical->setAlignment(Qt::AlignTop);
@@ -45,8 +45,8 @@ inline void compactDialog(QDialog *dialog)
         QFont font = qApp->font(); font.setWeight(QFont::Normal); font.setItalic(false); widget->setFont(font);
         if (qobject_cast<QAbstractSpinBox *>(widget) || qobject_cast<QComboBox *>(widget) ||
             (qobject_cast<QLineEdit *>(widget) && !qobject_cast<QAbstractSpinBox *>(widget->parentWidget())) || qobject_cast<QPushButton *>(widget))
-            widget->setFixedHeight(40);
-        if (qobject_cast<QCheckBox *>(widget)) widget->setMinimumHeight(32);
+            widget->setFixedHeight(32);
+        if (qobject_cast<QCheckBox *>(widget)) widget->setMinimumHeight(24);
         if (auto *frame = qobject_cast<QFrame *>(widget))
             if (frame->frameShape() == QFrame::HLine) frame->hide();
         if (auto *group = qobject_cast<QGroupBox *>(widget))

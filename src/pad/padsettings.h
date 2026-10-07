@@ -22,7 +22,7 @@ inline void polishSettings(QDialog *dialog)
 {
     dialog->setObjectName(QStringLiteral("padSettings"));
     dialog->setWindowTitle(QObject::tr("Settings"));
-    dialog->setMinimumSize(840, 640); dialog->resize(920, 720);
+    dialog->setMinimumSize(800, 600); dialog->resize(880, 680);
     auto *root = qobject_cast<QVBoxLayout *>(dialog->layout());
     if (root) { root->setContentsMargins(24, 24, 24, 24); root->setSpacing(16); }
     auto *categories = dialog->findChild<QListWidget *>(QStringLiteral("categoriesListWidget"));
@@ -33,7 +33,7 @@ inline void polishSettings(QDialog *dialog)
         const QStringList icons = {"settings", "gamepad", "text", "folder", "mouse", "sliders"};
         for (int i = 0; i < categories->count(); ++i) {
             categories->item(i)->setIcon(QIcon(QStringLiteral(":/pad/icons/%1.svg").arg(icons.value(i, "settings"))));
-            categories->item(i)->setSizeHint(QSize(224, 48));
+            categories->item(i)->setSizeHint(QSize(224, 36));
         }
         categories->setCurrentRow(0);
     }
@@ -88,9 +88,9 @@ inline void polishSettings(QDialog *dialog)
         QFont font = qApp->font(); font.setWeight(QFont::Normal); font.setItalic(false); widget->setFont(font);
         if (qobject_cast<QComboBox *>(widget) || qobject_cast<QLineEdit *>(widget) ||
             qobject_cast<QAbstractSpinBox *>(widget) || qobject_cast<QPushButton *>(widget)) {
-            widget->setFixedHeight(40); widget->setSizePolicy(widget->sizePolicy().horizontalPolicy(), QSizePolicy::Fixed);
+            widget->setFixedHeight(32); widget->setSizePolicy(widget->sizePolicy().horizontalPolicy(), QSizePolicy::Fixed);
         }
-        if (auto *check = qobject_cast<QCheckBox *>(widget)) check->setMinimumHeight(32);
+        if (auto *check = qobject_cast<QCheckBox *>(widget)) check->setMinimumHeight(24);
         if (auto *label = qobject_cast<QLabel *>(widget)) {
             QString value = label->text();
             value.replace(QRegularExpression("font-style\\s*:\\s*italic;?"), "");

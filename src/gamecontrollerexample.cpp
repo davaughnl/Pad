@@ -62,8 +62,20 @@ GameControllerExample::GameControllerExample(QWidget *parent)
     : QWidget(parent)
 {
     controllerimage = QImage(":/images/controllermap.svg");
-    buttonimage = QImage(":/images/button.png");
-    axisimage = QImage(":/images/axis.png");
+    // Monochrome markers: keep the marker alpha, render it in the app's white.
+    auto neutral = [](QImage image) {
+        image = image.convertToFormat(QImage::Format_ARGB32);
+        for (int y = 0; y < image.height(); ++y)
+            for (int x = 0; x < image.width(); ++x)
+            {
+                const QColor pixel = image.pixelColor(x, y);
+                if (pixel.alpha() > 0)
+                    image.setPixelColor(x, y, QColor(238, 238, 239, pixel.alpha()));
+            }
+        return image;
+    };
+    buttonimage = neutral(QImage(":/images/button.png"));
+    axisimage = neutral(QImage(":/images/axis.png"));
 
     QTransform myTransform;
     myTransform.rotate(90);

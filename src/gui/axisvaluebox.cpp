@@ -232,10 +232,10 @@ void AxisValueBox::paintEvent(QPaintEvent *event)
         innerColor = QColor("#55555e");
     } else if (abs(joyValue) >= m_maxZone)
     {
-        innerColor = QColor("#9a7079");
+        innerColor = QColor("#6f6f78");
     } else
     {
-        innerColor = QColor("#a4b3cf");
+        innerColor = QColor("#c8c8cf");
     }
 
     paint.setPen(innerColor);
@@ -256,23 +256,23 @@ void AxisValueBox::paintEvent(QPaintEvent *event)
     int deadLine = abs((barwidth - 2) * m_deadZone) / getMaxAxValue();
     int maxLine = abs((barwidth - 2) * m_maxZone) / getMaxAxValue();
 
-    paint.setPen(QColor("#a4b3cf"));
-    brush.setColor(QColor("#a4b3cf"));
-    QBrush maxBrush(QColor("#9a7079"));
+    paint.setPen(QColor("#c8c8cf"));
+    brush.setColor(QColor("#c8c8cf"));
+    QBrush maxBrush(QColor("#6f6f78"));
 
     if (m_throttle == static_cast<int>(JoyAxis::NormalThrottle))
     {
         qDrawPlainRect(&paint, rboxstart + 2 + deadLine, 2, 4, boxheight + 2, QColor("#8c8c96"), 1, &brush);
         qDrawPlainRect(&paint, lboxend - deadLine - 2, 2, 4, boxheight + 2, QColor("#8c8c96"), 1, &brush);
 
-        paint.setPen(QColor("#9a7079"));
+        paint.setPen(QColor("#6f6f78"));
         qDrawPlainRect(&paint, rboxstart + 2 + maxLine, 2, 4, boxheight + 2, QColor("#8c8c96"), 1, &maxBrush);
         qDrawPlainRect(&paint, lboxend - maxLine - 2, 2, 4, boxheight + 2, QColor("#8c8c96"), 1, &maxBrush);
     } else if ((m_throttle == static_cast<int>(JoyAxis::PositiveThrottle)) ||
                (m_throttle == static_cast<int>(JoyAxis::PositiveHalfThrottle)))
     {
         qDrawPlainRect(&paint, lboxstart + deadLine - 2, 2, 4, boxheight + 2, QColor("#8c8c96"), 1, &brush);
-        paint.setPen(QColor("#9a7079"));
+        paint.setPen(QColor("#6f6f78"));
         qDrawPlainRect(&paint, lboxstart + maxLine, 2, 4, boxheight + 2, QColor("#8c8c96"), 1, &maxBrush);
     }
 
@@ -280,7 +280,7 @@ void AxisValueBox::paintEvent(QPaintEvent *event)
              (m_throttle == static_cast<int>(JoyAxis::NegativeHalfThrottle)))
     {
         qDrawPlainRect(&paint, singleend - deadLine - 2, 2, 4, boxheight + 2, QColor("#8c8c96"), 1, &brush);
-        paint.setPen(QColor("#9a7079"));
+        paint.setPen(QColor("#6f6f78"));
         qDrawPlainRect(&paint, singleend - maxLine, 2, 4, boxheight + 2, QColor("#8c8c96"), 1, &maxBrush);
     }
 }
