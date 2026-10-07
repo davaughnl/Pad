@@ -10,6 +10,10 @@
 #include "joycontrolstick.h"
 #include "joybuttontypes/joybutton.h"
 #include "joybuttontypes/joycontrolstickbutton.h"
+#include "gui/joystickstatuswindow.h"
+#include <QProgressBar>
+#include <QScrollArea>
+#include <QScrollBar>
 #include "gui/aboutdialog.h"
 #include <QTextBrowser>
 #include "gui/joysensoreditdialog.h"
@@ -90,7 +94,25 @@ int main(int argc,char **argv) {
             current->addControlStick(0,new JoyControlStick(current->getJoyAxis(0),current->getJoyAxis(1),0,current->getIndex(),current));
         auto *stick=set->getJoyStick(0);
         joystick->moveToThread(&worker); worker.start();
-        if(test=="about") {
+        if(test=="status") {
+            // Richer virtual device matching the row-clipping regression shape.
+            const int sindex=SDL_JoystickAttachVirtual(SDL_JOYSTICK_TYPE_UNKNOWN,6,12,1);check(sindex>=0,"Status virtual attach failed");
+            auto *statusjoy=new SensorFixtureJoystick(SDL_JoystickOpen(sindex),sindex,settings,nullptr);
+            check(statusjoy->getNumberAxes()==6&&statusjoy->getNumberButtons()==12,"Status virtual device shape wrong");
+            auto *dialog=new JoystickStatusWindow(statusjoy);capture(dialog,output,test);
+            for(const char *name:{"axesScrollArea","buttonsScrollArea"}) {
+                auto *scroll=control<QScrollArea>(dialog,name);
+                check(scroll->verticalScrollBar()->maximum()==0,"Status rows still need scrolling");
+                for(auto *child:scroll->widget()->findChildren<QWidget*>()) {
+                    if(!child->isVisible()||child->height()<=0)continue;
+                    QRect rect(child->mapTo(scroll->viewport(),QPoint()),child->size());
+                    check(scroll->viewport()->rect().contains(rect),"Status row clipped");
+                }
+            }
+            check(control<QScrollArea>(dialog,"axesScrollArea")->widget()->findChildren<QProgressBar*>().count()>=6,"Axis rows missing");
+            int buttonRows=0;for(auto *w:control<QScrollArea>(dialog,"buttonsScrollArea")->widget()->findChildren<QWidget*>())if(w->isVisible()&&w->height()>=20)++buttonRows;check(buttonRows>=12,"Button rows missing");
+            closeDialog(dialog);delete statusjoy;
+        } else if(test=="about") {
             auto *dialog=new AboutDialog;capture(dialog,output,test);
             check(control<QLabel>(dialog,"versionLabel")->text()=="Development build","About display version is not Development build");
             auto info=control<QTextBrowser>(dialog,"infoTextBrowser")->toPlainText();

@@ -37,6 +37,7 @@
 #include <QKeyEvent>
 #include <QMessageBox>
 #include <QPointer>
+#include <QThread>
 #include <QScrollArea>
 #include <QWidget>
 #include <QtGlobal>
@@ -569,28 +570,17 @@ void ButtonEditDialog::refreshForLastBtn()
         if (!lastJoyButton->getButtonName().isEmpty())
             ui->buttonNameLineEdit->setText(lastJoyButton->getButtonName());
 
-        if (lastJoyButton != nullptr)
-        {
-            QListIterator<JoyButtonSlot *> iter(*(lastJoyButton->getAssignedSlots()));
-
-            ui->virtualKeyMouseTabWidget->disableMouseSettingButton();
-
-            while (iter.hasNext())
-            {
-                JoyButtonSlot *buttonslot = iter.next();
-
-                switch (buttonslot->getSlotMode())
-                {
-                case JoyButtonSlot::JoyMouseMovement:
-                case JoyButtonSlot::JoyMouseButton:
-                    ui->virtualKeyMouseTabWidget->enableMouseSettingButton();
-                    break;
-
-                default:
-                    break;
-                }
-            }
-        }
+        bool mouseAssigned = false;
+        auto readModes = [this, &mouseAssigned]() {
+            for (auto *slot : *lastJoyButton->getAssignedSlots())
+                if (slot->getSlotMode() == JoyButtonSlot::JoyMouseMovement ||
+                    slot->getSlotMode() == JoyButtonSlot::JoyMouseButton) mouseAssigned = true;
+        };
+        if (QThread::currentThread() == lastJoyButton->thread()) readModes();
+        else if (lastJoyButton->thread() && lastJoyButton->thread()->isRunning())
+            QMetaObject::invokeMethod(lastJoyButton, readModes, Qt::BlockingQueuedConnection);
+        if (mouseAssigned) ui->virtualKeyMouseTabWidget->enableMouseSettingButton();
+        else ui->virtualKeyMouseTabWidget->disableMouseSettingButton();
 
         connect(ui->actionNameLineEdit, &QLineEdit::textEdited, lastJoyButton, &JoyButton::setActionName);
         connect(ui->buttonNameLineEdit, &QLineEdit::textEdited, lastJoyButton, &JoyButton::setButtonName);

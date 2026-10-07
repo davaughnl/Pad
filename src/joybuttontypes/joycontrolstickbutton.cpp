@@ -212,11 +212,8 @@ double JoyControlStickButton::getAccelerationDistance()
  */
 QString JoyControlStickButton::getActiveZoneSummary()
 {
-    QList<JoyButtonSlot *> tempList;
-
-    tempList.append(getActiveZoneList());
-    QString temp = buildActiveZoneSummary(tempList);
-    return temp;
+    // Use the base owner-thread snapshot boundary for slot lifetime safety.
+    return JoyButton::getActiveZoneSummary();
 }
 
 QString JoyControlStickButton::getCalculatedActiveZoneSummary()

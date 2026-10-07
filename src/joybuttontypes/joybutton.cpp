@@ -17,6 +17,7 @@
  */
 
 #include "joybutton.h"
+#include <QThread>
 
 #include "event.h"
 #include "inputdevice.h"
@@ -1629,6 +1630,13 @@ QString JoyButton::getPartialName(bool forceFullFormat, bool displayNames) const
  */
 QString JoyButton::getSlotsSummary()
 {
+    if (QThread::currentThread() != thread()) {
+        if (!thread() || !thread()->isRunning()) return tr("[NO KEY]");
+        QString text;
+        QMetaObject::invokeMethod(this, [this, &text]() { text = getSlotsSummary(); }, Qt::BlockingQueuedConnection);
+        return text;
+    }
+
     QString newlabel = QString();
     int slotCount = getAssignedSlots()->size();
 
@@ -1667,6 +1675,15 @@ QString JoyButton::getSlotsSummary()
  */
 QString JoyButton::getActiveZoneSummary()
 {
+    // Slot pointers belong to the input thread. A shallow list copy cannot
+    // protect them from queued clear/replace operations deleting the pointees.
+    if (QThread::currentThread() != thread()) {
+        if (!thread() || !thread()->isRunning()) return tr("[NO KEY]");
+        QString text;
+        QMetaObject::invokeMethod(this, [this, &text]() { text = getActiveZoneSummary(); }, Qt::BlockingQueuedConnection);
+        return text;
+    }
+
     QList<JoyButtonSlot *> tempList = getActiveZoneList();
     return buildActiveZoneSummary(tempList);
 }
@@ -1683,6 +1700,12 @@ QString JoyButton::getCalculatedActiveZoneSummary()
  */
 void JoyButton::buildActiveZoneSummaryString()
 {
+    if (QThread::currentThread() != thread()) {
+        if (thread() && thread()->isRunning())
+            QMetaObject::invokeMethod(this, [this]() { buildActiveZoneSummaryString(); }, Qt::BlockingQueuedConnection);
+        return;
+    }
+
     lockForWritedString(activeZoneString, getActiveZoneSummary());
     qDebug() << "activeZoneString after getActiveZoneSummary() is: " << activeZoneString;
     emit activeZoneChanged();
@@ -1994,6 +2017,15 @@ QList<JoyButtonSlot *> JoyButton::getActiveZoneList()
  */
 QString JoyButton::getSlotsString()
 {
+    // Slot pointers belong to the input thread. A shallow list copy cannot
+    // protect them from queued clear/replace operations deleting the pointees.
+    if (QThread::currentThread() != thread()) {
+        if (!thread() || !thread()->isRunning()) return tr("[NO KEY]");
+        QString text;
+        QMetaObject::invokeMethod(this, [this, &text]() { text = getSlotsString(); }, Qt::BlockingQueuedConnection);
+        return text;
+    }
+
     QString label = QString();
 
     if (getAssignedSlots()->size() > 0)

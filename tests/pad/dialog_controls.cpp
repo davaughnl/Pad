@@ -134,7 +134,31 @@ int main(int argc,char **argv) {
         // Match production: models/helper objects on input thread, UI on GUI thread.
         j->moveToThread(&worker); worker.start();
         if(extended(test,j,settings,tmp)) {}
-        else if(test=="button") {
+        else if(test=="slot-owner-thread") {
+            // Queue a mutation behind a delayed owner-thread operation. GUI
+            // reads must wait for it, never traverse slots being replaced.
+            for(int i=0;i<100;++i) {
+                const int alias=i%2?Qt::Key_B:Qt::Key_A;
+                const int code=AntKeyMapper::getInstance()->returnVirtualKey(alias);
+                QMetaObject::invokeMethod(button,[button,code,alias]{
+                    QThread::msleep(5);
+                    button->clearSlotsEventReset(false);
+                    button->setAssignedSlot(code,alias,JoyButtonSlot::JoyKeyboard);
+                },Qt::QueuedConnection);
+                QString slotText=button->getSlotsString();
+                check(button->getSlotsSummary().contains(i%2?"B":"A",Qt::CaseInsensitive),"Slots summary read skipped owner mutation");
+                check(slotText.contains(i%2?"B":"A",Qt::CaseInsensitive),"Slot text read skipped queued owner mutation");
+                check(button->getActiveZoneSummary().contains(i%2?"B":"A",Qt::CaseInsensitive),"Active summary read skipped owner mutation");
+            }
+            auto *direction=stick->getDirectionButton(JoyControlStick::StickUp);
+            QMetaObject::invokeMethod(direction,[direction]{QThread::msleep(10);direction->setAssignedSlot(AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_C),Qt::Key_C,JoyButtonSlot::JoyKeyboard);},Qt::QueuedConnection);
+            check(direction->getActiveZoneSummary().contains("C",Qt::CaseInsensitive),"Stick override skipped owner mutation");
+            QMetaObject::invokeMethod(button,[button]{button->clearSlotsEventReset(false);},Qt::BlockingQueuedConnection);
+            QThread stopped;
+            JoyButton dormant(0,0,set,nullptr);
+            dormant.moveToThread(&stopped);
+            check(dormant.getSlotsString()=="[NO KEY]"&&dormant.getSlotsSummary()=="[NO KEY]"&&dormant.getActiveZoneSummary()=="[NO KEY]","Stopped owner must not block or traverse slots");
+        } else if(test=="button") {
             auto *d=new ButtonEditDialog(button,j,false); show(d);
             toggle(d,"toggleCheckBox"); check(button->getToggleState(),"toggle on not applied");
             toggle(d,"toggleCheckBox"); check(!button->getToggleState(),"toggle off not applied");
