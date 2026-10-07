@@ -16,6 +16,11 @@
 #include <QScrollArea>
 #include <QScrollBar>
 #include "gui/aboutdialog.h"
+#include "gui/mainwindow.h"
+#include "gui/gamecontrollermappingdialog.h"
+#include "commandlineutility.h"
+#include "gamecontrollerexample.h"
+#include <QTableWidget>
 #include <QTextBrowser>
 #include "gui/joysensoreditdialog.h"
 #include "sensors/joysensor.h"
@@ -95,7 +100,28 @@ int main(int argc,char **argv) {
             current->addControlStick(0,new JoyControlStick(current->getJoyAxis(0),current->getJoyAxis(1),0,current->getIndex(),current));
         auto *stick=set->getJoyStick(0);
         joystick->moveToThread(&worker); worker.start();
-        if(test=="status") {
+        if(test=="controller-art") {
+            QMap<SDL_JoystickID,InputDevice*> devices;
+            devices.insert(SDL_JoystickInstanceID(joystick->getJoyHandle()),joystick);
+            CommandLineUtility command;
+            auto *window=new MainWindow(&devices,&command,settings);
+            window->makeJoystickTabs();window->fillButtons();
+            window->resize(1000,700);window->show();window->raise();window->activateWindow();QTest::qWait(1000);
+            auto *overview=control<QWidget>(window,"padOverview");check(overview->isVisible(),"Connected controller overview hidden");
+            check(window->grab().save(output+"/controller-overview-full.png"),"Overview full capture failed");
+            auto *dialog=new GameControllerMappingDialog(joystick,settings,window);
+            capture(dialog,output,"controller-mapping");
+            auto *table=control<QTableWidget>(dialog,"buttonMappingTableWidget");
+            auto *art=control<GameControllerExample>(dialog,"gameControllerDisplayWidget");
+            art->setActiveButton(-1);settle();
+            check(dialog->grab().save(output+"/controller-mapping-full.png"),"Mapping full capture failed");
+            table->setCurrentCell(1,0);table->setCurrentCell(0,0);settle();
+            check(table->currentRow()==0,"Mapping A row selection failed");
+            check(dialog->grab().save(output+"/controller-mapping-highlight-a-full.png"),"Mapping highlighted A capture failed");
+            table->setCurrentCell(3,0);settle();
+            check(dialog->grab().save(output+"/controller-mapping-highlight-y-full.png"),"Mapping highlighted Y capture failed");
+            closeDialog(dialog);delete window;
+        } else if(test=="status") {
             // Richer virtual device matching the row-clipping regression shape.
             const int sindex=SDL_JoystickAttachVirtual(SDL_JOYSTICK_TYPE_UNKNOWN,6,12,1);check(sindex>=0,"Status virtual attach failed");
             auto *statusjoy=new SensorFixtureJoystick(SDL_JoystickOpen(sindex),sindex,settings,nullptr);
