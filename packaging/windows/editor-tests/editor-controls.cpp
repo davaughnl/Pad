@@ -106,7 +106,9 @@ int main(int argc,char **argv) {
                 for(auto *child:scroll->widget()->findChildren<QWidget*>()) {
                     if(!child->isVisible()||child->height()<=0)continue;
                     QRect rect(child->mapTo(scroll->viewport(),QPoint()),child->size());
-                    check(scroll->viewport()->rect().contains(rect),"Status row clipped");
+                    const QRect viewport=scroll->viewport()->rect();
+                    std::fprintf(stderr,"Status geometry: area=%s class=%s object=%s child=%d,%d %dx%d viewport=%d,%d %dx%d contained=%d\n",name,child->metaObject()->className(),child->objectName().toUtf8().constData(),rect.x(),rect.y(),rect.width(),rect.height(),viewport.x(),viewport.y(),viewport.width(),viewport.height(),int(viewport.contains(rect)));
+                    check(viewport.contains(rect),"Status row clipped");
                 }
             }
             check(control<QScrollArea>(dialog,"axesScrollArea")->widget()->findChildren<QProgressBar*>().count()>=6,"Axis rows missing");
