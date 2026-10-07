@@ -128,7 +128,7 @@ AdvanceStickAssignmentDialog::~AdvanceStickAssignmentDialog() { delete ui; }
 
 void AdvanceStickAssignmentDialog::checkForAxisAssignmentStickOne(QWidget *comboBox)
 {
-    checkForAxisAssignmentSticks(comboBox, ui->xAxisTwoComboBox, ui->yAxisTwoComboBox, 0);
+    checkForAxisAssignmentSticks(comboBox, ui->xAxisOneComboBox, ui->yAxisOneComboBox, 0);
 }
 
 void AdvanceStickAssignmentDialog::checkForAxisAssignmentStickTwo(QWidget *comboBox)
