@@ -109,7 +109,22 @@ Section "Uninstall"
   Delete "$SMPROGRAMS\Pad\Uninstall Pad.lnk"
   RMDir "$SMPROGRAMS\Pad"
   RMDir /r "$INSTDIR\licenses"
-  RMDir /r "$INSTDIR\driver"
+  ; Never delete the driver files while the input driver is still installed: they are the way to remove it.
+  StrCpy $R9 "gone"
+  ReadRegStr $0 HKLM "SYSTEM\CurrentControlSet\Services\mouse" "ImagePath"
+  ReadRegStr $1 HKLM "SYSTEM\CurrentControlSet\Services\keyboard" "ImagePath"
+  StrCmp "$0$1" "" driver_done
+    StrCpy $R9 "kept"
+    IfSilent driver_done
+    MessageBox MB_YESNO|MB_ICONQUESTION "Pad's optional input driver (driver mode) is installed on this PC.$\r$\n$\r$\nRemove it now? Windows will ask for administrator approval, and you must restart Windows afterwards.$\r$\n$\r$\nChoose No to keep it; the driver files stay in $INSTDIR\driver so you can remove it later." IDNO driver_done
+    ExecShellWait "runas" "$INSTDIR\driver\install-interception.exe" "/uninstall" SW_HIDE
+    ReadRegStr $0 HKLM "SYSTEM\CurrentControlSet\Services\mouse" "ImagePath"
+    ReadRegStr $1 HKLM "SYSTEM\CurrentControlSet\Services\keyboard" "ImagePath"
+    StrCmp "$0$1" "" 0 driver_done
+    StrCpy $R9 "gone"
+  driver_done:
+  StrCmp $R9 "gone" 0 +2
+    RMDir /r "$INSTDIR\driver"
   RMDir /r "$INSTDIR\share"
   Delete "$INSTDIR\README.txt"
   Delete "$INSTDIR\build-info.json"
