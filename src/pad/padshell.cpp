@@ -53,8 +53,8 @@ protected:
     {
         QPainter p(this);
         p.setRenderHint(QPainter::Antialiasing);
-        const qreal scale = qMin(width() / 360.0, height() / 170.0);
-        p.translate((width() - 320 * scale) / 2, (height() - 155 * scale) / 2);
+        const qreal scale = qMin(width() / 360.0, height() / 190.0);
+        p.translate((width() - 320 * scale) / 2, (height() - 185 * scale) / 2);
         p.scale(scale, scale);
         QPainterPath path;
         path.moveTo(72, 20);
@@ -85,7 +85,7 @@ void polishController(QWidget *page)
         {"removeButton", "trash"}, {"loadButton", "folder"}, {"saveButton", "save"},
         {"saveAsButton", "copy"}, {"stickAssignPushButton", "sliders"},
         {"gameControllerMappingPushButton", "gamepad"}, {"namesPushButton", "text"},
-        {"delayButton", "settings"}};
+        {"delayButton", "settings"}, {"resetButton", "undo"}};
     for (auto it = icons.constBegin(); it != icons.constEnd(); ++it)
         if (auto *b = page->findChild<QPushButton *>(it.key()))
         {
@@ -130,10 +130,13 @@ void PadUi::install(QMainWindow *window, QWidget *central, QStackedWidget *stack
     side->addWidget(text(QObject::tr("Pad"), "padBrand", sidebar)); side->addSpacing(28);
     side->addWidget(text(QObject::tr("Controllers"), "padSection", sidebar));
     auto *deviceList = new QListWidget(sidebar); deviceList->setObjectName("padControllers");
-    deviceList->setMaximumHeight(200); side->addWidget(deviceList);
+    deviceList->setMaximumHeight(110);
+    deviceList->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    deviceList->setTextElideMode(Qt::ElideRight); side->addWidget(deviceList);
     side->addSpacing(12); side->addWidget(text(QObject::tr("Recent profiles"), "padSection", sidebar));
     auto *profileList = new QListWidget(sidebar); profileList->setObjectName("padControllers");
-    side->addWidget(profileList, 1);
+    side->addWidget(profileList);
+    side->addStretch(1);
     auto *refreshButton = button(QObject::tr("Refresh controllers"), "refresh", sidebar);
     auto *settingsButton = button(QObject::tr("Settings"), "settings", sidebar);
     side->addWidget(refreshButton); side->addWidget(settingsButton);
@@ -164,6 +167,7 @@ void PadUi::install(QMainWindow *window, QWidget *central, QStackedWidget *stack
     if (auto *empty = stack->findChild<QLabel *>("label"))
     {
         empty->setObjectName("padEmpty");
+        empty->setAlignment(Qt::AlignCenter);
         empty->setText(QObject::tr("Connect a controller to get started.\nThen choose Refresh controllers in the sidebar."));
     }
     auto sync = [controllers, deviceList, profileList, deviceName, profileName, overview, refresh, refreshButton]() {
@@ -176,6 +180,7 @@ void PadUi::install(QMainWindow *window, QWidget *central, QStackedWidget *stack
         for (int i = 0; i < deviceList->count(); ++i) previous.append(deviceList->item(i)->text());
         QSignalBlocker blocker(deviceList);
         if (previous != devices) { deviceList->clear(); deviceList->addItems(devices); }
+        deviceList->setFixedHeight(qMax(44, qMin(110, devices.size() * 42)));
         deviceList->setCurrentRow(controllers->currentIndex());
         QStringList profiles; QComboBox *box = nullptr;
         if (controllers->currentWidget()) box = controllers->currentWidget()->findChild<QComboBox *>("configBox");

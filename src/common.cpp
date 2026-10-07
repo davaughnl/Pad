@@ -167,15 +167,14 @@ QIcon loadIcon(const QString &name, const QString &fallback_location)
     {
         qWarning() << "file " << fallback_location << " does not exist!";
     }
-    return QIcon::fromTheme(name, QIcon(fallback_location));
+    return QIcon(fallback_location);
 }
 
 QIcon loadIcon(QString name)
 {
     bool has_icon = QIcon::hasThemeIcon(name);
     qDebug() << " Application theme has icon named: " << name << " " << has_icon;
-    if (has_icon)
-        return QIcon::fromTheme(name);
+    // Always use the bundled icon family for consistent cross-platform rendering.
 
     QDirIterator it(":images/", QDirIterator::Subdirectories);
     QString fallback_location = "";
@@ -197,7 +196,7 @@ QIcon loadIcon(QString name)
     {
         qWarning() << "file: " << fallback_location << " does not exist!";
     }
-    return QIcon::fromTheme(name, QIcon(fallback_location));
+    return QIcon(fallback_location);
 }
 
 void log_system_config()

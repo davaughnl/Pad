@@ -298,7 +298,7 @@
                 <string>Insert</string>
                </property>
                <property name="icon">
-                <iconset theme="list-add">
+                <iconset>
                  <normaloff>.</normaloff>.</iconset>
                </property>
               </widget>
@@ -318,7 +318,7 @@
                 <string>Delete</string>
                </property>
                <property name="icon">
-                <iconset theme="list-remove">
+                <iconset>
                  <normaloff>.</normaloff>.</iconset>
                </property>
               </widget>
@@ -372,7 +372,7 @@
                 <string>Clear All</string>
                </property>
                <property name="icon">
-                <iconset theme="edit-delete">
+                <iconset>
                  <normaloff>.</normaloff>.</iconset>
                </property>
               </widget>

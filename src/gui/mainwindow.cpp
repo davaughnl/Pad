@@ -209,7 +209,7 @@ MainWindow::MainWindow(QMap<SDL_JoystickID, InputDevice *> *joysticks, CommandLi
     ui->updateButton->setVisible(false);
 #ifdef CHECK_FOR_UPDATES
     connect(&m_network_manager, &QNetworkAccessManager::finished, this, &MainWindow::networkManagerFinished);
-    QNetworkRequest request(QUrl("https://api.github.com/repos/antimicrox/antimicrox/releases/latest"));
+    QNetworkRequest request(QUrl("https://api.github.com/repos/davaughnl/Pad/releases/latest"));
     m_network_manager.get(request);
 #endif
 
@@ -638,7 +638,7 @@ void MainWindow::populateTrayIcon()
     trayIconMenu->addAction(updateJoy);
     trayIconMenu->addAction(closeAction);
 
-    QIcon icon = PadderCommon::loadIcon("io.github.antimicrox.antimicrox.trayicon", ":/images/antimicrox.png");
+    QIcon icon = PadderCommon::loadIcon("io.github.davaughnl.Pad.trayicon", ":/images/antimicrox.png");
     trayIcon->setIcon(icon);
     trayIcon->setContextMenu(trayIconMenu);
 
@@ -1715,7 +1715,7 @@ void MainWindow::networkManagerFinished(QNetworkReply *reply)
 void MainWindow::updateButtonPressed()
 {
     INFO() << "Opening update website";
-    QDesktopServices::openUrl(QUrl("https://github.com/antiMicroX/antimicrox/releases/latest"));
+    QDesktopServices::openUrl(QUrl("https://github.com/davaughnl/Pad/releases/latest"));
 }
 
 #endif
@@ -1832,7 +1832,7 @@ void MainWindow::convertGUIDtoUniqueID(InputDevice *currentDevice, QString contr
     int exec = QMessageBox::information(
         this, tr("Reading old profile"),
         tr("This profile uses controllers' GUID numbers. Would you like to change GUID numbers to UniqueID in this file for "
-           "use in identical gamecontrollers? Such old file cannot be loaded in antimicrox since version 2.25"),
+           "use in identical gamecontrollers? Such old file cannot be loaded in Pad since version 2.25"),
         QMessageBox::Yes, QMessageBox::No);
 
     switch (exec)

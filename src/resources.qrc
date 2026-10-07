@@ -2,17 +2,39 @@
     <qresource prefix="/pad">
         <file alias="pad.qss">pad/pad.qss</file>
         <file alias="Geist.ttf">pad/Geist.ttf</file>
+        <file alias="icons/minus.svg">pad/icons/minus.svg</file>
+        <file alias="icons/battery-full.svg">pad/icons/battery-full.svg</file>
+        <file alias="icons/battery-good-charging.svg">pad/icons/battery-good-charging.svg</file>
+        <file alias="icons/mouse.svg">pad/icons/mouse.svg</file>
+        <file alias="icons/move.svg">pad/icons/move.svg</file>
         <file alias="icons/trash.svg">pad/icons/trash.svg</file>
+        <file alias="icons/battery-low.svg">pad/icons/battery-low.svg</file>
+        <file alias="icons/undo.svg">pad/icons/undo.svg</file>
+        <file alias="icons/close.svg">pad/icons/close.svg</file>
+        <file alias="icons/battery-empty.svg">pad/icons/battery-empty.svg</file>
         <file alias="icons/copy.svg">pad/icons/copy.svg</file>
         <file alias="icons/text.svg">pad/icons/text.svg</file>
         <file alias="icons/save.svg">pad/icons/save.svg</file>
         <file alias="icons/refresh.svg">pad/icons/refresh.svg</file>
         <file alias="icons/chevron-down.svg">pad/icons/chevron-down.svg</file>
+        <file alias="icons/minimize.svg">pad/icons/minimize.svg</file>
         <file alias="icons/sliders.svg">pad/icons/sliders.svg</file>
+        <file alias="icons/crosshair.svg">pad/icons/crosshair.svg</file>
+        <file alias="icons/exit.svg">pad/icons/exit.svg</file>
+        <file alias="icons/battery-good.svg">pad/icons/battery-good.svg</file>
         <file alias="icons/folder.svg">pad/icons/folder.svg</file>
         <file alias="icons/settings.svg">pad/icons/settings.svg</file>
         <file alias="icons/gamepad.svg">pad/icons/gamepad.svg</file>
+        <file alias="icons/maximize.svg">pad/icons/maximize.svg</file>
+        <file alias="icons/merge.svg">pad/icons/merge.svg</file>
+        <file alias="icons/github.svg">pad/icons/github.svg</file>
+        <file alias="icons/book.svg">pad/icons/book.svg</file>
+        <file alias="icons/keyboard.svg">pad/icons/keyboard.svg</file>
         <file alias="icons/check-dark.svg">pad/icons/check-dark.svg</file>
+        <file alias="icons/plus.svg">pad/icons/plus.svg</file>
+        <file alias="icons/split.svg">pad/icons/split.svg</file>
+        <file alias="icons/info.svg">pad/icons/info.svg</file>
+        <file alias="icons/bug.svg">pad/icons/bug.svg</file>
     </qresource>
     <qresource prefix="/">
         <file>images/antimicrox.png</file>
@@ -20,52 +42,52 @@
         <file>images/button.png</file>
         <file>images/controllermap.svg</file>
 
-        <file>images/actions/wiki.png</file>
-        <file>images/actions/about_qt.png</file>
-        <file>images/actions/about_antimicrox.png</file>
-        <file>images/actions/github_page.png</file>
-        <file>images/actions/issues.png</file>
-        <file>images/actions/settings.png</file>
-        <file>images/actions/stick_pad_assign.png</file>
-        <file>images/actions/calibration.png</file>
-        <file>images/actions/map_controller.png</file>
-        <file>images/actions/sliders.png</file>
-        <file>images/actions/key_checker.png</file>
-        <file>images/actions/application_exit.png</file>
-        <file>images/actions/archive_insert.png</file>
-        <file>images/actions/dialog_cancel.png</file>
-        <file>images/actions/dialog_close.png</file>
-        <file>images/actions/dialog_ok.png</file>
-        <file>images/actions/document_close.png</file>
-        <file>images/actions/document_open.png</file>
-        <file>images/actions/document_open_folder.png</file>
-        <file>images/actions/document_revert.png</file>
-        <file>images/actions/document_revert_small.png</file>
-        <file>images/actions/document_save.png</file>
-        <file>images/actions/document_save_as.png</file>
-        <file>images/actions/edit_clear.png</file>
-        <file>images/actions/edit_clear_list.png</file>
-        <file>images/actions/edit_delete.png</file>
-        <file>images/actions/edit_select.png</file>
-        <file>images/actions/edit_table_delete_row.png</file>
-        <file>images/actions/edit_table_insert_row_below.png</file>
-        <file>images/actions/games_config_custom.png</file>
-        <file>images/actions/games_config_options.png</file>
-        <file>images/actions/help_about.png</file>
-        <file>images/actions/text_field.png</file>
-        <file>images/actions/view_fullscreen.png</file>
-        <file>images/actions/view_refresh.png</file>
-        <file>images/actions/view_restore.png</file>
+        <file alias="images/actions/wiki.png">pad/icons/book.svg</file>
+        <file alias="images/actions/about_qt.png">pad/icons/info.svg</file>
+        <file alias="images/actions/about_antimicrox.png">pad/icons/info.svg</file>
+        <file alias="images/actions/github_page.png">pad/icons/github.svg</file>
+        <file alias="images/actions/issues.png">pad/icons/bug.svg</file>
+        <file alias="images/actions/settings.png">pad/icons/settings.svg</file>
+        <file alias="images/actions/stick_pad_assign.png">pad/icons/sliders.svg</file>
+        <file alias="images/actions/calibration.png">pad/icons/crosshair.svg</file>
+        <file alias="images/actions/map_controller.png">pad/icons/gamepad.svg</file>
+        <file alias="images/actions/sliders.png">pad/icons/sliders.svg</file>
+        <file alias="images/actions/key_checker.png">pad/icons/keyboard.svg</file>
+        <file alias="images/actions/application_exit.png">pad/icons/exit.svg</file>
+        <file alias="images/actions/archive_insert.png">pad/icons/plus.svg</file>
+        <file alias="images/actions/dialog_cancel.png">pad/icons/close.svg</file>
+        <file alias="images/actions/dialog_close.png">pad/icons/close.svg</file>
+        <file alias="images/actions/dialog_ok.png">pad/icons/check-dark.svg</file>
+        <file alias="images/actions/document_close.png">pad/icons/close.svg</file>
+        <file alias="images/actions/document_open.png">pad/icons/folder.svg</file>
+        <file alias="images/actions/document_open_folder.png">pad/icons/folder.svg</file>
+        <file alias="images/actions/document_revert.png">pad/icons/undo.svg</file>
+        <file alias="images/actions/document_revert_small.png">pad/icons/undo.svg</file>
+        <file alias="images/actions/document_save.png">pad/icons/save.svg</file>
+        <file alias="images/actions/document_save_as.png">pad/icons/copy.svg</file>
+        <file alias="images/actions/edit_clear.png">pad/icons/trash.svg</file>
+        <file alias="images/actions/edit_clear_list.png">pad/icons/trash.svg</file>
+        <file alias="images/actions/edit_delete.png">pad/icons/trash.svg</file>
+        <file alias="images/actions/edit_select.png">pad/icons/mouse.svg</file>
+        <file alias="images/actions/edit_table_delete_row.png">pad/icons/minus.svg</file>
+        <file alias="images/actions/edit_table_insert_row_below.png">pad/icons/plus.svg</file>
+        <file alias="images/actions/games_config_custom.png">pad/icons/sliders.svg</file>
+        <file alias="images/actions/games_config_options.png">pad/icons/sliders.svg</file>
+        <file alias="images/actions/help_about.png">pad/icons/info.svg</file>
+        <file alias="images/actions/text_field.png">pad/icons/text.svg</file>
+        <file alias="images/actions/view_fullscreen.png">pad/icons/maximize.svg</file>
+        <file alias="images/actions/view_refresh.png">pad/icons/refresh.svg</file>
+        <file alias="images/actions/view_restore.png">pad/icons/minimize.svg</file>
 
-        <file>images/actions/battery-empty.png</file>
-        <file>images/actions/battery-full.png</file>
-        <file>images/actions/battery-good-charging.png</file>
-        <file>images/actions/battery-good.png</file>
-        <file>images/actions/battery-low.png</file>
+        <file alias="images/actions/battery-empty.png">pad/icons/battery-empty.svg</file>
+        <file alias="images/actions/battery-full.png">pad/icons/battery-full.svg</file>
+        <file alias="images/actions/battery-good-charging.png">pad/icons/battery-good-charging.svg</file>
+        <file alias="images/actions/battery-good.png">pad/icons/battery-good.svg</file>
+        <file alias="images/actions/battery-low.png">pad/icons/battery-low.svg</file>
 
         <file>images/battery-low-level.png</file>
-        <file>images/actions/join_slots.png</file>
-        <file>images/actions/split_slot.png</file>
+        <file alias="images/actions/join_slots.png">pad/icons/merge.svg</file>
+        <file alias="images/actions/split_slot.png">pad/icons/split.svg</file>
         <file>CHANGELOG.md</file>
     </qresource>
 </RCC>

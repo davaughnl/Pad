@@ -48,7 +48,7 @@ SensorPushButtonGroup::SensorPushButtonGroup(JoySensor *sensor, bool keypadUnloc
 
     m_sensor_widget = new JoySensorPushButton(m_sensor, m_display_names, parentWidget());
     m_sensor_widget->setIcon(
-        QIcon::fromTheme(QString::fromUtf8("games_config_options"), QIcon(":/images/actions/games_config_options.png")));
+        QIcon(":/images/actions/games_config_options.png"));
 
     connect(m_sensor_widget, &JoySensorPushButton::clicked, this, &SensorPushButtonGroup::showSensorDialog);
 
