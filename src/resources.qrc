@@ -34,12 +34,16 @@
         <file alias="icons/plus.svg">pad/icons/plus.svg</file>
         <file alias="icons/split.svg">pad/icons/split.svg</file>
         <file alias="icons/info.svg">pad/icons/info.svg</file>
+        <file alias="icons/circle-check.svg">pad/icons/circle-check.svg</file>
+        <file alias="icons/triangle-alert.svg">pad/icons/triangle-alert.svg</file>
+        <file alias="icons/download.svg">pad/icons/download.svg</file>
         <file alias="icons/bug.svg">pad/icons/bug.svg</file>
     </qresource>
     <qresource prefix="/">
         <file>pad/icons/chevron-up.svg</file>
         <file>pad/icons/check.svg</file>
         <file>images/pad.png</file>
+        <file>images/pad-mark.png</file>
         <file>images/axis.png</file>
         <file>images/button.png</file>
         <file>images/controllermap.svg</file>

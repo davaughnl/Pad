@@ -1,5 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "padshell.h"
+#include "common.h"
+#include "padupdatestrip.h"
+#include "updatemanager.h"
 #include <QApplication>
 #include <QAction>
 #include <QComboBox>
@@ -8,6 +11,9 @@
 #include <QFrame>
 #include <QHBoxLayout>
 #include <QLabel>
+#include <QMenu>
+#include <QMenuBar>
+#include <QProcess>
 #include <QListWidget>
 #include <QMainWindow>
 #include <QMap>
@@ -16,6 +22,7 @@
 #include <QPalette>
 #include <QProxyStyle>
 #include <QStyleFactory>
+#include <QPixmap>
 #include <QPointer>
 #include <QPushButton>
 #include <QSignalBlocker>
@@ -230,7 +237,7 @@ void PadUi::install(QMainWindow *window, QWidget *central, QStackedWidget *stack
     auto *side = new QVBoxLayout(sidebar); side->setContentsMargins(12, 16, 12, 12); side->setSpacing(6);
     auto *brandRow = new QHBoxLayout(); brandRow->setContentsMargins(10, 4, 0, 4); brandRow->setSpacing(10);
     auto *brandMark = new QLabel(sidebar);
-    brandMark->setPixmap(QIcon(QStringLiteral(":/images/pad.png")).pixmap(18, 18));
+    QPixmap brandPixmap(QStringLiteral(":/images/pad-mark.png")); brandPixmap.setDevicePixelRatio(2); brandMark->setPixmap(brandPixmap);
     brandRow->addWidget(brandMark); brandRow->addWidget(text(QObject::tr("Pad"), "padBrand", sidebar)); brandRow->addStretch(1);
     side->addLayout(brandRow); side->addSpacing(20);
     side->addWidget(text(QObject::tr("Controllers"), "padSection", sidebar));
@@ -244,8 +251,58 @@ void PadUi::install(QMainWindow *window, QWidget *central, QStackedWidget *stack
     side->addStretch(1);
     auto *refreshButton = button(QObject::tr("Refresh controllers"), "refresh", sidebar);
     auto *settingsButton = button(QObject::tr("Settings"), "settings", sidebar);
-    side->addWidget(refreshButton); side->addWidget(settingsButton);
+    auto *updateStrip = new PadUpdateStrip(sidebar);
+    auto *updateButton = button(PadUpdateStrip::buttonLabel(PadUpdateStrip::State::Hidden), "refresh", sidebar);
+    side->addWidget(updateStrip); side->addWidget(refreshButton); side->addWidget(updateButton); side->addWidget(settingsButton);
     QObject::connect(refreshButton, &QPushButton::clicked, refresh, &QAction::trigger);
+    // Updater: this block only presents UpdateManager state and forwards clicks.
+    auto *updates = new UpdateManager(PadderCommon::releaseVersion, window);
+    updates->setInstallerLauncher([](const QString &path) { return QProcess::startDetached(path, QStringList()); });
+    auto *updateAction = new QAction(QObject::tr("Check for updates"), window);
+    if (auto *appMenu = window->findChild<QMenu *>("menuQuit"))
+    {
+        auto *first = appMenu->actions().value(0);
+        appMenu->insertAction(first, updateAction); appMenu->insertSeparator(first);
+    }
+    auto present = [updates, updateStrip, updateButton, updateAction](int percent) {
+        using S = PadUpdateStrip::State;
+        const QString version = updates->release().version;
+        QString label = QObject::tr("Check for updates"); const char *icon = "refresh"; bool enabled = true;
+        switch (updates->state())
+        {
+        case UpdateManager::Idle: updateStrip->setState(S::Hidden); break;
+        case UpdateManager::Checking: updateStrip->setState(S::Checking); enabled = false; break;
+        case UpdateManager::UpToDate: updateStrip->setState(S::UpToDate); break;
+        case UpdateManager::Available: updateStrip->setState(S::Available, version); label = QObject::tr("Update to %1").arg(version); icon = "download"; break;
+        case UpdateManager::Downloading: updateStrip->setState(S::Downloading, QString(), percent); label = QObject::tr("Update to %1").arg(version); icon = "download"; enabled = false; break;
+        case UpdateManager::Verifying: updateStrip->setState(S::Verifying); label = QObject::tr("Update to %1").arg(version); icon = "download"; enabled = false; break;
+        case UpdateManager::Ready: QTimer::singleShot(0, updates, [updates]() { if (updates->state() == UpdateManager::Ready) updates->install(); }); updateStrip->setState(S::Ready, version); label = QObject::tr("Install and restart"); icon = "download"; break;
+        case UpdateManager::Installing: updateStrip->setState(S::Installing); label = QObject::tr("Install and restart"); icon = "download"; enabled = false; break;
+        case UpdateManager::Failed: updateStrip->setState(S::Error, updates->errorText()); break;
+        }
+        updateButton->setText(label); updateButton->setEnabled(enabled);
+        updateButton->setIcon(QIcon(QStringLiteral(":/pad/icons/%1.svg").arg(QString::fromLatin1(icon))));
+        updateAction->setEnabled(enabled && updates->state() != UpdateManager::Ready);
+    };
+    QObject::connect(updates, &UpdateManager::stateChanged, window, [present](UpdateManager::State) { present(0); });
+    QObject::connect(updates, &UpdateManager::progress, window, [present](int percent) { present(percent); });
+    QObject::connect(updates, &UpdateManager::quitRequested, qApp, &QApplication::quit);
+    auto act = [updates]() {
+        switch (updates->state())
+        {
+        case UpdateManager::Available: updates->download(); break;
+        case UpdateManager::Ready: updates->install(); break;
+        case UpdateManager::Idle: case UpdateManager::UpToDate: case UpdateManager::Failed: updates->check(); break;
+        default: break;
+        }
+    };
+    QObject::connect(updateButton, &QPushButton::clicked, window, act);
+    QObject::connect(updateAction, &QAction::triggered, window, [updates]() {
+        if (updates->state() != UpdateManager::Checking && updates->state() != UpdateManager::Downloading
+            && updates->state() != UpdateManager::Verifying && updates->state() != UpdateManager::Installing) updates->check();
+    });
+    updateStrip->onRetry = [updates]() { updates->check(); };
+    present(0);
     QObject::connect(settingsButton, &QPushButton::clicked, settings, &QAction::trigger);
     QObject::connect(deviceList, &QListWidget::currentRowChanged, controllers, &QTabWidget::setCurrentIndex);
     QObject::connect(profileList, &QListWidget::itemActivated, shell, [controllers, profileList](QListWidgetItem *item) {

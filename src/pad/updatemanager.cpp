@@ -262,7 +262,7 @@ void UpdateManager::onDownloadFinished()
 void UpdateManager::install()
 {
     if (m_state != Ready) return;
-    if (!canInstallHere() && !m_launcher) { fail(tr("Updating is not supported on this system.")); return; }
+    if (!m_launcher || (!canInstallHere() && !m_testHost.size())) { fail(tr("Updating is not supported on this system.")); return; }
     setState(Installing);
     if (!m_launcher(m_installerPath)) { fail(tr("Could not start the installer.")); return; }
     emit quitRequested();

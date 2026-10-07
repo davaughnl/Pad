@@ -151,3 +151,9 @@ QDialog#padSettings QListWidget#categoriesListWidget::item { padding: 0 12px; ma
 QDialog#padSettings QListWidget#categoriesListWidget::item:selected { background: #26262c; color: #f4f4f5; }
 QDialog#padSettings QListWidget#categoriesListWidget::item:hover { background: #1c1c21; color: #e8e8eb; }
 QDialog#padSettings QLabel { font-weight: normal; }
+QWidget#padUpdateStrip { background: transparent; }
+QLabel#padUpdateText { color: #9d9da5; font-size: 12px; font-weight: 400; }
+QProgressBar#padUpdateProgress { background: #26262c; border-radius: 1px; min-height: 3px; max-height: 3px; }
+QProgressBar#padUpdateProgress::chunk { background: #f4f4f5; border-radius: 1px; }
+QPushButton#padUpdateRetry { background: transparent; border: none; padding: 0 0 0 24px; min-height: 20px; color: #f4f4f5; font-size: 12px; text-decoration: underline; }
+QPushButton#padUpdateRetry:hover { color: #ffffff; }

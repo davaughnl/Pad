@@ -898,6 +898,14 @@ if(WIN32 AND NOT UNIX)
         set(CPACK_NSIS_MUI_ICON "${CPACK_PACKAGE_ICON}")
         set(CPACK_NSIS_MUI_UNIICON "${CPACK_PACKAGE_ICON}")
         set(CPACK_NSIS_INSTALLED_ICON_NAME "bin/pad.exe")
+        # Installer branding: black welcome/finish and header bitmaps carrying the Matrix mark.
+        set(CPACK_NSIS_DEFINES "
+            !define MUI_HEADERIMAGE
+            !define MUI_HEADERIMAGE_BITMAP \"${PROJECT_SOURCE_DIR}/src/images\\\\pad-installer-header-150x57.bmp\"
+            !define MUI_HEADERIMAGE_RIGHT
+            !define MUI_WELCOMEFINISHPAGE_BITMAP \"${PROJECT_SOURCE_DIR}/src/images\\\\pad-installer-welcome-164x314.bmp\"
+            !define MUI_UNWELCOMEFINISHPAGE_BITMAP \"${PROJECT_SOURCE_DIR}/src/images\\\\pad-installer-welcome-164x314.bmp\"
+        ")
 
         set(CPACK_NSIS_DISPLAY_NAME "Pad")
         set(CPACK_NSIS_PACKAGE_NAME "Pad")
