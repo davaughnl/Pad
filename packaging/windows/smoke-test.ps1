@@ -63,12 +63,28 @@ public static class PadWindowProbe {
     [DllImport("user32.dll")] public static extern bool IsWindowVisible(IntPtr window);
     [DllImport("user32.dll")] public static extern uint GetWindowThreadProcessId(IntPtr window, out uint process);
     [DllImport("user32.dll", CharSet=CharSet.Unicode)] public static extern int GetWindowText(IntPtr window, StringBuilder text, int count);
+    [StructLayout(LayoutKind.Sequential)] public struct Rect { public int Left, Top, Right, Bottom; }
+    [DllImport("user32.dll")] public static extern bool GetWindowRect(IntPtr window, out Rect rect);
+    [DllImport("user32.dll")] public static extern bool SetCursorPos(int x, int y);
+    [DllImport("user32.dll")] public static extern void mouse_event(uint flags, uint x, uint y, int data, UIntPtr extra);
+    public static IntPtr SettingsWindow;
+    public static void ScrollSettingsBottom() {
+        Rect r; GetWindowRect(SettingsWindow, out r);
+        SetCursorPos(r.Left + (r.Right-r.Left)*3/4, r.Top + (r.Bottom-r.Top)/2);
+        mouse_event(0x0800, 0, 0, -120*16, UIntPtr.Zero);
+    }
+    public static void SelectLanguage() {
+        Rect r; GetWindowRect(SettingsWindow, out r);
+        // Category rail: 24px top margin, 48px rows; third row is Language.
+        SetCursorPos(r.Left+120, r.Top+32+24+48*2+24);
+        mouse_event(0x0002,0,0,0,UIntPtr.Zero); mouse_event(0x0004,0,0,0,UIntPtr.Zero);
+    }
     public static bool HasSettingsWindow(int process) {
         bool found = false;
         EnumWindows((window, param) => {
             uint owner; GetWindowThreadProcessId(window, out owner);
             var title = new StringBuilder(512); GetWindowText(window, title, title.Capacity);
-            if (owner == process && IsWindowVisible(window) && (title.ToString() == "Settings" || title.ToString() == "Edit Settings")) found = true;
+            if (owner == process && IsWindowVisible(window) && (title.ToString() == "Settings" || title.ToString() == "Edit Settings")) { found = true; SettingsWindow = window; }
             return true;
         }, IntPtr.Zero);
         return found;
@@ -87,6 +103,12 @@ public static class PadWindowProbe {
     }
     Start-Sleep -Seconds 2
     Save-Desktop "$output/windows-settings-dialog.png"
+    [PadWindowProbe]::ScrollSettingsBottom()
+    Start-Sleep -Seconds 1
+    Save-Desktop "$output/windows-settings-general-bottom.png"
+    [PadWindowProbe]::SelectLanguage()
+    Start-Sleep -Seconds 1
+    Save-Desktop "$output/windows-settings-language.png"
     "PASS: extracted portable zip; --version and --list exit 0; GUI window created and remains running; Settings dialog opened via Ctrl+S and captured. Physical controller and input injection not tested." |
         Set-Content "$output/result.txt"
 } catch {
