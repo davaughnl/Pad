@@ -42,11 +42,21 @@ jobs:
           cache: true
       - name: Install OpenSSL 1.1.1 (Qt 5.15 HTTPS runtime)
         run: |
-          choco install openssl --version=1.1.1.2100 -y --no-progress
           $dir = 'C:\Program Files\OpenSSL-Win64'
-          Get-ChildItem $dir -Filter 'lib*.dll' -Recurse | ForEach-Object FullName
-          if (-not (Test-Path "$dir\libssl-1_1-x64.dll")) { throw 'libssl-1_1-x64.dll missing' }
-          "OPENSSL_DIR=$dir" | Out-File -Append -Encoding utf8 $env:GITHUB_ENV
+          $log = @()
+          choco install openssl --version=1.1.1.2100 -y --no-progress 2>&1 | Tee-Object -Variable chocoOut | Out-Null
+          $log += ($chocoOut | Select-Object -Last 6) -join ' | '
+          $found = Get-ChildItem 'C:\Program Files','C:\ProgramData\chocolatey\lib' -Recurse -Filter 'libssl-1_1-x64.dll' -ErrorAction SilentlyContinue | Select-Object -First 1
+          if (-not $found) {
+            $log += 'choco gave no libssl; trying slproweb'
+            $exe = "$env:RUNNER_TEMP/openssl-setup.exe"
+            Invoke-WebRequest 'https://slproweb.com/download/Win64OpenSSL_Light-1_1_1w.exe' -OutFile $exe
+            Start-Process $exe -ArgumentList '/VERYSILENT','/SUPPRESSMSGBOXES','/NORESTART','/DIR=C:\OpenSSL111' -Wait
+            $found = Get-ChildItem 'C:\OpenSSL111' -Recurse -Filter 'libssl-1_1-x64.dll' -ErrorAction SilentlyContinue | Select-Object -First 1
+          }
+          if (-not $found) { Write-Host "::error::OpenSSL 1.1.1 not found. $($log -join ' ;; ')"; exit 1 }
+          "OPENSSL_DIR=$($found.DirectoryName)" | Out-File -Append -Encoding utf8 $env:GITHUB_ENV
+          Write-Host "OpenSSL at $($found.FullName)"
       - name: Install SDL2
         run: ./packaging/windows/get-sdl2.ps1 -Destination "$env:RUNNER_TEMP/sdl2"
       - name: Configure
