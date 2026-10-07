@@ -120,6 +120,10 @@ int main(int argc,char **argv) {
             check(dialog->grab().save(output+"/controller-mapping-highlight-a-full.png"),"Mapping highlighted A capture failed");
             table->setCurrentCell(3,0);settle();
             check(dialog->grab().save(output+"/controller-mapping-highlight-y-full.png"),"Mapping highlighted Y capture failed");
+            table->setCurrentCell(18,0);settle();
+            check(dialog->grab().save(output+"/controller-mapping-highlight-dpad-left-full.png"),"Mapping highlighted DPad Left capture failed");
+            table->setCurrentCell(19,0);settle();
+            check(dialog->grab().save(output+"/controller-mapping-highlight-dpad-down-full.png"),"Mapping highlighted DPad Down capture failed");
             closeDialog(dialog);delete window;
         } else if(test=="status") {
             // Richer virtual device matching the row-clipping regression shape.
