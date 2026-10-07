@@ -53,8 +53,8 @@ static ButtonImagePlacement buttonLocations[] = {
     {220, 0, GameControllerExample::Button}, // SDL_CONTROLLER_AXIS_TRIGGERRIGHT
 
     {94, 109, GameControllerExample::Button},  // SDL_CONTROLLER_BUTTON_DPAD_UP
-    {94, 135, GameControllerExample::Button},  // SDL_CONTROLLER_BUTTON_DPAD_DOWN
-    {80, 122, GameControllerExample::Button},  // SDL_CONTROLLER_BUTTON_DPAD_LEFT
+    {80, 122, GameControllerExample::Button},  // dialog index 18: D-pad left
+    {94, 135, GameControllerExample::Button},  // dialog index 19: D-pad down
     {108, 122, GameControllerExample::Button}, // SDL_CONTROLLER_BUTTON_DPAD_RIGHT
 };
 
