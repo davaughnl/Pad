@@ -327,7 +327,7 @@ Later project has been once more moved to https://github.com/AntiMicroX/antimicr
     </message>
     <message>
         <location filename="../../../src/gui/aboutdialog.ui" line="87"/>
-        <source>AntiMicroX</source>
+        <source>Pad</source>
         <translation>ஆண்டிமிக்ராக்ச்</translation>
     </message>
     <message>
@@ -4090,7 +4090,7 @@ events from gamepads. Defaults to 10 ms.
 
 Reducing the poll rate value could cause the application to
 use more CPU power so please test the setting that you use
-before using AntiMicroX unattended.</source>
+before using Pad unattended.</source>
         <translation>புதியதைக் கண்டறிய நிரல் பயன்படுத்தும் வாக்கெடுப்பு விகிதத்தை மாற்றவும்
  கேம்பேடுகளிலிருந்து நிகழ்வுகள். இயல்புநிலை 10 எம்.எச்.
 
@@ -4112,7 +4112,7 @@ clicked instead of quitting the program.</source>
     </message>
     <message>
         <location filename="../../../src/gui/mainsettingsdialog.ui" line="257"/>
-        <source>Have Windows start AntiMicroX at system startup.</source>
+        <source>Have Windows start Pad at system startup.</source>
         <translation>கணினி தொடக்கத்தில் சாளரங்கள் தொடக்க ஆண்டிமிக்ராக்சை வைத்திருங்கள்.</translation>
     </message>
     <message>
@@ -4192,7 +4192,7 @@ first launches.</source>
     </message>
     <message>
         <location filename="../../../src/gui/mainsettingsdialog.ui" line="330"/>
-        <source>Associate .amgp files with AntiMicroX in Windows Explorer.</source>
+        <source>Associate .amgp files with Pad in Windows Explorer.</source>
         <translation>சாளரங்கள் எக்ச்ப்ளோரரில் ஆண்டிமிக்ராக்சுடன் .amgp கோப்புகளை இணைக்கவும்.</translation>
     </message>
     <message>
@@ -4244,7 +4244,7 @@ per seconds.</source>
     </message>
     <message>
         <location filename="../../../src/gui/mainsettingsdialog.ui" line="623"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;AntiMicroX has been translated into many different languages by contributors. By default, the program will choose an appropriate translation based on your system&apos;s locale setting. However, you can make AntiMicroX load a different translation depending on the language that you choose from the list below.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pad has been translated into many different languages by contributors. By default, the program will choose an appropriate translation based on your system&apos;s locale setting. However, you can make Pad load a different translation depending on the language that you choose from the list below.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt; &lt;head/&gt; &lt;body&gt; &lt;p&gt; ஆன்டிமிக்ராக்ச் பங்களிப்பாளர்களால் பல்வேறு மொழிகளில் மொழிபெயர்க்கப்பட்டுள்ளது. இயல்பாக, நிரல் உங்கள் கணினியின் இருப்பிட அமைப்பின் அடிப்படையில் பொருத்தமான மொழிபெயர்ப்பைத் தேர்ந்தெடுக்கும். இருப்பினும், கீழேயுள்ள பட்டியலிலிருந்து நீங்கள் தேர்ந்தெடுக்கும் மொழியைப் பொறுத்து ஆண்டிமிக்ராக்ச் சுமையை வேறுபட்ட மொழிபெயர்ப்பை உருவாக்கலாம். &lt;/p&gt;&lt;/body&gt; &lt;/html&gt;</translation>
     </message>
     <message>
@@ -4304,7 +4304,7 @@ per seconds.</source>
     </message>
     <message>
         <location filename="../../../src/gui/mainsettingsdialog.ui" line="721"/>
-        <source>You can help with translating AntiMicroX. Just click here: &lt;a
+        <source>You can help with translating Pad. Just click here: &lt;a
                           href=&quot;https://hosted.weblate.org/projects/antimicrox/&quot;&gt;link&lt;/a&gt;</source>
         <translation>ஆண்டிமிக்ராக்சை மொழிபெயர்க்க நீங்கள் உதவலாம். இங்கே சொடுக்கு செய்க: &lt;a
                           href=&quot;https://hosted.weblate.org/projects/antimicrox/&quot;&gt;இணைப்பு &lt;/a&gt;</translation>
@@ -4412,8 +4412,8 @@ per seconds.</source>
     <message>
         <location filename="../../../src/gui/mainsettingsdialog.ui" line="959"/>
         <source>Disable the &quot;Enhanced Pointer Precision&quot; Windows setting
-while AntiMicroX is running. Disabling &quot;Enhanced Pointer Precision&quot;
-will allow mouse movement within AntiMicroX to be more
+while Pad is running. Disabling &quot;Enhanced Pointer Precision&quot;
+will allow mouse movement within Pad to be more
 precise.</source>
         <translation>&quot;மேம்படுத்தப்பட்ட சுட்டிக்காட்டி துல்லியம்&quot; சாளர அமைப்பை முடக்கு
  ஆண்டிமிக்ராக்ச் இயங்குகிறது. &quot;மேம்பட்ட சுட்டிக்காட்டி துல்லியத்தை&quot; முடக்குதல்
@@ -4660,7 +4660,7 @@ the option in Windows.</source>
     <name>MainWindow</name>
     <message>
         <location filename="../../../src/gui/mainwindow.ui" line="23"/>
-        <source>AntiMicroX</source>
+        <source>Pad</source>
         <translation>ஆண்டிமிக்ராக்ச்</translation>
     </message>
     <message>
@@ -5426,8 +5426,8 @@ of your screen.</source>
     </message>
     <message>
         <location filename="../../../src/gui/qkeydisplaydialog.ui" line="41"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Press a key on your keyboard to see how the key is detected by this application. The window will show the system native key value, the original value given by Qt (if applicable), and the custom value used by AntiMicroX.&lt;/p&gt;&lt;p&gt;The AntiMicroX key value and the Qt key value will usually be the same. AntiMicroX tries to use the key values defined in Qt when possible. Check the page &lt;a href=&quot;http://doc.qt.io/qt-5/qt.html#Key-enum&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;http://doc.qt.io/qt-5/qt.html#Key-enum&lt;/span&gt;&lt;/a&gt; for a list of values defined by Qt. If you discover that a key is not natively supported by this program, please report the problem to AntiMicroX&apos;s &lt;a href=&quot;https://github.com/AntiMicroX/antimicrox/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;GitHub page&lt;/span&gt;&lt;/a&gt; so that the program can be edited to support it directly. As it is, a custom prefix is added to unknown values so they can still be used; the main problem is that the profile will no longer be portable.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt; &lt;head/&gt; &lt;body&gt; &lt;p&gt; இந்தப் பயன்பாட்டின் மூலம் விசை எவ்வாறு கண்டறியப்படுகிறது என்பதைக் காண உங்கள் விசைப்பலகையில் ஒரு விசையை அழுத்தவும். சாளரம் கணினி சொந்த விசை மதிப்பைக் காண்பிக்கும், கியுடி ஆல் வழங்கப்பட்ட அசல் மதிப்பு (பொருந்தினால்), மற்றும் ஆண்டிமிக்ராக்சால் பயன்படுத்தப்படும் தனிப்பயன் மதிப்பு. &lt;/p&gt;&lt;p&gt; ஆண்டிமிக்ராக்ச் விசை மதிப்பு மற்றும் கியுடி விசை மதிப்பு பொதுவாக ஒரே மாதிரியாக இருக்கும். ஆன்டிமிக்ரோக்ச் முடிந்தவரை கியுடி இல் வரையறுக்கப்பட்ட முக்கிய மதிப்புகளைப் பயன்படுத்த முயற்சிக்கிறது. &lt;a href=&quot;http://doc.qt.io/qt-5/qt.html#Key-enum&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;http://doc.qt.io/qt-5/qt.html#Key-enum&lt;/span&gt;&lt;/a&gt; இந்தத் திட்டத்தால் ஒரு விசை சொந்தமாக ஆதரிக்கப்படவில்லை என்பதை நீங்கள் கண்டறிந்தால், தயவுசெய்து சிக்கலை ஆண்டிமிக்ராக்சின் &lt;a href=&quot;https://github.com/AntiMicroX/antimicrox/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt; அறிவிலிமையம் பக்கம் &lt;/span&gt; &lt;/a&gt;, இதனால் நிரலை நேரடியாக ஆதரிக்கத் திருத்த முடியும். அது போலவே, தனிப்பயன் முன்னொட்டு அறியப்படாத மதிப்புகளில் சேர்க்கப்படுகிறது, எனவே அவை இன்னும் பயன்படுத்தப்படலாம்; முக்கிய சிக்கல் என்னவென்றால், சுயவிவரம் இனி சிறியதாக இருக்காது. &lt;/p&gt; &lt;/body&gt; &lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Press a key on your keyboard to see how the key is detected by this application. The window will show the system native key value, the original value given by Qt (if applicable), and the custom value used by Pad.&lt;/p&gt;&lt;p&gt;The Pad key value and the Qt key value will usually be the same. Pad tries to use the key values defined in Qt when possible. Check the page &lt;a href=&quot;http://doc.qt.io/qt-5/qt.html#Key-enum&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;http://doc.qt.io/qt-5/qt.html#Key-enum&lt;/span&gt;&lt;/a&gt; for a list of values defined by Qt. If you discover that a key is not natively supported by this program, please report the problem to Pad&apos;s &lt;a href=&quot;https://github.com/davaughnl/Pad/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;GitHub page&lt;/span&gt;&lt;/a&gt; so that the program can be edited to support it directly. As it is, a custom prefix is added to unknown values so they can still be used; the main problem is that the profile will no longer be portable.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt; &lt;head/&gt; &lt;body&gt; &lt;p&gt; இந்தப் பயன்பாட்டின் மூலம் விசை எவ்வாறு கண்டறியப்படுகிறது என்பதைக் காண உங்கள் விசைப்பலகையில் ஒரு விசையை அழுத்தவும். சாளரம் கணினி சொந்த விசை மதிப்பைக் காண்பிக்கும், கியுடி ஆல் வழங்கப்பட்ட அசல் மதிப்பு (பொருந்தினால்), மற்றும் ஆண்டிமிக்ராக்சால் பயன்படுத்தப்படும் தனிப்பயன் மதிப்பு. &lt;/p&gt;&lt;p&gt; ஆண்டிமிக்ராக்ச் விசை மதிப்பு மற்றும் கியுடி விசை மதிப்பு பொதுவாக ஒரே மாதிரியாக இருக்கும். ஆன்டிமிக்ரோக்ச் முடிந்தவரை கியுடி இல் வரையறுக்கப்பட்ட முக்கிய மதிப்புகளைப் பயன்படுத்த முயற்சிக்கிறது. &lt;a href=&quot;http://doc.qt.io/qt-5/qt.html#Key-enum&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;http://doc.qt.io/qt-5/qt.html#Key-enum&lt;/span&gt;&lt;/a&gt; இந்தத் திட்டத்தால் ஒரு விசை சொந்தமாக ஆதரிக்கப்படவில்லை என்பதை நீங்கள் கண்டறிந்தால், தயவுசெய்து சிக்கலை ஆண்டிமிக்ராக்சின் &lt;a href=&quot;https://github.com/davaughnl/Pad/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt; அறிவிலிமையம் பக்கம் &lt;/span&gt; &lt;/a&gt;, இதனால் நிரலை நேரடியாக ஆதரிக்கத் திருத்த முடியும். அது போலவே, தனிப்பயன் முன்னொட்டு அறியப்படாத மதிப்புகளில் சேர்க்கப்படுகிறது, எனவே அவை இன்னும் பயன்படுத்தப்படலாம்; முக்கிய சிக்கல் என்னவென்றால், சுயவிவரம் இனி சிறியதாக இருக்காது. &lt;/p&gt; &lt;/body&gt; &lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../../../src/gui/qkeydisplaydialog.ui" line="99"/>

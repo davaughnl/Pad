@@ -186,8 +186,8 @@ Later project has been once more moved to https://github.com/AntiMicroX/antimicr
     </message>
     <message>
         <location filename="../../../src/gui/aboutdialog.ui" line="87"/>
-        <source>AntiMicroX</source>
-        <translation>AntiMicroX</translation>
+        <source>Pad</source>
+        <translation>Pad</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -4276,7 +4276,7 @@ events from gamepads. Defaults to 10 ms.
 
 Reducing the poll rate value could cause the application to
 use more CPU power so please test the setting that you use
-before using AntiMicroX unattended.</source>
+before using Pad unattended.</source>
         <translation>프로그램이 게임패드에서 새로운 이벤트를 검색하는 데 사용하는 
 폴링 속도를 변경합니다. 기본값은 10ms입니다. 
  
@@ -4298,7 +4298,7 @@ clicked instead of quitting the program.</source>
     </message>
     <message>
         <location filename="../../../src/gui/mainsettingsdialog.ui" line="257"/>
-        <source>Have Windows start AntiMicroX at system startup.</source>
+        <source>Have Windows start Pad at system startup.</source>
         <translation>시스템 시작 시 윈도우즈가 AntiMicroX를 시작하도록 합니다.</translation>
     </message>
     <message>
@@ -4378,7 +4378,7 @@ first launches.</source>
     </message>
     <message>
         <location filename="../../../src/gui/mainsettingsdialog.ui" line="330"/>
-        <source>Associate .amgp files with AntiMicroX in Windows Explorer.</source>
+        <source>Associate .amgp files with Pad in Windows Explorer.</source>
         <translation>윈도우즈 탐색기에서 .amgp 파일을 AntiMicroX와 연결합니다.</translation>
     </message>
     <message>
@@ -4430,7 +4430,7 @@ per seconds.</source>
     </message>
     <message>
         <location filename="../../../src/gui/mainsettingsdialog.ui" line="623"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;AntiMicroX has been translated into many different languages by contributors. By default, the program will choose an appropriate translation based on your system&apos;s locale setting. However, you can make AntiMicroX load a different translation depending on the language that you choose from the list below.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pad has been translated into many different languages by contributors. By default, the program will choose an appropriate translation based on your system&apos;s locale setting. However, you can make Pad load a different translation depending on the language that you choose from the list below.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;AntiMicroX는 기여자들에 의해 다양한 언어로 번역되었습니다. 기본적으로 프로그램은 시스템의 로케일 설정에 따라 적절한 번역을 선택합니다. 그러나 아래 목록에서 선택한 언어에 따라 AntiMicroX가 다른 번역을 불러오게 할 수 있습니다.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
@@ -4490,9 +4490,9 @@ per seconds.</source>
     </message>
     <message>
         <location filename="../../../src/gui/mainsettingsdialog.ui" line="721"/>
-        <source>You can help with translating AntiMicroX. Just click here: &lt;a
+        <source>You can help with translating Pad. Just click here: &lt;a
                           href=&quot;https://hosted.weblate.org/projects/antimicrox/&quot;&gt;link&lt;/a&gt;</source>
-        <translation>AntiMicroX 번역에 참여하세요. 여기를 클릭하세요: &lt;a
+        <translation>Pad 번역에 참여하세요. 여기를 클릭하세요: &lt;a
                           href=&quot;https://hosted.weblate.org/projects/antimicrox/&quot;&gt;바로가기&lt;/a&gt;</translation>
     </message>
     <message>
@@ -4598,12 +4598,12 @@ per seconds.</source>
     <message>
         <location filename="../../../src/gui/mainsettingsdialog.ui" line="959"/>
         <source>Disable the &quot;Enhanced Pointer Precision&quot; Windows setting
-while AntiMicroX is running. Disabling &quot;Enhanced Pointer Precision&quot;
-will allow mouse movement within AntiMicroX to be more
+while Pad is running. Disabling &quot;Enhanced Pointer Precision&quot;
+will allow mouse movement within Pad to be more
 precise.</source>
         <translation>AntiMicroX가 실행되는 동안 &quot;향상된 포인터 정밀도&quot; 
 윈도우즈 설정을 비활성화하세요. &quot;향상된 포인터 정밀도&quot;를 
-비활성화하면 AntiMicroX 내에서 마우스를 더 정확하게 움직일 
+비활성화하면 Pad 내에서 마우스를 더 정확하게 움직일
 수 있습니다.</translation>
     </message>
     <message>
@@ -4846,8 +4846,8 @@ the option in Windows.</source>
     <name>MainWindow</name>
     <message>
         <location filename="../../../src/gui/mainwindow.ui" line="23"/>
-        <source>AntiMicroX</source>
-        <translation>AntiMicroX</translation>
+        <source>Pad</source>
+        <translation>Pad</translation>
     </message>
     <message>
         <location filename="../../../src/gui/mainwindow.ui" line="79"/>
@@ -5611,8 +5611,8 @@ of your screen.</source>
     </message>
     <message>
         <location filename="../../../src/gui/qkeydisplaydialog.ui" line="41"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Press a key on your keyboard to see how the key is detected by this application. The window will show the system native key value, the original value given by Qt (if applicable), and the custom value used by AntiMicroX.&lt;/p&gt;&lt;p&gt;The AntiMicroX key value and the Qt key value will usually be the same. AntiMicroX tries to use the key values defined in Qt when possible. Check the page &lt;a href=&quot;http://doc.qt.io/qt-5/qt.html#Key-enum&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;http://doc.qt.io/qt-5/qt.html#Key-enum&lt;/span&gt;&lt;/a&gt; for a list of values defined by Qt. If you discover that a key is not natively supported by this program, please report the problem to AntiMicroX&apos;s &lt;a href=&quot;https://github.com/AntiMicroX/antimicrox/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;GitHub page&lt;/span&gt;&lt;/a&gt; so that the program can be edited to support it directly. As it is, a custom prefix is added to unknown values so they can still be used; the main problem is that the profile will no longer be portable.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;이 응용 프로그램에서 키를 감지하는 방법을 보려면 키보드의 키를 누르세요. 창에는 시스템 기본 키 값, Qt에서 제공한 원래 값 (해당되는 경우) 및 AntiMicroX에서 사용하는 사용자 지정 값이 표시됩니다.&lt;/p&gt;&lt;p&gt;AntiMicroX 키 값과 Qt 키 값은 일반적으로 동일합니다. AntiMicroX는 가능한 경우 Qt에 정의된 키 값을 사용하려고 합니다. Qt에서 정의한 값 목록은 &lt;a href=&quot;http://doc.qt.io/qt-5/qt.html#Key-enum&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;http://doc.qt.io/qt-5/qt.html#Key-enum&lt;/span&gt;&lt;/a&gt; 페이지를 확인하세요. 키가 이 프로그램에서 기본적으로 지원되지 않는 것을 발견하면 AntiMicroX의 &lt;a href=&quot;https://github.com/AntiMicroX/antimicrox/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;GitHub 페이지&lt;/span&gt;&lt;/a&gt;에 문제를 보고하여 프로그램이 직접 지원하도록 편집할 수 있도록 하세요. 그대로 사용자 정의 접두사가 알려지지 않은 값에 추가되어 계속 사용할 수 있습니다. 주요 문제는 프로파일이 더 이상 이식 가능하지 않다는 것입니다.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Press a key on your keyboard to see how the key is detected by this application. The window will show the system native key value, the original value given by Qt (if applicable), and the custom value used by Pad.&lt;/p&gt;&lt;p&gt;The Pad key value and the Qt key value will usually be the same. Pad tries to use the key values defined in Qt when possible. Check the page &lt;a href=&quot;http://doc.qt.io/qt-5/qt.html#Key-enum&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;http://doc.qt.io/qt-5/qt.html#Key-enum&lt;/span&gt;&lt;/a&gt; for a list of values defined by Qt. If you discover that a key is not natively supported by this program, please report the problem to Pad&apos;s &lt;a href=&quot;https://github.com/davaughnl/Pad/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;GitHub page&lt;/span&gt;&lt;/a&gt; so that the program can be edited to support it directly. As it is, a custom prefix is added to unknown values so they can still be used; the main problem is that the profile will no longer be portable.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;이 응용 프로그램에서 키를 감지하는 방법을 보려면 키보드의 키를 누르세요. 창에는 시스템 기본 키 값, Qt에서 제공한 원래 값 (해당되는 경우) 및 AntiMicroX에서 사용하는 사용자 지정 값이 표시됩니다.&lt;/p&gt;&lt;p&gt;Pad 키 값과 Qt 키 값은 일반적으로 동일합니다. AntiMicroX는 가능한 경우 Qt에 정의된 키 값을 사용하려고 합니다. Qt에서 정의한 값 목록은 &lt;a href=&quot;http://doc.qt.io/qt-5/qt.html#Key-enum&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;http://doc.qt.io/qt-5/qt.html#Key-enum&lt;/span&gt;&lt;/a&gt; 페이지를 확인하세요. 키가 이 프로그램에서 기본적으로 지원되지 않는 것을 발견하면 AntiMicroX의 &lt;a href=&quot;https://github.com/davaughnl/Pad/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;GitHub 페이지&lt;/span&gt;&lt;/a&gt;에 문제를 보고하여 프로그램이 직접 지원하도록 편집할 수 있도록 하세요. 그대로 사용자 정의 접두사가 알려지지 않은 값에 추가되어 계속 사용할 수 있습니다. 주요 문제는 프로파일이 더 이상 이식 가능하지 않다는 것입니다.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../../../src/gui/qkeydisplaydialog.ui" line="99"/>

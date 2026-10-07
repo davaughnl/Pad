@@ -665,6 +665,8 @@ set(CPACK_PACKAGE_NAME "Pad")
 
 # Specify out directory for final executable.
 install(TARGETS antimicrox RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
+install(FILES LICENSE src/pad/OFL.txt src/pad/LUCIDE-LICENSE.txt
+        DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/licenses/Pad")
 
 if(UNIX)
     find_package(ECM REQUIRED NO_MODULE)

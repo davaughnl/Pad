@@ -327,8 +327,8 @@ In seguito il progetto è stato trasferito nuovamente a [https://github.com/Anti
     </message>
     <message>
         <location filename="../../../src/gui/aboutdialog.ui" line="87"/>
-        <source>AntiMicroX</source>
-        <translation>AntiMicroX</translation>
+        <source>Pad</source>
+        <translation>Pad</translation>
     </message>
     <message>
         <location filename="../../../src/gui/aboutdialog.ui" line="339"/>
@@ -4094,7 +4094,7 @@ events from gamepads. Defaults to 10 ms.
 
 Reducing the poll rate value could cause the application to
 use more CPU power so please test the setting that you use
-before using AntiMicroX unattended.</source>
+before using Pad unattended.</source>
         <translation>Cambia la velocità di verifica usata dal programma per
 scoprire nuovi eventi dai gamepad. Predefinito: 10 ms.
 
@@ -4115,8 +4115,8 @@ quando il tasto chiusura della finestra viene cliccato.</translation>
     </message>
     <message>
         <location filename="../../../src/gui/mainsettingsdialog.ui" line="257"/>
-        <source>Have Windows start AntiMicroX at system startup.</source>
-        <translation>Avvia AntiMicroX automaticamente all&apos;avvio di Windows.</translation>
+        <source>Have Windows start Pad at system startup.</source>
+        <translation>Avvia Pad automaticamente all&apos;avvio di Windows.</translation>
     </message>
     <message>
         <location filename="../../../src/gui/mainsettingsdialog.ui" line="260"/>
@@ -4195,8 +4195,8 @@ il programma si apre la prima volta.</translation>
     </message>
     <message>
         <location filename="../../../src/gui/mainsettingsdialog.ui" line="330"/>
-        <source>Associate .amgp files with AntiMicroX in Windows Explorer.</source>
-        <translation>Associa file .amgp con AntiMicroX in Windows Explorer.</translation>
+        <source>Associate .amgp files with Pad in Windows Explorer.</source>
+        <translation>Associa file .amgp con Pad in Windows Explorer.</translation>
     </message>
     <message>
         <location filename="../../../src/gui/mainsettingsdialog.ui" line="333"/>
@@ -4256,8 +4256,8 @@ per seconds.</source>
     </message>
     <message>
         <location filename="../../../src/gui/mainsettingsdialog.ui" line="623"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;AntiMicroX has been translated into many different languages by contributors. By default, the program will choose an appropriate translation based on your system&apos;s locale setting. However, you can make AntiMicroX load a different translation depending on the language that you choose from the list below.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;AntiMicroX è stato tradotto in molte lingue dai collaboratori. Il programma sceglierà la traduzione da utilizzare basandosi sulle impostazioni della lingua di sistema. Tuttavia, puoi fargli caricare una lingua differente scegliendola tra quelle disponibili nella lista sottostante.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pad has been translated into many different languages by contributors. By default, the program will choose an appropriate translation based on your system&apos;s locale setting. However, you can make Pad load a different translation depending on the language that you choose from the list below.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pad è stato tradotto in molte lingue dai collaboratori. Il programma sceglierà la traduzione da utilizzare basandosi sulle impostazioni della lingua di sistema. Tuttavia, puoi fargli caricare una lingua differente scegliendola tra quelle disponibili nella lista sottostante.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../../../src/gui/mainsettingsdialog.ui" line="658"/>
@@ -4316,9 +4316,9 @@ per seconds.</source>
     </message>
     <message>
         <location filename="../../../src/gui/mainsettingsdialog.ui" line="721"/>
-        <source>You can help with translating AntiMicroX. Just click here: &lt;a
+        <source>You can help with translating Pad. Just click here: &lt;a
                           href=&quot;https://hosted.weblate.org/projects/antimicrox/&quot;&gt;link&lt;/a&gt;</source>
-        <translation>Puoi aiutarci a tradurre AntiMicroX. Ti basta cliccare qui: &lt;a
+        <translation>Puoi aiutarci a tradurre Pad. Ti basta cliccare qui: &lt;a
                           href=&quot;https://hosted.weblate.org/projects/antimicrox/&quot;&gt;link&lt;/a&gt;</translation>
     </message>
     <message>
@@ -4409,11 +4409,11 @@ per seconds.</source>
     <message>
         <location filename="../../../src/gui/mainsettingsdialog.ui" line="959"/>
         <source>Disable the &quot;Enhanced Pointer Precision&quot; Windows setting
-while AntiMicroX is running. Disabling &quot;Enhanced Pointer Precision&quot;
-will allow mouse movement within AntiMicroX to be more
+while Pad is running. Disabling &quot;Enhanced Pointer Precision&quot;
+will allow mouse movement within Pad to be more
 precise.</source>
         <translation>Disabilita l&apos;impostazione di Windows &quot;Aumenta precisione puntatore&quot;
-mentre AntiMicroX è in esecuzione. Disattivare &quot;Aumenta precisione 
+mentre Pad è in esecuzione. Disattivare &quot;Aumenta precisione
 puntatore&quot;permetterà movimenti del mouse più precisi nel programma.</translation>
     </message>
     <message>
@@ -4656,8 +4656,8 @@ se non hanno già disattivato tale opzione in Windows.</translation>
     <name>MainWindow</name>
     <message>
         <location filename="../../../src/gui/mainwindow.ui" line="23"/>
-        <source>AntiMicroX</source>
-        <translation>AntiMicroX</translation>
+        <source>Pad</source>
+        <translation>Pad</translation>
     </message>
     <message>
         <location filename="../../../src/gui/mainwindow.ui" line="79"/>
@@ -5418,8 +5418,8 @@ grandezza dello schermo.</translation>
     </message>
     <message>
         <location filename="../../../src/gui/qkeydisplaydialog.ui" line="41"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Press a key on your keyboard to see how the key is detected by this application. The window will show the system native key value, the original value given by Qt (if applicable), and the custom value used by AntiMicroX.&lt;/p&gt;&lt;p&gt;The AntiMicroX key value and the Qt key value will usually be the same. AntiMicroX tries to use the key values defined in Qt when possible. Check the page &lt;a href=&quot;http://doc.qt.io/qt-5/qt.html#Key-enum&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;http://doc.qt.io/qt-5/qt.html#Key-enum&lt;/span&gt;&lt;/a&gt; for a list of values defined by Qt. If you discover that a key is not natively supported by this program, please report the problem to AntiMicroX&apos;s &lt;a href=&quot;https://github.com/AntiMicroX/antimicrox/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;GitHub page&lt;/span&gt;&lt;/a&gt; so that the program can be edited to support it directly. As it is, a custom prefix is added to unknown values so they can still be used; the main problem is that the profile will no longer be portable.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Premere un tasto della tastiera per vedere come viene rilevato dall&apos;applicazione. La finestra mostrerà il valore nativo del tasto nel sistema, il valore originale fornito da Qt (se possibile) e il valore personalizzato utilizzato da AntiMicroX.&lt;/p&gt;&lt;p&gt;Il valore del tasto AntiMicroX e quello Qt saranno solitamente gli stessi. AntiMicroX cerca di utilizzare i valori dei tasti definiti in Qt quando possibile. Controlla la pagina &lt;a href=&quot;http://doc.qt.io/qt-5/qt.html#Key-enum&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;http://doc.qt.io/qt-5/qt.html#Key-enum&lt;/span&gt;&lt;/a&gt; per un elenco dei valori definiti da Qt. Se scopri che un tasto non è supportato in modo nativo da questo programma, segnalaci il problema sulla &lt;a href=&quot;https://github.com/AntiMicroX/antimicrox/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;pagina GitHub&lt;/span&gt;&lt;/a&gt; di AntiMicroX, in modo che il programma possa essere modificato per supportarlo nativamente. Ad oggi, ai valori sconosciuti viene aggiunto un prefisso personalizzato in modo che possano comunque essere utilizzati; purtroppo, ciò implica che il profilo non sarà più portatile.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Press a key on your keyboard to see how the key is detected by this application. The window will show the system native key value, the original value given by Qt (if applicable), and the custom value used by Pad.&lt;/p&gt;&lt;p&gt;The Pad key value and the Qt key value will usually be the same. Pad tries to use the key values defined in Qt when possible. Check the page &lt;a href=&quot;http://doc.qt.io/qt-5/qt.html#Key-enum&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;http://doc.qt.io/qt-5/qt.html#Key-enum&lt;/span&gt;&lt;/a&gt; for a list of values defined by Qt. If you discover that a key is not natively supported by this program, please report the problem to Pad&apos;s &lt;a href=&quot;https://github.com/davaughnl/Pad/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;GitHub page&lt;/span&gt;&lt;/a&gt; so that the program can be edited to support it directly. As it is, a custom prefix is added to unknown values so they can still be used; the main problem is that the profile will no longer be portable.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Premere un tasto della tastiera per vedere come viene rilevato dall&apos;applicazione. La finestra mostrerà il valore nativo del tasto nel sistema, il valore originale fornito da Qt (se possibile) e il valore personalizzato utilizzato da Pad.&lt;/p&gt;&lt;p&gt;Il valore del tasto Pad e quello Qt saranno solitamente gli stessi. Pad cerca di utilizzare i valori dei tasti definiti in Qt quando possibile. Controlla la pagina &lt;a href=&quot;http://doc.qt.io/qt-5/qt.html#Key-enum&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;http://doc.qt.io/qt-5/qt.html#Key-enum&lt;/span&gt;&lt;/a&gt; per un elenco dei valori definiti da Qt. Se scopri che un tasto non è supportato in modo nativo da questo programma, segnalaci il problema sulla &lt;a href=&quot;https://github.com/davaughnl/Pad/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;pagina GitHub&lt;/span&gt;&lt;/a&gt; di Pad, in modo che il programma possa essere modificato per supportarlo nativamente. Ad oggi, ai valori sconosciuti viene aggiunto un prefisso personalizzato in modo che possano comunque essere utilizzati; purtroppo, ciò implica che il profilo non sarà più portatile.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../../../src/gui/qkeydisplaydialog.ui" line="99"/>
