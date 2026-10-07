@@ -97,7 +97,7 @@ MainWindow::MainWindow(QMap<SDL_JoystickID, InputDevice *> *joysticks, CommandLi
     PadUi::install(this, ui->centralWidget, ui->stackedWidget, ui->tabWidget,
                    ui->actionUpdate_Joysticks, ui->actionOptions);
 
-    setWindowIcon(PadderCommon::loadIcon("antimicrox", ":/images/antimicrox.png"));
+    setWindowIcon(PadderCommon::loadIcon("io.github.davaughnl.Pad", ":/images/antimicrox.png"));
     ui->stackedWidget->setCurrentIndex(0);
 
     m_translator = nullptr;
