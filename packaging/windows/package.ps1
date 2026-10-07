@@ -4,7 +4,9 @@ param(
     [Parameter(Mandatory)][string]$QtDir,
     [Parameter(Mandatory)][string]$SdlDir,
     [string]$OutputDir = 'dist',
-    [Parameter(Mandatory)][ValidatePattern('^[0-9a-f]{40}$')][string]$Revision
+    [Parameter(Mandatory)][ValidatePattern('^[0-9a-f]{40}$')][string]$Revision,
+    [string]$OpenSslDir,
+    [ValidatePattern('^([0-9]+\.[0-9]+\.[0-9]+)?$')][string]$Version = ''
 )
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
@@ -14,7 +16,7 @@ $qt = (Resolve-Path $QtDir).Path
 $sdl = (Resolve-Path $SdlDir).Path
 New-Item -ItemType Directory -Path $OutputDir -Force | Out-Null
 $output = (Resolve-Path $OutputDir).Path
-$name = "Pad-$($Revision.Substring(0, 8))-Windows-x64"
+$name = if ($Version) { "Pad-$Version-Windows-x64" } else { "Pad-$($Revision.Substring(0, 8))-Windows-x64" }
 $stage = Join-Path $output $name
 if (Test-Path $stage) { Remove-Item $stage -Recurse -Force }
 $bin = Join-Path $stage 'bin'
@@ -35,6 +37,16 @@ if (-not $env:VCToolsRedistDir) { throw 'Run in an MSVC developer environment (V
 $crt = Get-ChildItem "$env:VCToolsRedistDir/x64" -Directory -Filter 'Microsoft.VC*.CRT' | Sort-Object Name -Descending | Select-Object -First 1
 if (-not $crt) { throw 'MSVC x64 CRT directory not found' }
 Copy-Item "$($crt.FullName)/*.dll" $bin
+# Qt 5.15 loads OpenSSL 1.1.1 at run time for HTTPS (in-app updates).
+if (-not $OpenSslDir) { throw 'OpenSslDir is required: HTTPS updates need libssl/libcrypto' }
+$ssl = (Resolve-Path $OpenSslDir).Path
+foreach ($dll in @('libssl-1_1-x64.dll', 'libcrypto-1_1-x64.dll')) {
+    $found = Get-ChildItem $ssl -Recurse -Filter $dll | Select-Object -First 1
+    if (-not $found) { throw "$dll not found under $ssl" }
+    Copy-Item $found.FullName $bin
+}
+$sslLicense = Get-ChildItem $ssl -Recurse -Include 'LICENSE*','license*' -File -ErrorAction SilentlyContinue | Select-Object -First 1
+if ($sslLicense) { Copy-Item $sslLicense.FullName "$stage/licenses/OpenSSL-LICENSE.txt" }
 $translations = @(Get-ChildItem "$build/share/antimicrox/translations" -Filter '*.qm')
 if ($translations.Count -eq 0) { throw 'No compiled Pad translations; build the updateqm target first' }
 $translations | Copy-Item -Destination "$data/translations"
@@ -61,9 +73,9 @@ Translations=share/qt/translations
 '@ | Set-Content "$bin/qt.conf" -Encoding utf8
 @{
     product = 'Pad'; revision = $Revision; configuration = 'Release'; architecture = 'x64'
-    qt = '5.15.2'; sdl = '2.32.10'; compiler = 'MSVC / Visual Studio 2022'; updates = $false
+    qt = '5.15.2'; sdl = '2.32.10'; compiler = 'MSVC / Visual Studio 2022'; updates = $true; version = $(if ($Version) { $Version } else { 'development' })
 } | ConvertTo-Json | Set-Content "$stage/build-info.json" -Encoding utf8
-$required = @('pad.exe', 'SDL2.dll', 'Qt5Core.dll', 'Qt5Gui.dll', 'Qt5Widgets.dll', 'Qt5Network.dll', 'Qt5Concurrent.dll', 'platforms/qwindows.dll', 'vcruntime140.dll', 'msvcp140.dll')
+$required = @('pad.exe', 'SDL2.dll', 'Qt5Core.dll', 'Qt5Gui.dll', 'Qt5Widgets.dll', 'Qt5Network.dll', 'Qt5Concurrent.dll', 'platforms/qwindows.dll', 'vcruntime140.dll', 'msvcp140.dll', 'libssl-1_1-x64.dll', 'libcrypto-1_1-x64.dll')
 foreach ($file in $required) {
     if (-not (Test-Path (Join-Path $bin $file))) { throw "Missing portable dependency: $file" }
 }

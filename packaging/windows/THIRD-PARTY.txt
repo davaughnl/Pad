@@ -15,3 +15,7 @@ SDL GameControllerDB: license included in LICENSE_SDL_GameControllerDB.
 Microsoft Visual C++ runtime: Copyright Microsoft Corporation.
 Distributed as app-local DLLs from the Visual Studio 2022 redistributable.
 License: https://visualstudio.microsoft.com/license-terms/vs2022-cruntime/
+
+OpenSSL 1.1.1: Copyright The OpenSSL Project. Used by Qt for HTTPS when checking
+for and downloading updates. License: licenses/OpenSSL-LICENSE.txt (Apache-style
+OpenSSL/SSLeay terms). Source: https://www.openssl.org/source/

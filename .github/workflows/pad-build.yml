@@ -48,6 +48,7 @@ jobs:
           target: desktop
           arch: win64_msvc2019_64
           cache: true
+          tools: 'tools_openssl_x64'
       - name: Test non-destructive profile association behavior
         run: |
           cmake -S packaging/windows/tests -B association-tests -G Ninja -DCMAKE_BUILD_TYPE=Release "-DCMAKE_PREFIX_PATH=$env:QT_ROOT_DIR"
@@ -100,15 +101,20 @@ jobs:
           if-no-files-found: warn
           retention-days: 14
       - name: Stage portable distribution
-        run: ./packaging/windows/package.ps1 -BuildDir build -QtDir "$env:QT_ROOT_DIR" -SdlDir "$env:RUNNER_TEMP/sdl2" -OutputDir dist -Revision '${{ github.sha }}'
+        run: ./packaging/windows/package.ps1 -BuildDir build -QtDir "$env:QT_ROOT_DIR" -SdlDir "$env:RUNNER_TEMP/sdl2" -OutputDir dist -Revision '${{ github.sha }}' -OpenSslDir "$env:IQTA_TOOLS/OpenSSL"
       - name: Test extracted zip without build dependencies in PATH
         run: ./packaging/windows/smoke-test.ps1 -Archive (Get-ChildItem dist/Pad-*-Windows-x64.zip | Select-Object -First 1).FullName -OutputDir smoke
+      - name: Build installer (CI version 0.0.0)
+        run: ./packaging/windows/make-installer.ps1 -StageDir (Get-ChildItem dist -Directory -Filter 'Pad-*-Windows-x64' | Select-Object -First 1).FullName -Version 0.0.0 -OutputDir dist
+      - name: Test silent install, upgrade and uninstall
+        run: ./packaging/windows/test-installer.ps1 -Installer (Resolve-Path 'dist/Pad-0.0.0-Windows-x64-Setup.exe').Path -Version 0.0.0
       - name: Upload portable zip
         uses: actions/upload-artifact@v4
         with:
           name: Pad-Windows-x64-${{ github.sha }}
           path: |
             dist/Pad-*-Windows-x64.zip
+            dist/Pad-*-Setup.exe
             dist/*.sha256
           if-no-files-found: error
           retention-days: 30

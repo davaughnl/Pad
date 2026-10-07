@@ -1,193 +1,102 @@
-name: Release
+name: Release (draft)
+
+# Tag vX.Y.Z builds Pad for Windows, runs the Windows gates and creates a DRAFT
+# release with four assets. It never publishes: the owner reviews the draft and
+# publishes it by hand.
 on:
-    release:
-        types: [published]
+  push:
+    tags: ['v[0-9]+.[0-9]+.[0-9]+']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pad-release-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
-    # Build .deb files for debian-based systems.
-    build_deb:
-        strategy:
-          fail-fast: false
-          matrix: 
-            include:
-              # - name: Ubuntu 26-04
-              #   image: ubuntu-26.04
-              - name: Ubuntu 24-04
-                image: ubuntu-24.04
-              - name: Ubuntu 22-04
-                image: ubuntu-22.04
-        name: Build deb package ${{ matrix.name }}
-        runs-on: ${{ matrix.image }}
-
-        steps:
-            - uses: actions/checkout@v4
-
-            - name: Install Dependencies with QT6
-              run: sudo apt-get update && sudo apt-get install extra-cmake-modules qt6-base-dev qt6-l10n-tools qt6-tools-dev-tools libqt6core5compat6-dev qt6-tools-dev libsdl2-dev libxi-dev libxtst-dev libx11-dev itstool gettext
-
-            - name: Configure CMake
-              run: cmake -DCPACK_GENERATOR="DEB" -DCMAKE_BUILD_TYPE=Release -DCHECK_FOR_UPDATES=ON -DANTIMICROX_PKG_VERSION="GitHub deb Release" -B ${{ github.workspace }}/build
-
-            - name: Create Deb package
-              id: create_deb
-              run: cmake --build ${{ github.workspace }}/build --parallel 8 --target package
-
-            - name: Rename deb files
-              id: rename_debs
-              run: |
-                FILE=`find ${{ github.workspace }}/build/*.deb`
-                NEWFILE=`echo $FILE | sed 's/x86_64/${{ matrix.image }}-x86_64/'`
-                mv $FILE $NEWFILE
-
-            # Upload generated files to release
-            - name: Upload binaries to release
-              uses: AButler/upload-release-assets@v3.0
-              with:
-                  files: ${{ github.workspace }}/build/*.deb
-                  repo-token: ${{ github.token }}
-
-    # Build universal and portable AppImage package.
-    build-appimage:
-        # Version of ubuntu building this appimage, it shouldn't be the latest verion of ubuntu to avoid breaking compatibility with older systems
-        name: Build AppImage package
-        runs-on: ubuntu-24.04
-
-        steps:
-
-            - name: Install Dependencies
-              run: |
-                  sudo apt-get update
-                  sudo apt-get install extra-cmake-modules qt6-base-dev qt6-tools-dev-tools libqt6core5compat6-dev qt6-tools-dev libsdl2-dev libxi-dev libxtst-dev libx11-dev itstool gettext zsync libfuse-dev
-
-            #Replace original library with the newer one
-            - name: Build and install newer SDL2
-              run: |
-                git clone https://github.com/libsdl-org/SDL.git -b release-2.32.10
-                cd SDL
-                mkdir build
-                cd build
-                cmake ..
-                cmake --build .
-                sudo cmake --install .
-                sudo cp /usr/local/lib/libSDL2-2.0.so.0 /usr/lib/x86_64-linux-gnu/libSDL2-2.0.so.0
-
-            - uses: actions/checkout@v4
-
-            - name: Prepare files needed to create AppImage
-              run: |
-                  mkdir build && cd ./build
-                  wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
-                  wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
-                  wget https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/download/continuous/linuxdeploy-plugin-qt-x86_64.AppImage
-                  chmod +x linuxdeploy-x86_64.AppImage
-                  chmod +x appimagetool-x86_64.AppImage
-                  chmod +x linuxdeploy-plugin-qt-x86_64.AppImage
-
-            - name: Build Pad
-              run: |
-                  VERSION=`cat ./CMakeLists.txt | grep "set(ANTIMICROX_" | grep _VERSION | cut -d " " -f 2 | cut -d ")" -f 1`
-                  MAJOR=`echo $VERSION | cut -d " " -f 1`
-                  MINOR=`echo $VERSION | cut -d " " -f 2`
-                  PATCH=`echo $VERSION | cut -d " " -f 3`
-                  cd build
-                  cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DANTIMICROX_PKG_VERSION="$MAJOR.$MINOR.$PATCH-x86_64 GitHub AppImage Release"
-                  make install DESTDIR=AppDir -j8
-
-            # UPDATE_INFORMATION describes where information about updates can be found
-            - name: Create AppImage file
-              run: |
-                  cd build
-                  export UPDATE_INFORMATION="zsync|https://github.com/$GITHUB_REPOSITORY/releases/latest/download/Pad-x86_64.AppImage.zsync"
-                  ./linuxdeploy-x86_64.AppImage --appdir AppDir --plugin qt
-                  ./appimagetool-x86_64.AppImage AppDir/ -u "$UPDATE_INFORMATION"
-
-            # Upload generated files to release
-            - name: Upload binaries to release
-              uses: AButler/upload-release-assets@v3.0
-              with:
-                  files: ./build/Pad*.AppImage;./build/Pad*.zsync
-                  repo-token: ${{ github.token }}
-
-            - name: Build Pad-debug
-              run: |
-                  VERSION=`cat ./CMakeLists.txt | grep "set(ANTIMICROX_" | grep _VERSION | cut -d " " -f 2 | cut -d ")" -f 1`
-                  MAJOR=`echo $VERSION | cut -d " " -f 1`
-                  MINOR=`echo $VERSION | cut -d " " -f 2`
-                  PATCH=`echo $VERSION | cut -d " " -f 3`
-                  cd build
-                  cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=/usr -DANTIMICROX_PKG_VERSION="$MAJOR.$MINOR.$PATCH-debug-x86_64 \(AppImage-debug\)"
-                  make install DESTDIR=AppDir -j8
-
-            - name: Create AppImage debug file
-              run: |
-                  cd build
-                  ./linuxdeploy-x86_64.AppImage --appdir AppDir --plugin qt
-                  ./appimagetool-x86_64.AppImage AppDir/
-                  mv Pad-x86_64.AppImage Pad-debug-x86_64.AppImage
-
-            # Upload generated files to release
-            - name: Upload binaries to release
-              uses: AButler/upload-release-assets@v3.0
-              with:
-                  files: ./build/Pad*.AppImage
-                  repo-token: ${{ github.token }}
-
-    build-windows-packages:
-        name: Create Windows packages
-        runs-on: windows-2022
-        defaults:
-            run:
-                shell: msys2 {0}
-
-        steps:
-            - uses: actions/checkout@v4
-
-            - name: Install Dependencies
-              uses: msys2/setup-msys2@v2
-              with:
-                  install: >-
-                      mingw-w64-x86_64-toolchain
-                      mingw-w64-x86_64-ninja
-                      mingw-w64-x86_64-nsis
-                      mingw-w64-x86_64-openssl
-                      mingw-w64-x86_64-cmake
-                  msystem: mingw64
-                  release: false
-            # mingw-w64-x86_64-SDL2 not installed above because of: https://github.com/AntiMicroX/antimicrox/issues/465
-            # SDL2 version for release locked
-            - name: Install sdl2
-              run: |
-                curl -L -o mingw-w64-x86_64-SDL2-2.32.10-1-any.pkg.tar.zst https://mirror.msys2.org/mingw/mingw64/mingw-w64-x86_64-SDL2-2.32.10-1-any.pkg.tar.zst
-                pacman --noconfirm -U mingw-w64-x86_64-SDL2-2.32.10-1-any.pkg.tar.zst
-
-            - name: Install Qt
-              uses: jurplel/install-qt-action@v4
-              with:
-                  version: "6.10"
-                  host: "windows"
-                  target: "desktop"
-                  arch: "win64_mingw"
-                  dir: "${{ github.workspace }}/qt/"
-                  install-deps: "true"
-
-            - name: Configure CMake
-              run: cmake -DCMAKE_BUILD_TYPE=Release -DCHECK_FOR_UPDATES=ON -DANTIMICROX_PKG_VERSION="GitHub Windows Release" -B '${{ github.workspace }}'/build
-              env:
-                  CMAKE_PREFIX_PATH: "${{ env.QT_ROOT_DIR }}/lib/cmake"
-
-            - name: Build Installer
-              run: cmake --build '${{ github.workspace }}'/build --target package --parallel 8
-
-            - name: Configure CMake (portable)
-              run: cmake -DCMAKE_BUILD_TYPE=Release -DCHECK_FOR_UPDATES=ON -DANTIMICROX_PKG_VERSION="GitHub Portable Windows Release" -DPORTABLE_WIN=ON -B '${{ github.workspace }}'/build
-              env:
-                  CMAKE_PREFIX_PATH: "${{ env.QT_ROOT_DIR }}/lib/cmake"
-
-            - name: Build ZIP Package
-              run: cmake --build '${{ github.workspace }}'/build --target package --parallel 8
-
-            - name: Upload binaries to release
-              uses: AButler/upload-release-assets@v3.0
-              with:
-                  files: build/Pad*.exe;build/Pad*.zip
-                  repo-token: ${{ github.token }}
+  windows:
+    name: Windows x64 release build
+    runs-on: windows-2022
+    timeout-minutes: 45
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v4
+      - name: Version from tag
+        run: |
+          $tag = '${{ github.ref_name }}'
+          if ($tag -notmatch '^v([0-9]+\.[0-9]+\.[0-9]+)$') { throw "Bad tag: $tag" }
+          "PAD_VERSION=$($Matches[1])" | Out-File -Append -Encoding utf8 $env:GITHUB_ENV
+      - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+      - name: Install Qt5 and OpenSSL
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: '5.15.2'
+          host: windows
+          target: desktop
+          arch: win64_msvc2019_64
+          cache: true
+          tools: 'tools_openssl_x64'
+      - name: Install SDL2
+        run: ./packaging/windows/get-sdl2.ps1 -Destination "$env:RUNNER_TEMP/sdl2"
+      - name: Configure
+        run: |
+          cmake -S . -B build -G Ninja `
+            -DCMAKE_BUILD_TYPE=Release `
+            -DUSE_QT6_BY_DEFAULT=OFF `
+            -DPORTABLE_WIN=ON `
+            -DCHECK_FOR_UPDATES=OFF `
+            "-DPAD_VERSION=$env:PAD_VERSION" `
+            "-DCMAKE_PREFIX_PATH=$env:QT_ROOT_DIR" `
+            "-DSDL2_PATH=$env:RUNNER_TEMP/sdl2" `
+            "-DSDL2_INCLUDE_DIR=$env:RUNNER_TEMP/sdl2/include" `
+            "-DSDL2_LIBRARY=$env:RUNNER_TEMP/sdl2/lib/x64/SDL2.lib" `
+            "-DSDL2MAIN_LIBRARY=$env:RUNNER_TEMP/sdl2/lib/x64/SDL2main.lib" `
+            "-DSDL2_DLL_LOCATION_DIR=$env:RUNNER_TEMP/sdl2/lib/x64"
+          if ($LASTEXITCODE -ne 0) { throw 'CMake configure failed' }
+      - name: Build
+        run: |
+          cmake --build build --target antimicrox updateqm --parallel 4
+          if ($LASTEXITCODE -ne 0) { throw 'CMake build failed' }
+      - name: Stage portable distribution
+        run: ./packaging/windows/package.ps1 -BuildDir build -QtDir "$env:QT_ROOT_DIR" -SdlDir "$env:RUNNER_TEMP/sdl2" -OutputDir dist -Revision '${{ github.sha }}' -Version $env:PAD_VERSION -OpenSslDir "$env:IQTA_TOOLS/OpenSSL"
+      - name: Smoke test extracted zip
+        run: ./packaging/windows/smoke-test.ps1 -Archive "dist/Pad-$env:PAD_VERSION-Windows-x64.zip" -OutputDir smoke
+      - name: Build installer
+        run: ./packaging/windows/make-installer.ps1 -StageDir "dist/Pad-$env:PAD_VERSION-Windows-x64" -Version $env:PAD_VERSION -OutputDir dist
+      - name: Test silent install, upgrade and uninstall
+        run: ./packaging/windows/test-installer.ps1 -Installer (Resolve-Path "dist/Pad-$env:PAD_VERSION-Windows-x64-Setup.exe").Path -Version $env:PAD_VERSION
+      - name: Verify checksums
+        run: |
+          Get-ChildItem dist -Filter *.sha256 | ForEach-Object {
+            $line = (Get-Content $_.FullName -Raw).Trim()
+            $expected, $file = $line -split '\s+', 2
+            $actual = (Get-FileHash (Join-Path dist $file) -Algorithm SHA256).Hash.ToLowerInvariant()
+            if ($actual -ne $expected) { throw "Checksum mismatch: $file" }
+            Write-Host "OK $file $actual"
+          }
+          $n = @(Get-ChildItem dist -File | Where-Object { $_.Name -like 'Pad-*' }).Count
+          if ($n -ne 4) { throw "Expected 4 release assets, found $n" }
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Pad-release-${{ github.ref_name }}
+          path: |
+            dist/Pad-*.zip
+            dist/Pad-*.exe
+            dist/*.sha256
+            smoke/
+          retention-days: 30
+      - name: Create DRAFT release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create '${{ github.ref_name }}' --draft --verify-tag --title "Pad $env:PAD_VERSION" --notes "Pad $env:PAD_VERSION for Windows x64. Unsigned build: Windows SmartScreen may warn on first run." `
+            "dist/Pad-$env:PAD_VERSION-Windows-x64-Setup.exe" "dist/Pad-$env:PAD_VERSION-Windows-x64-Setup.exe.sha256" `
+            "dist/Pad-$env:PAD_VERSION-Windows-x64.zip" "dist/Pad-$env:PAD_VERSION-Windows-x64.zip.sha256"
+          if ($LASTEXITCODE -ne 0) { throw 'gh release create failed' }
