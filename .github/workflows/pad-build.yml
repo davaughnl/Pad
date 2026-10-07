@@ -76,6 +76,29 @@ jobs:
         run: |
           cmake --build build --target antimicrox updateqm --parallel 4
           if ($LASTEXITCODE -ne 0) { throw 'CMake build failed' }
+      - name: Build native editor-model fixture
+        run: |
+          cmake -S packaging/windows/editor-tests -B editor-build -G Ninja `
+            -DCMAKE_BUILD_TYPE=Release `
+            "-DCMAKE_PREFIX_PATH=$env:QT_ROOT_DIR" `
+            "-DSDL2_PATH=$env:RUNNER_TEMP/sdl2" `
+            "-DSDL2_INCLUDE_DIR=$env:RUNNER_TEMP/sdl2/include" `
+            "-DSDL2_LIBRARY=$env:RUNNER_TEMP/sdl2/lib/x64/SDL2.lib" `
+            "-DSDL2MAIN_LIBRARY=$env:RUNNER_TEMP/sdl2/lib/x64/SDL2main.lib" `
+            "-DSDL2_DLL_LOCATION_DIR=$env:RUNNER_TEMP/sdl2/lib/x64"
+          if ($LASTEXITCODE -ne 0) { throw 'Editor fixture configure failed' }
+          cmake --build editor-build --target pad-editor-tests --parallel 4
+          if ($LASTEXITCODE -ne 0) { throw 'Editor fixture build failed' }
+      - name: Test native editor models and capture real dialogs
+        run: ./packaging/windows/editor-tests/run.ps1 -BuildDir editor-build -QtDir "$env:QT_ROOT_DIR" -SdlDir "$env:RUNNER_TEMP/sdl2"
+      - name: Upload native editor evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Pad-Windows-editors-${{ github.sha }}
+          path: editor-evidence/
+          if-no-files-found: warn
+          retention-days: 14
       - name: Stage portable distribution
         run: ./packaging/windows/package.ps1 -BuildDir build -QtDir "$env:QT_ROOT_DIR" -SdlDir "$env:RUNNER_TEMP/sdl2" -OutputDir dist -Revision '${{ github.sha }}'
       - name: Test extracted zip without build dependencies in PATH
