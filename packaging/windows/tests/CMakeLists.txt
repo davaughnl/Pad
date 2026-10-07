@@ -1,0 +1,8 @@
+cmake_minimum_required(VERSION 3.16)
+project(PadWindowsAssociationTests LANGUAGES CXX)
+find_package(Qt5 5.15 REQUIRED COMPONENTS Core)
+add_executable(pad-association-test association-test.cpp)
+target_compile_features(pad-association-test PRIVATE cxx_std_17)
+target_link_libraries(pad-association-test PRIVATE Qt5::Core)
+enable_testing()
+add_test(NAME pad-association-test COMMAND pad-association-test)

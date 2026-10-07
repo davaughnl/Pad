@@ -12,6 +12,7 @@
 #include <QSettings>
 
 #include "winextras.h"
+#include "pad/windowsprofileassociation.h"
 #include <shlobj.h>
 
 typedef DWORD(WINAPI *MYPROC)(HANDLE, DWORD, LPWSTR, PDWORD);
@@ -24,8 +25,6 @@ const unsigned int WinExtras::EXTENDED_FLAG = 0x100;
 int WinExtras::originalMouseAccel = 0;
 
 static const QString ROOTASSOCIATIONKEY("HKEY_CURRENT_USER\\Software\\Classes");
-static const QString FILEASSOCIATIONKEY(QString("%1\\%2").arg(ROOTASSOCIATIONKEY).arg(".amgp"));
-static const QString PROGRAMASSOCIATIONKEY(QString("%1\\%2").arg(ROOTASSOCIATIONKEY).arg("AntiMicro.amgp"));
 
 WinExtras WinExtras::_instance;
 
@@ -281,52 +280,27 @@ QString WinExtras::getForegroundWindowExePath()
 
 bool WinExtras::containsFileAssociationinRegistry()
 {
-    bool result = false;
-
-    QSettings associationReg(FILEASSOCIATIONKEY, QSettings::NativeFormat);
-    QString temp = associationReg.value("Default", "").toString();
-    if (!temp.isEmpty())
-    {
-        result = true;
-    }
-
-    return result;
+    return PadProfileAssociation::contains(ROOTASSOCIATIONKEY, QSettings::NativeFormat);
 }
 
 void WinExtras::writeFileAssocationToRegistry()
 {
-    QSettings fileAssociationReg(FILEASSOCIATIONKEY, QSettings::NativeFormat);
-    fileAssociationReg.setValue("Default", "AntiMicro.amgp");
-    fileAssociationReg.sync();
-
-    QSettings programAssociationReg(PROGRAMASSOCIATIONKEY, QSettings::NativeFormat);
-    programAssociationReg.setValue("Default", tr("AntiMicro Profile"));
-    programAssociationReg.setValue(
-        "shell/open/command/Default",
-        QString("\"%1\" \"%2\"").arg(QDir::toNativeSeparators(qApp->applicationFilePath())).arg("%1"));
-    programAssociationReg.setValue("DefaultIcon/Default",
-                                   QString("%1,%2").arg(QDir::toNativeSeparators(qApp->applicationFilePath())).arg("0"));
-    programAssociationReg.sync();
-
-    // Required to refresh settings used in Windows Explorer
+    if (!PadProfileAssociation::registerProfile(ROOTASSOCIATIONKEY, QSettings::NativeFormat,
+                                                 qApp->applicationFilePath()))
+    {
+        qWarning() << "Pad profile registration failed; existing associations were not replaced";
+        return;
+    }
     SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, 0, 0);
 }
 
 void WinExtras::removeFileAssociationFromRegistry()
 {
-    QSettings fileAssociationReg(FILEASSOCIATIONKEY, QSettings::NativeFormat);
-    QString currentValue = fileAssociationReg.value("Default", "").toString();
-    if (currentValue == "AntiMicro.amgp")
+    if (!PadProfileAssociation::unregisterProfile(ROOTASSOCIATIONKEY, QSettings::NativeFormat))
     {
-        fileAssociationReg.remove("Default");
-        fileAssociationReg.sync();
+        qWarning() << "Pad profile unregistration failed; existing associations were not removed";
+        return;
     }
-
-    QSettings programAssociationReg(PROGRAMASSOCIATIONKEY, QSettings::NativeFormat);
-    programAssociationReg.remove("");
-    programAssociationReg.sync();
-
-    // Required to refresh settings used in Windows Explorer
     SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, 0, 0);
 }
 
