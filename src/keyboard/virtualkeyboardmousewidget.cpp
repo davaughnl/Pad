@@ -622,7 +622,7 @@ VirtualKeyPushButton *VirtualKeyboardMouseWidget::createNewKey(QString xcodestri
     int height = 32;
     QFont font1;
     font1.setPointSize(8);
-    font1.setBold(true);
+    font1.setBold(false);
 
     VirtualKeyPushButton *pushButton = new VirtualKeyPushButton(xcodestring, this);
 
@@ -729,7 +729,7 @@ QPushButton *VirtualKeyboardMouseWidget::createNoneKey()
     QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
     pushButton->setSizePolicy(sizePolicy);
     QFont font1;
-    font1.setBold(true);
+    font1.setBold(false);
     pushButton->setFont(font1);
 
     return pushButton;
@@ -989,7 +989,7 @@ QPushButton *VirtualKeyboardMouseWidget::createOtherKeysMenu()
     QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
     otherKeysPushbutton->setSizePolicy(sizePolicy);
     QFont font1;
-    font1.setBold(true);
+    font1.setBold(false);
     otherKeysPushbutton->setFont(font1);
 
     otherKeysMenu = new QMenu(this);

@@ -206,9 +206,8 @@ void importLegacySettingsIfExist()
                 .arg(fileToCopy.canonicalFilePath(), location);
         const QString errorMessage =
             QObject::tr("Some problem with settings migration occurred.\nOriginal configs are stored in \n%1\n but their "
-                        "new location is: \n%2\nYou can migrate manually by renaming old directory and renaming file to "
-                        "antimicrox_settings.ini.")
-                .arg(fileToCopy.canonicalFilePath(), location);
+                        "new location is: \n%2\nYou can copy the original settings file manually to: \n%3.")
+                .arg(fileToCopy.canonicalFilePath(), location, PadderCommon::configFilePath());
 
         QMessageBox msgBox;
         if (copySuccess)

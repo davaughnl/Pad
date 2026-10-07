@@ -448,7 +448,7 @@
                    <property name="font">
                     <font>
                      <weight>75</weight>
-                     <bold>true</bold>
+                     <bold>false</bold>
                     </font>
                    </property>
                    <property name="toolTip">
@@ -560,7 +560,7 @@
                  <property name="font">
                   <font>
                    <weight>75</weight>
-                   <bold>true</bold>
+                   <bold>false</bold>
                   </font>
                  </property>
                  <property name="toolTip">
@@ -618,7 +618,7 @@
                  <property name="font">
                   <font>
                    <weight>75</weight>
-                   <bold>true</bold>
+                   <bold>false</bold>
                   </font>
                  </property>
                  <property name="toolTip">
@@ -676,7 +676,7 @@
                  <property name="font">
                   <font>
                    <weight>75</weight>
-                   <bold>true</bold>
+                   <bold>false</bold>
                   </font>
                  </property>
                  <property name="text">
@@ -708,7 +708,7 @@
                  <property name="font">
                   <font>
                    <weight>75</weight>
-                   <bold>true</bold>
+                   <bold>false</bold>
                   </font>
                  </property>
                  <property name="text">

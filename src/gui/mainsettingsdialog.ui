@@ -103,7 +103,7 @@
           <bool>true</bool>
          </property>
          <property name="text">
-          <string>Auto Profile functionality is incompatible with Wayland session &lt;a href=&quot;https://github.com/AntiMicroX/antimicrox/issues/303&quot;&gt;more info&lt;/a&gt;</string>
+          <string>Auto Profile functionality is unavailable in Wayland sessions.</string>
          </property>
          <property name="wordWrap">
           <bool>true</bool>
@@ -718,8 +718,7 @@ Settings will not take affect until you either refresh all joysticks or unplug t
          <item>
           <widget class="QLabel" name="label_translation_help">
            <property name="text">
-            <string>You can help with translating Pad. Just click here: &lt;a
-                          href=&quot;https://hosted.weblate.org/projects/antimicrox/&quot;&gt;link&lt;/a&gt;</string>
+            <string>Help translate Pad by contributing translation files through the &lt;a href=&quot;https://github.com/davaughnl/Pad&quot;&gt;Pad repository&lt;/a&gt;.</string>
            </property>
            <property name="textFormat">
             <enum>Qt::TextFormat::RichText</enum>

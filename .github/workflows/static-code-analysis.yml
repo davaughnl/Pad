@@ -40,7 +40,7 @@ jobs:
             - name: Configure CMake
               run: cmake -GNinja -DCMAKE_BUILD_TYPE=Debug -B ${{ github.workspace }}/build
 
-            - name: Build AntiMicroX
+            - name: Build Pad
               run: cmake --build ${{ github.workspace }}/build
 
             # Run codeql analysis
@@ -73,7 +73,7 @@ jobs:
             - name: Configure CMake
               run: cmake -GNinja -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=1 -B ${{ github.workspace }}/build
 
-            - name: Build AntiMicroX
+            - name: Build Pad
               run: cmake --build ${{ github.workspace }}/build
 
             # Run infer analysis using the compilation database

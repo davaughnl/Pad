@@ -1,6 +1,6 @@
-# Building AntiMicroX
+# Building Pad
 
-Most of these packages are already built and available on [Release Page](https://github.com/AntiMicroX/antimicrox/releases), but if you want, you can also build AntiMicroX by yourself.
+Most of these packages are already built and available on [Release Page](https://github.com/davaughnl/Pad), but if you want, you can also build Pad by yourself.
 
 The simplest way is to use devcontainer (Docker required) which sets up proper build environment for you (tested only with Linux host).
 
@@ -77,19 +77,19 @@ For setting up your environment you may use `msys2`. Alternatively, you may use 
 
 This way of building is useful for testing purposes.
 
-In order to build this program, open a terminal and cd into the antimicrox
+In order to build this program, open a terminal and cd into the Pad
 directory. Enter the following commands in order to:
 
 Clone repository
 
 ```bash
-git clone https://github.com/AntiMicroX/antimicrox.git
+git clone https://github.com/davaughnl/Pad.git
 ```
 
 Build the program:
 
 ```bash
-cd antimicrox
+cd Pad
 mkdir build && cd build
 cmake ..
 cmake --build .
@@ -98,18 +98,18 @@ cmake --build .
 Run built binaries
 
 ```
-./bin/antimicrox
+./bin/pad
 ```
 
 #### MSVC building tips
 
-Recent versions of Visual Studio (2017+) have support for cmake projects. Under Visual Studio 2022, building AntiMicroX is quite straight forward.
+Recent versions of Visual Studio (2017+) have support for cmake projects. Under Visual Studio 2022, building Pad is quite straight forward.
 - Ensure you have compatable versions of [Qt](https://www.qt.io/download) (5.9 works as of writing,) and [SDL2-devel](https://github.com/libsdl-org/SDL/releases/) installed.
 - Open antimicrox as a local folder in VS22. It should pick up the `CMakeLists.txt` and offer an option to open the CMake settings editor. If it doesn't, right click on `CMakeLists.txt` in the solution explorer and select `CMake settings for antimicrox`.
 - In the `Command arguments` section, add an argument to tell CMake where to find your Qt; E.g.: `"-DCMAKE_PREFIX_PATH=C:\Qt\5.9\msvc2017_64\lib\cmake"`. As of writing, Qt's msvc2017 works properly through vs22.
 - Under the `Cmake variables and cache` section, click the link labeled `Save and generate cmake cache to load variables.
 - If the CMake generation fails due to SDL2, find the variables named `SDL2_PATH`, `SDL2_INCLUDE_DIR`, and `SDL2_DLL_LOCATION_DIR` in the list view, and set them properly. You may also need to move the headers in the SDL2 include dir inside a folder named `SDL2` to match their include paths on other systems.
-- At this point you should be able to save your changes to regenerate the cmake cache, which will then allow you to build `antimicrox.exe` through Visual Studio.
+- At this point you should be able to save your changes to regenerate the cmake cache, which will then allow you to build `pad.exe` through Visual Studio.
 
 A recommended way of installation is building package typical for for your system (or building universal one like an AppImage).
 
@@ -135,7 +135,7 @@ sudo make uninstall
 ### Build Options for CMake
 
 There are a few application specific options that can be used when running
-cmake to build antimicrox. The following file will attempt to list some of those
+cmake to build Pad. The following file will attempt to list some of those
 options and describe their use in the project.
 
 ### Universal Options
@@ -207,7 +207,7 @@ Once this file is created and has the debug rules present, it should be picked u
 ## Building DEB package
 
 ```bash
-cd antimicrox
+cd Pad
 mkdir build && cd build
 cmake .. -DCPACK_GENERATOR="DEB"
 cmake --build . --target package
@@ -218,7 +218,7 @@ cmake --build . --target package
 If your distribution doesn't yet have an RPM package, you can easily build one for yourself.
 
 ```bash
-cd antimicrox
+cd Pad
 mkdir build && cd build
 cmake .. -DCPACK_GENERATOR="RPM"
 cmake --build . --target package
@@ -243,7 +243,7 @@ chmod +x appimagetool-x86_64.AppImage
 chmod +x linuxdeploy-plugin-qt-x86_64.AppImage
 ```
 
-Build antimicrox and install it in AppDir directory
+Build Pad and install it in AppDir directory
 
 ```bash
 cmake .. -DCMAKE_INSTALL_PREFIX=/usr
@@ -261,7 +261,7 @@ Create AppImage file
 ## Building Flatpak
 
 The command builds the package into the `build` folder and installs the created flatpak.
-The up to date Flathub manifest can be located in [Flathub's Github repo](https://github.com/flathub/io.github.antimicrox.antimicrox).
+The local manifest is in this repository; Pad is not published on Flathub. See the [Pad repository](https://github.com/davaughnl/Pad).
 
 ```bash
 flatpak install flathub org.kde.Platform//6.10 org.kde.Sdk//6.10

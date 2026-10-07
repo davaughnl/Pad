@@ -1,10 +1,10 @@
-# Maintained on Flathub at https://github.com/flathub/io.github.antimicrox.antimicrox
+# Local Pad Flatpak build manifest; not published on Flathub.
 
-app-id: io.github.antimicrox.antimicrox
+app-id: io.github.davaughnl.Pad
 runtime: org.kde.Platform
 runtime-version: '6.10'
 sdk: org.kde.Sdk
-command: antimicrox
+command: pad
 finish-args:
   # KDE Plasma tray icon
   - --talk-name=org.kde.StatusNotifierWatcher
@@ -19,7 +19,7 @@ finish-args:
   - --filesystem=home
 
 modules:
-  - name: antimicrox
+  - name: pad
     buildsystem: cmake
     config-opts:
       - -DANTIMICROX_PKG_VERSION=flatpak-localbuild

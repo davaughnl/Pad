@@ -39,7 +39,7 @@
     <qresource prefix="/">
         <file>pad/icons/chevron-up.svg</file>
         <file>pad/icons/check.svg</file>
-        <file>images/antimicrox.png</file>
+        <file>images/pad.png</file>
         <file>images/axis.png</file>
         <file>images/button.png</file>
         <file>images/controllermap.svg</file>
@@ -90,6 +90,6 @@
         <file>images/battery-low-level.png</file>
         <file alias="images/actions/join_slots.png">pad/icons/merge.svg</file>
         <file alias="images/actions/split_slot.png">pad/icons/split.svg</file>
-        <file>CHANGELOG.md</file>
+        <file alias="CHANGELOG.md">../PAD-CHANGELOG.md</file>
     </qresource>
 </RCC>

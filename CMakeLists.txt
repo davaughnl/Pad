@@ -665,7 +665,7 @@ set(CPACK_PACKAGE_NAME "Pad")
 
 # Specify out directory for final executable.
 install(TARGETS antimicrox RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
-install(FILES LICENSE src/pad/OFL.txt src/pad/LUCIDE-LICENSE.txt
+install(FILES LICENSE UPSTREAM-DEVELOPMENT.txt src/pad/OFL.txt src/pad/LUCIDE-LICENSE.txt
         DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/licenses/Pad")
 
 if(UNIX)
@@ -684,7 +684,7 @@ if(UNIX)
     ecm_install_icons(ICONS share/icons/breeze_themed/48-apps-io.github.davaughnl.Pad.trayicon.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons THEME breeze)
     ecm_install_icons(ICONS src/images/48-apps-io.github.davaughnl.Pad.trayicon.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons)
 
-    install(FILES CHANGELOG.md DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/doc/antimicrox")
+    install(FILES CHANGELOG.md DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/doc/Pad")
     install(FILES other/io.github.davaughnl.Pad.desktop DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/applications")
     install(FILES other/io.github.antimicrox.antimicrox.xml DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/mime/packages")
 
@@ -715,7 +715,7 @@ endif(UNIX)
 # Copy libraries needed by Windows
 if(WIN32)
     add_custom_command(TARGET antimicrox POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E echo "dll files linked with antimicrox executable: $<TARGET_RUNTIME_DLLS:antimicrox> "
+        COMMAND ${CMAKE_COMMAND} -E echo "dll files linked with Pad executable: $<TARGET_RUNTIME_DLLS:antimicrox> "
         COMMAND_EXPAND_LISTS
         )
     add_custom_command(TARGET antimicrox POST_BUILD
@@ -864,7 +864,7 @@ if(CPACK_GENERATOR STREQUAL "DEB")
         set(CPACK_DEBIAN_PACKAGE_DEPENDS "libqt6widgets6 (>= ${QT_REQUIRED_VERSION}), libsdl2-2.0-0 (>= ${SDL_REQUIRED_VERSION}), libc6")
     endif(QT_VERSION_MAJOR EQUAL 5)
     set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Pad contributors")
-    set(CPACK_DEBIAN_PACKAGE_DESCRIPTION "Pad maps controller buttons to keyboard, mouse, scripts and macros. A redesigned AntiMicroX fork.")
+    set(CPACK_DEBIAN_PACKAGE_DESCRIPTION "Pad maps controller buttons to keyboard, mouse, scripts and macros.")
 
     message("Preparing documentation for DEB package")
     add_custom_target(package_docummentation ALL)
@@ -872,7 +872,7 @@ if(CPACK_GENERATOR STREQUAL "DEB")
     #Compress changelog and save it as share/doc/xournalpp/changelog.Debian.gz
     add_custom_command(TARGET package_docummentation PRE_BUILD
             COMMAND gzip -c -9 -n "${PROJECT_SOURCE_DIR}/CHANGELOG.md" > "changelog.gz" VERBATIM)
-    install(FILES "${CMAKE_CURRENT_BINARY_DIR}/changelog.gz" DESTINATION "share/doc/antimicrox/")
+    install(FILES "${CMAKE_CURRENT_BINARY_DIR}/changelog.gz" DESTINATION "share/doc/Pad/")
 
     #Strip binaries from unnecessary notes, comments, etc
     add_custom_command(TARGET antimicrox POST_BUILD
@@ -886,14 +886,14 @@ if(WIN32 AND NOT UNIX)
 
         # There is a bug in NSI that does not handle full UNIX paths properly.
         # Make sure there is at least one set of four backlashes.
-        set(CPACK_PACKAGE_ICON "${PROJECT_SOURCE_DIR}/src/images\\\\antimicrox.ico")
+        set(CPACK_PACKAGE_ICON "${PROJECT_SOURCE_DIR}/src/images\\\\pad.ico")
         set(CPACK_NSIS_MUI_ICON "${CPACK_PACKAGE_ICON}")
         set(CPACK_NSIS_MUI_UNIICON "${CPACK_PACKAGE_ICON}")
         set(CPACK_NSIS_INSTALLED_ICON_NAME "bin/pad.exe")
 
         set(CPACK_NSIS_DISPLAY_NAME "Pad")
         set(CPACK_NSIS_PACKAGE_NAME "Pad")
-        set(CPACK_NSIS_HELP_LINK "http:\\\\\\\\github.com/AntiMicroX/antimicrox/wiki")
+        set(CPACK_NSIS_HELP_LINK "http:\\\\\\\\github.com/davaughnl/Pad")
         set(CPACK_NSIS_URL_INFO_ABOUT "http:\\\\\\\\github.com/davaughnl/Pad")
         set(CPACK_NSIS_MODIFY_PATH ON)
     else()

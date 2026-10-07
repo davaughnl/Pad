@@ -77,7 +77,7 @@ void JoyButtonContextMenu::buildMenu()
         if (i == button->getSetSelection())
         {
             QFont tempFont = tempSetMenu->menuAction()->font();
-            tempFont.setBold(true);
+            tempFont.setBold(false);
             tempSetMenu->menuAction()->setFont(tempFont);
         }
 

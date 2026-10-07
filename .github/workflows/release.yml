@@ -83,7 +83,7 @@ jobs:
                   chmod +x appimagetool-x86_64.AppImage
                   chmod +x linuxdeploy-plugin-qt-x86_64.AppImage
 
-            - name: Build AntiMicroX
+            - name: Build Pad
               run: |
                   VERSION=`cat ./CMakeLists.txt | grep "set(ANTIMICROX_" | grep _VERSION | cut -d " " -f 2 | cut -d ")" -f 1`
                   MAJOR=`echo $VERSION | cut -d " " -f 1`
@@ -97,7 +97,7 @@ jobs:
             - name: Create AppImage file
               run: |
                   cd build
-                  export UPDATE_INFORMATION="zsync|https://github.com/$GITHUB_REPOSITORY/releases/latest/download/antimicrox-x86_64.AppImage.zsync"
+                  export UPDATE_INFORMATION="zsync|https://github.com/$GITHUB_REPOSITORY/releases/latest/download/Pad-x86_64.AppImage.zsync"
                   ./linuxdeploy-x86_64.AppImage --appdir AppDir --plugin qt
                   ./appimagetool-x86_64.AppImage AppDir/ -u "$UPDATE_INFORMATION"
 
@@ -105,10 +105,10 @@ jobs:
             - name: Upload binaries to release
               uses: AButler/upload-release-assets@v3.0
               with:
-                  files: ./build/AntiMicroX*.AppImage;./build/AntiMicroX*.zsync
+                  files: ./build/Pad*.AppImage;./build/Pad*.zsync
                   repo-token: ${{ github.token }}
 
-            - name: Build AntiMicroX-debug
+            - name: Build Pad-debug
               run: |
                   VERSION=`cat ./CMakeLists.txt | grep "set(ANTIMICROX_" | grep _VERSION | cut -d " " -f 2 | cut -d ")" -f 1`
                   MAJOR=`echo $VERSION | cut -d " " -f 1`
@@ -123,13 +123,13 @@ jobs:
                   cd build
                   ./linuxdeploy-x86_64.AppImage --appdir AppDir --plugin qt
                   ./appimagetool-x86_64.AppImage AppDir/
-                  mv AntiMicroX-x86_64.AppImage AntiMicroX-debug-x86_64.AppImage
+                  mv Pad-x86_64.AppImage Pad-debug-x86_64.AppImage
 
             # Upload generated files to release
             - name: Upload binaries to release
               uses: AButler/upload-release-assets@v3.0
               with:
-                  files: ./build/AntiMicroX*.AppImage
+                  files: ./build/Pad*.AppImage
                   repo-token: ${{ github.token }}
 
     build-windows-packages:
@@ -189,5 +189,5 @@ jobs:
             - name: Upload binaries to release
               uses: AButler/upload-release-assets@v3.0
               with:
-                  files: build/antimicrox*.exe;build/antimicrox*.zip
+                  files: build/Pad*.exe;build/Pad*.zip
                   repo-token: ${{ github.token }}

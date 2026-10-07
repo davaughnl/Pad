@@ -72,6 +72,30 @@ class PadBrandingTests(unittest.TestCase):
         settings = (ROOT / 'src/gui/mainsettingsdialog.ui').read_text()
         self.assertIn('Your default app is not changed.', settings)
 
+    def test_visible_ui_copy_has_only_attribution_exceptions(self):
+        for path in (ROOT / 'src').rglob('*.ui'):
+            for text in ET.parse(path).findall('.//string'):
+                value = text.text or ''
+                if path.name == 'aboutdialog.ui' and ('Based on AntiMicroX' in value or 'Pad is based on AntiMicroX' in value):
+                    continue
+                self.assertIsNone(re.search('antimicro', value, re.I), str(path))
+        common = (ROOT / 'src/common.h').read_text()
+        self.assertIn('wikiPage = "https://github.com/davaughnl/Pad"', common)
+        resources = (ROOT / 'src/resources.qrc').read_text()
+        self.assertIn('../PAD-CHANGELOG.md', resources)
+
+    def test_regular_font_is_global_and_has_system_fallback(self):
+        shell = (ROOT / 'src/pad/padshell.cpp').read_text()
+        self.assertIn('QFontDatabase::systemFont(QFontDatabase::GeneralFont)', shell)
+        self.assertIn('applicationFontFamilies(geistId)', shell)
+        for path in (ROOT / 'src').rglob('*'):
+            if path.suffix not in ('.cpp', '.ui', '.qss'):
+                continue
+            content = path.read_text()
+            self.assertNotIn('setBold(true)', content, str(path))
+            self.assertNotIn('<bold>true</bold>', content, str(path))
+            self.assertIsNone(re.search(r'font-weight:\s*(bold|[5-9]00)', content), str(path))
+
     def test_upstream_credits_and_profile_engine_retained(self):
         self.assertIn('AntiMicroX', (ROOT / 'README.upstream.md').read_text())
         self.assertIn('Travis Nickles', (ROOT / 'src/gui/aboutdialog.ui').read_text())

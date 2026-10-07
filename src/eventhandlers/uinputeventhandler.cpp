@@ -483,7 +483,7 @@ void UInputEventHandler::printPostMessages()
                 QObject::tr("Unable to open uinput files, this may cause problems with generating events.\nTo check "
                             "possible solutions please visit: ")
                     .append(
-                        "<a href='https://github.com/Pad/antimicrox/wiki/Open-uinput-error'>Pad Wiki</a>"));
+                        "<a href='https://github.com/davaughnl/Pad'>Pad support</a>"));
             msgBox.setDetailedText(lastErrorString);
             msgBox.exec();
         }

@@ -65,7 +65,7 @@ jobs:
                   CXX: ${{ matrix.cxx }}
                   CC: ${{ matrix.cc }}
 
-            - name: Build AntiMicroX
+            - name: Build Pad
               run: cmake --build ${{ github.workspace }}/build
 
     # Build job for Windows

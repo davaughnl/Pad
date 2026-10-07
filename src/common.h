@@ -121,7 +121,7 @@ const QString localSocketKey = "padSignalListener";
 const QString unhideCommand = "unhideWindow";
 const QString githubProjectPage = "https://github.com/davaughnl/Pad/";
 const QString githubIssuesPage = "https://github.com/davaughnl/Pad/issues";
-const QString wikiPage = "https://github.com/AntiMicroX/antimicrox/wiki";
+const QString wikiPage = "https://github.com/davaughnl/Pad";
 
 const QString mouseDeviceName("Pad Mouse Emulation");
 const QString keyboardDeviceName("Pad Keyboard Emulation");

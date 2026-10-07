@@ -125,8 +125,14 @@ void PadUi::install(QMainWindow *window, QWidget *central, QStackedWidget *stack
                     QTabWidget *controllers, QAction *refresh, QAction *settings)
 {
     qApp->setStyle(new PadStyle);
-    QFontDatabase::addApplicationFont(QStringLiteral(":/pad/Geist.ttf"));
-    qApp->setFont(QFont(QStringLiteral("Geist"), 10));
+    const int geistId = QFontDatabase::addApplicationFont(QStringLiteral(":/pad/Geist.ttf"));
+    const QStringList families = QFontDatabase::applicationFontFamilies(geistId);
+    QFont appFont = QFontDatabase::systemFont(QFontDatabase::GeneralFont);
+    if (!families.isEmpty()) appFont.setFamily(families.first());
+    appFont.setPointSize(10);
+    appFont.setWeight(QFont::Normal);
+    appFont.setBold(false);
+    qApp->setFont(appFont);
     QPalette palette;
     palette.setColor(QPalette::Window, QColor("#111113"));
     palette.setColor(QPalette::WindowText, QColor("#e8e8eb"));
@@ -141,7 +147,7 @@ void PadUi::install(QMainWindow *window, QWidget *central, QStackedWidget *stack
     palette.setColor(QPalette::Disabled, QPalette::ButtonText, QColor("#67676f"));
     qApp->setPalette(palette);
     QFile sheet(QStringLiteral(":/pad/pad.qss"));
-    if (sheet.open(QIODevice::ReadOnly)) qApp->setStyleSheet(QString::fromUtf8(sheet.readAll()));
+    if (sheet.open(QIODevice::ReadOnly)) qApp->setStyleSheet(QString::fromUtf8(sheet.readAll()).replace(QStringLiteral("\"Geist\""), QStringLiteral("\"%1\"").arg(appFont.family())));
     window->setStyleSheet(QString()); // Remove the upstream blue/green widget overrides.
     window->setMinimumSize(940, 680);
     window->resize(1180, 800);
