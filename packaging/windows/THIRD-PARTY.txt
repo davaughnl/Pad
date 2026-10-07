@@ -19,3 +19,9 @@ License: https://visualstudio.microsoft.com/license-terms/vs2022-cruntime/
 OpenSSL 1.1.1: Copyright The OpenSSL Project. Used by Qt for HTTPS when checking
 for and downloading updates. License: licenses/OpenSSL-LICENSE.txt (Apache-style
 OpenSSL/SSLeay terms). Source: https://www.openssl.org/source/
+
+Interception (optional driver mode): Copyright Francisco Lopes. Used only when the user turns on
+the experimental driver mode. License: LGPL-3.0 for non-commercial use (licenses/Interception-LGPL-3.0.txt);
+commercial use needs a separate license from the author. The kernel driver is installed only when the user
+chooses to, with a Windows administrator prompt, and needs a restart.
+Source: https://github.com/oblitum/Interception

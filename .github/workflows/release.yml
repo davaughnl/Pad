@@ -57,6 +57,11 @@ jobs:
           if (-not $found) { Write-Host "::error::OpenSSL 1.1.1 not found. $($log -join ' ;; ')"; exit 1 }
           "OPENSSL_DIR=$($found.DirectoryName)" | Out-File -Append -Encoding utf8 $env:GITHUB_ENV
           Write-Host "OpenSSL at $($found.FullName)"
+      - name: Download Interception (optional driver mode files)
+        run: |
+          $zip = "$env:RUNNER_TEMP/Interception.zip"
+          Invoke-WebRequest 'https://github.com/oblitum/Interception/releases/download/v1.0.1/Interception.zip' -OutFile $zip
+          "INTERCEPTION_ZIP=$zip" | Out-File -Append -Encoding utf8 $env:GITHUB_ENV
       - name: Install SDL2
         run: ./packaging/windows/get-sdl2.ps1 -Destination "$env:RUNNER_TEMP/sdl2"
       - name: Configure
@@ -79,7 +84,7 @@ jobs:
           cmake --build build --target antimicrox updateqm --parallel 4
           if ($LASTEXITCODE -ne 0) { throw 'CMake build failed' }
       - name: Stage portable distribution
-        run: ./packaging/windows/package.ps1 -BuildDir build -QtDir "$env:QT_ROOT_DIR" -SdlDir "$env:RUNNER_TEMP/sdl2" -OutputDir dist -Revision '${{ github.sha }}' -Version $env:PAD_VERSION -OpenSslDir "$env:OPENSSL_DIR"
+        run: ./packaging/windows/package.ps1 -BuildDir build -QtDir "$env:QT_ROOT_DIR" -SdlDir "$env:RUNNER_TEMP/sdl2" -OutputDir dist -Revision '${{ github.sha }}' -Version $env:PAD_VERSION -OpenSslDir "$env:OPENSSL_DIR" -InterceptionZip "$env:INTERCEPTION_ZIP"
       - name: Smoke test extracted zip
         run: ./packaging/windows/smoke-test.ps1 -Archive "dist/Pad-$env:PAD_VERSION-Windows-x64.zip" -OutputDir smoke
       - name: Build installer

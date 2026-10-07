@@ -183,6 +183,8 @@ set(antimicrox_SOURCES
         src/gui/mainwindow.cpp
         src/pad/padshell.cpp
         src/pad/updatemanager.cpp
+        src/pad/interception.cpp
+        src/pad/drivermode.cpp
         src/gui/mousesettingsdialog.cpp
         src/gui/qkeydisplaydialog.cpp
         src/gui/quicksetdialog.cpp
@@ -487,6 +489,7 @@ elseif(WIN32)
          src/gui/winappprofiletimerdialog.cpp
          src/gui/capturedwindowinfodialog.cpp
          src/eventhandlers/winsendinputeventhandler.cpp
+         src/eventhandlers/wininterceptioneventhandler.cpp
          src/joykeyrepeathelper.cpp
     )
     LIST(APPEND antimicrox_HEADERS
@@ -496,6 +499,7 @@ elseif(WIN32)
         src/gui/winappprofiletimerdialog.h
         src/gui/capturedwindowinfodialog.h
         src/eventhandlers/winsendinputeventhandler.h
+        src/eventhandlers/wininterceptioneventhandler.h
         src/joykeyrepeathelper.h
     )
     LIST(APPEND antimicrox_FORMS

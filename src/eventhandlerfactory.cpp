@@ -30,6 +30,7 @@ static QHash<QString, QString> buildDisplayNames()
     QHash<QString, QString> temp;
 #ifdef Q_OS_WIN
     temp.insert("sendinput", "SendInput");
+    temp.insert("interception", "Driver mode (experimental)");
     #ifdef WITH_VMULTI
     temp.insert("vmulti", "Vmulti");
     #endif
@@ -71,6 +72,11 @@ EventHandlerFactory::EventHandlerFactory(const QString &handler, QObject *parent
     {
         VERBOSE() << "EventHandlerFactory: initializing sendinput handler.";
         eventHandler = new WinSendInputEventHandler(this);
+    }
+    if (handler == "interception")
+    {
+        VERBOSE() << "EventHandlerFactory: initializing driver mode (Interception) handler.";
+        eventHandler = new WinInterceptionEventHandler(this);
     }
 #endif
 
@@ -162,6 +168,7 @@ QStringList EventHandlerFactory::buildEventGeneratorList()
 
 #ifdef Q_OS_WIN
     temp.append("sendinput");
+    temp.append("interception");
 #else
     temp.append("xtest");
     temp.append("uinput");

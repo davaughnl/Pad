@@ -73,6 +73,11 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Association test build failed' }
           ctest --test-dir association-tests --output-on-failure
           if ($LASTEXITCODE -ne 0) { throw 'Association test failed' }
+      - name: Download Interception (optional driver mode files)
+        run: |
+          $zip = "$env:RUNNER_TEMP/Interception.zip"
+          Invoke-WebRequest 'https://github.com/oblitum/Interception/releases/download/v1.0.1/Interception.zip' -OutFile $zip
+          "INTERCEPTION_ZIP=$zip" | Out-File -Append -Encoding utf8 $env:GITHUB_ENV
       - name: Install SDL2
         run: ./packaging/windows/get-sdl2.ps1 -Destination "$env:RUNNER_TEMP/sdl2"
       - name: Configure Release portable build
@@ -117,7 +122,7 @@ jobs:
           if-no-files-found: warn
           retention-days: 14
       - name: Stage portable distribution
-        run: ./packaging/windows/package.ps1 -BuildDir build -QtDir "$env:QT_ROOT_DIR" -SdlDir "$env:RUNNER_TEMP/sdl2" -OutputDir dist -Revision '${{ github.sha }}' -OpenSslDir "$env:OPENSSL_DIR"
+        run: ./packaging/windows/package.ps1 -BuildDir build -QtDir "$env:QT_ROOT_DIR" -SdlDir "$env:RUNNER_TEMP/sdl2" -OutputDir dist -Revision '${{ github.sha }}' -OpenSslDir "$env:OPENSSL_DIR" -InterceptionZip "$env:INTERCEPTION_ZIP"
       - name: Test extracted zip without build dependencies in PATH
         run: ./packaging/windows/smoke-test.ps1 -Archive (Get-ChildItem dist/Pad-*-Windows-x64.zip | Select-Object -First 1).FullName -OutputDir smoke
       - name: Build installer (CI version 0.0.0)

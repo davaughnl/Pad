@@ -6,6 +6,7 @@ param(
     [string]$OutputDir = 'dist',
     [Parameter(Mandatory)][ValidatePattern('^[0-9a-f]{40}$')][string]$Revision,
     [string]$OpenSslDir,
+    [string]$InterceptionZip,
     [ValidatePattern('^([0-9]+\.[0-9]+\.[0-9]+)?$')][string]$Version = ''
 )
 $ErrorActionPreference = 'Stop'
@@ -47,6 +48,20 @@ foreach ($dll in @('libssl-1_1-x64.dll', 'libcrypto-1_1-x64.dll')) {
 }
 $sslLicense = Get-ChildItem $ssl -Recurse -Include 'LICENSE*','license*' -File -ErrorAction SilentlyContinue | Select-Object -First 1
 if ($sslLicense) { Copy-Item $sslLicense.FullName "$stage/licenses/OpenSSL-LICENSE.txt" }
+# Optional experimental driver mode: bundle the Interception driver files. Pad never installs them by itself.
+if ($InterceptionZip) {
+    $expected = 'ad038963d6413055765128b0b931f6e765147c9916dba79e65d872b261f9af10'
+    $actual = (Get-FileHash $InterceptionZip -Algorithm SHA256).Hash.ToLowerInvariant()
+    if ($actual -ne $expected) { throw "Interception.zip hash mismatch: $actual" }
+    $x = Join-Path $output 'interception-extract'
+    if (Test-Path $x) { Remove-Item $x -Recurse -Force }
+    Expand-Archive $InterceptionZip -DestinationPath $x
+    New-Item -ItemType Directory -Path "$stage/driver" -Force | Out-Null
+    Copy-Item "$x/Interception/library/x64/interception.dll" "$stage/driver/"
+    Copy-Item "$x/Interception/command line installer/install-interception.exe" "$stage/driver/"
+    Copy-Item "$x/Interception/licenses/non-commercial-usage/LGPL 3.0.txt" "$stage/licenses/Interception-LGPL-3.0.txt"
+    Remove-Item $x -Recurse -Force
+}
 $translations = @(Get-ChildItem "$build/share/antimicrox/translations" -Filter '*.qm')
 if ($translations.Count -eq 0) { throw 'No compiled Pad translations; build the updateqm target first' }
 $translations | Copy-Item -Destination "$data/translations"

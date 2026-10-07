@@ -32,6 +32,7 @@
 
 #ifdef Q_OS_WIN
     #include "eventhandlers/winsendinputeventhandler.h"
+    #include "eventhandlers/wininterceptioneventhandler.h"
 
     #ifdef WITH_VMULTI
         #include "eventhandlers/winvmultieventhandler.h"

@@ -450,7 +450,13 @@ int main(int argc, char *argv[])
     bool status = true;
     QString eventGeneratorIdentifier = QString();
     AntKeyMapper *keyMapper = nullptr;
-    EventHandlerFactory *factory = EventHandlerFactory::getInstance(cmdutility.getEventGenerator());
+    QString requestedGenerator = cmdutility.getEventGenerator();
+#ifdef Q_OS_WIN
+    // Driver mode is opt-in (settings key DriverMode) and only replaces the default backend.
+    if (requestedGenerator == EventHandlerFactory::fallBackIdentifier() && settings.value("DriverMode", false).toBool())
+        requestedGenerator = QStringLiteral("interception");
+#endif
+    EventHandlerFactory *factory = EventHandlerFactory::getInstance(requestedGenerator);
 
     if (!factory)
     {

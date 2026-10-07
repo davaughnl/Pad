@@ -14,7 +14,7 @@ function Run($exe, $argline) {
 Run $Installer "/S /D=$target"
 Start-Sleep 3
 Get-Process pad -ErrorAction SilentlyContinue | Stop-Process -Force
-foreach ($f in 'bin\pad.exe','bin\SDL2.dll','bin\libssl-1_1-x64.dll','bin\libcrypto-1_1-x64.dll','uninstall.exe','licenses\Pad-GPL-3.0.txt') {
+foreach ($f in 'bin\pad.exe','bin\SDL2.dll','bin\libssl-1_1-x64.dll','bin\libcrypto-1_1-x64.dll','driver\interception.dll','driver\install-interception.exe','uninstall.exe','licenses\Pad-GPL-3.0.txt') {
     if (-not (Test-Path (Join-Path $target $f))) { throw "missing after install: $f" }
 }
 $reg = Get-ItemProperty $key
