@@ -38,6 +38,9 @@ public:
         toggle = new QCheckBox(QObject::tr("Send mouse input through the driver"), this);
         toggle->setObjectName("driverModeCheckBox"); toggle->setChecked(enabled);
         column->addWidget(toggle);
+        restartLine = new QLabel(QObject::tr("Restart Pad to apply."), this);
+        restartLine->setObjectName("padDriverRestart"); restartLine->setVisible(false); column->addWidget(restartLine);
+        QObject::connect(toggle, &QCheckBox::toggled, this, [this, enabled](bool on) { restartLine->setVisible(on != enabled); });
         risk = new QLabel(QObject::tr("Driver mode is experimental. It sends mouse input through a system driver so games that ignore normal input can see it. Your anti-cheat may block your mouse and keyboard or flag your account. Requires administrator approval and a restart. Off by default."), this);
         risk->setObjectName("padDriverRisk"); risk->setWordWrap(true); column->addWidget(risk);
         status = new QLabel(this); status->setObjectName("padDriverStatus"); status->setWordWrap(true); column->addWidget(status);
@@ -94,7 +97,7 @@ private:
         }
         refresh();
     }
-    QCheckBox *toggle = nullptr; QLabel *risk = nullptr, *status = nullptr; QPushButton *button = nullptr;
+    QCheckBox *toggle = nullptr; QLabel *risk = nullptr, *restartLine = nullptr, *status = nullptr; QPushButton *button = nullptr;
     bool installing = true, restartNeeded = false; QString restartText;
 };
 }

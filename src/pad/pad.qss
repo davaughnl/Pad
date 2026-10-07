@@ -157,5 +157,5 @@ QProgressBar#padUpdateProgress { background: #26262c; border-radius: 1px; min-he
 QProgressBar#padUpdateProgress::chunk { background: #f4f4f5; border-radius: 1px; }
 QPushButton#padUpdateRetry { background: transparent; border: none; padding: 0 0 0 24px; min-height: 20px; color: #f4f4f5; font-size: 12px; text-decoration: underline; }
 QPushButton#padUpdateRetry:hover { color: #ffffff; }
-QLabel#padDriverRisk, QLabel#padDriverStatus { color: #9d9da5; }
+QLabel#padDriverRisk, QLabel#padDriverStatus, QLabel#padDriverRestart { color: #9d9da5; }
 QWidget#padDriverSection { background: transparent; }
