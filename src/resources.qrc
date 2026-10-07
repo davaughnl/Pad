@@ -37,6 +37,8 @@
         <file alias="icons/bug.svg">pad/icons/bug.svg</file>
     </qresource>
     <qresource prefix="/">
+        <file>pad/icons/chevron-up.svg</file>
+        <file>pad/icons/check.svg</file>
         <file>images/antimicrox.png</file>
         <file>images/axis.png</file>
         <file>images/button.png</file>

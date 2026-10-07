@@ -14,6 +14,8 @@
 #include <QPainter>
 #include <QPainterPath>
 #include <QPalette>
+#include <QProxyStyle>
+#include <QStyleFactory>
 #include <QPointer>
 #include <QPushButton>
 #include <QSignalBlocker>
@@ -24,6 +26,29 @@
 #include <QVBoxLayout>
 
 namespace {
+// Standard Qt dialogs must not fall back to colorful platform button icons.
+class PadStyle : public QProxyStyle
+{
+public:
+    PadStyle() : QProxyStyle(QStyleFactory::create(QStringLiteral("Fusion"))) {}
+    QIcon standardIcon(StandardPixmap icon, const QStyleOption *option = nullptr,
+                       const QWidget *widget = nullptr) const override
+    {
+        QString name;
+        switch (icon) {
+        case SP_DialogOkButton: case SP_DialogApplyButton: case SP_DialogYesButton: name = "check"; break;
+        case SP_DialogCancelButton: case SP_DialogCloseButton: case SP_DialogNoButton: name = "close"; break;
+        case SP_DialogSaveButton: name = "save"; break;
+        case SP_DialogOpenButton: case SP_DirIcon: name = "folder"; break;
+        case SP_DialogResetButton: case SP_DialogDiscardButton: name = "undo"; break;
+        case SP_DialogHelpButton: case SP_MessageBoxInformation: case SP_MessageBoxQuestion: name = "info"; break;
+        case SP_MessageBoxWarning: case SP_MessageBoxCritical: name = "bug"; break;
+        case SP_TrashIcon: name = "trash"; break;
+        default: return QProxyStyle::standardIcon(icon, option, widget);
+        }
+        return QIcon(QStringLiteral(":/pad/icons/%1.svg").arg(name));
+    }
+};
 QLabel *text(const QString &value, const char *name, QWidget *parent)
 {
     auto *label = new QLabel(value, parent);
@@ -99,7 +124,7 @@ void polishController(QWidget *page)
 void PadUi::install(QMainWindow *window, QWidget *central, QStackedWidget *stack,
                     QTabWidget *controllers, QAction *refresh, QAction *settings)
 {
-    qApp->setStyle("Fusion");
+    qApp->setStyle(new PadStyle);
     QFontDatabase::addApplicationFont(QStringLiteral(":/pad/Geist.ttf"));
     qApp->setFont(QFont(QStringLiteral("Geist"), 10));
     QPalette palette;

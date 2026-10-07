@@ -335,7 +335,7 @@
                 <string>Join</string>
                </property>
                <property name="icon">
-                <iconset theme="join_slots" resource="../resources.qrc">
+                <iconset resource="../resources.qrc">
                  <normaloff>:/images/actions/join_slots.png</normaloff>:/images/actions/join_slots.png</iconset>
                </property>
               </widget>
@@ -352,7 +352,7 @@
                 <string>Split</string>
                </property>
                <property name="icon">
-                <iconset theme="split_slot" resource="../resources.qrc">
+                <iconset resource="../resources.qrc">
                  <normaloff>:/images/actions/split_slot.png</normaloff>:/images/actions/split_slot.png</iconset>
                </property>
               </widget>

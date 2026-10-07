@@ -327,10 +327,10 @@ first launches.</string>
          <item>
           <widget class="QCheckBox" name="associateProfilesCheckBox">
            <property name="toolTip">
-            <string>Associate .amgp files with Pad in Windows Explorer.</string>
+            <string>Add Pad as an Open With option for .amgp profiles. Your default app is not changed.</string>
            </property>
            <property name="text">
-            <string>Associate Profiles</string>
+            <string>Add Pad to Open With</string>
            </property>
            <property name="checked">
             <bool>true</bool>
@@ -594,7 +594,7 @@ Settings will not take affect until you either refresh all joysticks or unplug t
               <string>Add</string>
              </property>
              <property name="icon">
-              <iconset theme="list-add"/>
+              <iconset resource="../resources.qrc"><normaloff>:/pad/icons/plus.svg</normaloff></iconset>
              </property>
             </widget>
            </item>
@@ -604,7 +604,7 @@ Settings will not take affect until you either refresh all joysticks or unplug t
               <string>Delete</string>
              </property>
              <property name="icon">
-              <iconset theme="list-remove"/>
+              <iconset resource="../resources.qrc"><normaloff>:/pad/icons/minus.svg</normaloff></iconset>
              </property>
             </widget>
            </item>
@@ -910,7 +910,7 @@ Settings will not take affect until you either refresh all joysticks or unplug t
               <string>Add</string>
              </property>
              <property name="icon">
-              <iconset theme="list-add"/>
+              <iconset resource="../resources.qrc"><normaloff>:/pad/icons/plus.svg</normaloff></iconset>
              </property>
             </widget>
            </item>
@@ -937,7 +937,7 @@ Settings will not take affect until you either refresh all joysticks or unplug t
               <string>Delete</string>
              </property>
              <property name="icon">
-              <iconset theme="list-remove"/>
+              <iconset resource="../resources.qrc"><normaloff>:/pad/icons/minus.svg</normaloff></iconset>
              </property>
             </widget>
            </item>

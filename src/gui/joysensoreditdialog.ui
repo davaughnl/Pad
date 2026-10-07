@@ -625,8 +625,7 @@
           <string>Mouse Settings</string>
          </property>
          <property name="icon">
-          <iconset theme="input-mouse">
-           <normaloff>.</normaloff>.</iconset>
+          <iconset resource="../resources.qrc"><normaloff>:/pad/icons/mouse.svg</normaloff></iconset>
          </property>
         </widget>
        </item>

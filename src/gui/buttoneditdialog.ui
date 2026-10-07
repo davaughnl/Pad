@@ -287,8 +287,7 @@ this button is being used.</string>
         <string>Advanced</string>
        </property>
        <property name="icon">
-        <iconset theme="games_config_options">
-         <normaloff>.</normaloff>.</iconset>
+        <iconset resource="../resources.qrc"><normaloff>:/pad/icons/sliders.svg</normaloff></iconset>
        </property>
       </widget>
      </item>

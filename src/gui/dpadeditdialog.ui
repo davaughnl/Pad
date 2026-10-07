@@ -274,9 +274,7 @@ to a diagonal zone.</string>
       <string>Mouse Settings</string>
      </property>
      <property name="icon">
-      <iconset theme="input-mouse">
-       <normaloff/>
-      </iconset>
+      <iconset resource="../resources.qrc"><normaloff>:/pad/icons/mouse.svg</normaloff></iconset>
      </property>
     </widget>
    </item>

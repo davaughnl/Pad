@@ -62,6 +62,16 @@ class PadBrandingTests(unittest.TestCase):
         for name in ('Pad-GPL-3.0.txt', 'Geist-OFL.txt', 'Lucide-ISC.txt', 'Qt-LGPL-3.0.txt'):
             self.assertIn(name, package)
 
+    def test_secondary_ui_icons_do_not_use_desktop_themes(self):
+        for path in (ROOT / 'src/gui').glob('*.ui'):
+            with self.subTest(dialog=path.name):
+                self.assertNotIn('<iconset theme=', path.read_text())
+        shell = (ROOT / 'src/pad/padshell.cpp').read_text()
+        self.assertIn('QProxyStyle', shell)
+        self.assertIn('SP_DialogCancelButton', shell)
+        settings = (ROOT / 'src/gui/mainsettingsdialog.ui').read_text()
+        self.assertIn('Your default app is not changed.', settings)
+
     def test_upstream_credits_and_profile_engine_retained(self):
         self.assertIn('AntiMicroX', (ROOT / 'README.upstream.md').read_text())
         self.assertIn('Travis Nickles', (ROOT / 'src/gui/aboutdialog.ui').read_text())
