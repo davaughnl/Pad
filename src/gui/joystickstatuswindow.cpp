@@ -316,8 +316,15 @@ JoystickStatusWindow::JoystickStatusWindow(InputDevice *joystick, QWidget *paren
     for (auto *bar : findChildren<QProgressBar *>()) bar->setFixedHeight(24);
     ui->axesScrollArea->widget()->layout()->activate();
     ui->axesScrollArea->setMinimumHeight(ui->axesScrollArea->widget()->layout()->sizeHint().height());
-    ui->buttonsScrollArea->widget()->layout()->activate();
-    ui->buttonsScrollArea->setMinimumHeight(ui->buttonsScrollArea->widget()->layout()->sizeHint().height());
+    // Polish before measuring: native styles can add border pixels to button
+    // rows after construction. Keep a small viewport inset for that rounding.
+    for (auto *button : ui->buttonsScrollArea->findChildren<JoyButtonStatusBox *>())
+        button->ensurePolished();
+    auto *buttonRows = ui->buttonsScrollArea->widget()->layout();
+    buttonRows->invalidate();
+    buttonRows->activate();
+    ui->buttonsScrollArea->setMinimumHeight(buttonRows->sizeHint().height() + 8 +
+                                           2 * ui->buttonsScrollArea->frameWidth());
     resize(720, sizeHint().height());
 }
 
