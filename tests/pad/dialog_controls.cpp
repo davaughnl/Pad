@@ -62,6 +62,17 @@
 #include <QThread>
 #include <QtTest/QTest>
 #include <cstdio>
+#include <cmath>
+#include <limits>
+#include <QMenu>
+#include <QAction>
+#include "gui/joysensoreditdialog.h"
+#include "gui/mainwindow.h"
+#include "mousedialog/mousesensorsettingsdialog.h"
+#include "sensors/joysensor.h"
+#include "joybuttontypes/joysensorbutton.h"
+#include "xml/inputdevicexml.h"
+#include "xmlconfigwriter.h"
 #include <functional>
 #include <stdexcept>
 static void check(bool ok, const char *msg) { if (!ok) throw std::runtime_error(msg); }
@@ -100,6 +111,7 @@ static void mouseTest(QDialog *d,const QList<JoyButton*> &buttons) {
     for(auto *b:buttons) check(b->getMouseMode()==JoyButton::MouseCursor,"cursor mode did not restore");
     closeButton(d,QDialogButtonBox::Close); delete d;
 }
+#include "extended_controls.inc"
 int main(int argc,char **argv) {
     QApplication app(argc,argv); PadUi::initializeApplicationStyle(); Logger::createInstance(nullptr,Logger::LOG_NONE);
     QThread worker;
@@ -109,14 +121,16 @@ int main(int argc,char **argv) {
         int index=SDL_JoystickAttachVirtual(SDL_JOYSTICK_TYPE_UNKNOWN,2,4,1); check(index>=0,"virtual attach failed");
         AntKeyMapper::getInstance("xtest"); check(EventHandlerFactory::getInstance("xtest")->handler()->init(),"XTest init failed");
         auto *settings=new AntiMicroSettings(tmp.filePath("settings.ini"),QSettings::IniFormat);
-        auto *j=new Joystick(SDL_JoystickOpen(index),index,settings,nullptr);
+        auto *j=new SensorJoystick(SDL_JoystickOpen(index),index,settings,nullptr);
+        if(test.startsWith("sensor-")||test=="calibration-gyro"||test=="calibration-accel") for(auto *current:j->getJoystick_sets())current->refreshSensors();
         auto *set=j->getSetJoystick(0); auto *button=set->getJoyButton(0); auto *axis=set->getJoyAxis(0); auto *dpad=set->getJoyDPad(0);
         // Production stick associations exist in every set, not only the active set.
         for(auto *current:j->getJoystick_sets()) current->addControlStick(0,new JoyControlStick(current->getJoyAxis(0),current->getJoyAxis(1),0,current->getIndex(),current));
         auto *stick=set->getJoyStick(0);
         // Match production: models/helper objects on input thread, UI on GUI thread.
         j->moveToThread(&worker); worker.start();
-        if(test=="button") {
+        if(extended(test,j,settings,tmp)) {}
+        else if(test=="button") {
             auto *d=new ButtonEditDialog(button,j,false); show(d);
             toggle(d,"toggleCheckBox"); check(button->getToggleState(),"toggle on not applied");
             toggle(d,"toggleCheckBox"); check(!button->getToggleState(),"toggle off not applied");
