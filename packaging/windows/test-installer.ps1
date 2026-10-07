@@ -4,7 +4,12 @@ $ErrorActionPreference = 'Stop'
 $target = Join-Path $env:RUNNER_TEMP 'pad-install-test'
 if (Test-Path $target) { Remove-Item $target -Recurse -Force }
 $key = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\Pad'
-function Run($exe, $argline) { $p = Start-Process $exe -ArgumentList $argline -Wait -PassThru; if ($p.ExitCode -ne 0) { throw "$exe exited $($p.ExitCode)" } }
+function Run($exe, $argline) {
+    # Process.WaitForExit waits for the installer only; Start-Process -Wait would also wait for the relaunched Pad.
+    $p = [System.Diagnostics.Process]::Start($exe, $argline)
+    if (-not $p.WaitForExit(120000)) { $p.Kill(); throw "$exe timed out" }
+    if ($p.ExitCode -ne 0) { throw "$exe exited $($p.ExitCode)" }
+}
 # Silent install (the same path the in-app updater uses).
 Run $Installer "/S /D=$target"
 Start-Sleep 3
