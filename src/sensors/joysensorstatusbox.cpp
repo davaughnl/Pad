@@ -152,16 +152,16 @@ void JoySensorStatusBox::drawArtificialHorizon()
 
     pen.setColor(Qt::transparent);
     painter.setPen(pen);
-    painter.setBrush(QBrush(QColor(64, 128, 255)));
+    painter.setBrush(QBrush(QColor(48, 48, 53)));
     painter.drawRect(QRectF(-10, 0, 20, 10));
     painter.setBrush(QBrush(Qt::black));
     painter.drawRect(QRectF(-10, -10, 20, 10));
 
     // Draw dead zone
-    pen.setColor(Qt::red);
+    pen.setColor(QColor(184, 184, 191));
     pen.setWidthF(0.02);
     painter.setPen(pen);
-    painter.setBrush(QBrush(QColor(255, 0, 0, 128)));
+    painter.setBrush(QBrush(QColor(184, 184, 191, 48)));
     double deadZone = m_sensor != nullptr ? m_sensor->getDeadZone() : 0.0;
     painter.drawEllipse(QPointF(0, 0), deadZone / 90, deadZone / 90);
 
@@ -170,16 +170,16 @@ void JoySensorStatusBox::drawArtificialHorizon()
     double maxZone = m_sensor != nullptr ? m_sensor->getMaxZone() : 0.0;
     maxZonePath.addEllipse(QPointF(0, 0), 10, 10);
     maxZonePath.addEllipse(QPointF(0, 0), maxZone / 90, maxZone / 90);
-    pen.setColor(Qt::darkGreen);
+    pen.setColor(QColor(96, 96, 104));
     pen.setWidthF(0.02);
     painter.setPen(pen);
-    painter.setBrush(QBrush(QColor(0, 128, 0, 128)));
+    painter.setBrush(QBrush(QColor(96, 96, 104, 64)));
     painter.drawPath(maxZonePath);
 
     // Draw diagonal zones
-    pen.setColor(Qt::green);
+    pen.setColor(QColor(144, 144, 152));
     painter.setPen(pen);
-    painter.setBrush(QBrush(QColor(0, 255, 0, 128)));
+    painter.setBrush(QBrush(QColor(144, 144, 152, 48)));
 
     double diagonalRange = m_sensor != nullptr ? m_sensor->getDiagonalRange() : 0.0;
     if (type == GYROSCOPE)
@@ -231,7 +231,7 @@ void JoySensorStatusBox::drawArtificialHorizon()
 
     // Draw scale
     pen.setWidthF(0.05);
-    pen.setColor(Qt::yellow);
+    pen.setColor(Qt::white);
     painter.setPen(pen);
 
     painter.drawLine(QPointF(0.3, 0), QPointF(0.2, 0));
@@ -249,7 +249,7 @@ void JoySensorStatusBox::drawArtificialHorizon()
 
     // Draw dead zone
     painter.restore();
-    pen.setColor(Qt::red);
+    pen.setColor(QColor(184, 184, 191));
     pen.setWidthF(0.1);
     painter.setPen(pen);
     painter.setOpacity(0.5);
@@ -257,7 +257,7 @@ void JoySensorStatusBox::drawArtificialHorizon()
     painter.drawArc(QRectF(-1, -1, 2, 2), 16 * (180 - deadZone), 16 * deadZone * 2);
 
     // Draw max zone
-    pen.setColor(Qt::darkGreen);
+    pen.setColor(QColor(96, 96, 104));
     painter.setPen(pen);
     double tmpMaxZone = std::min(maxZone, 90.0);
     painter.drawArc(QRectF(-1, -1, 2, 2), 16 * (90 - (90 - tmpMaxZone)), 16 * (90 - tmpMaxZone) * 2);

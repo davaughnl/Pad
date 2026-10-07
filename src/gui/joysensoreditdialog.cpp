@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "pad/paddialogpresentation.h"
 #include "joysensoreditdialog.h"
 #include "ui_joysensoreditdialog.h"
 
@@ -153,6 +154,7 @@ JoySensorEditDialog::JoySensorEditDialog(JoySensor *sensor, QWidget *parent)
 
     connect(m_ui->sensorNameLineEdit, &QLineEdit::textEdited, m_sensor, &JoySensor::setSensorName);
     connect(m_sensor, &JoySensor::sensorNameChanged, this, &JoySensorEditDialog::updateWindowTitleSensorName);
+    PadUi::polishSensorDialog(this);
 }
 
 JoySensorEditDialog::~JoySensorEditDialog() { delete m_ui; }

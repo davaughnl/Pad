@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "pad/paddialogpresentation.h"
 #include "capturedwindowinfodialog.h"
 #include "ui_capturedwindowinfodialog.h"
 
@@ -140,6 +141,7 @@ CapturedWindowInfoDialog::CapturedWindowInfoDialog(long window, QWidget *parent)
     }
 
     connect(this, &CapturedWindowInfoDialog::accepted, this, &CapturedWindowInfoDialog::populateOption);
+    PadUi::polishCaptureDialog(this);
 }
 
 CapturedWindowInfoDialog::~CapturedWindowInfoDialog() { delete ui; }

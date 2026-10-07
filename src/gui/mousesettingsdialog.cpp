@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "pad/paddialogpresentation.h"
 #include "mousesettingsdialog.h"
 #include "ui_mousesettingsdialog.h"
 
@@ -108,6 +109,7 @@ MouseSettingsDialog::MouseSettingsDialog(QWidget *parent)
 
     connect(ui->relativeSpringCheckBox, &QCheckBox::clicked, this, &MouseSettingsDialog::disableReleaseSpringBox);
     connect(ui->relativeSpringCheckBox, &QCheckBox::clicked, this, &MouseSettingsDialog::resetReleaseRadius);
+    PadUi::polishMouseDialog(this);
 }
 
 MouseSettingsDialog::~MouseSettingsDialog() { delete ui; }
