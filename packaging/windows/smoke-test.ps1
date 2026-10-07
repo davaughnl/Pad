@@ -42,14 +42,52 @@ try {
     if ($process.HasExited) { throw 'GUI exited after showing its window' }
     # Save runner pixels for human inspection; a successful launch alone is not a UI review.
     Add-Type -AssemblyName System.Windows.Forms, System.Drawing
-    $bounds = [System.Windows.Forms.SystemInformation]::VirtualScreen
-    $bitmap = [System.Drawing.Bitmap]::new($bounds.Width, $bounds.Height)
-    $graphics = [System.Drawing.Graphics]::FromImage($bitmap)
-    try {
-        $graphics.CopyFromScreen($bounds.Location, [System.Drawing.Point]::Empty, $bounds.Size)
-        $bitmap.Save("$output/windows-desktop.png", [System.Drawing.Imaging.ImageFormat]::Png)
-    } finally { $graphics.Dispose(); $bitmap.Dispose() }
-    "PASS: extracted portable zip; --version and --list exit 0; GUI window created and remains running. Physical controller and input injection not tested." |
+    function Save-Desktop([string]$file) {
+        $bounds = [System.Windows.Forms.SystemInformation]::VirtualScreen
+        $bitmap = [System.Drawing.Bitmap]::new($bounds.Width, $bounds.Height)
+        $graphics = [System.Drawing.Graphics]::FromImage($bitmap)
+        try {
+            $graphics.CopyFromScreen($bounds.Location, [System.Drawing.Point]::Empty, $bounds.Size)
+            $bitmap.Save($file, [System.Drawing.Imaging.ImageFormat]::Png)
+        } finally { $graphics.Dispose(); $bitmap.Dispose() }
+    }
+    Save-Desktop "$output/windows-desktop.png"
+    Add-Type @'
+using System;
+using System.Runtime.InteropServices;
+using System.Text;
+public static class PadWindowProbe {
+    public delegate bool EnumProc(IntPtr window, IntPtr param);
+    [DllImport("user32.dll")] public static extern bool SetForegroundWindow(IntPtr window);
+    [DllImport("user32.dll")] public static extern bool EnumWindows(EnumProc callback, IntPtr param);
+    [DllImport("user32.dll")] public static extern bool IsWindowVisible(IntPtr window);
+    [DllImport("user32.dll")] public static extern uint GetWindowThreadProcessId(IntPtr window, out uint process);
+    [DllImport("user32.dll", CharSet=CharSet.Unicode)] public static extern int GetWindowText(IntPtr window, StringBuilder text, int count);
+    public static bool HasSettingsWindow(int process) {
+        bool found = false;
+        EnumWindows((window, param) => {
+            uint owner; GetWindowThreadProcessId(window, out owner);
+            var title = new StringBuilder(512); GetWindowText(window, title, title.Capacity);
+            if (owner == process && IsWindowVisible(window) && title.ToString() == "Edit Settings") found = true;
+            return true;
+        }, IntPtr.Zero);
+        return found;
+    }
+}
+'@
+    # Ctrl+S is the QAction shortcut for MainWindow::openMainSettingsDialog.
+    if (-not [PadWindowProbe]::SetForegroundWindow($process.MainWindowHandle)) {
+        throw 'Could not focus Pad for dialog screenshot'
+    }
+    [System.Windows.Forms.SendKeys]::SendWait('^s')
+    $deadline = [DateTime]::UtcNow.AddSeconds(15)
+    while (-not [PadWindowProbe]::HasSettingsWindow($process.Id)) {
+        if ($process.HasExited -or [DateTime]::UtcNow -gt $deadline) { throw 'Settings dialog did not open' }
+        Start-Sleep -Milliseconds 250
+    }
+    Start-Sleep -Seconds 2
+    Save-Desktop "$output/windows-settings-dialog.png"
+    "PASS: extracted portable zip; --version and --list exit 0; GUI window created and remains running; Settings dialog opened via Ctrl+S and captured. Physical controller and input injection not tested." |
         Set-Content "$output/result.txt"
 } catch {
     "FAIL: $_" | Set-Content "$output/result.txt"
