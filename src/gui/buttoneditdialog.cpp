@@ -37,6 +37,7 @@
 #include <QKeyEvent>
 #include <QMessageBox>
 #include <QPointer>
+#include <QScrollArea>
 #include <QWidget>
 #include <QtGlobal>
 
@@ -53,6 +54,16 @@ ButtonEditDialog::ButtonEditDialog(InputDevice *joystick, bool isNumKeypad, QWid
     , ui(new Ui::ButtonEditDialog)
 {
     ui->setupUi(this);
+    setObjectName(QStringLiteral("padAssignmentDialog"));
+    ui->helpAssignLabel->setProperty("padMuted", true);
+    ui->buttonNameLineEdit->setPlaceholderText(tr("Button name"));
+    ui->actionNameLineEdit->setPlaceholderText(tr("Action name"));
+    ui->advancedPushButton->setIconSize(QSize(16, 16));
+    setStyleSheet(QStringLiteral(
+        "QDialog#padAssignmentDialog QPushButton { min-height: 26px; }"
+        "QLabel#slotSummaryLabel { color: #eeeeef; background: #242428; border-radius: 4px; padding: 8px; }"
+        "QComboBox, QLineEdit, QSpinBox, QDoubleSpinBox { min-height: 26px; }"
+        "QFrame#line { background: #303035; color: #303035; border: none; max-height: 1px; }"));
 
     withoutQuickSetDialog = false;
     m_isNumKeypad = isNumKeypad;
@@ -161,13 +172,32 @@ void ButtonEditDialog::keyPressEvent(QKeyEvent *event)
 void ButtonEditDialog::setupVirtualKeyboardMouseTabWidget()
 {
 
+
     PadderCommon::inputDaemonMutex.lock();
 
     ui->virtualKeyMouseTabWidget->hide();
     ui->virtualKeyMouseTabWidget->deleteLater();
     ui->virtualKeyMouseTabWidget =
         new VirtualKeyboardMouseWidget(joystick, &helper, m_isNumKeypad, currentQuickDialog, lastJoyButton, this);
-    ui->verticalLayout->insertWidget(1, ui->virtualKeyMouseTabWidget);
+    // Keep the full key layout readable without forcing the dialog off small displays.
+    auto *scroll = findChild<QScrollArea *>(QStringLiteral("padInputScroll"));
+    if (!scroll)
+    {
+        scroll = new QScrollArea(this);
+        scroll->setObjectName(QStringLiteral("padInputScroll"));
+        scroll->setWidgetResizable(true);
+        scroll->setFrameShape(QFrame::NoFrame);
+        ui->verticalLayout->insertWidget(1, scroll, 1);
+    }
+    else
+    {
+        scroll->takeWidget();
+    }
+    ui->virtualKeyMouseTabWidget->setMinimumWidth(m_isNumKeypad ? 1200 : 1032);
+    scroll->setWidget(ui->virtualKeyMouseTabWidget);
+    connect(ui->virtualKeyMouseTabWidget, &QTabWidget::currentChanged, this, [this](int index) {
+        ui->virtualKeyMouseTabWidget->setMinimumWidth(index == 0 ? (m_isNumKeypad ? 1200 : 1032) : 0);
+    });
 
     PadderCommon::inputDaemonMutex.unlock();
 

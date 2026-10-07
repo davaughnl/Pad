@@ -9,14 +9,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>960</width>
     <height>600</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>800</width>
-    <height>600</height>
+    <height>520</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -29,8 +29,29 @@
    <bool>false</bool>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="bottomMargin">
+    <number>24</number>
+   </property>
+   <property name="rightMargin">
+    <number>24</number>
+   </property>
+   <property name="topMargin">
+    <number>24</number>
+   </property>
+   <property name="leftMargin">
+    <number>24</number>
+   </property>
+   <property name="spacing">
+    <number>8</number>
+   </property>
    <item>
     <widget class="QLabel" name="helpAssignLabel">
+     <property name="text">
+      <string>Press a key on your keyboard, or choose a key or mouse action below.</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
        <horstretch>0</horstretch>
@@ -40,14 +61,8 @@
      <property name="lineWidth">
       <number>1</number>
      </property>
-     <property name="text">
-      <string>To make a new assignment, press any keyboard key or click a button in the Keyboard or Mouse tab</string>
-     </property>
      <property name="scaledContents">
       <bool>false</bool>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -82,14 +97,29 @@
      </property>
      <property name="sizeHint" stdset="0">
       <size>
-       <width>20</width>
-       <height>4</height>
+       <width>16</width>
+       <height>8</height>
       </size>
      </property>
     </spacer>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_18">
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="spacing">
+      <number>8</number>
+     </property>
      <item>
       <widget class="QCheckBox" name="toggleCheckBox">
        <property name="toolTip">
@@ -110,14 +140,29 @@
        </property>
        <property name="sizeHint" stdset="0">
         <size>
-         <width>20</width>
-         <height>20</height>
+         <width>16</width>
+         <height>16</height>
         </size>
        </property>
       </spacer>
      </item>
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_16">
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="spacing">
+        <number>8</number>
+       </property>
        <item>
         <widget class="QCheckBox" name="turboCheckBox">
          <property name="toolTip">
@@ -138,19 +183,19 @@
          </property>
          <property name="sizeHint" stdset="0">
           <size>
-           <width>20</width>
-           <height>20</height>
+           <width>16</width>
+           <height>16</height>
           </size>
          </property>
         </spacer>
        </item>
        <item>
         <widget class="QCheckBox" name="attachNumKeypadCheckbox">
+         <property name="text">
+          <string>Numeric keypad</string>
+         </property>
          <property name="toolTip">
           <string>Remember, it won't work if you don't have such keypad connected to computer or if it's not embedded like in desktop PCs</string>
-         </property>
-         <property name="text">
-          <string>Attach the numeric keypad</string>
          </property>
         </widget>
        </item>
@@ -164,8 +209,8 @@
          </property>
          <property name="sizeHint" stdset="0">
           <size>
-           <width>20</width>
-           <height>20</height>
+           <width>16</width>
+           <height>16</height>
           </size>
          </property>
         </spacer>
@@ -174,16 +219,31 @@
      </item>
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_17">
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="spacing">
+        <number>8</number>
+       </property>
        <item>
         <widget class="QLabel" name="label_5">
+         <property name="text">
+          <string>Assigned:</string>
+         </property>
          <property name="font">
           <font>
-           <weight>75</weight>
+           <weight>50</weight>
            <bold>false</bold>
           </font>
-         </property>
-         <property name="text">
-          <string>Last keyboard/mouse button:</string>
          </property>
         </widget>
        </item>
@@ -203,19 +263,37 @@
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_4">
-     <property name="spacing">
-      <number>30</number>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
      </property>
      <property name="topMargin">
-      <number>6</number>
+      <number>0</number>
      </property>
-     <property name="bottomMargin">
-      <number>6</number>
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="spacing">
+      <number>8</number>
      </property>
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
        <property name="spacing">
-        <number>4</number>
+        <number>8</number>
        </property>
        <item>
         <widget class="QLabel" name="buttonNameLabel">
@@ -241,8 +319,20 @@
      </item>
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
        <property name="spacing">
-        <number>4</number>
+        <number>8</number>
        </property>
        <item>
         <widget class="QLabel" name="actionNameLabel">
@@ -278,8 +368,20 @@ this button is being used.</string>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
      <property name="topMargin">
-      <number>4</number>
+      <number>0</number>
+     </property>
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="spacing">
+      <number>8</number>
      </property>
      <item>
       <widget class="QPushButton" name="advancedPushButton">
@@ -287,7 +389,9 @@ this button is being used.</string>
         <string>Advanced</string>
        </property>
        <property name="icon">
-        <iconset resource="../resources.qrc"><normaloff>:/pad/icons/sliders.svg</normaloff></iconset>
+        <iconset resource="../resources.qrc">
+         <normaloff>:/pad/icons/sliders.svg</normaloff>
+        </iconset>
        </property>
       </widget>
      </item>
@@ -313,7 +417,7 @@ this button is being used.</string>
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources />
  <connections>
   <connection>
    <sender>buttonBox</sender>

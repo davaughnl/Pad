@@ -69,7 +69,16 @@ VirtualKeyboardMouseWidget::VirtualKeyboardMouseWidget(InputDevice *joystick, Bu
 
     this->addTab(keyboardTab, tr("Keyboard"));
     this->addTab(mouseTab, tr("Mouse"));
-    this->setTabPosition(QTabWidget::South);
+    this->setTabPosition(QTabWidget::North);
+    setObjectName(QStringLiteral("padVirtualInputs"));
+    setTabIcon(0, QIcon(QStringLiteral(":/pad/icons/keyboard.svg")));
+    setTabIcon(1, QIcon(QStringLiteral(":/pad/icons/mouse.svg")));
+    setIconSize(QSize(16, 16));
+    setStyleSheet(QStringLiteral(
+        "QWidget#padVirtualInputs QPushButton { padding: 4px; min-height: 24px; font-weight: 400; }"
+        "QWidget#padVirtualInputs VirtualKeyPushButton { font-size: 12px; min-height: 30px; max-height: 30px; }"
+        "QWidget#padVirtualInputs VirtualKeyPushButton[padTall=\"true\"] { min-height: 62px; max-height: 62px; }"
+        "QWidget#padVirtualInputs QPushButton:hover { border-color: #73737c; }"));
 
     setupVirtualKeyboardLayout();
     setupMouseControlLayout();
@@ -95,7 +104,16 @@ VirtualKeyboardMouseWidget::VirtualKeyboardMouseWidget(bool isNumKeypad, QWidget
 
     this->addTab(keyboardTab, tr("Keyboard"));
     this->addTab(mouseTab, tr("Mouse"));
-    this->setTabPosition(QTabWidget::South);
+    this->setTabPosition(QTabWidget::North);
+    setObjectName(QStringLiteral("padVirtualInputs"));
+    setTabIcon(0, QIcon(QStringLiteral(":/pad/icons/keyboard.svg")));
+    setTabIcon(1, QIcon(QStringLiteral(":/pad/icons/mouse.svg")));
+    setIconSize(QSize(16, 16));
+    setStyleSheet(QStringLiteral(
+        "QWidget#padVirtualInputs QPushButton { padding: 4px; min-height: 24px; font-weight: 400; }"
+        "QWidget#padVirtualInputs VirtualKeyPushButton { font-size: 12px; min-height: 30px; max-height: 30px; }"
+        "QWidget#padVirtualInputs VirtualKeyPushButton[padTall=\"true\"] { min-height: 62px; max-height: 62px; }"
+        "QWidget#padVirtualInputs QPushButton:hover { border-color: #73737c; }"));
 
     setupVirtualKeyboardLayout();
     setupMouseControlLayout();
@@ -129,6 +147,8 @@ bool VirtualKeyboardMouseWidget::isLaptop()
 void VirtualKeyboardMouseWidget::setupVirtualKeyboardLayout()
 {
     QVBoxLayout *finalVBoxLayout = new QVBoxLayout(keyboardTab);
+    finalVBoxLayout->setContentsMargins(0, 16, 0, 0);
+    finalVBoxLayout->setSpacing(8);
     QVBoxLayout *tempMainKeyLayout = setupMainKeyboardLayout();
     QVBoxLayout *tempAuxKeyLayout = new QVBoxLayout();
     QVBoxLayout *tempNumKeyPadLayout = new QVBoxLayout();
@@ -146,6 +166,7 @@ void VirtualKeyboardMouseWidget::setupVirtualKeyboardLayout()
     }
 
     QHBoxLayout *tempHBoxLayout = new QHBoxLayout();
+    tempHBoxLayout->setSpacing(16);
     tempHBoxLayout->addLayout(tempMainKeyLayout);
 
     if (m_isNumKeypad)
@@ -159,24 +180,25 @@ void VirtualKeyboardMouseWidget::setupVirtualKeyboardLayout()
 
     tempHBoxLayout->addLayout(tempNumKeyPadLayout);
     finalVBoxLayout->addLayout(tempHBoxLayout);
+    finalVBoxLayout->addStretch();
 }
 
 QVBoxLayout *VirtualKeyboardMouseWidget::setupMainKeyboardLayout()
 {
     QHBoxLayout *tempHBoxLayout = new QHBoxLayout();
-    tempHBoxLayout->setSpacing(0);
+    tempHBoxLayout->setSpacing(8);
 
     QVBoxLayout *tempVBoxLayout = new QVBoxLayout();
-    tempVBoxLayout->setSpacing(0);
+    tempVBoxLayout->setSpacing(8);
 
     QVBoxLayout *finalVBoxLayout = new QVBoxLayout();
     if (!m_isNumKeypad)
-        finalVBoxLayout->setSpacing(0);
+        finalVBoxLayout->setSpacing(8);
 
     tempHBoxLayout->addWidget(createNewKey("Escape"));
 
     if (m_isNumKeypad)
-        tempHBoxLayout->addSpacerItem(new QSpacerItem(70, 10, QSizePolicy::Expanding));
+        tempHBoxLayout->addSpacerItem(new QSpacerItem(24, 8, QSizePolicy::Expanding));
 
     tempHBoxLayout->addWidget(createNewKey("F1"));
     tempHBoxLayout->addWidget(createNewKey("F2"));
@@ -184,7 +206,7 @@ QVBoxLayout *VirtualKeyboardMouseWidget::setupMainKeyboardLayout()
     tempHBoxLayout->addWidget(createNewKey("F4"));
 
     if (m_isNumKeypad)
-        tempHBoxLayout->addSpacerItem(new QSpacerItem(70, 10, QSizePolicy::Expanding));
+        tempHBoxLayout->addSpacerItem(new QSpacerItem(24, 8, QSizePolicy::Expanding));
 
     tempHBoxLayout->addWidget(createNewKey("F5"));
     tempHBoxLayout->addWidget(createNewKey("F6"));
@@ -192,7 +214,7 @@ QVBoxLayout *VirtualKeyboardMouseWidget::setupMainKeyboardLayout()
     tempHBoxLayout->addWidget(createNewKey("F8"));
 
     if (m_isNumKeypad)
-        tempHBoxLayout->addSpacerItem(new QSpacerItem(70, 10, QSizePolicy::Expanding));
+        tempHBoxLayout->addSpacerItem(new QSpacerItem(24, 8, QSizePolicy::Expanding));
 
     tempHBoxLayout->addWidget(createNewKey("F9"));
     tempHBoxLayout->addWidget(createNewKey("F10"));
@@ -209,10 +231,10 @@ QVBoxLayout *VirtualKeyboardMouseWidget::setupMainKeyboardLayout()
     finalVBoxLayout->addLayout(tempHBoxLayout);
 
     if (m_isNumKeypad)
-        finalVBoxLayout->addSpacerItem(new QSpacerItem(20, 35, QSizePolicy::Minimum, QSizePolicy::Fixed));
+        finalVBoxLayout->addSpacerItem(new QSpacerItem(8, 16, QSizePolicy::Minimum, QSizePolicy::Fixed));
 
     tempHBoxLayout = new QHBoxLayout();
-    tempHBoxLayout->setSpacing(0);
+    tempHBoxLayout->setSpacing(8);
     tempHBoxLayout->addWidget(createNewKey("grave"));
 
     for (int i = 1; i <= 9; i++)
@@ -233,7 +255,7 @@ QVBoxLayout *VirtualKeyboardMouseWidget::setupMainKeyboardLayout()
     tempVBoxLayout->addLayout(tempHBoxLayout);
 
     QVBoxLayout *tempMiddleVLayout = new QVBoxLayout();
-    tempMiddleVLayout->setSpacing(0);
+    tempMiddleVLayout->setSpacing(8);
 
     QHBoxLayout *tempMiddleHLayout = new QHBoxLayout();
     tempHBoxLayout = new QHBoxLayout();
@@ -269,7 +291,7 @@ QVBoxLayout *VirtualKeyboardMouseWidget::setupMainKeyboardLayout()
     }
 
     tempHBoxLayout = new QHBoxLayout();
-    tempHBoxLayout->setSpacing(0);
+    tempHBoxLayout->setSpacing(8);
     tempHBoxLayout->addWidget(createNewKey("Caps_Lock"));
     tempHBoxLayout->addWidget(createNewKey("a"));
     tempHBoxLayout->addWidget(createNewKey("s"));
@@ -292,7 +314,7 @@ QVBoxLayout *VirtualKeyboardMouseWidget::setupMainKeyboardLayout()
     {
         tempMiddleVLayout->addLayout(tempHBoxLayout);
         tempMiddleHLayout->addLayout(tempMiddleVLayout);
-        tempMiddleHLayout->setSpacing(0);
+        tempMiddleHLayout->setSpacing(8);
         tempMiddleHLayout->addWidget(createNewKey("Return"));
 
         tempVBoxLayout->addLayout(tempMiddleHLayout);
@@ -308,7 +330,7 @@ QVBoxLayout *VirtualKeyboardMouseWidget::setupMainKeyboardLayout()
     }
 
     tempHBoxLayout = new QHBoxLayout();
-    tempHBoxLayout->setSpacing(0);
+    tempHBoxLayout->setSpacing(8);
     tempHBoxLayout->addWidget(createNewKey("Shift_L"));
 
     if (QLocale::system().language() == QLocale::French)
@@ -337,7 +359,7 @@ QVBoxLayout *VirtualKeyboardMouseWidget::setupMainKeyboardLayout()
     tempVBoxLayout->addLayout(tempHBoxLayout);
 
     tempHBoxLayout = new QHBoxLayout();
-    tempHBoxLayout->setSpacing(0);
+    tempHBoxLayout->setSpacing(8);
     tempHBoxLayout->addWidget(createNewKey("Control_L"));
     tempHBoxLayout->addWidget(createNewKey("Super_L"));
     tempHBoxLayout->addWidget(createNewKey("Alt_L"));
@@ -392,9 +414,9 @@ QVBoxLayout *VirtualKeyboardMouseWidget::setupAuxKeyboardLayout()
     QVBoxLayout *tempVBoxLayout = new QVBoxLayout();
     QGridLayout *tempGridLayout = new QGridLayout();
 
-    tempHBoxLayout->setSpacing(0);
-    tempVBoxLayout->setSpacing(0);
-    tempGridLayout->setSpacing(0);
+    tempHBoxLayout->setSpacing(8);
+    tempVBoxLayout->setSpacing(8);
+    tempGridLayout->setSpacing(8);
 
     tempHBoxLayout->addWidget(createNewKey("Print"));
     tempHBoxLayout->addWidget(createNewKey("Scroll_Lock"));
@@ -402,7 +424,7 @@ QVBoxLayout *VirtualKeyboardMouseWidget::setupAuxKeyboardLayout()
 
     tempVBoxLayout->addLayout(tempHBoxLayout);
 
-    tempVBoxLayout->addSpacerItem(new QSpacerItem(20, 45, QSizePolicy::Minimum, QSizePolicy::Fixed));
+    tempVBoxLayout->addSpacerItem(new QSpacerItem(8, 16, QSizePolicy::Minimum, QSizePolicy::Fixed));
 
     tempGridLayout->addWidget(createNewKey("Insert"), 1, 1, 1, 1);
     tempGridLayout->addWidget(createNewKey("Home"), 1, 2, 1, 1);
@@ -412,7 +434,7 @@ QVBoxLayout *VirtualKeyboardMouseWidget::setupAuxKeyboardLayout()
     tempGridLayout->addWidget(createNewKey("Next"), 2, 3, 1, 1);
     tempVBoxLayout->addLayout(tempGridLayout);
 
-    tempVBoxLayout->addSpacerItem(new QSpacerItem(20, 35, QSizePolicy::Minimum, QSizePolicy::Fixed));
+    tempVBoxLayout->addSpacerItem(new QSpacerItem(8, 16, QSizePolicy::Minimum, QSizePolicy::Fixed));
 
     tempGridLayout = new QGridLayout();
     tempGridLayout->addWidget(createNewKey("Up"), 1, 2, 1, 1);
@@ -427,16 +449,16 @@ QVBoxLayout *VirtualKeyboardMouseWidget::setupAuxKeyboardLayout()
 QVBoxLayout *VirtualKeyboardMouseWidget::setupKeyboardNumPadLayout()
 {
     QHBoxLayout *tempHBoxLayout = new QHBoxLayout();
-    tempHBoxLayout->setSpacing(0);
+    tempHBoxLayout->setSpacing(8);
 
     QVBoxLayout *tempVBoxLayout = new QVBoxLayout();
-    tempVBoxLayout->setSpacing(0);
+    tempVBoxLayout->setSpacing(8);
 
     QGridLayout *tempGridLayout = new QGridLayout();
-    tempGridLayout->setSpacing(0);
+    tempGridLayout->setSpacing(8);
 
     QVBoxLayout *finalVBoxLayout = new QVBoxLayout();
-    finalVBoxLayout->setSpacing(0);
+    finalVBoxLayout->setSpacing(8);
 
     QPushButton *othersKeysButton = createOtherKeysMenu();
 
@@ -447,7 +469,7 @@ QVBoxLayout *VirtualKeyboardMouseWidget::setupKeyboardNumPadLayout()
     finalVBoxLayout->addSpacerItem(new QSpacerItem(0, 29, QSizePolicy::Minimum, QSizePolicy::MinimumExpanding));
 
     tempHBoxLayout = new QHBoxLayout();
-    tempHBoxLayout->setSpacing(0);
+    tempHBoxLayout->setSpacing(8);
     tempHBoxLayout->addWidget(createNewKey("Num_Lock"));
     tempHBoxLayout->addWidget(createNewKey("KP_Divide"));
     tempHBoxLayout->addWidget(createNewKey("KP_Multiply"));
@@ -455,7 +477,7 @@ QVBoxLayout *VirtualKeyboardMouseWidget::setupKeyboardNumPadLayout()
     tempVBoxLayout->addLayout(tempHBoxLayout);
 
     tempHBoxLayout = new QHBoxLayout();
-    tempHBoxLayout->setSpacing(0);
+    tempHBoxLayout->setSpacing(8);
     tempGridLayout->addWidget(createNewKey("KP_7"), 1, 1, 1, 1);
     tempGridLayout->addWidget(createNewKey("KP_8"), 1, 2, 1, 1);
     tempGridLayout->addWidget(createNewKey("KP_9"), 1, 3, 1, 1);
@@ -467,10 +489,10 @@ QVBoxLayout *VirtualKeyboardMouseWidget::setupKeyboardNumPadLayout()
     tempVBoxLayout->addLayout(tempHBoxLayout);
 
     tempHBoxLayout = new QHBoxLayout();
-    tempHBoxLayout->setSpacing(0);
+    tempHBoxLayout->setSpacing(8);
 
     tempGridLayout = new QGridLayout();
-    tempGridLayout->setSpacing(0);
+    tempGridLayout->setSpacing(8);
     tempGridLayout->addWidget(createNewKey("KP_1"), 1, 1, 1, 1);
     tempGridLayout->addWidget(createNewKey("KP_2"), 1, 2, 1, 1);
     tempGridLayout->addWidget(createNewKey("KP_3"), 1, 3, 1, 1);
@@ -489,139 +511,60 @@ QVBoxLayout *VirtualKeyboardMouseWidget::setupKeyboardNumPadLayout()
 
 void VirtualKeyboardMouseWidget::setupMouseControlLayout()
 {
-    QHBoxLayout *tempHBoxLayout = new QHBoxLayout();
-    QVBoxLayout *tempVBoxLayout = new QVBoxLayout();
-    QGridLayout *tempGridLayout = new QGridLayout();
-    QVBoxLayout *finalVBoxLayout = new QVBoxLayout(mouseTab);
-    QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-
-    VirtualMousePushButton *pushButton =
-        new VirtualMousePushButton(tr("Left", "Mouse"), JoyButtonSlot::MouseLeft, JoyButtonSlot::JoyMouseMovement, this);
-    pushButton->setSizePolicy(sizePolicy);
-    pushButton->setMinimumHeight(50);
-    tempVBoxLayout->addSpacerItem(new QSpacerItem(20, 50, QSizePolicy::Minimum, QSizePolicy::Expanding));
-    tempVBoxLayout->addWidget(pushButton);
-    tempVBoxLayout->addSpacerItem(new QSpacerItem(20, 50, QSizePolicy::Minimum, QSizePolicy::Expanding));
-    tempHBoxLayout->addLayout(tempVBoxLayout);
-
-    tempHBoxLayout->addSpacerItem(new QSpacerItem(10, 20, QSizePolicy::Fixed));
-
-    tempVBoxLayout = new QVBoxLayout();
-    pushButton =
-        new VirtualMousePushButton(tr("Up", "Mouse"), JoyButtonSlot::MouseUp, JoyButtonSlot::JoyMouseMovement, this);
-    pushButton->setSizePolicy(sizePolicy);
-    pushButton->setMinimumHeight(50);
-    tempVBoxLayout->addWidget(pushButton);
-
-    tempVBoxLayout->addSpacerItem(new QSpacerItem(20, 10, QSizePolicy::Minimum, QSizePolicy::Fixed));
-
-    QHBoxLayout *tempInnerHBoxLayout = new QHBoxLayout();
-    pushButton = new VirtualMousePushButton(tr("Left Button", "Mouse"), 1, JoyButtonSlot::JoyMouseButton, this);
-    pushButton->setSizePolicy(sizePolicy);
-    tempInnerHBoxLayout->addWidget(pushButton);
-    pushButton = new VirtualMousePushButton(tr("Middle Button", "Mouse"), 2, JoyButtonSlot::JoyMouseButton, this);
-    pushButton->setSizePolicy(sizePolicy);
-    tempInnerHBoxLayout->addWidget(pushButton);
-    pushButton = new VirtualMousePushButton(tr("Right Button", "Mouse"), 3, JoyButtonSlot::JoyMouseButton, this);
-    pushButton->setSizePolicy(sizePolicy);
-    tempInnerHBoxLayout->addWidget(pushButton);
-    tempVBoxLayout->addLayout(tempInnerHBoxLayout);
-
-    tempVBoxLayout->addSpacerItem(new QSpacerItem(20, 10, QSizePolicy::Minimum, QSizePolicy::Fixed));
-
-    pushButton = new VirtualMousePushButton(tr("Wheel Up", "Mouse"), 4, JoyButtonSlot::JoyMouseButton, this);
-    pushButton->setSizePolicy(sizePolicy);
-    pushButton->setMinimumHeight(30);
-    tempGridLayout->addWidget(pushButton, 1, 2, 1, 1);
-    pushButton = new VirtualMousePushButton(tr("Wheel Left", "Mouse"), 6, JoyButtonSlot::JoyMouseButton, this);
-    pushButton->setSizePolicy(sizePolicy);
-    pushButton->setMinimumHeight(30);
-    tempGridLayout->addWidget(pushButton, 2, 1, 1, 1);
-    pushButton = new VirtualMousePushButton(tr("Wheel Right", "Mouse"), 7, JoyButtonSlot::JoyMouseButton, this);
-    pushButton->setSizePolicy(sizePolicy);
-    pushButton->setMinimumHeight(30);
-    tempGridLayout->addWidget(pushButton, 2, 3, 1, 1);
-    pushButton = new VirtualMousePushButton(tr("Wheel Down", "Mouse"), 5, JoyButtonSlot::JoyMouseButton, this);
-    pushButton->setSizePolicy(sizePolicy);
-    pushButton->setMinimumHeight(30);
-    tempGridLayout->addWidget(pushButton, 3, 2, 1, 1);
-    tempVBoxLayout->addLayout(tempGridLayout);
-
-    tempVBoxLayout->addSpacerItem(new QSpacerItem(20, 10, QSizePolicy::Minimum, QSizePolicy::Fixed));
-
-    pushButton =
-        new VirtualMousePushButton(tr("Down", "Mouse"), JoyButtonSlot::MouseDown, JoyButtonSlot::JoyMouseMovement, this);
-    pushButton->setSizePolicy(sizePolicy);
-    pushButton->setMinimumHeight(50);
-    tempVBoxLayout->addWidget(pushButton);
-
-    tempVBoxLayout->setStretch(0, 1);
-    tempVBoxLayout->setStretch(2, 1);
-    tempVBoxLayout->setStretch(4, 3);
-    tempVBoxLayout->setStretch(6, 1);
-
-    tempHBoxLayout->addLayout(tempVBoxLayout);
-
-    tempHBoxLayout->addSpacerItem(new QSpacerItem(10, 20, QSizePolicy::Fixed));
-
-    tempVBoxLayout = new QVBoxLayout();
-    tempVBoxLayout->addSpacerItem(new QSpacerItem(20, 50, QSizePolicy::Minimum, QSizePolicy::Expanding));
-    pushButton =
-        new VirtualMousePushButton(tr("Right", "Mouse"), JoyButtonSlot::MouseRight, JoyButtonSlot::JoyMouseMovement, this);
-    pushButton->setSizePolicy(sizePolicy);
-    pushButton->setMinimumHeight(50);
-    tempVBoxLayout->addWidget(pushButton);
-    tempVBoxLayout->addSpacerItem(new QSpacerItem(20, 50, QSizePolicy::Minimum, QSizePolicy::Expanding));
-    tempHBoxLayout->addLayout(tempVBoxLayout);
-
-    tempHBoxLayout->addSpacerItem(new QSpacerItem(10, 20, QSizePolicy::Fixed));
-
-    tempVBoxLayout = new QVBoxLayout();
-    tempVBoxLayout->setSpacing(20);
-
+    auto *layout = new QVBoxLayout(mouseTab);
+    layout->setContentsMargins(0, 16, 0, 0);
+    layout->setSpacing(16);
+    auto *movement = new QGridLayout();
+    movement->setSpacing(8);
+    for (int i = 0; i < 3; ++i) movement->setColumnStretch(i, 1);
+    auto add = [this](QGridLayout *grid, const QString &label, int code,
+                     JoyButtonSlot::JoySlotInputAction mode, int row, int column) {
+        auto *key = new VirtualMousePushButton(label, code, mode, this);
+        key->setMinimumHeight(40);
+        key->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+        grid->addWidget(key, row, column);
+    };
+    add(movement, tr("Up", "Mouse"), JoyButtonSlot::MouseUp, JoyButtonSlot::JoyMouseMovement, 0, 1);
+    add(movement, tr("Left", "Mouse"), JoyButtonSlot::MouseLeft, JoyButtonSlot::JoyMouseMovement, 1, 0);
+    add(movement, tr("Down", "Mouse"), JoyButtonSlot::MouseDown, JoyButtonSlot::JoyMouseMovement, 1, 1);
+    add(movement, tr("Right", "Mouse"), JoyButtonSlot::MouseRight, JoyButtonSlot::JoyMouseMovement, 1, 2);
+    layout->addLayout(movement);
+    auto *clicks = new QGridLayout();
+    clicks->setSpacing(8);
+    for (int i = 0; i < 3; ++i) clicks->setColumnStretch(i, 1);
+    add(clicks, tr("Left Button", "Mouse"), 1, JoyButtonSlot::JoyMouseButton, 0, 0);
+    add(clicks, tr("Middle Button", "Mouse"), 2, JoyButtonSlot::JoyMouseButton, 0, 1);
+    add(clicks, tr("Right Button", "Mouse"), 3, JoyButtonSlot::JoyMouseButton, 0, 2);
 #ifdef Q_OS_WIN
-    pushButton = new VirtualMousePushButton(tr("Button 4", "Mouse"), 8, JoyButtonSlot::JoyMouseButton, this);
+    add(clicks, tr("Button 4", "Mouse"), 8, JoyButtonSlot::JoyMouseButton, 1, 0);
+    add(clicks, tr("Button 5", "Mouse"), 9, JoyButtonSlot::JoyMouseButton, 1, 2);
 #else
-    pushButton = new VirtualMousePushButton(tr("Mouse 8", "Mouse"), 8, JoyButtonSlot::JoyMouseButton, this);
+    add(clicks, tr("Mouse 8", "Mouse"), 8, JoyButtonSlot::JoyMouseButton, 1, 0);
+    add(clicks, tr("Mouse 9", "Mouse"), 9, JoyButtonSlot::JoyMouseButton, 1, 2);
 #endif
-
-    pushButton->setMinimumHeight(40);
-    tempVBoxLayout->addWidget(pushButton);
-
-#ifdef Q_OS_WIN
-    pushButton = new VirtualMousePushButton(tr("Button 5", "Mouse"), 9, JoyButtonSlot::JoyMouseButton, this);
-#else
-    pushButton = new VirtualMousePushButton(tr("Mouse 9", "Mouse"), 9, JoyButtonSlot::JoyMouseButton, this);
-#endif
-
-    pushButton->setMinimumHeight(40);
-    tempVBoxLayout->addWidget(pushButton);
-    tempVBoxLayout->addSpacerItem(new QSpacerItem(20, 50, QSizePolicy::Minimum, QSizePolicy::Expanding));
-    tempHBoxLayout->addLayout(tempVBoxLayout);
-
-    tempHBoxLayout->addSpacerItem(new QSpacerItem(10, 20, QSizePolicy::Fixed));
-
-    tempVBoxLayout = new QVBoxLayout();
-    tempVBoxLayout->setSpacing(20);
-    tempVBoxLayout->addSpacerItem(new QSpacerItem(20, 10, QSizePolicy::Minimum, QSizePolicy::Expanding));
-
+    layout->addLayout(clicks);
+    auto *wheel = new QGridLayout();
+    wheel->setSpacing(8);
+    for (int i = 0; i < 3; ++i) wheel->setColumnStretch(i, 1);
+    add(wheel, tr("Wheel Up", "Mouse"), 4, JoyButtonSlot::JoyMouseButton, 0, 1);
+    add(wheel, tr("Wheel Left", "Mouse"), 6, JoyButtonSlot::JoyMouseButton, 1, 0);
+    add(wheel, tr("Wheel Down", "Mouse"), 5, JoyButtonSlot::JoyMouseButton, 1, 1);
+    add(wheel, tr("Wheel Right", "Mouse"), 7, JoyButtonSlot::JoyMouseButton, 1, 2);
+    layout->addLayout(wheel);
+    layout->addStretch();
     mouseSettingsPushButton = new QPushButton(tr("Mouse Settings"), this);
-    mouseSettingsPushButton->setIcon(PadderCommon::loadIcon("input-mouse", ":/images/actions/edit_select.png"));
-
-    tempVBoxLayout->addWidget(mouseSettingsPushButton);
-
+    mouseSettingsPushButton->setIcon(QIcon(QStringLiteral(":/pad/icons/sliders.svg")));
+    mouseSettingsPushButton->setIconSize(QSize(16, 16));
     mouseSettingsPushButton->setEnabled(false);
-
-    tempHBoxLayout->addLayout(tempVBoxLayout);
-    finalVBoxLayout->addLayout(tempHBoxLayout);
+    layout->addWidget(mouseSettingsPushButton, 0, Qt::AlignRight);
 }
 
 VirtualKeyPushButton *VirtualKeyboardMouseWidget::createNewKey(QString xcodestring)
 {
     int width = 32;
-    int height = 32;
-    QFont font1;
-    font1.setPointSize(8);
+    int height = 40;
+    QFont font1 = font();
+    font1.setPixelSize(12);
     font1.setBold(false);
 
     VirtualKeyPushButton *pushButton = new VirtualKeyPushButton(xcodestring, this);
@@ -631,7 +574,7 @@ VirtualKeyPushButton *VirtualKeyboardMouseWidget::createNewKey(QString xcodestri
 
     if (xcodestring == "space")
     {
-        width = 131;
+        width = 160;
     } else if (xcodestring == "Tab")
     {
         width = 43;
@@ -666,17 +609,17 @@ VirtualKeyPushButton *VirtualKeyboardMouseWidget::createNewKey(QString xcodestri
         width = 32;
         height = 32;
         pushButton->setMaximumSize(100, 100);
-        font1.setPointSize(6);
+        font1.setPixelSize(12);
     } else if ((xcodestring == "KP_Add") || (xcodestring == "KP_Enter"))
     {
         height = 56;
         width = 32;
-        font1.setPointSize(5);
+        font1.setPixelSize(12);
     } else if (xcodestring == "Num_Lock")
     {
         width = 32;
         height = 32;
-        font1.setPointSize(5);
+        font1.setPixelSize(12);
     } else if (xcodestring.startsWith("KP_"))
     {
         width = 32;
@@ -692,7 +635,7 @@ VirtualKeyPushButton *VirtualKeyboardMouseWidget::createNewKey(QString xcodestri
         {
             QSizePolicy sizePolicy2(QSizePolicy::Fixed, QSizePolicy::Preferred);
             pushButton->setSizePolicy(sizePolicy2);
-            pushButton->setFixedWidth(58);
+            pushButton->setFixedWidth(56);
         }
     } else if ((xcodestring == "Control_L") || (xcodestring == "Super_L") || (xcodestring == "Alt_L") ||
                (xcodestring == "Alt_R") || (xcodestring == "ISO_Level3_Shift") || (xcodestring == "Menu") ||
@@ -710,25 +653,52 @@ VirtualKeyPushButton *VirtualKeyboardMouseWidget::createNewKey(QString xcodestri
             QSizePolicy sizePolicy2(QSizePolicy::Fixed, QSizePolicy::Fixed);
             pushButton->setSizePolicy(sizePolicy2);
             width = 32;
-            height = 25;
-            font1.setPointSize(5);
+            height = 40;
+            font1.setPixelSize(12);
         }
     }
 
+    const QHash<QString, QString> keyLabels = {
+        {QStringLiteral("Shift_L"), QStringLiteral("Shift")},
+        {QStringLiteral("Shift_R"), QStringLiteral("Shift")},
+        {QStringLiteral("Control_L"), QStringLiteral("Ctrl")},
+        {QStringLiteral("Control_R"), QStringLiteral("Ctrl")},
+        {QStringLiteral("Alt_L"), QStringLiteral("Alt")},
+        {QStringLiteral("Alt_R"), QStringLiteral("Alt")},
+        {QStringLiteral("Super_L"), QStringLiteral("Super")},
+        {QStringLiteral("Print"), QStringLiteral("PrtSc")},
+        {QStringLiteral("Scroll_Lock"), QStringLiteral("ScrLk")},
+        {QStringLiteral("Pause"), QStringLiteral("Pause")},
+        {QStringLiteral("BackSpace"), QStringLiteral("Backspace")},
+        {QStringLiteral("Prior"), QStringLiteral("PgUp")},
+        {QStringLiteral("Next"), QStringLiteral("PgDn")},
+        {QStringLiteral("Return"), QStringLiteral("Enter")},
+        {QStringLiteral("Num_Lock"), QStringLiteral("Num")},
+        {QStringLiteral("KP_Enter"), QStringLiteral("Enter")},
+        {QStringLiteral("Up"), QStringLiteral("Up")},
+        {QStringLiteral("Down"), QStringLiteral("Down")},
+        {QStringLiteral("Left"), QStringLiteral("Left")},
+        {QStringLiteral("Right"), QStringLiteral("Right")}};
+    if (keyLabels.contains(xcodestring))
+    {
+        pushButton->setToolTip(pushButton->text());
+        pushButton->setText(keyLabels.value(xcodestring));
+    }
     pushButton->setObjectName(xcodestring);
-    pushButton->setMinimumSize(width, height);
+    pushButton->setMinimumSize(qMax(40, ((width + 7) / 8) * 8), qMax(40, ((height + 7) / 8) * 8));
     pushButton->setFont(font1);
+    pushButton->setProperty("padTall", height > 40);
 
     return pushButton;
 }
 
 QPushButton *VirtualKeyboardMouseWidget::createNoneKey()
 {
-    QPushButton *pushButton = new QPushButton(tr("NONE"), this);
-    pushButton->setMinimumSize(0, 25);
+    QPushButton *pushButton = new QPushButton(tr("None"), this);
+    pushButton->setMinimumSize(80, 40);
     QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
     pushButton->setSizePolicy(sizePolicy);
-    QFont font1;
+    QFont font1 = font();
     font1.setBold(false);
     pushButton->setFont(font1);
 
@@ -977,18 +947,19 @@ void VirtualKeyboardMouseWidget::setButtonFontSizes()
     {
         VirtualKeyPushButton *temp = iter.next();
         QFont tempFont(temp->font());
-        tempFont.setPointSize(temp->calculateFontSize());
+        tempFont.setPixelSize(12);
+        tempFont.setBold(false);
         temp->setFont(tempFont);
     }
 }
 
 QPushButton *VirtualKeyboardMouseWidget::createOtherKeysMenu()
 {
-    QPushButton *otherKeysPushbutton = new QPushButton(tr("Others"), this);
-    otherKeysPushbutton->setMinimumSize(0, 25);
+    QPushButton *otherKeysPushbutton = new QPushButton(tr("Other keys"), this);
+    otherKeysPushbutton->setMinimumSize(80, 40);
     QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
     otherKeysPushbutton->setSizePolicy(sizePolicy);
-    QFont font1;
+    QFont font1 = font();
     font1.setBold(false);
     otherKeysPushbutton->setFont(font1);
 

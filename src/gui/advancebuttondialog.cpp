@@ -49,7 +49,45 @@ AdvanceButtonDialog::AdvanceButtonDialog(JoyButton *button, QWidget *parent)
     , helper(button)
 {
     ui->setupUi(this);
+    setObjectName(QStringLiteral("padAdvancedAssignmentDialog"));
+    ui->listWidget->setFixedWidth(168);
+    ui->slotListWidget->setStyleSheet(QStringLiteral(
+        "QListView { selection-background-color: transparent; outline: none; }"
+        "QListView::item, QListView::item:selected, QListView::item:hover { background: transparent; border: none; }"));
+    ui->slotTypeHelpLabel->setProperty("padMuted", true);
+    ui->toggleLabel->setText(tr("Press once to hold the assigned key. Press again to release it."));
+    ui->toggleLabel->setWordWrap(true);
+    ui->toggleLabel->setProperty("padMuted", true);
+    ui->toggleCheckbox->setText(tr("Enable toggle"));
+    ui->toggleCheckbox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    ui->label->hide();
+    ui->turboCheckbox->setText(tr("Enable turbo"));
+    ui->turboCheckbox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    ui->listWidget->setIconSize(QSize(16, 16));
+    const QStringList sectionIcons = {QStringLiteral("keyboard"), QStringLiteral("refresh"),
+                                      QStringLiteral("sliders"), QStringLiteral("copy")};
+    for (int i = 0; i < ui->listWidget->count(); ++i)
+        ui->listWidget->item(i)->setIcon(QIcon(QStringLiteral(":/pad/icons/%1.svg").arg(sectionIcons.at(i))));
+    setStyleSheet(QStringLiteral(
+        "QDialog#padAdvancedAssignmentDialog QPushButton { min-height: 26px; }"
+        "QListWidget#listWidget { background: #171719; border: 1px solid #303035; padding: 8px; }"
+        "QListWidget#listWidget::item { min-height: 32px; padding: 4px 8px; margin: 0 0 8px 0; border-radius: 4px; }"
+        "QListWidget#listWidget::item:selected { background: #303035; }"
+        "QListWidget#listWidget::item:hover { background: #242428; }"
+        "#slotListWidget { padding: 8px; }"
+        "#slotListWidget::item { border: none; background: transparent; }"
+        "#slotListWidget::item:selected { border: none; background: transparent; }"
+        "QComboBox, QLineEdit, QSpinBox, QDoubleSpinBox { min-height: 26px; }"
+        "QFrame#line { background: #303035; color: #303035; border: none; max-height: 1px; }"));
     ui->stackedWidget->setCurrentWidget(ui->page);
+    // Match the top-level footprint to the active page, with Close always outside the content.
+    auto fitPage = [this](int row) {
+        const int pageHeight = row == 0 ? 440 : (row == 2 ? 360 : 320);
+        setMinimumHeight(row == 0 ? 400 : 280);
+        resize(960, pageHeight);
+    };
+    connect(ui->listWidget, &QListWidget::currentRowChanged, this, fitPage);
+    fitPage(0);
     setAttribute(Qt::WA_DeleteOnClose);
 
     PadderCommon::inputDaemonMutex.lock();
@@ -157,11 +195,11 @@ AdvanceButtonDialog::AdvanceButtonDialog(JoyButton *button, QWidget *parent)
         QListWidgetItem *item = new QListWidgetItem(ui->slotListWidget);
         item->setData(Qt::UserRole, QVariant::fromValue<SimpleKeyGrabberButton *>(existingCode));
         QHBoxLayout *layout = new QHBoxLayout();
-        layout->setContentsMargins(10, 0, 10, 0);
+        layout->setContentsMargins(8, 4, 8, 4);
         layout->addWidget(existingCode);
         QWidget *widget = new QWidget();
         widget->setLayout(layout);
-        item->setSizeHint(widget->sizeHint());
+        item->setSizeHint(QSize(widget->sizeHint().width(), 48));
 
         ui->slotListWidget->setItemWidget(item, widget);
         connectButtonEvents(existingCode);
@@ -323,7 +361,7 @@ void AdvanceButtonDialog::updateSlotsScrollArea(int value)
     {
         QListWidgetItem *item = ui->slotListWidget->item(i);
         QWidget *widget = ui->slotListWidget->itemWidget(item);
-        item->setSizeHint(widget->sizeHint());
+        item->setSizeHint(QSize(widget->sizeHint().width(), 48));
     }
 
     // Alter interface if turbo cannot be used.
@@ -412,11 +450,11 @@ void AdvanceButtonDialog::appendBlankKeyGrabber()
     item->setData(Qt::UserRole, QVariant::fromValue<SimpleKeyGrabberButton *>(blankButton));
 
     QHBoxLayout *layout = new QHBoxLayout();
-    layout->setContentsMargins(10, 0, 10, 0);
+    layout->setContentsMargins(8, 4, 8, 4);
     layout->addWidget(blankButton);
     QWidget *widget = new QWidget();
     widget->setLayout(layout);
-    item->setSizeHint(widget->sizeHint());
+    item->setSizeHint(QSize(widget->sizeHint().width(), 48));
 
     ui->slotListWidget->setItemWidget(item, widget);
     ui->slotListWidget->setCurrentItem(item);
