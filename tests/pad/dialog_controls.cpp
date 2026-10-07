@@ -218,14 +218,14 @@ int main(int argc,char **argv) {
             names=new SetNamesDialog(j); show(names); widget<QTableWidget>(names,"setNamesTableWidget")->item(0,0)->setText("QA Set"); closeButton(names,QDialogButtonBox::Ok); check(set->getName()=="QA Set","set save failed"); delete names;
         } else if(test=="settings") {
             settings->setValue("NumberRecentProfiles",5);
-            auto *d=new MainSettingsDialog(settings,new QList<InputDevice*>{j}); show(d); spin(d,"numberRecentProfileSpinBox",8); closeButton(d,QDialogButtonBox::Cancel); check(settings->value("NumberRecentProfiles").toInt()==5,"settings cancel committed"); delete d;
+            auto *d=new MainSettingsDialog(settings,new QList<InputDevice*>{j}); show(d); check(!d->findChild<QLabel*>("label_8"),"Language narrative remains"); spin(d,"numberRecentProfileSpinBox",8); closeButton(d,QDialogButtonBox::Cancel); check(settings->value("NumberRecentProfiles").toInt()==5,"settings cancel committed"); delete d;
             d=new MainSettingsDialog(settings,new QList<InputDevice*>{j}); show(d);
             auto *table=widget<QTableWidget>(d,"controllerMappingsTableWidget"); int rows=table->rowCount();
             click(widget<QPushButton>(d,"mappngInsertPushButton")); check(table->rowCount()==rows+1,"mapping row add failed");
             table->setCurrentCell(rows,0); click(widget<QPushButton>(d,"mappingDeletePushButton")); check(table->rowCount()==rows,"mapping row remove failed");
             toggle(d,"keyRepeatEnableCheckBox"); check(widget<QSpinBox>(d,"keyDelaySpinBox")->isEnabled(),"key repeat dependent controls not enabled");
             toggle(d,"keyRepeatEnableCheckBox"); check(!widget<QSpinBox>(d,"keyDelaySpinBox")->isEnabled(),"key repeat dependent controls not disabled");
-            spin(d,"numberRecentProfileSpinBox",8); toggle(d,"attachNumKeypadCheckbox"); closeButton(d,QDialogButtonBox::Ok); check(settings->value("NumberRecentProfiles").toInt()==8,"settings save failed"); check(settings->value("AttachNumKeypad").toString()=="1","settings keypad save failed"); delete d;
+            check(!d->findChild<QLabel*>("label_8"),"Language narrative remains"); spin(d,"numberRecentProfileSpinBox",8); toggle(d,"attachNumKeypadCheckbox"); closeButton(d,QDialogButtonBox::Ok); check(settings->value("NumberRecentProfiles").toInt()==8,"settings save failed"); check(settings->value("AttachNumKeypad").toString()=="1","settings keypad save failed"); delete d;
         } else if(test=="calibration") {
             auto *d=new Calibration(j); show(d); check(widget<QComboBox>(d,"deviceComboBox")->count()==1,"calibration stick missing");
             check(!widget<QPushButton>(d,"saveBtn")->isEnabled(),"unsampled calibration Save enabled");
@@ -291,7 +291,7 @@ int main(int argc,char **argv) {
             auto *loaded=j->getActiveSetJoystick()->getJoyButton(0); check(loaded->getAssignedSlots()->size()==1&&loaded->getAssignedSlots()->first()->getSlotCodeAlias()==Qt::Key_B,"Load didn't restore saved mapping");
             delete tab;
         } else if(test=="about") {
-            auto *d=new AboutDialog; show(d); check(widget<QLabel>(d,"versionLabel")->text()=="Development build","About exposes an unchosen release version"); check(!widget<QTextBrowser>(d,"infoTextBrowser")->toPlainText().contains("3.6.1"),"About exposes inherited upstream version"); auto *tabs=widget<QTabWidget>(d,"tabWidget"); check(tabs->count()>=4,"about tabs missing"); for(int n=0;n<tabs->count();n++){tabs->setCurrentIndex(n);settle();check(tabs->currentIndex()==n,"about tab switch failed");} check(!widget<QTextBrowser>(d,"infoTextBrowser")->toPlainText().isEmpty(),"about info empty"); closeButton(d,QDialogButtonBox::Close); delete d;
+            auto *d=new AboutDialog; show(d); check(widget<QLabel>(d,"versionLabel")->text()=="Development build","About exposes an unchosen release version"); check(!widget<QTextBrowser>(d,"infoTextBrowser")->toPlainText().contains("3.6.1"),"About exposes inherited upstream version"); auto *tabs=widget<QTabWidget>(d,"tabWidget"); check(widget<QTextBrowser>(d,"textBrowser_2")->toPlainText().contains("TERMS AND CONDITIONS"),"GPL resource absent from License tab"); check(tabs->count()==3,"About must contain only Info, License and Changes"); check(!d->findChild<QWidget*>("credits")&&!d->findChild<QWidget*>("aboutDev"),"Retired About narrative remains"); for(auto *browser:d->findChildren<QTextBrowser*>())check(!browser->toPlainText().contains("antimicro",Qt::CaseInsensitive),"About contains old product branding"); for(int n=0;n<tabs->count();n++){tabs->setCurrentIndex(n);settle();check(tabs->currentIndex()==n,"about tab switch failed");} check(!widget<QTextBrowser>(d,"infoTextBrowser")->toPlainText().isEmpty(),"about info empty"); closeButton(d,QDialogButtonBox::Close); delete d;
         } else throw std::runtime_error("unknown test");
         fprintf(stdout,"PASS dialog %s\n",argv[1]); fflush(stdout);
         QMetaObject::invokeMethod(j,[j]{delete j;},Qt::BlockingQueuedConnection); worker.quit(); worker.wait(); delete settings;

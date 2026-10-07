@@ -95,6 +95,9 @@ int main(int argc,char **argv) {
             check(control<QLabel>(dialog,"versionLabel")->text()=="Development build","About display version is not Development build");
             auto info=control<QTextBrowser>(dialog,"infoTextBrowser")->toPlainText();
             check(info.contains("Program Version Development build")&&!info.contains("3.6.1"),"About info exposes inherited version");
+            auto *tabs=control<QTabWidget>(dialog,"tabWidget");
+            check(tabs->count()==3&&!dialog->findChild<QWidget*>("credits")&&!dialog->findChild<QWidget*>("aboutDev"),"Retired About tabs remain");
+            for(auto *browser:dialog->findChildren<QTextBrowser*>())check(!browser->toPlainText().contains("antimicro",Qt::CaseInsensitive),"About contains old product branding");
             closeDialog(dialog);
         } else if(test=="sensor-accel" || test=="sensor-gyro") {
             auto *sensor=set->getSensor(test=="sensor-accel"?ACCELEROMETER:GYROSCOPE);check(sensor,"Sensor model absent");

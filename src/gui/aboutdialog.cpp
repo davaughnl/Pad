@@ -40,6 +40,14 @@ AboutDialog::AboutDialog(QWidget *parent)
     ui->setupUi(this);
     ui->versionLabel->setText(PadderCommon::displayVersion);
     fillInfoTextBrowser();
+    QFile licenseFile(QStringLiteral(":/pad/GPL-3.0.txt"));
+    QString legalNotice = QStringLiteral("Copyright (C) 2015 Travis Nickles; Copyright (C) 2020 Jagoda Górska.\n\n"
+        "Pad is modified software distributed under the GNU General Public License version 3 or later. "
+        "There is no warranty. You may copy and redistribute it under that license. "
+        "The complete license follows.\n\n");
+    if (licenseFile.open(QIODevice::ReadOnly | QIODevice::Text))
+        legalNotice += QString::fromUtf8(licenseFile.readAll());
+    ui->textBrowser_2->setPlainText(legalNotice);
 }
 
 AboutDialog::~AboutDialog() { delete ui; }
@@ -112,7 +120,9 @@ void AboutDialog::changeEvent(QEvent *event)
 
 void AboutDialog::retranslateUi()
 {
+    const QString legalNotice = ui->textBrowser_2->toPlainText();
     ui->retranslateUi(this);
+    ui->textBrowser_2->setPlainText(legalNotice);
 
     ui->versionLabel->setText(PadderCommon::displayVersion);
 }

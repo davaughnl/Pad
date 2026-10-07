@@ -92,4 +92,7 @@
         <file alias="images/actions/split_slot.png">pad/icons/split.svg</file>
         <file alias="CHANGELOG.md">../PAD-CHANGELOG.md</file>
     </qresource>
+    <qresource prefix="/pad">
+        <file alias="GPL-3.0.txt">../LICENSE</file>
+    </qresource>
 </RCC>

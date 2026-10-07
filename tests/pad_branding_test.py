@@ -76,8 +76,6 @@ class PadBrandingTests(unittest.TestCase):
         for path in (ROOT / 'src').rglob('*.ui'):
             for text in ET.parse(path).findall('.//string'):
                 value = text.text or ''
-                if path.name == 'aboutdialog.ui' and ('Based on AntiMicroX' in value or 'Pad is based on AntiMicroX' in value):
-                    continue
                 self.assertIsNone(re.search('antimicro', value, re.I), str(path))
         common = (ROOT / 'src/common.h').read_text()
         self.assertIn('wikiPage = "https://github.com/davaughnl/Pad"', common)
@@ -98,8 +96,8 @@ class PadBrandingTests(unittest.TestCase):
 
     def test_upstream_credits_and_profile_engine_retained(self):
         self.assertIn('AntiMicroX', (ROOT / 'README.upstream.md').read_text())
-        self.assertIn('Travis Nickles', (ROOT / 'src/gui/aboutdialog.ui').read_text())
-        self.assertIn('https://github.com/AntiMicroX/antimicrox', (ROOT / 'src/gui/aboutdialog.ui').read_text())
+        self.assertIn('Travis Nickles', (ROOT / 'src/gui/aboutdialog.cpp').read_text())
+        self.assertNotIn('Upstream Attribution', (ROOT / 'src/gui/aboutdialog.ui').read_text())
         self.assertTrue((ROOT / 'src/xml/inputdevicexml.cpp').is_file())
         self.assertIn('GPL', (ROOT / 'README.md').read_text())
 
