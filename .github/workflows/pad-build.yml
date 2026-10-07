@@ -1,0 +1,78 @@
+name: Pad Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pad-build-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  windows:
+    name: Windows x64 / Qt5 / MSVC
+    runs-on: windows-2022
+    timeout-minutes: 35
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+      - name: Install Qt5
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: '5.15.2'
+          host: windows
+          target: desktop
+          arch: win64_msvc2019_64
+          cache: true
+      - name: Install SDL2
+        run: ./packaging/windows/get-sdl2.ps1 -Destination "$env:RUNNER_TEMP/sdl2"
+      - name: Configure Release portable build
+        run: |
+          cmake -S . -B build -G Ninja `
+            -DCMAKE_BUILD_TYPE=Release `
+            -DUSE_QT6_BY_DEFAULT=OFF `
+            -DPORTABLE_WIN=ON `
+            -DCHECK_FOR_UPDATES=OFF `
+            "-DCMAKE_PREFIX_PATH=$env:QT_ROOT_DIR" `
+            "-DSDL2_PATH=$env:RUNNER_TEMP/sdl2" `
+            "-DSDL2_INCLUDE_DIR=$env:RUNNER_TEMP/sdl2/include" `
+            "-DSDL2_LIBRARY=$env:RUNNER_TEMP/sdl2/lib/x64/SDL2.lib" `
+            "-DSDL2MAIN_LIBRARY=$env:RUNNER_TEMP/sdl2/lib/x64/SDL2main.lib" `
+            "-DSDL2_DLL_LOCATION_DIR=$env:RUNNER_TEMP/sdl2/lib/x64"
+          if ($LASTEXITCODE -ne 0) { throw 'CMake configure failed' }
+      - name: Compile Pad and translations
+        run: |
+          cmake --build build --target antimicrox updateqm --parallel 4
+          if ($LASTEXITCODE -ne 0) { throw 'CMake build failed' }
+      - name: Stage portable distribution
+        run: ./packaging/windows/package.ps1 -BuildDir build -QtDir "$env:QT_ROOT_DIR" -SdlDir "$env:RUNNER_TEMP/sdl2" -OutputDir dist -Revision '${{ github.sha }}'
+      - name: Test extracted zip without build dependencies in PATH
+        run: ./packaging/windows/smoke-test.ps1 -Archive (Get-ChildItem dist/Pad-*-Windows-x64.zip | Select-Object -First 1).FullName -OutputDir smoke
+      - name: Upload portable zip
+        uses: actions/upload-artifact@v4
+        with:
+          name: Pad-Windows-x64-${{ github.sha }}
+          path: |
+            dist/Pad-*-Windows-x64.zip
+            dist/*.sha256
+          if-no-files-found: error
+          retention-days: 30
+      - name: Upload smoke evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Pad-Windows-smoke-${{ github.sha }}
+          path: smoke/
+          if-no-files-found: warn
+          retention-days: 14

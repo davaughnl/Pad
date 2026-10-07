@@ -1,0 +1,17 @@
+Pad is an AntiMicroX fork licensed under GPL-3.0-or-later. Its complete source
+for this build is the revision in build-info.json at https://github.com/davaughnl/Pad.
+
+Qt 5.15.2: Copyright The Qt Company Ltd. and other contributors.
+Qt is available under LGPL-3.0 / GPL-2.0 / GPL-3.0 and commercial licenses;
+this distribution uses the open-source Qt distribution with dynamic linking.
+License texts and corresponding Qt source: https://download.qt.io/archive/qt/5.15/5.15.2/
+Qt license information: https://doc.qt.io/qt-5/licensing.html
+Users may replace the included Qt DLLs with compatible modified Qt libraries.
+
+SDL 2.32.10: Copyright SDL contributors. zlib license, included in SDL2.txt.
+Source: https://github.com/libsdl-org/SDL/tree/release-2.32.10
+SDL GameControllerDB: license included in LICENSE_SDL_GameControllerDB.
+
+Microsoft Visual C++ runtime: Copyright Microsoft Corporation.
+Distributed as app-local DLLs from the Visual Studio 2022 redistributable.
+License: https://visualstudio.microsoft.com/license-terms/vs2022-cruntime/
