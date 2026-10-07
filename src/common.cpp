@@ -202,7 +202,7 @@ QIcon loadIcon(QString name)
 
 void log_system_config()
 {
-    VERBOSE() << "AntiMicroX version: " << PadderCommon::programVersion
+    VERBOSE() << "Pad version: " << PadderCommon::programVersion
 #ifdef ANTIMICROX_PKG_VERSION
               << " Package: " << ANTIMICROX_PKG_VERSION
 #endif

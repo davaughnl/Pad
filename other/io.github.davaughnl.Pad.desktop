@@ -1,0 +1,16 @@
+[Desktop Entry]
+Name=Pad
+Comment=Map your controller to keyboard and mouse controls
+Exec=pad --show %f
+Icon=io.github.davaughnl.Pad
+StartupNotify=true
+Terminal=false
+Type=Application
+Categories=Game;Qt;Utility;
+MimeType=application/x-amgp;
+Keywords=game;gamepad;controller;keyboard;joystick;mouse;
+Actions=run-in-tray;
+
+[Desktop Action run-in-tray]
+Name=Open in system tray
+Exec=pad --tray

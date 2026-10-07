@@ -20,7 +20,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>AntiMicroX</string>
+   <string>Pad</string>
   </property>
   <property name="windowIcon">
    <iconset theme="io.github.antimicrox.antimicrox">

@@ -172,6 +172,7 @@ set(antimicrox_SOURCES
         src/gui/joytabwidgetcontainer.cpp
         src/gui/mainsettingsdialog.cpp
         src/gui/mainwindow.cpp
+        src/pad/padshell.cpp
         src/gui/mousesettingsdialog.cpp
         src/gui/qkeydisplaydialog.cpp
         src/gui/quicksetdialog.cpp
@@ -657,6 +658,9 @@ target_include_directories(antimicrox PUBLIC
 
 ###############################
 # INSTALL
+
+set_target_properties(antimicrox PROPERTIES OUTPUT_NAME pad)
+set(CPACK_PACKAGE_NAME "Pad")
 ###############################
 
 # Specify out directory for final executable.
@@ -667,19 +671,19 @@ if(UNIX)
     set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${ECM_MODULE_DIR})
     include(ECMInstallIcons)
 
-    ecm_install_icons(ICONS share/icons/application/16x16/apps/16-apps-io.github.antimicrox.antimicrox.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons)
-    ecm_install_icons(ICONS share/icons/application/24x24/apps/24-apps-io.github.antimicrox.antimicrox.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons)
-    ecm_install_icons(ICONS share/icons/application/32x32/apps/32-apps-io.github.antimicrox.antimicrox.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons)
-    ecm_install_icons(ICONS share/icons/application/48x48/apps/48-apps-io.github.antimicrox.antimicrox.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons)
-    ecm_install_icons(ICONS share/icons/application/64x64/apps/64-apps-io.github.antimicrox.antimicrox.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons)
-    ecm_install_icons(ICONS share/icons/application/128x128/apps/128-apps-io.github.antimicrox.antimicrox.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons)
-    ecm_install_icons(ICONS share/icons/application/scalable/apps/sc-apps-io.github.antimicrox.antimicrox.svg DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons)
+    ecm_install_icons(ICONS share/icons/application/16x16/apps/16-apps-io.github.davaughnl.Pad.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons)
+    ecm_install_icons(ICONS share/icons/application/24x24/apps/24-apps-io.github.davaughnl.Pad.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons)
+    ecm_install_icons(ICONS share/icons/application/32x32/apps/32-apps-io.github.davaughnl.Pad.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons)
+    ecm_install_icons(ICONS share/icons/application/48x48/apps/48-apps-io.github.davaughnl.Pad.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons)
+    ecm_install_icons(ICONS share/icons/application/64x64/apps/64-apps-io.github.davaughnl.Pad.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons)
+    ecm_install_icons(ICONS share/icons/application/128x128/apps/128-apps-io.github.davaughnl.Pad.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons)
+    ecm_install_icons(ICONS share/icons/application/scalable/apps/sc-apps-io.github.davaughnl.Pad.svg DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons)
 
-    ecm_install_icons(ICONS share/icons/breeze_themed/48-apps-io.github.antimicrox.antimicrox.trayicon.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons THEME breeze)
-    ecm_install_icons(ICONS src/images/48-apps-io.github.antimicrox.antimicrox.trayicon.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons)
+    ecm_install_icons(ICONS share/icons/breeze_themed/48-apps-io.github.davaughnl.Pad.trayicon.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons THEME breeze)
+    ecm_install_icons(ICONS src/images/48-apps-io.github.davaughnl.Pad.trayicon.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons)
 
     install(FILES CHANGELOG.md DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/doc/antimicrox")
-    install(FILES other/io.github.antimicrox.antimicrox.desktop DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/applications")
+    install(FILES other/io.github.davaughnl.Pad.desktop DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/applications")
     install(FILES other/io.github.antimicrox.antimicrox.xml DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/mime/packages")
 
     # Copy current Changelog file to location that the resource file expects.
@@ -818,8 +822,8 @@ install(FILES share/LICENSE_SDL_GameControllerDB DESTINATION "${CMAKE_INSTALL_DA
 include(InstallRequiredSystemLibraries)
 
 
-set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Program used to map keyboard keys and mouse controls to a gamepad.")
-set(CPACK_PACKAGE_HOMEPAGE_URL "https://github.com/AntiMicroX/antimicrox/")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Pad maps controllers to keyboard and mouse controls.")
+set(CPACK_PACKAGE_HOMEPAGE_URL "https://github.com/davaughnl/Pad/")
 
 
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
@@ -832,7 +836,7 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     set(CPACK_PACKAGE_VERSION_PATCH "${CPACK_PACKAGE_VERSION_PATCH}-dbg")
 endif()
 
-set(CPACK_PACKAGE_FILE_NAME "antimicrox-${ANTIMICROX_MAJOR_VERSION}.${ANTIMICROX_MINOR_VERSION}.${ANTIMICROX_PATCH_VERSION}")
+set(CPACK_PACKAGE_FILE_NAME "Pad-${ANTIMICROX_MAJOR_VERSION}.${ANTIMICROX_MINOR_VERSION}.${ANTIMICROX_PATCH_VERSION}")
 if(WIN32)
     if(PORTABLE_WIN)
         set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_FILE_NAME}-PortableWindows")
@@ -842,7 +846,7 @@ if(WIN32)
 endif(WIN32)
 set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_FILE_NAME}-${CMAKE_HOST_SYSTEM_PROCESSOR}")
 
-set(CPACK_PACKAGE_INSTALL_DIRECTORY "AntiMicroX")
+set(CPACK_PACKAGE_INSTALL_DIRECTORY "Pad")
 
 if(UNIX)
     set(CPACK_STRIP_FILES "")
@@ -857,10 +861,8 @@ if(CPACK_GENERATOR STREQUAL "DEB")
     else()
         set(CPACK_DEBIAN_PACKAGE_DEPENDS "libqt6widgets6 (>= ${QT_REQUIRED_VERSION}), libsdl2-2.0-0 (>= ${SDL_REQUIRED_VERSION}), libc6")
     endif(QT_VERSION_MAJOR EQUAL 5)
-    set(CPACK_DEBIAN_PACKAGE_MAINTAINER "pktiuk <kotiuk@zohomail.eu>")
-    set(CPACK_DEBIAN_PACKAGE_DESCRIPTION "AntiMicroX is a graphical program used to map gamepad buttons to keyboard, mouse, scripts and macros.
-
-It is a new fork of discontinued AntiMicro.")
+    set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Pad contributors")
+    set(CPACK_DEBIAN_PACKAGE_DESCRIPTION "Pad maps controller buttons to keyboard, mouse, scripts and macros. A redesigned AntiMicroX fork.")
 
     message("Preparing documentation for DEB package")
     add_custom_target(package_docummentation ALL)
@@ -872,7 +874,7 @@ It is a new fork of discontinued AntiMicro.")
 
     #Strip binaries from unnecessary notes, comments, etc
     add_custom_command(TARGET antimicrox POST_BUILD
-            COMMAND strip --strip-unneeded --remove-section=.comment --remove-section=.note "${CMAKE_CURRENT_BINARY_DIR}/bin/antimicrox" VERBATIM)
+            COMMAND strip --strip-unneeded --remove-section=.comment --remove-section=.note "${CMAKE_CURRENT_BINARY_DIR}/bin/pad" VERBATIM)
 endif()
 
 if(WIN32 AND NOT UNIX)
@@ -885,10 +887,10 @@ if(WIN32 AND NOT UNIX)
         set(CPACK_PACKAGE_ICON "${PROJECT_SOURCE_DIR}/src/images\\\\antimicrox.ico")
         set(CPACK_NSIS_MUI_ICON "${CPACK_PACKAGE_ICON}")
         set(CPACK_NSIS_MUI_UNIICON "${CPACK_PACKAGE_ICON}")
-        set(CPACK_NSIS_INSTALLED_ICON_NAME "bin/antimicrox.exe")
+        set(CPACK_NSIS_INSTALLED_ICON_NAME "bin/pad.exe")
 
-        set(CPACK_NSIS_DISPLAY_NAME "AntiMicroX")
-        set(CPACK_NSIS_PACKAGE_NAME "AntiMicroX")
+        set(CPACK_NSIS_DISPLAY_NAME "Pad")
+        set(CPACK_NSIS_PACKAGE_NAME "Pad")
         set(CPACK_NSIS_HELP_LINK "http:\\\\\\\\github.com/AntiMicroX/antimicrox/wiki")
         set(CPACK_NSIS_URL_INFO_ABOUT "http:\\\\\\\\github.com/AntiMicroX/antimicrox")
         set(CPACK_NSIS_MODIFY_PATH ON)
@@ -897,7 +899,7 @@ if(WIN32 AND NOT UNIX)
     endif()
 endif()
 
-set(CPACK_PACKAGE_EXECUTABLES "antimicrox;AntiMicroX")
+set(CPACK_PACKAGE_EXECUTABLES "pad;Pad")
 set(CPACK_CREATE_DESKTOP_LINKS "antimicrox")
 include(CPack)
 

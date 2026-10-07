@@ -230,7 +230,7 @@ int main(int argc, char *argv[])
     qInstallMessageHandler(Logger::loggerMessageHandler);
 
     QApplication antimicrox(argc, argv);
-    QCoreApplication::setApplicationName("antimicrox");
+    QCoreApplication::setApplicationName("Pad");
     QCoreApplication::setApplicationVersion(PadderCommon::programVersion);
 
     QTextStream outstream(stdout);
@@ -321,7 +321,7 @@ int main(int argc, char *argv[])
     {
         // An instance of this program is already running.
         // Save app config and exit.
-        PRINT_STDOUT() << "AntiMicroX is already running.\n";
+        PRINT_STDOUT() << "Pad is already running.\n";
         QPointer<InputDaemon> joypad_worker = new InputDaemon(joysticks, &settings, false);
         MainWindow mainWindow(joysticks, &cmdutility, &settings, false);
         mainWindow.fillButtons();
@@ -420,7 +420,7 @@ int main(int argc, char *argv[])
 
 #if defined(Q_OS_UNIX)
     // Ensure that the Wayland appId matches the .desktop file name
-    QGuiApplication::setDesktopFileName("io.github.antimicrox.antimicrox");
+    QGuiApplication::setDesktopFileName("io.github.davaughnl.Pad");
 
     installSignalHandlers();
 

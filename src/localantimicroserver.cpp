@@ -58,7 +58,7 @@ void LocalAntiMicroServer::startLocalServer()
         }
     } else
     {
-        qDebug() << "LocalAntiMicroXServer::startLocalServer(): localServer is nullptr";
+        qDebug() << "LocalPadServer::startLocalServer(): localServer is nullptr";
     }
 }
 
@@ -80,7 +80,7 @@ void LocalAntiMicroServer::handleOutsideConnection()
         }
     } else
     {
-        qDebug() << "LocalAntiMicroXServer::handleOutsideConnection(): localServer is nullptr";
+        qDebug() << "LocalPadServer::handleOutsideConnection(): localServer is nullptr";
     }
 }
 

@@ -117,15 +117,15 @@ const int LATESTCONFIGFILEVERSION = 19;
 // Specify the last known profile version that requires a migration
 // to be performed in order to be compatible with the latest version.
 const int LATESTCONFIGMIGRATIONVERSION = 5;
-const QString localSocketKey = "antimicroxSignalListener";
+const QString localSocketKey = "padSignalListener";
 const QString unhideCommand = "unhideWindow";
-const QString githubProjectPage = "https://github.com/AntiMicroX/antimicrox/";
-const QString githubIssuesPage = "https://github.com/AntiMicroX/antimicrox/issues";
-const QString wikiPage = QString("%1/wiki").arg(githubProjectPage);
+const QString githubProjectPage = "https://github.com/davaughnl/Pad/";
+const QString githubIssuesPage = "https://github.com/davaughnl/Pad/issues";
+const QString wikiPage = "https://github.com/AntiMicroX/antimicrox/wiki";
 
-const QString mouseDeviceName("antimicrox Mouse Emulation");
-const QString keyboardDeviceName("antimicrox Keyboard Emulation");
-const QString springMouseDeviceName("antimicrox Abs Mouse Emulation");
+const QString mouseDeviceName("Pad Mouse Emulation");
+const QString keyboardDeviceName("Pad Keyboard Emulation");
+const QString springMouseDeviceName("Pad Abs Mouse Emulation");
 
 const int ANTIMICROX_MAJOR_VERSION = PROJECT_MAJOR_VERSION;
 const int ANTIMICROX_MINOR_VERSION = PROJECT_MINOR_VERSION;

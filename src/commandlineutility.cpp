@@ -54,9 +54,7 @@ void CommandLineUtility::parseArguments(const QApplication &parsed_app)
 {
     QCommandLineParser parser;
     parser.setApplicationDescription(
-        QCoreApplication::translate("antimicrox", "Graphical program used to map keyboard buttons and mouse controls to "
-                                                  "a "
-                                                  "gamepad. Useful for playing games with no gamepad support."));
+        QCoreApplication::translate("antimicrox", "Pad maps controller buttons and sticks to keyboard and mouse controls."));
     parser.addHelpOption();
     parser.addVersionOption();
 

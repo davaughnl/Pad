@@ -49,6 +49,8 @@
     #include "autoprofilewatcher.h"
 #endif
 
+#include "../pad/padshell.h"
+
 #include <QAction>
 #include <QApplication>
 #include <QCloseEvent>
@@ -92,6 +94,8 @@ MainWindow::MainWindow(QMap<SDL_JoystickID, InputDevice *> *joysticks, CommandLi
     , trayIconMenu(nullptr)
 {
     ui->setupUi(this);
+    PadUi::install(this, ui->centralWidget, ui->stackedWidget, ui->tabWidget,
+                   ui->actionUpdate_Joysticks, ui->actionOptions);
 
     setWindowIcon(PadderCommon::loadIcon("antimicrox", ":/images/antimicrox.png"));
     ui->stackedWidget->setCurrentIndex(0);
