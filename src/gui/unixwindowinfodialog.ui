@@ -2,6 +2,24 @@
 <ui version="4.0">
  <class>UnixWindowInfoDialog</class>
  <widget class="QDialog" name="UnixWindowInfoDialog">
+  <property name="styleSheet"><string>QWidget { font-family: &quot;Geist&quot;; font-size: 13px; font-weight: 400; }
+QDialog { background: #111113; }
+QPushButton, QToolButton { min-height: 24px; padding: 5px 12px; }
+QComboBox, QLineEdit, QSpinBox, QDoubleSpinBox { min-height: 24px; padding-top: 5px; padding-bottom: 5px; }
+QSpinBox { min-width: 96px; }
+QGroupBox { padding: 16px; margin-top: 16px; }
+QGroupBox::title { color: #b8b8bf; left: 16px; }
+QLabel:disabled, QCheckBox:disabled { color: #67676f; }
+QDialogButtonBox { border: none; padding-top: 8px; }
+QTextBrowser, QPlainTextEdit { background: #19191c; border: 1px solid #303036; border-radius: 8px; padding: 16px; color: #eeeeef; selection-background-color: #505058; }
+QLabel#titleLabel { font-size: 24px; }
+QLabel#versionLabel, QLabel#copyrightLabel { color: #a0a0a8; }
+QLabel#steps { color: #b8b8bf; padding: 16px; background: #19191c; border: 1px solid #303036; border-radius: 8px; }
+QStackedWidget#statusStack { background: #19191c; border: 1px solid #303036; border-radius: 8px; }
+QFrame[frameShape="4"], QFrame[frameShape="5"] { color: #29292d; background: #29292d; max-height: 1px; border: none; }
+QTableWidget { background: #19191c; border: 1px solid #303036; gridline-color: #29292d; }
+QHeaderView::section { background: #242427; color: #b8b8bf; padding: 8px; border: none; }
+</string></property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -14,16 +32,16 @@
    <string>Captured Window Properties</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
-   <property name="spacing">
-    <number>20</number>
-   </property>
-   <item>
+
+<property name="leftMargin"><number>24</number></property>
+<property name="topMargin"><number>24</number></property>
+<property name="rightMargin"><number>24</number></property>
+<property name="bottomMargin"><number>24</number></property>
+<property name="spacing"><number>8</number></property>
+<item>
     <widget class="QGroupBox" name="infoGroupBox">
      <property name="font">
-      <font>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
+      <font><family>Geist</family><weight>50</weight><bold>false</bold></font>
      </property>
      <property name="title">
       <string>Information About Window</string>
@@ -32,12 +50,21 @@
       <bool>true</bool>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
-      <item>
+
+<property name="leftMargin"><number>8</number></property>
+<property name="topMargin"><number>8</number></property>
+<property name="rightMargin"><number>8</number></property>
+<property name="bottomMargin"><number>8</number></property>
+<property name="spacing"><number>8</number></property>
+<item>
        <layout class="QFormLayout" name="formLayout">
-        <property name="horizontalSpacing">
-         <number>20</number>
-        </property>
-        <item row="0" column="0">
+
+<property name="leftMargin"><number>8</number></property>
+<property name="topMargin"><number>8</number></property>
+<property name="rightMargin"><number>8</number></property>
+<property name="bottomMargin"><number>8</number></property>
+<property name="spacing"><number>8</number></property>
+<item row="0" column="0">
          <widget class="QLabel" name="label_2">
           <property name="text">
            <string>Class:</string>
@@ -47,9 +74,7 @@
         <item row="0" column="1">
          <widget class="QLabel" name="winClassLabel">
           <property name="font">
-           <font>
-            <italic>true</italic>
-           </font>
+           <font><family>Geist</family><weight>50</weight><bold>false</bold></font>
           </property>
           <property name="text">
            <string>TextLabel</string>
@@ -66,9 +91,7 @@
         <item row="1" column="1">
          <widget class="QLabel" name="winTitleLabel">
           <property name="font">
-           <font>
-            <italic>true</italic>
-           </font>
+           <font><family>Geist</family><weight>50</weight><bold>false</bold></font>
           </property>
           <property name="text">
            <string>TextLabel</string>
@@ -85,9 +108,7 @@
         <item row="2" column="1">
          <widget class="QLabel" name="winPathLabel">
           <property name="font">
-           <font>
-            <italic>true</italic>
-           </font>
+           <font><family>Geist</family><weight>50</weight><bold>false</bold></font>
           </property>
           <property name="text">
            <string>TextLabel</string>
@@ -97,8 +118,7 @@
        </layout>
       </item>
      </layout>
-     <zorder></zorder>
-    </widget>
+       </widget>
    </item>
    <item>
     <widget class="QGroupBox" name="choiceGroupBox">
@@ -115,7 +135,13 @@
       <bool>false</bool>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
-      <item>
+
+<property name="leftMargin"><number>8</number></property>
+<property name="topMargin"><number>8</number></property>
+<property name="rightMargin"><number>8</number></property>
+<property name="bottomMargin"><number>8</number></property>
+<property name="spacing"><number>8</number></property>
+<item>
        <widget class="QCheckBox" name="winClassCheckBox">
         <property name="text">
          <string>Class</string>

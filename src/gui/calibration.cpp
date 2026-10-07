@@ -234,6 +234,7 @@ void Calibration::selectTypeIndex(unsigned int type_index)
 
     if (m_type == CAL_STICK)
     {
+        m_ui->steps->setText(tr("Start calibration to measure the neutral position, then move the stick through its full range."));
         m_ui->statusStack->setCurrentIndex(1);
         m_stick = m_joystick->getActiveSetJoystick()->getSticks().value(m_index);
         m_calibrated = m_stick->isCalibrated();

@@ -2,12 +2,30 @@
 <ui version="4.0">
  <class>SetNamesDialog</class>
  <widget class="QDialog" name="SetNamesDialog">
+  <property name="styleSheet"><string>QWidget { font-family: &quot;Geist&quot;; font-size: 13px; font-weight: 400; }
+QDialog { background: #111113; }
+QPushButton, QToolButton { min-height: 24px; padding: 5px 12px; }
+QComboBox, QLineEdit, QSpinBox, QDoubleSpinBox { min-height: 24px; padding-top: 5px; padding-bottom: 5px; }
+QSpinBox { min-width: 96px; }
+QGroupBox { padding: 16px; margin-top: 16px; }
+QGroupBox::title { color: #b8b8bf; left: 16px; }
+QLabel:disabled, QCheckBox:disabled { color: #67676f; }
+QDialogButtonBox { border: none; padding-top: 8px; }
+QTextBrowser, QPlainTextEdit { background: #19191c; border: 1px solid #303036; border-radius: 8px; padding: 16px; color: #eeeeef; selection-background-color: #505058; }
+QLabel#titleLabel { font-size: 24px; }
+QLabel#versionLabel, QLabel#copyrightLabel { color: #a0a0a8; }
+QLabel#steps { color: #b8b8bf; padding: 16px; background: #19191c; border: 1px solid #303036; border-radius: 8px; }
+QStackedWidget#statusStack { background: #19191c; border: 1px solid #303036; border-radius: 8px; }
+QFrame[frameShape="4"], QFrame[frameShape="5"] { color: #29292d; background: #29292d; max-height: 1px; border: none; }
+QTableWidget { background: #19191c; border: 1px solid #303036; gridline-color: #29292d; }
+QHeaderView::section { background: #242427; color: #b8b8bf; padding: 8px; border: none; }
+</string></property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>535</width>
-    <height>399</height>
+    <height>460</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +35,13 @@
    <bool>true</bool>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
+
+<property name="leftMargin"><number>24</number></property>
+<property name="topMargin"><number>24</number></property>
+<property name="rightMargin"><number>24</number></property>
+<property name="bottomMargin"><number>24</number></property>
+<property name="spacing"><number>8</number></property>
+<item>
     <widget class="QTableWidget" name="setNamesTableWidget">
      <property name="lineWidth">
       <number>1</number>
@@ -50,7 +74,7 @@
       <bool>true</bool>
      </attribute>
      <attribute name="verticalHeaderDefaultSectionSize">
-      <number>30</number>
+      <number>36</number>
      </attribute>
      <attribute name="verticalHeaderMinimumSectionSize">
       <number>18</number>
