@@ -35,7 +35,6 @@ MouseButtonSettingsDialog::MouseButtonSettingsDialog(JoyButton *button, QWidget 
     , helper(button)
 {
     setAttribute(Qt::WA_DeleteOnClose);
-    resize(size().width(), 450);
 
     this->button = button;
     getHelperLocal().moveToThread(button->thread());

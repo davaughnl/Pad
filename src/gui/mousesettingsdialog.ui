@@ -16,12 +16,42 @@
   <property name="windowTitle">
    <string>Mouse Settings</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget { font-family: "Geist"; font-size: 13px; font-weight: 400; }
+QDialog { background: #111113; }
+QPushButton, QToolButton { min-height: 24px; padding: 5px 12px; }
+QComboBox, QLineEdit, QSpinBox, QDoubleSpinBox { min-height: 24px; padding-top: 5px; padding-bottom: 5px; }
+QGroupBox { padding: 16px; margin-top: 16px; }
+QGroupBox::title { color: #b8b8bf; left: 16px; }
+QLabel:disabled, QCheckBox:disabled { color: #67676f; }
+JoyControlStickButtonPushButton[isflashing="true"] { background: #e8e8eb; color: #111113; border-color: #ffffff; }
+QDialogButtonBox { border: none; padding-top: 8px; }
+QFrame[frameShape="4"], QFrame[frameShape="5"] { color: #29292d; background: #29292d; max-height: 1px; border: none; }
+QGroupBox::indicator { width: 16px; height: 16px; border: 1px solid #505058; border-radius: 4px; background: #19191c; }
+QGroupBox::indicator:checked { background: #eeeeef; image: url(:/pad/icons/check-dark.svg); }
+ </string>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout_9">
+   <property name="spacing"><number>8</number></property>
+   <property name="leftMargin"><number>24</number></property>
+   <property name="topMargin"><number>24</number></property>
+   <property name="rightMargin"><number>24</number></property>
+   <property name="bottomMargin"><number>24</number></property>
    <item>
     <widget class="QGroupBox" name="topGroupBox">
      <layout class="QVBoxLayout" name="verticalLayout_5">
+      <property name="spacing"><number>8</number></property>
+      <property name="leftMargin"><number>0</number></property>
+      <property name="topMargin"><number>0</number></property>
+      <property name="rightMargin"><number>0</number></property>
+      <property name="bottomMargin"><number>0</number></property>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout">
+        <property name="spacing"><number>8</number></property>
+        <property name="leftMargin"><number>0</number></property>
+        <property name="topMargin"><number>0</number></property>
+        <property name="rightMargin"><number>0</number></property>
+        <property name="bottomMargin"><number>0</number></property>
         <item>
          <widget class="QLabel" name="label">
           <property name="text">
@@ -64,6 +94,11 @@ axis is moved back to the dead zone.</string>
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <property name="spacing"><number>8</number></property>
+        <property name="leftMargin"><number>0</number></property>
+        <property name="topMargin"><number>0</number></property>
+        <property name="rightMargin"><number>0</number></property>
+        <property name="bottomMargin"><number>0</number></property>
         <item>
          <widget class="QLabel" name="label_2">
           <property name="minimumSize">
@@ -169,8 +204,18 @@ a period of time using a Cubic curve.</string>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_8" stretch="1,0">
+     <property name="spacing"><number>8</number></property>
+     <property name="leftMargin"><number>0</number></property>
+     <property name="topMargin"><number>0</number></property>
+     <property name="rightMargin"><number>0</number></property>
+     <property name="bottomMargin"><number>0</number></property>
      <item>
       <layout class="QVBoxLayout" name="verticalLayout_8">
+       <property name="spacing"><number>8</number></property>
+       <property name="leftMargin"><number>0</number></property>
+       <property name="topMargin"><number>0</number></property>
+       <property name="rightMargin"><number>0</number></property>
+       <property name="bottomMargin"><number>0</number></property>
        <item>
         <widget class="QGroupBox" name="mouseSpeedGroupBox">
          <property name="title">
@@ -183,6 +228,11 @@ a period of time using a Cubic curve.</string>
           <bool>false</bool>
          </property>
          <layout class="QVBoxLayout" name="mouseSpeedVerticalLayout">
+          <property name="spacing"><number>8</number></property>
+          <property name="leftMargin"><number>0</number></property>
+          <property name="topMargin"><number>0</number></property>
+          <property name="rightMargin"><number>0</number></property>
+          <property name="bottomMargin"><number>0</number></property>
           <item alignment="Qt::AlignHCenter">
            <widget class="QCheckBox" name="changeMouseSpeedsTogetherCheckBox">
             <property name="enabled">
@@ -199,27 +249,29 @@ boxes at the same time.</string>
           </item>
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_10">
-            <property name="spacing">
-             <number>16</number>
-            </property>
-            <property name="topMargin">
-             <number>10</number>
-            </property>
+            <property name="spacing"><number>8</number></property>
+            <property name="leftMargin"><number>0</number></property>
+            <property name="topMargin"><number>0</number></property>
+            <property name="rightMargin"><number>0</number></property>
+            <property name="bottomMargin"><number>0</number></property>
             <item>
              <layout class="QVBoxLayout" name="verticalLayout_2">
-              <property name="spacing">
-               <number>10</number>
-              </property>
+              <property name="spacing"><number>8</number></property>
+              <property name="leftMargin"><number>0</number></property>
+              <property name="topMargin"><number>0</number></property>
+              <property name="rightMargin"><number>0</number></property>
+              <property name="bottomMargin"><number>0</number></property>
               <item>
                <layout class="QHBoxLayout" name="horizontalLayout_4">
-                <property name="spacing">
-                 <number>10</number>
-                </property>
+                <property name="spacing"><number>8</number></property>
+                <property name="leftMargin"><number>0</number></property>
+                <property name="topMargin"><number>0</number></property>
+                <property name="rightMargin"><number>0</number></property>
+                <property name="bottomMargin"><number>0</number></property>
                 <item>
                  <widget class="QLabel" name="label_5">
                   <property name="text">
-                   <string>Hori&amp;zontal
-Speed:</string>
+                   <string>Hori&amp;zontal:</string>
                   </property>
                   <property name="buddy">
                    <cstring>horizontalSpinBox</cstring>
@@ -252,19 +304,22 @@ Speed:</string>
             </item>
             <item>
              <layout class="QVBoxLayout" name="verticalLayout_4">
-              <property name="spacing">
-               <number>10</number>
-              </property>
+              <property name="spacing"><number>8</number></property>
+              <property name="leftMargin"><number>0</number></property>
+              <property name="topMargin"><number>0</number></property>
+              <property name="rightMargin"><number>0</number></property>
+              <property name="bottomMargin"><number>0</number></property>
               <item>
                <layout class="QHBoxLayout" name="horizontalLayout_9">
-                <property name="spacing">
-                 <number>10</number>
-                </property>
+                <property name="spacing"><number>8</number></property>
+                <property name="leftMargin"><number>0</number></property>
+                <property name="topMargin"><number>0</number></property>
+                <property name="rightMargin"><number>0</number></property>
+                <property name="bottomMargin"><number>0</number></property>
                 <item>
                  <widget class="QLabel" name="label_7">
                   <property name="text">
-                   <string>&amp;Vertical
-Speed:</string>
+                   <string>&amp;Vertical:</string>
                   </property>
                   <property name="buddy">
                    <cstring>verticalSpinBox</cstring>
@@ -299,24 +354,29 @@ Speed:</string>
           </item>
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_14">
-            <property name="spacing">
-             <number>16</number>
-            </property>
-            <property name="topMargin">
-             <number>10</number>
-            </property>
+            <property name="spacing"><number>8</number></property>
+            <property name="leftMargin"><number>0</number></property>
+            <property name="topMargin"><number>0</number></property>
+            <property name="rightMargin"><number>0</number></property>
+            <property name="bottomMargin"><number>0</number></property>
             <item>
              <layout class="QVBoxLayout" name="verticalLayout">
-              <property name="spacing">
-               <number>10</number>
-              </property>
+              <property name="spacing"><number>8</number></property>
+              <property name="leftMargin"><number>0</number></property>
+              <property name="topMargin"><number>0</number></property>
+              <property name="rightMargin"><number>0</number></property>
+              <property name="bottomMargin"><number>0</number></property>
               <item>
                <layout class="QHBoxLayout" name="horizontalLayout_7">
+                <property name="spacing"><number>8</number></property>
+                <property name="leftMargin"><number>0</number></property>
+                <property name="topMargin"><number>0</number></property>
+                <property name="rightMargin"><number>0</number></property>
+                <property name="bottomMargin"><number>0</number></property>
                 <item>
                  <widget class="QLabel" name="wheelHoriSpeedLabel">
                   <property name="text">
-                   <string>Wheel Hori.
-Speed:</string>
+                   <string>Wheel Hori.:</string>
                   </property>
                   <property name="buddy">
                    <cstring>wheelHoriSpeedSpinBox</cstring>
@@ -359,16 +419,22 @@ according to number of simulated notches per second.</string>
             </item>
             <item>
              <layout class="QVBoxLayout" name="verticalLayout_6">
-              <property name="spacing">
-               <number>10</number>
-              </property>
+              <property name="spacing"><number>8</number></property>
+              <property name="leftMargin"><number>0</number></property>
+              <property name="topMargin"><number>0</number></property>
+              <property name="rightMargin"><number>0</number></property>
+              <property name="bottomMargin"><number>0</number></property>
               <item>
                <layout class="QHBoxLayout" name="horizontalLayout_13">
+                <property name="spacing"><number>8</number></property>
+                <property name="leftMargin"><number>0</number></property>
+                <property name="topMargin"><number>0</number></property>
+                <property name="rightMargin"><number>0</number></property>
+                <property name="bottomMargin"><number>0</number></property>
                 <item>
                  <widget class="QLabel" name="wheelVertSpeedLabel">
                   <property name="text">
-                   <string>Wheel Vert.
-Speed:</string>
+                   <string>Wheel Vert.:</string>
                   </property>
                   <property name="buddy">
                    <cstring>wheelVertSpeedSpinBox</cstring>
@@ -404,6 +470,11 @@ according to number of simulated notches per second.</string>
           </item>
           <item>
            <layout class="QHBoxLayout" name="senHorizontalLayout">
+            <property name="spacing"><number>8</number></property>
+            <property name="leftMargin"><number>0</number></property>
+            <property name="topMargin"><number>0</number></property>
+            <property name="rightMargin"><number>0</number></property>
+            <property name="bottomMargin"><number>0</number></property>
             <item>
              <widget class="QLabel" name="sensLabel">
               <property name="text">
@@ -446,6 +517,11 @@ faster at the low end of an axis.</string>
           </item>
           <item>
            <layout class="QHBoxLayout" name="easingHorizontalLayout">
+            <property name="spacing"><number>8</number></property>
+            <property name="leftMargin"><number>0</number></property>
+            <property name="topMargin"><number>0</number></property>
+            <property name="rightMargin"><number>0</number></property>
+            <property name="bottomMargin"><number>0</number></property>
             <item>
              <widget class="QLabel" name="easingDurationLabel">
               <property name="text">
@@ -533,10 +609,25 @@ using typical gamepad analog sticks.</string>
           <bool>false</bool>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_12">
+          <property name="spacing"><number>8</number></property>
+          <property name="leftMargin"><number>0</number></property>
+          <property name="topMargin"><number>0</number></property>
+          <property name="rightMargin"><number>0</number></property>
+          <property name="bottomMargin"><number>0</number></property>
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_20">
+            <property name="spacing"><number>8</number></property>
+            <property name="leftMargin"><number>0</number></property>
+            <property name="topMargin"><number>0</number></property>
+            <property name="rightMargin"><number>0</number></property>
+            <property name="bottomMargin"><number>0</number></property>
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_19">
+              <property name="spacing"><number>8</number></property>
+              <property name="leftMargin"><number>0</number></property>
+              <property name="topMargin"><number>0</number></property>
+              <property name="rightMargin"><number>0</number></property>
+              <property name="bottomMargin"><number>0</number></property>
               <item>
                <widget class="QLabel" name="extraAccelMultiLabel">
                 <property name="text">
@@ -570,6 +661,11 @@ using typical gamepad analog sticks.</string>
             </item>
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_18">
+              <property name="spacing"><number>8</number></property>
+              <property name="leftMargin"><number>0</number></property>
+              <property name="topMargin"><number>0</number></property>
+              <property name="rightMargin"><number>0</number></property>
+              <property name="bottomMargin"><number>0</number></property>
               <item>
                <widget class="QLabel" name="minMultiLabel">
                 <property name="text">
@@ -608,8 +704,18 @@ using typical gamepad analog sticks.</string>
           </item>
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_21">
+            <property name="spacing"><number>8</number></property>
+            <property name="leftMargin"><number>0</number></property>
+            <property name="topMargin"><number>0</number></property>
+            <property name="rightMargin"><number>0</number></property>
+            <property name="bottomMargin"><number>0</number></property>
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_17">
+              <property name="spacing"><number>8</number></property>
+              <property name="leftMargin"><number>0</number></property>
+              <property name="topMargin"><number>0</number></property>
+              <property name="rightMargin"><number>0</number></property>
+              <property name="bottomMargin"><number>0</number></property>
               <item>
                <widget class="QLabel" name="minThresholdLabel">
                 <property name="text">
@@ -641,6 +747,11 @@ Threshold:</string>
             </item>
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_11">
+              <property name="spacing"><number>8</number></property>
+              <property name="leftMargin"><number>0</number></property>
+              <property name="topMargin"><number>0</number></property>
+              <property name="rightMargin"><number>0</number></property>
+              <property name="bottomMargin"><number>0</number></property>
               <item>
                <widget class="QLabel" name="maxThresholdLabel">
                 <property name="text">
@@ -674,6 +785,11 @@ Threshold:</string>
           </item>
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_22">
+            <property name="spacing"><number>8</number></property>
+            <property name="leftMargin"><number>0</number></property>
+            <property name="topMargin"><number>0</number></property>
+            <property name="rightMargin"><number>0</number></property>
+            <property name="bottomMargin"><number>0</number></property>
             <item>
              <widget class="QLabel" name="label_11">
               <property name="text">
@@ -709,6 +825,11 @@ actual time that extra acceleration will be applied.</string>
           </item>
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_16">
+            <property name="spacing"><number>8</number></property>
+            <property name="leftMargin"><number>0</number></property>
+            <property name="topMargin"><number>0</number></property>
+            <property name="rightMargin"><number>0</number></property>
+            <property name="bottomMargin"><number>0</number></property>
             <item>
              <widget class="QLabel" name="label_6">
               <property name="text">
@@ -754,19 +875,36 @@ actual time that extra acceleration will be applied.</string>
      </item>
      <item>
       <layout class="QVBoxLayout" name="verticalLayout_7">
-       <property name="spacing">
-        <number>10</number>
-       </property>
+       <property name="spacing"><number>8</number></property>
+       <property name="leftMargin"><number>0</number></property>
+       <property name="topMargin"><number>0</number></property>
+       <property name="rightMargin"><number>0</number></property>
+       <property name="bottomMargin"><number>0</number></property>
        <item>
         <widget class="QGroupBox" name="springGroupBox">
          <property name="title">
           <string>Spring Settings</string>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_11">
+          <property name="spacing"><number>8</number></property>
+          <property name="leftMargin"><number>0</number></property>
+          <property name="topMargin"><number>0</number></property>
+          <property name="rightMargin"><number>0</number></property>
+          <property name="bottomMargin"><number>0</number></property>
           <item>
            <layout class="QVBoxLayout" name="verticalLayout_3">
+            <property name="spacing"><number>8</number></property>
+            <property name="leftMargin"><number>0</number></property>
+            <property name="topMargin"><number>0</number></property>
+            <property name="rightMargin"><number>0</number></property>
+            <property name="bottomMargin"><number>0</number></property>
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_5">
+              <property name="spacing"><number>8</number></property>
+              <property name="leftMargin"><number>0</number></property>
+              <property name="topMargin"><number>0</number></property>
+              <property name="rightMargin"><number>0</number></property>
+              <property name="bottomMargin"><number>0</number></property>
               <item>
                <widget class="QLabel" name="label_3">
                 <property name="text">
@@ -796,6 +934,11 @@ of your screen.</string>
             </item>
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_6">
+              <property name="spacing"><number>8</number></property>
+              <property name="leftMargin"><number>0</number></property>
+              <property name="topMargin"><number>0</number></property>
+              <property name="rightMargin"><number>0</number></property>
+              <property name="bottomMargin"><number>0</number></property>
               <item>
                <widget class="QLabel" name="label_4">
                 <property name="text">
@@ -825,6 +968,11 @@ of your screen.</string>
             </item>
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_3">
+              <property name="spacing"><number>8</number></property>
+              <property name="leftMargin"><number>0</number></property>
+              <property name="topMargin"><number>0</number></property>
+              <property name="rightMargin"><number>0</number></property>
+              <property name="bottomMargin"><number>0</number></property>
               <item>
                <widget class="QLabel" name="releaseSpringRadiusLabel">
                 <property name="text">
@@ -891,8 +1039,18 @@ mouse position set by a non-relative spring.</string>
           <string>Mouse Status</string>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_10">
+          <property name="spacing"><number>8</number></property>
+          <property name="leftMargin"><number>0</number></property>
+          <property name="topMargin"><number>0</number></property>
+          <property name="rightMargin"><number>0</number></property>
+          <property name="bottomMargin"><number>0</number></property>
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_12">
+            <property name="spacing"><number>8</number></property>
+            <property name="leftMargin"><number>0</number></property>
+            <property name="topMargin"><number>0</number></property>
+            <property name="rightMargin"><number>0</number></property>
+            <property name="bottomMargin"><number>0</number></property>
             <item>
              <widget class="QLabel" name="label_8">
               <property name="text">
@@ -911,6 +1069,11 @@ mouse position set by a non-relative spring.</string>
           </item>
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_15">
+            <property name="spacing"><number>8</number></property>
+            <property name="leftMargin"><number>0</number></property>
+            <property name="topMargin"><number>0</number></property>
+            <property name="rightMargin"><number>0</number></property>
+            <property name="bottomMargin"><number>0</number></property>
             <item>
              <widget class="QLabel" name="label_9">
               <property name="text">

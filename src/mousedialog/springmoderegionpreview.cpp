@@ -63,8 +63,8 @@ void SpringModeRegionPreview::paintEvent(QPaintEvent *event)
     QPainter p(this);
 
     QPen border;
-    border.setWidth(3);
-    border.setColor(Qt::black);
+    border.setWidth(2);
+    border.setColor(QColor("#b8b8bf"));
     p.setPen(border);
 
     p.drawRect(1, 1, width() - 3, height() - 3);

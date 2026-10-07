@@ -112,7 +112,7 @@ void JoyControlStickStatusBox::drawEightWayBox()
 
     // Draw outline circle
     QPen penny;
-    penny.setColor(Qt::black);
+    penny.setColor(QColor("#8c8c96"));
     penny.setWidth(0);
     painter.setPen(penny);
     painter.setBrush(Qt::NoBrush);
@@ -132,9 +132,9 @@ void JoyControlStickStatusBox::drawEightWayBox()
         int diagonalRange = m_stick->getDiagonalRange();
 
         penny.setWidth(0);
-        penny.setColor(Qt::black);
+        penny.setColor(QColor("#8c8c96"));
         painter.setPen(penny);
-        painter.setBrush(QBrush(Qt::green));
+        painter.setBrush(QBrush(QColor("#30383e")));
 
         painter.drawPie(-GlobalVariables::JoyAxis::AXISMAX, -GlobalVariables::JoyAxis::AXISMAX,
                         GlobalVariables::JoyAxis::AXISMAX * 2, GlobalVariables::JoyAxis::AXISMAX * 2,
@@ -153,10 +153,10 @@ void JoyControlStickStatusBox::drawEightWayBox()
         int modifierZone = m_stick->getModifierZone();
         int maxZone = m_stick->getMaxZone();
         penny.setWidth(0);
-        penny.setColor(Qt::blue);
+        penny.setColor(QColor("#a4b3cf"));
         painter.setOpacity(0.5);
         painter.setPen(penny);
-        painter.setBrush(QBrush(Qt::yellow));
+        painter.setBrush(QBrush(QColor("#62616d")));
 
         if (m_stick->getModifierZoneInverted())
         {
@@ -172,10 +172,10 @@ void JoyControlStickStatusBox::drawEightWayBox()
 
     // Draw deadzone circle
     penny.setWidth(0);
-    penny.setColor(Qt::blue);
+    penny.setColor(QColor("#a4b3cf"));
     painter.setOpacity(1);
     painter.setPen(penny);
-    painter.setBrush(QBrush(Qt::red));
+    painter.setBrush(QBrush(QColor("#644850")));
     int deadZone = m_stick != nullptr ? m_stick->getDeadZone() : 0;
     painter.drawEllipse(-deadZone, -deadZone, deadZone * 2, deadZone * 2);
 
@@ -183,7 +183,7 @@ void JoyControlStickStatusBox::drawEightWayBox()
 
     painter.save();
     penny.setWidth(0);
-    penny.setColor(Qt::gray);
+    penny.setColor(QColor("#55555e"));
     painter.setPen(penny);
     painter.scale(side / 2.0, side / 2.0);
     painter.translate(1, 1);
@@ -199,8 +199,8 @@ void JoyControlStickStatusBox::drawEightWayBox()
     painter.translate(GlobalVariables::JoyAxis::AXISMAX, GlobalVariables::JoyAxis::AXISMAX);
 
     penny.setWidth(0);
-    painter.setBrush(QBrush(Qt::black));
-    penny.setColor(Qt::black);
+    painter.setBrush(QBrush(QColor("#8c8c96")));
+    penny.setColor(QColor("#8c8c96"));
     painter.setPen(penny);
 
     if (m_stick != nullptr)
@@ -217,8 +217,8 @@ void JoyControlStickStatusBox::drawEightWayBox()
 
         painter.drawRect(linexstart, lineystart, 2000, 2000);
 
-        painter.setBrush(QBrush(Qt::darkBlue));
-        penny.setColor(Qt::darkBlue);
+        painter.setBrush(QBrush(QColor("#eeeeef")));
+        penny.setColor(QColor("#eeeeef"));
         painter.setPen(penny);
 
         // Draw adjusted crosshair
@@ -235,13 +235,13 @@ void JoyControlStickStatusBox::drawEightWayBox()
 
     // Reset pen
     painter.restore();
-    penny.setColor(Qt::black);
+    penny.setColor(QColor("#8c8c96"));
     painter.setPen(penny);
 
     // Draw primary pixmap
     painter.setCompositionMode(QPainter::CompositionMode_DestinationOver);
     painter.setPen(Qt::NoPen);
-    painter.fillRect(0, 0, side, side, palette().window().color());
+    painter.fillRect(0, 0, side, side, QColor("#19191c"));
     paint.drawPixmap(pix.rect(), pix);
 
     paint.save();
@@ -253,7 +253,7 @@ void JoyControlStickStatusBox::drawEightWayBox()
     int maxzone = m_stick != nullptr ? m_stick->getMaxZone() : GlobalVariables::JoyControlStick::DEFAULTMAXZONE;
     int diffmaxzone = GlobalVariables::JoyAxis::AXISMAX - maxzone;
     paint.setOpacity(0.5);
-    paint.setBrush(Qt::darkGreen);
+    paint.setBrush(QColor("#3b4947"));
     paint.drawEllipse(-GlobalVariables::JoyAxis::AXISMAX, -GlobalVariables::JoyAxis::AXISMAX,
                       GlobalVariables::JoyAxis::AXISMAX * 2, GlobalVariables::JoyAxis::AXISMAX * 2);
     paint.setCompositionMode(QPainter::CompositionMode_Clear);
@@ -286,7 +286,7 @@ void JoyControlStickStatusBox::drawFourWayCardinalBox()
 
     // Draw outline circle
     QPen penny;
-    penny.setColor(Qt::black);
+    penny.setColor(QColor("#8c8c96"));
     penny.setWidth(0);
     painter.setPen(penny);
     painter.setBrush(Qt::NoBrush);
@@ -304,10 +304,10 @@ void JoyControlStickStatusBox::drawFourWayCardinalBox()
         // Draw diagonal zones
         QList<int> anglesList = m_stick->getFourWayCardinalZoneAngles();
         penny.setWidth(0);
-        penny.setColor(Qt::black);
+        penny.setColor(QColor("#8c8c96"));
         painter.setPen(penny);
         painter.setOpacity(0.25);
-        painter.setBrush(QBrush(Qt::black));
+        painter.setBrush(QBrush(QColor("#8c8c96")));
 
         painter.drawPie(-GlobalVariables::JoyAxis::AXISMAX, -GlobalVariables::JoyAxis::AXISMAX,
                         GlobalVariables::JoyAxis::AXISMAX * 2, GlobalVariables::JoyAxis::AXISMAX * 2,
@@ -322,10 +322,10 @@ void JoyControlStickStatusBox::drawFourWayCardinalBox()
         int modifierZone = m_stick->getModifierZone();
         int maxZone = m_stick->getMaxZone();
         penny.setWidth(0);
-        penny.setColor(Qt::blue);
+        penny.setColor(QColor("#a4b3cf"));
         painter.setOpacity(0.5);
         painter.setPen(penny);
-        painter.setBrush(QBrush(Qt::yellow));
+        painter.setBrush(QBrush(QColor("#62616d")));
 
         if (m_stick->getModifierZoneInverted())
         {
@@ -341,9 +341,9 @@ void JoyControlStickStatusBox::drawFourWayCardinalBox()
 
     // Draw deadzone circle
     penny.setWidth(0);
-    penny.setColor(Qt::blue);
+    penny.setColor(QColor("#a4b3cf"));
     painter.setPen(penny);
-    painter.setBrush(QBrush(Qt::red));
+    painter.setBrush(QBrush(QColor("#644850")));
     int deadZone = m_stick != nullptr ? m_stick->getDeadZone() : 0;
     painter.drawEllipse(-deadZone, -deadZone, deadZone * 2, deadZone * 2);
 
@@ -351,7 +351,7 @@ void JoyControlStickStatusBox::drawFourWayCardinalBox()
 
     painter.save();
     penny.setWidth(0);
-    penny.setColor(Qt::black);
+    penny.setColor(QColor("#8c8c96"));
     painter.setPen(penny);
     painter.setOpacity(0.5);
     painter.scale(side / 2.0, side / 2.0);
@@ -368,8 +368,8 @@ void JoyControlStickStatusBox::drawFourWayCardinalBox()
                   side / static_cast<double>(GlobalVariables::JoyAxis::AXISMAX * 2.0));
     painter.translate(GlobalVariables::JoyAxis::AXISMAX, GlobalVariables::JoyAxis::AXISMAX);
     penny.setWidth(0);
-    painter.setBrush(QBrush(Qt::black));
-    penny.setColor(Qt::black);
+    painter.setBrush(QBrush(QColor("#8c8c96")));
+    penny.setColor(QColor("#8c8c96"));
     painter.setPen(penny);
 
     if (m_stick != nullptr)
@@ -386,8 +386,8 @@ void JoyControlStickStatusBox::drawFourWayCardinalBox()
 
         painter.drawRect(linexstart, lineystart, 2000, 2000);
 
-        painter.setBrush(QBrush(Qt::darkBlue));
-        penny.setColor(Qt::darkBlue);
+        painter.setBrush(QBrush(QColor("#eeeeef")));
+        penny.setColor(QColor("#eeeeef"));
         painter.setPen(penny);
 
         // Draw adjusted crosshair
@@ -404,13 +404,13 @@ void JoyControlStickStatusBox::drawFourWayCardinalBox()
 
     // Reset pen
     painter.restore();
-    penny.setColor(Qt::black);
+    penny.setColor(QColor("#8c8c96"));
     painter.setPen(penny);
 
     // Draw primary pixmap
     painter.setCompositionMode(QPainter::CompositionMode_DestinationOver);
     painter.setPen(Qt::NoPen);
-    painter.fillRect(0, 0, side, side, palette().window().color());
+    painter.fillRect(0, 0, side, side, QColor("#19191c"));
     paint.drawPixmap(pix.rect(), pix);
 
     paint.save();
@@ -422,7 +422,7 @@ void JoyControlStickStatusBox::drawFourWayCardinalBox()
     int maxzone = m_stick != nullptr ? m_stick->getMaxZone() : GlobalVariables::JoyControlStick::DEFAULTMAXZONE;
     int diffmaxzone = GlobalVariables::JoyAxis::AXISMAX - maxzone;
     paint.setOpacity(0.5);
-    paint.setBrush(Qt::darkGreen);
+    paint.setBrush(QColor("#3b4947"));
     paint.drawEllipse(-GlobalVariables::JoyAxis::AXISMAX, -GlobalVariables::JoyAxis::AXISMAX,
                       GlobalVariables::JoyAxis::AXISMAX * 2, GlobalVariables::JoyAxis::AXISMAX * 2);
     paint.setCompositionMode(QPainter::CompositionMode_Clear);
@@ -455,7 +455,7 @@ void JoyControlStickStatusBox::drawFourWayDiagonalBox()
 
     // Draw outline circle
     QPen penny;
-    penny.setColor(Qt::black);
+    penny.setColor(QColor("#8c8c96"));
     penny.setWidth(0);
     painter.setPen(penny);
     painter.setBrush(Qt::NoBrush);
@@ -473,9 +473,9 @@ void JoyControlStickStatusBox::drawFourWayDiagonalBox()
         // Draw diagonal zones
         QList<int> anglesList = m_stick->getFourWayDiagonalZoneAngles();
         penny.setWidth(0);
-        penny.setColor(Qt::black);
+        penny.setColor(QColor("#8c8c96"));
         painter.setPen(penny);
-        painter.setBrush(QBrush(Qt::black));
+        painter.setBrush(QBrush(QColor("#8c8c96")));
         painter.setOpacity(0.25);
 
         painter.drawPie(-GlobalVariables::JoyAxis::AXISMAX, -GlobalVariables::JoyAxis::AXISMAX,
@@ -491,10 +491,10 @@ void JoyControlStickStatusBox::drawFourWayDiagonalBox()
         int modifierZone = m_stick->getModifierZone();
         int maxZone = m_stick->getMaxZone();
         penny.setWidth(0);
-        penny.setColor(Qt::blue);
+        penny.setColor(QColor("#a4b3cf"));
         painter.setOpacity(0.5);
         painter.setPen(penny);
-        painter.setBrush(QBrush(Qt::yellow));
+        painter.setBrush(QBrush(QColor("#62616d")));
 
         if (m_stick->getModifierZoneInverted())
         {
@@ -510,9 +510,9 @@ void JoyControlStickStatusBox::drawFourWayDiagonalBox()
 
     // Draw deadzone circle
     penny.setWidth(0);
-    penny.setColor(Qt::blue);
+    penny.setColor(QColor("#a4b3cf"));
     painter.setPen(penny);
-    painter.setBrush(QBrush(Qt::red));
+    painter.setBrush(QBrush(QColor("#644850")));
     int deadZone = m_stick != nullptr ? m_stick->getDeadZone() : 0;
     painter.drawEllipse(-deadZone, -deadZone, deadZone * 2, deadZone * 2);
 
@@ -520,7 +520,7 @@ void JoyControlStickStatusBox::drawFourWayDiagonalBox()
 
     painter.save();
     penny.setWidth(0);
-    penny.setColor(Qt::black);
+    penny.setColor(QColor("#8c8c96"));
     painter.setOpacity(0.5);
     painter.setPen(penny);
     painter.scale(side / 2.0, side / 2.0);
@@ -537,8 +537,8 @@ void JoyControlStickStatusBox::drawFourWayDiagonalBox()
                   side / static_cast<double>(GlobalVariables::JoyAxis::AXISMAX * 2.0));
     painter.translate(GlobalVariables::JoyAxis::AXISMAX, GlobalVariables::JoyAxis::AXISMAX);
     penny.setWidth(0);
-    painter.setBrush(QBrush(Qt::black));
-    penny.setColor(Qt::black);
+    painter.setBrush(QBrush(QColor("#8c8c96")));
+    penny.setColor(QColor("#8c8c96"));
     painter.setPen(penny);
 
     // Draw raw crosshair
@@ -555,8 +555,8 @@ void JoyControlStickStatusBox::drawFourWayDiagonalBox()
 
         painter.drawRect(linexstart, lineystart, 2000, 2000);
 
-        painter.setBrush(QBrush(Qt::darkBlue));
-        penny.setColor(Qt::darkBlue);
+        painter.setBrush(QBrush(QColor("#eeeeef")));
+        penny.setColor(QColor("#eeeeef"));
         painter.setPen(penny);
 
         // Draw adjusted crosshair
@@ -573,13 +573,13 @@ void JoyControlStickStatusBox::drawFourWayDiagonalBox()
 
     // Reset pen
     painter.restore();
-    penny.setColor(Qt::black);
+    penny.setColor(QColor("#8c8c96"));
     painter.setPen(penny);
 
     // Draw primary pixmap
     painter.setCompositionMode(QPainter::CompositionMode_DestinationOver);
     painter.setPen(Qt::NoPen);
-    painter.fillRect(0, 0, side, side, palette().window().color());
+    painter.fillRect(0, 0, side, side, QColor("#19191c"));
     paint.drawPixmap(pix.rect(), pix);
 
     paint.save();
@@ -591,7 +591,7 @@ void JoyControlStickStatusBox::drawFourWayDiagonalBox()
     int maxzone = m_stick != nullptr ? m_stick->getMaxZone() : GlobalVariables::JoyControlStick::DEFAULTMAXZONE;
     int diffmaxzone = GlobalVariables::JoyAxis::AXISMAX - maxzone;
     paint.setOpacity(0.5);
-    paint.setBrush(Qt::darkGreen);
+    paint.setBrush(QColor("#3b4947"));
     paint.drawEllipse(-GlobalVariables::JoyAxis::AXISMAX, -GlobalVariables::JoyAxis::AXISMAX,
                       GlobalVariables::JoyAxis::AXISMAX * 2, GlobalVariables::JoyAxis::AXISMAX * 2);
     paint.setCompositionMode(QPainter::CompositionMode_Clear);

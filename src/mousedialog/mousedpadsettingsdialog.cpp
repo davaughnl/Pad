@@ -34,7 +34,6 @@ MouseDPadSettingsDialog::MouseDPadSettingsDialog(JoyDPad *dpad, QWidget *parent)
     , helper(dpad)
 {
     setAttribute(Qt::WA_DeleteOnClose);
-    resize(size().width(), 450);
 
     this->dpad = dpad;
     helper.moveToThread(dpad->thread());

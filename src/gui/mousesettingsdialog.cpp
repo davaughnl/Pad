@@ -28,12 +28,47 @@
 #include <QLabel>
 #include <QSpinBox>
 #include <QString>
+#include <QScrollArea>
+#include <QVBoxLayout>
+#include <QScreen>
+#include <QApplication>
 
 MouseSettingsDialog::MouseSettingsDialog(QWidget *parent)
     : QDialog(parent, Qt::Window)
     , ui(new Ui::MouseSettingsDialog)
 {
     ui->setupUi(this);
+
+    // Keep every mouse option reachable on smaller displays. Only the body
+    // scrolls; the Close action stays visible below it.
+    QVBoxLayout *rootLayout = qobject_cast<QVBoxLayout *>(layout());
+    QWidget *body = new QWidget(this);
+    QVBoxLayout *bodyLayout = new QVBoxLayout(body);
+    bodyLayout->setContentsMargins(0, 0, 0, 0);
+    bodyLayout->setSpacing(8);
+    while (rootLayout->count() > 1)
+    {
+        QLayoutItem *item = rootLayout->takeAt(0);
+        if (item->widget())
+        {
+            bodyLayout->addWidget(item->widget());
+            delete item;
+        } else if (item->layout())
+        {
+            bodyLayout->addLayout(item->layout());
+        } else
+        {
+            bodyLayout->addItem(item);
+        }
+    }
+    QScrollArea *scroll = new QScrollArea(this);
+    scroll->setObjectName(QStringLiteral("mouseSettingsScroll"));
+    scroll->setFrameShape(QFrame::NoFrame);
+    scroll->setWidgetResizable(true);
+    scroll->setWidget(body);
+    rootLayout->insertWidget(0, scroll, 1);
+    const int availableHeight = QGuiApplication::primaryScreen()->availableGeometry().height();
+    resize(736, qMin(720, availableHeight - 96));
     ui->horizontalSpinBox->setMaximum(GlobalVariables::JoyButton::MAXMOUSESPEED);
     ui->verticalSpinBox->setMaximum(GlobalVariables::JoyButton::MAXMOUSESPEED);
     setAttribute(Qt::WA_DeleteOnClose);

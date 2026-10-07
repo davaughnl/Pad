@@ -31,6 +31,14 @@ class PadStyle : public QProxyStyle
 {
 public:
     PadStyle() : QProxyStyle(QStyleFactory::create(QStringLiteral("Fusion"))) {}
+    void polish(QWidget *widget) override
+    {
+        QProxyStyle::polish(widget);
+        const QString sheet = widget->styleSheet();
+        if (sheet.contains(QStringLiteral("\"Geist\"")) && qApp->font().family() != QStringLiteral("Geist"))
+            widget->setStyleSheet(QString(sheet).replace(QStringLiteral("\"Geist\""),
+                QStringLiteral("\"%1\"").arg(qApp->font().family())));
+    }
     QIcon standardIcon(StandardPixmap icon, const QStyleOption *option = nullptr,
                        const QWidget *widget = nullptr) const override
     {

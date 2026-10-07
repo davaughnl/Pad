@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <ui version="4.0">
  <class>AdvanceStickAssignmentDialog</class>
  <widget class="QDialog" name="AdvanceStickAssignmentDialog">
@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>770</width>
-    <height>440</height>
+    <width>736</width>
+    <height>400</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -22,9 +22,39 @@
   <property name="modal">
    <bool>true</bool>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget { font-family: "Geist"; font-size: 13px; font-weight: 400; }
+QListWidget#listWidget { background: #171719; border: 1px solid #29292d; padding: 8px; min-width: 144px; max-width: 144px; }
+QListWidget#listWidget::item { padding: 12px; margin-bottom: 8px; border-radius: 6px; }
+QListWidget#listWidget::item:selected { background: #303035; color: #eeeeef; }
+QListWidget#listWidget::item:hover { background: #242428; }
+QDialog { background: #111113; }
+QPushButton, QToolButton { min-height: 24px; padding: 5px 12px; }
+QComboBox, QLineEdit, QSpinBox, QDoubleSpinBox { min-height: 24px; padding-top: 5px; padding-bottom: 5px; }
+QGroupBox { padding: 16px; margin-top: 16px; }
+QGroupBox::title { color: #b8b8bf; left: 16px; }
+QLabel:disabled, QCheckBox:disabled { color: #67676f; }
+JoyControlStickButtonPushButton[isflashing="true"] { background: #e8e8eb; color: #111113; border-color: #ffffff; }
+QDialogButtonBox { border: none; padding-top: 8px; }
+QFrame[frameShape="4"], QFrame[frameShape="5"] { color: #29292d; background: #29292d; max-height: 1px; border: none; }
+QGroupBox::indicator { width: 16px; height: 16px; border: 1px solid #505058; border-radius: 4px; background: #19191c; }
+QGroupBox::indicator:checked { background: #eeeeef; image: url(:/pad/icons/check-dark.svg); }
+
+QFrame#verticalLayoutCard, QFrame#verticalLayout_2Card { background: #19191c; border: 1px solid #303035; border-radius: 8px; }</string>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout_5">
+   <property name="spacing"><number>8</number></property>
+   <property name="leftMargin"><number>24</number></property>
+   <property name="topMargin"><number>24</number></property>
+   <property name="rightMargin"><number>24</number></property>
+   <property name="bottomMargin"><number>24</number></property>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="1,1,3">
+    <layout class="QHBoxLayout" name="horizontalLayout_6">
+     <property name="spacing"><number>8</number></property>
+     <property name="leftMargin"><number>0</number></property>
+     <property name="topMargin"><number>0</number></property>
+     <property name="rightMargin"><number>0</number></property>
+     <property name="bottomMargin"><number>0</number></property>
      <item>
       <widget class="QListWidget" name="listWidget">
        <property name="sizePolicy">
@@ -49,38 +79,26 @@
       </widget>
      </item>
      <item>
-      <spacer name="horizontalSpacer_2">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeType">
-        <enum>QSizePolicy::Fixed</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>20</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
       <widget class="QStackedWidget" name="stackedWidget">
        <property name="currentIndex">
         <number>0</number>
        </property>
        <widget class="QWidget" name="sticks">
         <layout class="QVBoxLayout" name="verticalLayout_4">
+         <property name="spacing"><number>8</number></property>
+         <property name="leftMargin"><number>0</number></property>
+         <property name="topMargin"><number>0</number></property>
+         <property name="rightMargin"><number>0</number></property>
+         <property name="bottomMargin"><number>0</number></property>
          <item>
-          <layout class="QVBoxLayout" name="verticalLayout_3" stretch="0,1,3">
+          <layout class="QVBoxLayout" name="verticalLayout_3">
+           <property name="spacing"><number>8</number></property>
+           <property name="leftMargin"><number>0</number></property>
+           <property name="topMargin"><number>0</number></property>
+           <property name="rightMargin"><number>0</number></property>
+           <property name="bottomMargin"><number>0</number></property>
            <item>
             <widget class="QLabel" name="versionTwoMessageLabel">
-             <property name="font">
-              <font>
-               <weight>50</weight>
-               <bold>false</bold>
-              </font>
-             </property>
              <property name="text">
               <string>This window supports legacy profiles. For new profiles, use the Game Controller Mapping window.</string>
              </property>
@@ -91,12 +109,6 @@
            </item>
            <item alignment="Qt::AlignHCenter">
             <widget class="QLabel" name="joystickNumberLabel">
-             <property name="font">
-              <font>
-               <weight>75</weight>
-               <bold>false</bold>
-              </font>
-             </property>
              <property name="text">
               <string>%1 (Joystick %2)</string>
              </property>
@@ -104,22 +116,20 @@
            </item>
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_5">
-             <property name="spacing">
-              <number>-1</number>
-             </property>
+             <property name="spacing"><number>8</number></property>
+             <property name="leftMargin"><number>0</number></property>
+             <property name="topMargin"><number>0</number></property>
+             <property name="rightMargin"><number>0</number></property>
+             <property name="bottomMargin"><number>0</number></property>
              <item>
-              <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,3,3">
-               <property name="spacing">
-                <number>-1</number>
-               </property>
+              <widget class="QFrame" name="verticalLayoutCard"><layout class="QVBoxLayout" name="verticalLayout">
+               <property name="spacing"><number>8</number></property>
+               <property name="leftMargin"><number>16</number></property>
+               <property name="topMargin"><number>16</number></property>
+               <property name="rightMargin"><number>16</number></property>
+               <property name="bottomMargin"><number>16</number></property>
                <item alignment="Qt::AlignHCenter">
                 <widget class="QLabel" name="label_5">
-                 <property name="font">
-                  <font>
-                   <weight>75</weight>
-                   <bold>false</bold>
-                  </font>
-                 </property>
                  <property name="text">
                   <string>Stick 1</string>
                  </property>
@@ -136,23 +146,12 @@
                 </widget>
                </item>
                <item>
-                <spacer name="verticalSpacer">
-                 <property name="orientation">
-                  <enum>Qt::Vertical</enum>
-                 </property>
-                 <property name="sizeType">
-                  <enum>QSizePolicy::Fixed</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>20</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item>
                 <layout class="QHBoxLayout" name="horizontalLayout_7">
+                 <property name="spacing"><number>8</number></property>
+                 <property name="leftMargin"><number>0</number></property>
+                 <property name="topMargin"><number>0</number></property>
+                 <property name="rightMargin"><number>0</number></property>
+                 <property name="bottomMargin"><number>0</number></property>
                  <item>
                   <spacer name="horizontalSpacer_3">
                    <property name="orientation">
@@ -180,6 +179,11 @@
                </item>
                <item>
                 <layout class="QHBoxLayout" name="horizontalLayout">
+                 <property name="spacing"><number>8</number></property>
+                 <property name="leftMargin"><number>0</number></property>
+                 <property name="topMargin"><number>0</number></property>
+                 <property name="rightMargin"><number>0</number></property>
+                 <property name="bottomMargin"><number>0</number></property>
                  <item>
                   <widget class="QLabel" name="label">
                    <property name="text">
@@ -198,6 +202,11 @@
                </item>
                <item>
                 <layout class="QHBoxLayout" name="horizontalLayout_2">
+                 <property name="spacing"><number>8</number></property>
+                 <property name="leftMargin"><number>0</number></property>
+                 <property name="topMargin"><number>0</number></property>
+                 <property name="rightMargin"><number>0</number></property>
+                 <property name="bottomMargin"><number>0</number></property>
                  <item>
                   <widget class="QLabel" name="label_2">
                    <property name="text">
@@ -215,33 +224,16 @@
                 </layout>
                </item>
               </layout>
-             </item>
+             </widget></item>
              <item>
-              <spacer name="horizontalSpacer">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeType">
-                <enum>QSizePolicy::Fixed</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>10</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item>
-              <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0,0,0,3,3">
+              <widget class="QFrame" name="verticalLayout_2Card"><layout class="QVBoxLayout" name="verticalLayout_2">
+               <property name="spacing"><number>8</number></property>
+               <property name="leftMargin"><number>16</number></property>
+               <property name="topMargin"><number>16</number></property>
+               <property name="rightMargin"><number>16</number></property>
+               <property name="bottomMargin"><number>16</number></property>
                <item alignment="Qt::AlignHCenter">
                 <widget class="QLabel" name="label_6">
-                 <property name="font">
-                  <font>
-                   <weight>75</weight>
-                   <bold>false</bold>
-                  </font>
-                 </property>
                  <property name="text">
                   <string>Stick 2</string>
                  </property>
@@ -258,23 +250,12 @@
                 </widget>
                </item>
                <item>
-                <spacer name="verticalSpacer_4">
-                 <property name="orientation">
-                  <enum>Qt::Vertical</enum>
-                 </property>
-                 <property name="sizeType">
-                  <enum>QSizePolicy::Fixed</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>20</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item>
                 <layout class="QHBoxLayout" name="horizontalLayout_8">
+                 <property name="spacing"><number>8</number></property>
+                 <property name="leftMargin"><number>0</number></property>
+                 <property name="topMargin"><number>0</number></property>
+                 <property name="rightMargin"><number>0</number></property>
+                 <property name="bottomMargin"><number>0</number></property>
                  <item>
                   <spacer name="horizontalSpacer_4">
                    <property name="orientation">
@@ -302,6 +283,11 @@
                </item>
                <item>
                 <layout class="QHBoxLayout" name="horizontalLayout_3">
+                 <property name="spacing"><number>8</number></property>
+                 <property name="leftMargin"><number>0</number></property>
+                 <property name="topMargin"><number>0</number></property>
+                 <property name="rightMargin"><number>0</number></property>
+                 <property name="bottomMargin"><number>0</number></property>
                  <item>
                   <widget class="QLabel" name="label_3">
                    <property name="text">
@@ -320,6 +306,11 @@
                </item>
                <item>
                 <layout class="QHBoxLayout" name="horizontalLayout_4">
+                 <property name="spacing"><number>8</number></property>
+                 <property name="leftMargin"><number>0</number></property>
+                 <property name="topMargin"><number>0</number></property>
+                 <property name="rightMargin"><number>0</number></property>
+                 <property name="bottomMargin"><number>0</number></property>
                  <item>
                   <widget class="QLabel" name="label_4">
                    <property name="text">
@@ -337,7 +328,7 @@
                 </layout>
                </item>
               </layout>
-             </item>
+             </widget></item>
             </layout>
            </item>
           </layout>
@@ -346,14 +337,13 @@
        </widget>
        <widget class="QWidget" name="dpads">
         <layout class="QVBoxLayout" name="verticalLayout_7">
+         <property name="spacing"><number>8</number></property>
+         <property name="leftMargin"><number>0</number></property>
+         <property name="topMargin"><number>0</number></property>
+         <property name="rightMargin"><number>0</number></property>
+         <property name="bottomMargin"><number>0</number></property>
          <item alignment="Qt::AlignHCenter">
           <widget class="QLabel" name="joystickNumberLabel2">
-           <property name="font">
-            <font>
-             <weight>75</weight>
-             <bold>false</bold>
-            </font>
-           </property>
            <property name="text">
             <string>%1 (Joystick %2)</string>
            </property>
@@ -361,43 +351,20 @@
          </item>
          <item alignment="Qt::AlignHCenter">
           <widget class="QLabel" name="hatNumberLabel">
-           <property name="font">
-            <font>
-             <weight>75</weight>
-             <bold>false</bold>
-            </font>
-           </property>
            <property name="text">
             <string>Number of Physical DPads: %1</string>
            </property>
           </widget>
          </item>
          <item>
-          <spacer name="verticalSpacer_3">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>20</width>
-             <height>40</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item>
           <layout class="QVBoxLayout" name="verticalLayout_6">
-           <property name="spacing">
-            <number>-1</number>
-           </property>
+           <property name="spacing"><number>8</number></property>
+           <property name="leftMargin"><number>0</number></property>
+           <property name="topMargin"><number>0</number></property>
+           <property name="rightMargin"><number>0</number></property>
+           <property name="bottomMargin"><number>0</number></property>
            <item>
             <widget class="QLabel" name="label_9">
-             <property name="font">
-              <font>
-               <weight>75</weight>
-               <bold>false</bold>
-              </font>
-             </property>
              <property name="text">
               <string>Virtual DPad 1</string>
              </property>
@@ -444,12 +411,11 @@
            </item>
            <item>
             <layout class="QGridLayout" name="gridLayout" columnstretch="1,2,1">
-             <property name="horizontalSpacing">
-              <number>41</number>
-             </property>
-             <property name="verticalSpacing">
-              <number>20</number>
-             </property>
+             <property name="spacing"><number>8</number></property>
+             <property name="leftMargin"><number>0</number></property>
+             <property name="topMargin"><number>0</number></property>
+             <property name="rightMargin"><number>0</number></property>
+             <property name="bottomMargin"><number>0</number></property>
              <item row="0" column="1">
               <widget class="QComboBox" name="vdpadUpComboBox">
                <property name="enabled">
