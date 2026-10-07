@@ -10,6 +10,8 @@
 #include "joycontrolstick.h"
 #include "joybuttontypes/joybutton.h"
 #include "joybuttontypes/joycontrolstickbutton.h"
+#include "gui/aboutdialog.h"
+#include <QTextBrowser>
 #include "gui/joysensoreditdialog.h"
 #include "sensors/joysensor.h"
 #include "sensors/joysensorpreset.h"
@@ -87,7 +89,13 @@ int main(int argc,char **argv) {
             current->addControlStick(0,new JoyControlStick(current->getJoyAxis(0),current->getJoyAxis(1),0,current->getIndex(),current));
         auto *stick=set->getJoyStick(0);
         joystick->moveToThread(&worker); worker.start();
-        if(test=="sensor-accel" || test=="sensor-gyro") {
+        if(test=="about") {
+            auto *dialog=new AboutDialog;capture(dialog,output,test);
+            check(control<QLabel>(dialog,"versionLabel")->text()=="Development build","About display version is not Development build");
+            auto info=control<QTextBrowser>(dialog,"infoTextBrowser")->toPlainText();
+            check(info.contains("Program Version Development build")&&!info.contains("3.6.1"),"About info exposes inherited version");
+            closeDialog(dialog);
+        } else if(test=="sensor-accel" || test=="sensor-gyro") {
             auto *sensor=set->getSensor(test=="sensor-accel"?ACCELEROMETER:GYROSCOPE);check(sensor,"Sensor model absent");
             auto *dialog=new JoySensorEditDialog(sensor);capture(dialog,output,test);
             auto *presets=control<QComboBox>(dialog,"presetsComboBox");

@@ -33,7 +33,7 @@ are checked. The Linux package gate repeats input tests against the installed
 binary and checks extracted-package startup/Settings and dependencies.
 
 Windows gate builds Qt5/MSVC Release, checks profile association behavior,
-runs seven native editor/model cases (including both sensor dialogs), stages
+runs eight native editor/model cases (including both sensor dialogs), stages
 runtime DLLs, and smoke-tests the extracted portable zip without development
 dependencies in PATH. Native screenshots still need human pixel inspection.
 These model tests are not a Windows SendInput delivery test.
