@@ -16,6 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "pad/updatemanager.h"
+#include <QEventLoop>
+#include <QTimer>
+#include <QSslSocket>
 #include "antimicrosettings.h"
 #include "antkeymapper.h"
 #include "applaunchhelper.h"
@@ -224,6 +228,29 @@ int main(int argc, char *argv[])
     }
 
 #endif
+    if (antimicrox.arguments().contains(QStringLiteral("--update-check")))
+    {
+        // Diagnostic: run one real update check against GitHub and report, without starting the app.
+        UpdateManager checker(PadderCommon::releaseVersion);
+        QEventLoop loop;
+        QTimer giveUp;
+        giveUp.setSingleShot(true);
+        QObject::connect(&giveUp, &QTimer::timeout, &loop, &QEventLoop::quit);
+        QObject::connect(&checker, &UpdateManager::stateChanged, &loop, [&](UpdateManager::State st) {
+            if (st == UpdateManager::UpToDate || st == UpdateManager::Available || st == UpdateManager::Failed) loop.quit();
+        });
+        giveUp.start(30000);
+        checker.check();
+        loop.exec();
+        QTextStream out(stdout);
+        const char *names[] = {"idle", "checking", "up-to-date", "available", "downloading", "verifying", "ready", "installing", "failed"};
+        out << "update-check: " << names[static_cast<int>(checker.state())] << " current=" << PadderCommon::releaseVersion
+            << " ssl=" << (QSslSocket::supportsSsl() ? "true" : "false") << " " << QSslSocket::sslLibraryVersionString()
+            << " " << checker.errorText() << "\n";
+        out.flush();
+        return (checker.state() == UpdateManager::UpToDate || checker.state() == UpdateManager::Available) ? 0 : 2;
+    }
+
     PadUi::initializeApplicationStyle();
     importLegacySettingsIfExist();
     AntiMicroSettings settings(PadderCommon::configFilePath(), QSettings::IniFormat);

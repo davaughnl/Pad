@@ -21,13 +21,17 @@ try {
     $env:QT_PLUGIN_PATH = ''
     $env:QT_QPA_PLATFORM_PLUGIN_PATH = ''
     $env:QT_QPA_PLATFORM = 'windows'
-    foreach ($arg in @('--version', '--list')) {
+    foreach ($arg in @('--version', '--list', '--update-check')) {
         $p = Start-Process $exe[0].FullName -ArgumentList $arg -WorkingDirectory $bin -PassThru `
             -RedirectStandardOutput "$output/$($arg.TrimStart('-')).stdout.txt" `
             -RedirectStandardError "$output/$($arg.TrimStart('-')).stderr.txt"
-        if (-not $p.WaitForExit(20000)) { $p.Kill(); throw "Timeout: $arg" }
+        if (-not $p.WaitForExit(45000)) { $p.Kill(); throw "Timeout: $arg" }
         if ($p.ExitCode -ne 0) { throw "$arg exited with code $($p.ExitCode)" }
     }
+    # Real HTTPS to GitHub with only the bundled runtime: proves Qt found OpenSSL 1.1.1 next to pad.exe.
+    $uc = Get-Content "$output/update-check.stdout.txt" -Raw
+    if ($uc -notmatch 'ssl=true') { throw "TLS not available in the packaged app: $uc" }
+    Write-Host $uc
     $process = Start-Process $exe[0].FullName -ArgumentList '--no-tray' -WorkingDirectory $bin -PassThru `
         -RedirectStandardOutput "$output/gui.stdout.txt" -RedirectStandardError "$output/gui.stderr.txt"
     $deadline = [DateTime]::UtcNow.AddSeconds(30)

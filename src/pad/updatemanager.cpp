@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "updatemanager.h"
 
+#include <QSslSocket>
+
 #include <QCryptographicHash>
 #include <QDir>
 #include <QFile>
@@ -177,8 +179,21 @@ void UpdateManager::onCheckFinished()
     if (!reply) return;
     reply->deleteLater();
     if (reply != m_reply) return;
-    if (reply->error() != QNetworkReply::NoError) { fail(tr("Could not check for updates.")); return; }
-    if (reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() != 200) { fail(tr("Could not check for updates.")); return; }
+    const int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    // GitHub answers 404 for releases/latest while no release is published yet (drafts do not count): nothing newer exists.
+    if (status == 404) { m_release = Release(); setState(UpToDate); return; }
+    if (reply->error() != QNetworkReply::NoError)
+    {
+        const auto e = reply->error();
+        if (e == QNetworkReply::SslHandshakeFailedError)
+            fail(tr("Could not check for updates: the secure connection failed."));
+        else if (e == QNetworkReply::ProtocolUnknownError && !QSslSocket::supportsSsl())
+            fail(tr("Could not check for updates: secure connections are not available."));
+        else
+            fail(tr("Could not check for updates."));
+        return;
+    }
+    if (status != 200) { fail(tr("Could not check for updates.")); return; }
     Release release; QString why;
     if (!parseRelease(reply->read(maxApiBytes), &release, &why)) { fail(why); return; }
     m_release = release;

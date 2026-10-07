@@ -166,6 +166,12 @@ int main(int argc, char **argv)
             m.routes[api] = {500, "x"}; UpdateManager c("1.0.0", nullptr, QUrl(m.base() + api), "127.0.0.1"); c.check();
             check(waitFor(c, {UpdateManager::Failed, UpdateManager::Available}) && c.state() == UpdateManager::Failed && !c.errorText().isEmpty(), "500 accepted");
         });
+        scenario("no-published-release-is-up-to-date", [&] {
+            Mock m; // no route for the API path: the mock answers 404 like GitHub does before the first published release
+            UpdateManager u("1.0.0", nullptr, QUrl(m.base() + api), "127.0.0.1"); u.check();
+            check(waitFor(u, {UpdateManager::Failed, UpdateManager::UpToDate}) && u.state() == UpdateManager::UpToDate, "404 must read as up to date");
+            check(u.errorText().isEmpty(), "no error text for up to date");
+        });
         scenario("redirect-to-forbidden-host-blocked", [&] {
             Mock m; mk(m); m.redirects["/dl/" + nm] = "http://evil.invalid/x";
             UpdateManager u("1.0.0", nullptr, QUrl(m.base() + api), "127.0.0.1");
