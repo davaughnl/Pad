@@ -23,6 +23,31 @@ QString driverDirectory()
     return QString();
 }
 
+QString recoveryNotePath()
+{
+    const QString dir = driverDirectory();
+    if (dir.isEmpty()) return QString();
+    const QString path = dir + QStringLiteral("/RECOVERY.md");
+    return QFileInfo::exists(path) ? path : QString();
+}
+
+#ifdef Q_OS_WIN
+// Registry evidence only; a hint that a filter is registered, not proof it is Interception.
+static bool filterRegistered()
+{
+    for (const wchar_t *name : {L"SYSTEM\\CurrentControlSet\\Services\\mouse", L"SYSTEM\\CurrentControlSet\\Services\\keyboard"})
+    {
+        HKEY key = nullptr;
+        if (RegOpenKeyExW(HKEY_LOCAL_MACHINE, name, 0, KEY_READ, &key) == ERROR_SUCCESS)
+        {
+            RegCloseKey(key);
+            return true;
+        }
+    }
+    return false;
+}
+#endif
+
 Status status(QString *detail)
 {
 #ifdef Q_OS_WIN
@@ -34,16 +59,18 @@ Status status(QString *detail)
     }
     PadInterception::Api api;
     QString error;
+    // A failed probe is not proof the driver is absent: it may be waiting for a restart or in use.
+    const bool registered = filterRegistered();
     if (!PadInterception::loadApi(dir + QStringLiteral("/interception.dll"), &api, &error))
     {
         if (detail) *detail = error;
-        return Status::NotInstalled;
+        return registered ? Status::InstalledUnavailable : Status::NotInstalled;
     }
-    PadInterception::MouseInjector probe(api);
+    PadInterception::MouseInjector probe(api); // opens and closes device handles only; sends nothing
     if (!probe.init(&error))
     {
         if (detail) *detail = error;
-        return Status::NotInstalled;
+        return registered ? Status::InstalledUnavailable : Status::NotInstalled;
     }
     return Status::Ready;
 #else
@@ -52,8 +79,9 @@ Status status(QString *detail)
 #endif
 }
 
-bool startInstall(bool install, QString *error)
+bool startInstall(bool install, QString *error, bool *stillRunning)
 {
+    if (stillRunning) *stillRunning = false;
 #ifdef Q_OS_WIN
     const QString dir = driverDirectory();
     const QString exe = dir + QStringLiteral("/install-interception.exe");
@@ -79,17 +107,25 @@ bool startInstall(bool install, QString *error)
         return false;
     }
     DWORD code = 1;
-    WaitForSingleObject(info.hProcess, 60000);
+    // The user may spend a while on the administrator prompt. Do not kill the helper and never relaunch it on timeout.
+    if (WaitForSingleObject(info.hProcess, 180000) == WAIT_TIMEOUT)
+    {
+        CloseHandle(info.hProcess);
+        if (stillRunning) *stillRunning = true;
+        if (error) *error = QStringLiteral("The driver installer is still running. Wait for it to finish, then restart Windows.");
+        return false;
+    }
     GetExitCodeProcess(info.hProcess, &code);
     CloseHandle(info.hProcess);
     if (code != 0)
     {
-        if (error) *error = QStringLiteral("The driver installer reported an error.");
+        if (error) *error = QStringLiteral("The driver installer reported an error (code %1). Nothing was retried.").arg(code);
         return false;
     }
     return true;
 #else
     Q_UNUSED(install);
+    if (stillRunning) *stillRunning = false;
     if (error) *error = QStringLiteral("Driver mode is only available on Windows.");
     return false;
 #endif

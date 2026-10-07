@@ -60,6 +60,8 @@ if ($InterceptionZip) {
     Copy-Item "$x/Interception/library/x64/interception.dll" "$stage/driver/"
     Copy-Item "$x/Interception/command line installer/install-interception.exe" "$stage/driver/"
     Copy-Item "$x/Interception/licenses/non-commercial-usage/LGPL 3.0.txt" "$stage/licenses/Interception-LGPL-3.0.txt"
+    Copy-Item "$source/packaging/windows/DRIVER-RECOVERY.md" "$stage/driver/RECOVERY.md"
+    Copy-Item "$source/packaging/windows/DRIVER-RECOVERY.md" "$stage/licenses/Pad-driver-recovery.md"
     Remove-Item $x -Recurse -Force
 }
 $translations = @(Get-ChildItem "$build/share/antimicrox/translations" -Filter '*.qm')

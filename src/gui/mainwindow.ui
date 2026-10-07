@@ -239,7 +239,6 @@ QStackedWidget#stackedWidget{
     <addaction name="actionWiki"/>
     <addaction name="separator"/>
     <addaction name="actionAbout"/>
-    <addaction name="actionAbout_Qt"/>
    </widget>
    <addaction name="menuQuit"/>
    <addaction name="menuOptions"/>
@@ -294,18 +293,6 @@ QStackedWidget#stackedWidget{
    </property>
    <property name="shortcut">
     <string>Ctrl+A</string>
-   </property>
-  </action>
-  <action name="actionAbout_Qt">
-   <property name="icon">
-    <iconset resource="../resources.qrc">
-     <normaloff>:/images/actions/about_qt.png</normaloff>:/images/actions/about_qt.png</iconset>
-   </property>
-   <property name="text">
-    <string>About &amp;Qt</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+T</string>
    </property>
   </action>
   <action name="actionProperties">

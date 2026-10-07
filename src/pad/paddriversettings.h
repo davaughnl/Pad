@@ -3,6 +3,8 @@
 #define PADDRIVERSETTINGS_H
 #include <functional>
 #include <QCheckBox>
+#include <QFutureWatcher>
+#include <QtConcurrent>
 #include <QLabel>
 #include <QPushButton>
 #include <QVBoxLayout>
@@ -68,6 +70,7 @@ private:
         {
         case S::NotBundled: text = QObject::tr("Driver files are not included in this copy of Pad."); break;
         case S::NotInstalled: text = QObject::tr("Driver not installed."); action = QObject::tr("Install driver"); break;
+        case S::InstalledUnavailable: text = QObject::tr("An input driver is registered but is not answering. Restart Windows. If your keyboard or mouse misbehave, see the recovery steps in the driver folder."); break;
         case S::Ready: text = QObject::tr("Driver installed and running."); action = QObject::tr("Remove driver"); install = false; break;
         case S::Unsupported: break;
         }
@@ -82,8 +85,25 @@ private:
     }
     void runInstall()
     {
-        QString error; auto &source = driverInstallSource();
-        const bool ok = source ? source(installing, &error) : PadDriverMode::startInstall(installing, &error);
+        auto &source = driverInstallSource();
+        if (source) { finishInstall(source(installing, &lastError), false); return; } // test seam: synchronous
+        if (busy) return; // never start a second helper while one may still be running
+        busy = true; button->setEnabled(false); status->setText(QObject::tr("Waiting for the driver installer..."));
+        const bool wantInstall = installing;
+        auto *watcher = new QFutureWatcher<Result>(this);
+        QObject::connect(watcher, &QFutureWatcher<Result>::finished, this, [this, watcher]() {
+            const Result r = watcher->result(); watcher->deleteLater();
+            lastError = r.error; finishInstall(r.ok, r.stillRunning);
+        });
+        watcher->setFuture(QtConcurrent::run([wantInstall]() {
+            Result r; r.ok = PadDriverMode::startInstall(wantInstall, &r.error, &r.stillRunning); return r;
+        }));
+    }
+    struct Result { bool ok = false, stillRunning = false; QString error; };
+    void finishInstall(bool ok, bool stillRunning)
+    {
+        if (stillRunning) { restartNeeded = false; busy = true; button->setEnabled(false); status->setText(lastError); return; } // keep locked
+        busy = false; button->setEnabled(true);
         if (ok)
         {
             restartNeeded = true;
@@ -92,13 +112,13 @@ private:
         else
         {
             restartNeeded = false;
-            status->setText(error.isEmpty() ? QObject::tr("The driver change did not complete.") : error);
+            status->setText(lastError.isEmpty() ? QObject::tr("The driver change did not complete.") : lastError);
             return;
         }
         refresh();
     }
     QCheckBox *toggle = nullptr; QLabel *risk = nullptr, *restartLine = nullptr, *status = nullptr; QPushButton *button = nullptr;
-    bool installing = true, restartNeeded = false; QString restartText;
+    bool installing = true, restartNeeded = false, busy = false; QString restartText, lastError;
 };
 }
 #endif

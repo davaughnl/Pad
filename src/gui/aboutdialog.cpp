@@ -42,13 +42,18 @@ AboutDialog::AboutDialog(QWidget *parent)
     ui->versionLabel->setText(PadderCommon::displayVersion);
     fillInfoTextBrowser();
     QFile licenseFile(QStringLiteral(":/pad/GPL-3.0.txt"));
-    QString legalNotice = QStringLiteral("Copyright (C) 2015 Travis Nickles; Copyright (C) 2020 Jagoda Górska.\n\n"
-        "Pad is modified software distributed under the GNU General Public License version 3 or later. "
-        "There is no warranty. You may copy and redistribute it under that license. "
-        "The complete license follows.\n\n");
+    QString legalNotice = QStringLiteral("Pad\n"
+        "Copyright (C) 2026 Pad\n\n"
+        "Pad is free software, released under the GNU General Public License version 3 or later. "
+        "You can copy, change and share it under that license. It comes with no warranty.\n\n"
+        "Source code: github.com/davaughnl/Pad\n\n"
+        "Pad is based on AntiMicroX. Copyright (C) 2015 Travis Nickles, Copyright (C) 2020 Jagoda G\u00f3rska. "
+        "Qt and SDL are used under their own licenses.\n\n"
+        "The full license text follows.\n\n");
     if (licenseFile.open(QIODevice::ReadOnly | QIODevice::Text))
         legalNotice += QString::fromUtf8(licenseFile.readAll());
     ui->textBrowser_2->setPlainText(legalNotice);
+    ui->tabWidget->removeTab(ui->tabWidget->indexOf(ui->changelog)); // About keeps Info and License only.
     PadUi::polishAboutDialog(this);
 }
 
@@ -92,24 +97,6 @@ void AboutDialog::fillInfoTextBrowser()
                              .arg(QSysInfo::productType(), QSysInfo::productVersion(), QSysInfo::currentCpuArchitecture()));
 
     ui->infoTextBrowser->setText(finalInfoText.join("\n"));
-
-    // Read Changelog text from resource and put text in text box.
-    QResource changelogFile(":/CHANGELOG.md");
-    QFile temp(changelogFile.absoluteFilePath());
-    QString changelogText;
-
-    if (temp.open(QIODevice::Text | QIODevice::ReadOnly))
-    {
-        QTextStream changelogStream(&temp);
-        changelogText = changelogStream.readAll();
-        temp.close();
-    } else
-    {
-        qWarning() << "Unable to open changelog resource:" << temp.fileName();
-    }
-
-    ui->changelogText->setPlainText(changelogText);
-    ui->changelogText->setOpenExternalLinks(true);
 }
 
 void AboutDialog::changeEvent(QEvent *event)

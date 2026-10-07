@@ -172,7 +172,6 @@ MainWindow::MainWindow(QMap<SDL_JoystickID, InputDevice *> *joysticks, CommandLi
     connect(ui->menuOptions, &QMenu::aboutToShow, this, [this, menuPointerOptions] { mainMenuChange(menuPointerOptions); });
 
     connect(ui->actionKeyValue, &QAction::triggered, this, &MainWindow::openKeyCheckerDialog);
-    connect(ui->actionAbout_Qt, &QAction::triggered, qApp, &QApplication::aboutQt);
     connect(ui->actionProperties, &QAction::triggered, this, &MainWindow::openJoystickStatusWindow);
     connect(ui->actionGitHubPage, &QAction::triggered, this, &MainWindow::openGitHubPage);
     connect(ui->actionIssues, &QAction::triggered, this, &MainWindow::openIssuesPage);

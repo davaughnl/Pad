@@ -10,6 +10,9 @@ Expand-Archive (Resolve-Path $Archive).Path -DestinationPath $extract
 $exe = @(Get-ChildItem $extract -Filter pad.exe -Recurse)
 if ($exe.Count -ne 1) { throw 'Expected exactly one pad.exe in archive' }
 $bin = $exe[0].DirectoryName
+foreach ($f in 'driver/interception.dll','driver/install-interception.exe','driver/RECOVERY.md','licenses/Interception-LGPL-3.0.txt') {
+    if (-not (Test-Path (Join-Path (Split-Path $bin -Parent) $f))) { throw "Missing driver-mode file in package: $f" }
+}
 $savedPath = $env:PATH
 $savedPlugin = $env:QT_PLUGIN_PATH
 $savedPlatform = $env:QT_QPA_PLATFORM_PLUGIN_PATH
