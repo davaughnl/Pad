@@ -29,6 +29,7 @@
 #include "setjoystick.h"
 
 #include <QDebug>
+#include <cmath>
 #include <QHash>
 #include <QHashIterator>
 #include <QList>
@@ -57,6 +58,7 @@ JoySensorEditDialog::JoySensorEditDialog(JoySensor *sensor, QWidget *parent)
         m_ui->presetsComboBox->insertItem(index, m_preset.getPresetName(preset), preset);
         if (preset == current_preset)
             current_preset_index = index;
+        ++index;
     }
     m_ui->presetsComboBox->setCurrentIndex(current_preset_index);
 
@@ -65,12 +67,11 @@ JoySensorEditDialog::JoySensorEditDialog(JoySensor *sensor, QWidget *parent)
     updateWindowTitleSensorName();
     if (m_sensor->getType() == ACCELEROMETER)
     {
-        float value;
         m_ui->accelerationValue->setText(QString::number(m_sensor->calculateDistance()));
-        value = JoySensor::radToDeg(m_sensor->calculatePitch());
-        m_ui->pitchValue->setText(QString::number(value));
-        value = JoySensor::radToDeg(m_sensor->calculateRoll());
-        m_ui->rollValue->setText(QString::number(value));
+        const double pitch = m_sensor->calculatePitch();
+        m_ui->pitchValue->setText(std::isfinite(pitch) ? QString::number(JoySensor::radToDeg(pitch)) : tr("Unavailable"));
+        const double roll = m_sensor->calculateRoll();
+        m_ui->rollValue->setText(std::isfinite(roll) ? QString::number(JoySensor::radToDeg(roll)) : tr("Unavailable"));
         m_ui->maxZoneSlider->setMaximum(GlobalVariables::JoySensor::ACCEL_MAX);
         m_ui->maxZoneSpinBox->setMaximum(GlobalVariables::JoySensor::ACCEL_MAX);
     } else
@@ -194,7 +195,6 @@ void JoySensorEditDialog::enableMouseSettingButton() { m_ui->mouseSettingsPushBu
  */
 void JoySensorEditDialog::updateSensorStats(float x, float y, float z)
 {
-    float value;
 
     m_ui->xCoordinateValue->setText(QString::number(x));
     m_ui->yCoordinateValue->setText(QString::number(y));
@@ -203,10 +203,10 @@ void JoySensorEditDialog::updateSensorStats(float x, float y, float z)
     if (m_sensor->getType() == ACCELEROMETER)
     {
         m_ui->accelerationValue->setText(QString::number(m_sensor->calculateDistance(x, y, z)));
-        value = JoySensor::radToDeg(m_sensor->calculatePitch(x, y, z));
-        m_ui->pitchValue->setText(QString::number(value));
-        value = JoySensor::radToDeg(m_sensor->calculateRoll(x, y, z));
-        m_ui->rollValue->setText(QString::number(value));
+        const double pitch = m_sensor->calculatePitch(x, y, z);
+        m_ui->pitchValue->setText(std::isfinite(pitch) ? QString::number(JoySensor::radToDeg(pitch)) : tr("Unavailable"));
+        const double roll = m_sensor->calculateRoll(x, y, z);
+        m_ui->rollValue->setText(std::isfinite(roll) ? QString::number(JoySensor::radToDeg(roll)) : tr("Unavailable"));
     }
 
     double validDistance = m_sensor->getDistanceFromDeadZone(x, y, z) * 100.0;
