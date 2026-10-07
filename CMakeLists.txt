@@ -93,6 +93,15 @@ if(ANTIMICROX_PKG_VERSION)
     add_compile_definitions(ANTIMICROX_PKG_VERSION="${ANTIMICROX_PKG_VERSION}")
 endif(ANTIMICROX_PKG_VERSION)
 
+set(PAD_VERSION "" CACHE STRING "Release version (x.y.z) shown in the app and used by the updater; empty for development builds")
+if(PAD_VERSION)
+    if(NOT PAD_VERSION MATCHES "^[0-9]+\\.[0-9]+\\.[0-9]+$")
+        message(FATAL_ERROR "PAD_VERSION must look like 1.2.3")
+    endif()
+    message("This build is release version ${PAD_VERSION}")
+    add_compile_definitions(PAD_VERSION="${PAD_VERSION}")
+endif(PAD_VERSION)
+
 if(CHECK_FOR_UPDATES)
     message("This build will check for updates using GitHub API.")
     add_compile_definitions(CHECK_FOR_UPDATES="${CHECK_FOR_UPDATES}")
@@ -173,6 +182,7 @@ set(antimicrox_SOURCES
         src/gui/mainsettingsdialog.cpp
         src/gui/mainwindow.cpp
         src/pad/padshell.cpp
+        src/pad/updatemanager.cpp
         src/gui/mousesettingsdialog.cpp
         src/gui/qkeydisplaydialog.cpp
         src/gui/quicksetdialog.cpp
