@@ -64,6 +64,9 @@
 #include <cstdio>
 #include <cmath>
 #include <limits>
+#include <cstring>
+#include <new>
+#include "sensors/joyaccelerometersensor.h"
 #include <QMenu>
 #include <QAction>
 #include "gui/joysensoreditdialog.h"
