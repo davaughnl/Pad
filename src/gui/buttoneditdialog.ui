@@ -123,7 +123,7 @@
      <item>
       <widget class="QCheckBox" name="toggleCheckBox">
        <property name="toolTip">
-        <string>Enables a key press or release to only occur when a controller button is pressed.</string>
+        <string>Sends the key only when the controller button is pressed.</string>
        </property>
        <property name="text">
         <string>Toggle</string>
@@ -166,7 +166,7 @@
        <item>
         <widget class="QCheckBox" name="turboCheckBox">
          <property name="toolTip">
-          <string>Enables rapid key presses and releases. Turbo controller.</string>
+          <string>Repeats the key press quickly while the button is held.</string>
          </property>
          <property name="text">
           <string>Turbo</string>
@@ -195,7 +195,7 @@
           <string>Numeric keypad</string>
          </property>
          <property name="toolTip">
-          <string>Remember, it won't work if you don't have such keypad connected to computer or if it's not embedded like in desktop PCs</string>
+          <string>Needs a numeric keypad. It has no effect without one, or if it isn't built into the PC.</string>
          </property>
         </widget>
        </item>

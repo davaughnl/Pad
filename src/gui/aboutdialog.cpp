@@ -61,42 +61,20 @@ AboutDialog::~AboutDialog() { delete ui; }
 
 void AboutDialog::fillInfoTextBrowser()
 {
-    QStringList finalInfoText = QStringList();
-
-    finalInfoText.append(tr("Program Version %1").arg(PadderCommon::displayVersion));
-#ifdef ANTIMICROX_PKG_VERSION
-    finalInfoText.append(tr("Compiled from packaging: %1").arg(ANTIMICROX_PKG_VERSION));
-#else
-    finalInfoText.append(tr("Program Compiled on %1 at %2").arg(__DATE__).arg(__TIME__));
-#endif
-
-    finalInfoText.append(tr("Built Against SDL %1").arg(PadderCommon::sdlVersionCompiled));
-    finalInfoText.append(tr("Running With SDL %1").arg(PadderCommon::sdlVersionUsed));
-
-    finalInfoText.append(tr("Using Qt %1").arg(qVersion()));
-
-    BaseEventHandler *handler = nullptr;
-    EventHandlerFactory *factory = EventHandlerFactory::getInstance();
-
-    if (factory != nullptr)
-    {
-        handler = factory->handler();
-    }
-
-    if (handler != nullptr)
-    {
-        finalInfoText.append(tr("Using Event Handler: %1").arg(handler->getName()));
-    }
-
-#ifdef Q_OS_LINUX
-    QString detected_xdg_session = qgetenv("XDG_SESSION_TYPE");
-    finalInfoText.append(QString("Compositor type: %1").arg(detected_xdg_session));
-#endif
-
-    finalInfoText.append(QString("Host OS: %1 Version: %2 Architecture: %3")
-                             .arg(QSysInfo::productType(), QSysInfo::productVersion(), QSysInfo::currentCpuArchitecture()));
-
-    ui->infoTextBrowser->setText(finalInfoText.join("\n"));
+    // Owner-written copy. "Open Source Licenses" opens the License tab.
+    ui->infoTextBrowser->setOpenLinks(false);
+    ui->infoTextBrowser->setHtml(
+        QStringLiteral("<p style=\"font-size:15px\">%1</p>"
+                       "<p>%2</p><p>%3</p><p>%4 <a href=\"#licenses\">%5</a>.</p><p>%6</p>")
+            .arg(tr("About Pad"),
+                 tr("Pad is a modern controller mapping application designed for a simple, reliable, and highly configurable experience."),
+                 tr("Pad incorporates and builds upon technology from AntiMicroX, an open-source controller mapping project licensed under the GNU General Public License (GPL)."),
+                 tr("Pad includes original development and design alongside components derived from or adapted from the AntiMicroX project. Applicable open-source licenses and source code are available through"),
+                 tr("Open Source Licenses"),
+                 tr("(c) 2026 Pad")));
+    connect(ui->infoTextBrowser, &QTextBrowser::anchorClicked, this, [this](const QUrl &) {
+        ui->tabWidget->setCurrentIndex(ui->tabWidget->indexOf(ui->license));
+    });
 }
 
 void AboutDialog::changeEvent(QEvent *event)

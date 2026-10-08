@@ -421,7 +421,7 @@
            <item>
             <widget class="QSlider" name="maxZoneSlider">
              <property name="toolTip">
-              <string>Value when an analog sensor is considered moved 100%.</string>
+              <string>Value at which the stick counts as fully pushed.</string>
              </property>
              <property name="minimum">
               <number>0</number>
@@ -446,7 +446,7 @@
            <item>
             <widget class="QDoubleSpinBox" name="maxZoneSpinBox">
              <property name="toolTip">
-              <string>Value when an analog sensor is considered moved 100%.</string>
+              <string>Value at which the stick counts as fully pushed.</string>
              </property>
              <property name="decimals">
               <number>2</number>
@@ -519,7 +519,7 @@
            <item>
             <widget class="QSlider" name="sensorDelaySlider">
              <property name="toolTip">
-              <string>Time lapsed before a direction change is taken into effect.</string>
+              <string>Delay before a direction change applies.</string>
              </property>
              <property name="minimum">
               <number>0</number>
@@ -553,7 +553,7 @@
            <item>
             <widget class="QDoubleSpinBox" name="sensorDelayDoubleSpinBox">
              <property name="toolTip">
-              <string>Time lapsed before a direction change is taken into effect.</string>
+              <string>Delay before a direction change applies.</string>
              </property>
              <property name="readOnly">
               <bool>false</bool>

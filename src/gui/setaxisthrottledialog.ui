@@ -37,9 +37,7 @@ QGroupBox::indicator:checked { background: #eeeeef; image: url(:/pad/icons/check
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>The throttle setting for Axis %1 has been changed.
-
-Would you like to distribute this throttle change to all sets?</string>
+      <string>Axis %1's throttle changed. Apply it to all sets?</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>

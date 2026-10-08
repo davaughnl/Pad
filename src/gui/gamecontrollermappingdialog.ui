@@ -33,7 +33,7 @@
        <item>
         <widget class="QLabel" name="label">
          <property name="text">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#9d9da5;&quot;&gt;Pad makes use of the &lt;a href=&quot;https://wiki.libsdl.org/CategoryGameController&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#e8e8eb;&quot;&gt;Game Controller API&lt;/span&gt;&lt;/a&gt; provided by SDL 2 in order to abstract various gamepads to fit a unified standard. In order to make a button assignment, please highlight the mapping cell for the appropriate button row below. You can then press a button or move an axis on your gamepad and the cell will update with the physical button or axis that will be used.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; color:#9d9da5;&quot;&gt;Pad will use the mapping that you specify to save a mapping string that will be loaded into SDL.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" color:#9d9da5;"&gt;Select a row, then press the matching button or move the matching stick on your controller. The cell fills in automatically.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="wordWrap">
           <bool>true</bool>
@@ -253,7 +253,7 @@
           </font>
          </property>
          <property name="text">
-          <string>SDL 2 Game Controller Mapping String</string>
+          <string>Mapping string</string>
          </property>
         </widget>
        </item>
@@ -339,7 +339,7 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>Last Axis Event:</string>
+           <string>Last input</string>
           </property>
          </widget>
         </item>
@@ -359,7 +359,7 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>Current Axis Detection Dead Zone:</string>
+           <string>Axis dead zone</string>
           </property>
          </widget>
         </item>

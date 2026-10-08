@@ -192,8 +192,7 @@ QGroupBox::indicator:checked { background: #eeeeef; image: url(:/pad/icons/check
         </size>
        </property>
        <property name="toolTip">
-        <string>Set the value to use as the limit for an axis. Useful for a
-worn out analog stick.</string>
+        <string>Limit for the axis. Useful for a worn stick.</string>
        </property>
        <property name="minimum">
         <number>1</number>
@@ -293,8 +292,7 @@ worn out analog stick.</string>
      <item row="1" column="1">
       <widget class="QSlider" name="maxZoneSlider">
        <property name="toolTip">
-        <string>Set the value to use as the limit for an axis. Useful for a
-worn out analog stick.</string>
+        <string>Limit for the axis. Useful for a worn stick.</string>
        </property>
        <property name="minimum">
         <number>0</number>
@@ -395,8 +393,7 @@ worn out analog stick.</string>
         </size>
        </property>
        <property name="toolTip">
-        <string>Throttle setting that determines the behavior of how to
-interpret an axis hold or release.</string>
+        <string>How Pad treats an axis hold or release.</string>
        </property>
        <property name="currentIndex">
         <number>2</number>

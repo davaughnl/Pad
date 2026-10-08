@@ -152,7 +152,7 @@
            <item>
             <widget class="QLineEdit" name="profileDefaultDirLineEdit">
              <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify the default directory that the program should use in file dialogs when loading a profile or saving a new profile.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>Folder Pad opens when you load or save a profile.</string>
              </property>
              <property name="maxLength">
               <number>512</number>
@@ -186,7 +186,7 @@
            <item>
             <widget class="QSpinBox" name="numberRecentProfileSpinBox">
              <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of profiles that can be placed in recent profile list. 0 will result in the program not enforcing a limit on the number of profiles displayed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>How many recent profiles to list. 0 means no limit.</string>
              </property>
              <property name="maximum">
               <number>100</number>
@@ -229,12 +229,7 @@
            <item>
             <widget class="QComboBox" name="gamepadPollRateComboBox">
              <property name="toolTip">
-              <string>Change the poll rate that the program uses to discover new
-events from gamepads. Defaults to 10 ms.
-
-Reducing the poll rate value could cause the application to
-use more CPU power so please test the setting that you use
-before using Pad unattended.</string>
+              <string>How often Pad checks controllers for input. Default 10 ms. Lower values use more CPU, so test before leaving Pad unattended.</string>
              </property>
             </widget>
            </item>
@@ -243,8 +238,7 @@ before using Pad unattended.</string>
          <item>
           <widget class="QCheckBox" name="closeToTrayCheckBox">
            <property name="toolTip">
-            <string>Hide main window when the main window close button is
-clicked instead of quitting the program.</string>
+            <string>Closing the window hides Pad in the tray instead of quitting.</string>
            </property>
            <property name="text">
             <string>Close To Tray</string>
@@ -264,9 +258,7 @@ clicked instead of quitting the program.</string>
          <item>
           <widget class="QCheckBox" name="traySingleProfileListCheckBox">
            <property name="toolTip">
-            <string>Display recent profiles for all controllers
-as a single list in the tray menu. Defaults
-to using sub-menus.</string>
+            <string>Show recent profiles for all controllers as one list in the tray menu.</string>
            </property>
            <property name="text">
             <string>Single Profile List in Tray</string>
@@ -276,9 +268,7 @@ to using sub-menus.</string>
          <item>
           <widget class="QCheckBox" name="minimizeTaskbarCheckBox">
            <property name="toolTip">
-            <string>Have the program minimize to the taskbar.
-By default, the program minimizes to the system
-tray if available.</string>
+            <string>Minimize to the taskbar instead of the system tray.</string>
            </property>
            <property name="text">
             <string>Minimize to Taskbar</string>
@@ -288,10 +278,7 @@ tray if available.</string>
          <item>
           <widget class="QCheckBox" name="hideEmptyCheckBox">
            <property name="toolTip">
-            <string>This option will cause the program to hide all
-buttons that have no slots assigned to them.
-The Quick Set dialog window will have to be used
-to bring up the edit dialog for gamepad buttons.</string>
+            <string>Hide buttons with nothing assigned. Use Quick Set to edit them.</string>
            </property>
            <property name="text">
             <string>Hide Empty Buttons</string>
@@ -301,9 +288,7 @@ to bring up the edit dialog for gamepad buttons.</string>
          <item>
           <widget class="QCheckBox" name="autoLoadPreviousCheckBox">
            <property name="toolTip">
-            <string>When the program is launched, open the last
-known profile that was opened during the
-previous session.</string>
+            <string>Open the last profile from your previous session when Pad starts.</string>
            </property>
            <property name="text">
             <string>Auto Load Last Opened Profile</string>
@@ -316,8 +301,7 @@ previous session.</string>
          <item>
           <widget class="QCheckBox" name="launchInTrayCheckBox">
            <property name="toolTip">
-            <string>Only show the system tray icon when the program
-first launches.</string>
+            <string>Show the tray icon only when Pad first starts.</string>
            </property>
            <property name="text">
             <string>Launch in Tray</string>
@@ -340,7 +324,7 @@ first launches.</string>
          <item>
           <widget class="QCheckBox" name="attachNumKeypadCheckbox">
            <property name="toolTip">
-            <string>Remember, it won't work if you don't have such keypad connected to computer or if it's not embedded like in desktop PCs</string>
+            <string>Needs a numeric keypad. It has no effect without one, or if it isn't built into the PC.</string>
            </property>
            <property name="toolTipDuration">
             <number>-1</number>
@@ -534,9 +518,7 @@ per seconds.</string>
          <item>
           <widget class="QLabel" name="label">
            <property name="text">
-            <string>Below is a list of the custom mappings that have been saved. You can use the following table to delete mappings or have mappings temporarily disabled. You can also disable mappings that are included with SDL; just insert a new row with the appropriate joystick GUID and check disable.
-
-Settings will not take affect until you either refresh all joysticks or unplug that particular joystick.</string>
+            <string>Saved custom mappings. Delete a row to remove it, or disable it to turn it off. To disable a built-in mapping, add a row with the controller's GUID and tick Disable. Changes apply after you refresh controllers or reconnect the controller.</string>
            </property>
            <property name="scaledContents">
             <bool>false</bool>
@@ -717,7 +699,7 @@ Settings will not take affect until you either refresh all joysticks or unplug t
          <item>
           <widget class="QLabel" name="autoProfileDescription">
            <property name="text">
-            <string>Auto Profile functionality allows you to automatically switch active profile based on the active application window.</string>
+            <string>Switch profiles automatically based on the active application window.</string>
            </property>
            <property name="wordWrap">
             <bool>true</bool>
@@ -934,10 +916,7 @@ Settings will not take affect until you either refresh all joysticks or unplug t
          <item>
           <widget class="QCheckBox" name="disableWindowsEnhancedPointCheckBox">
            <property name="toolTip">
-            <string>Disable the &quot;Enhanced Pointer Precision&quot; Windows setting
-while Pad is running. Disabling &quot;Enhanced Pointer Precision&quot;
-will allow mouse movement within Pad to be more
-precise.</string>
+            <string>Turn off "Enhanced Pointer Precision" in Windows while Pad runs, for more precise mouse movement.</string>
            </property>
            <property name="text">
             <string>Disable Enhance Pointer Precision</string>
@@ -1037,12 +1016,7 @@ precise.</string>
            <item>
             <widget class="QComboBox" name="mouseRefreshRateComboBox">
              <property name="toolTip">
-              <string>The refresh rate is the amount of time that will elapse
-in between mouse events. Please be cautious when
-editing this setting as it will cause the program to use
-more CPU power. Setting this value too low can cause
-system instability. Please test the setting before using
-it unattended.</string>
+              <string>Time between mouse events. Low values use more CPU and can make the system unstable. Test before leaving Pad unattended.</string>
              </property>
             </widget>
            </item>
@@ -1075,9 +1049,7 @@ it unattended.</string>
               <item>
                <widget class="QComboBox" name="springScreenComboBox">
                 <property name="toolTip">
-                 <string>Utilize the specified screen for spring mode. On Linux, the
-default is to use the primary screen. On Windows, the default
-is to use all available screens.</string>
+                 <string>Screen used for spring mode. Default is the primary screen on Linux and all screens on Windows.</string>
                 </property>
                </widget>
               </item>
@@ -1221,10 +1193,7 @@ is to use all available screens.</string>
               <item>
                <widget class="QPushButton" name="resetAccelPushButton">
                 <property name="toolTip">
-                 <string>If the acceleration values for the virtual mouse have been
-changed by a different process, particularly when quitting
-an older game, then you might want to reset the acceleration
-values used by the virtual mouse.</string>
+                 <string>Reset the virtual mouse acceleration if another program changed it, such as an older game on exit.</string>
                 </property>
                 <property name="text">
                  <string>Reset Acceleration</string>
@@ -1296,7 +1265,7 @@ values used by the virtual mouse.</string>
          <item>
           <widget class="QLabel" name="label_11">
            <property name="text">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Note Unspecified log file allows printing logs in console output&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            <string>Leave empty to print logs to the console.</string>
            </property>
            <property name="scaledContents">
             <bool>true</bool>
@@ -1428,7 +1397,7 @@ values used by the virtual mouse.</string>
               </font>
              </property>
              <property name="text">
-              <string>Note: To see the change of log level in console output (not in log file), application restart is required</string>
+              <string>The console updates after you restart Pad. The log file updates right away.</string>
              </property>
              <property name="scaledContents">
               <bool>true</bool>

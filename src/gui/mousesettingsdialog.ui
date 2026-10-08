@@ -62,16 +62,7 @@ QGroupBox::indicator:checked { background: #eeeeef; image: url(:/pad/icons/check
         <item>
          <widget class="QComboBox" name="mouseModeComboBox">
           <property name="toolTip">
-           <string>Cursor mode is used to move the mouse cursor
-around the screen relative to its current position
-depending on how much you move an axis
-or if a button is pressed.
-
-Spring mode is used to move the mouse cursor
-from the center of the screen depending on how
-much you move an axis. The mouse cursor will
-be returned to the center of the screen when the
-axis is moved back to the dead zone.</string>
+           <string>Cursor: the stick moves the pointer from where it is, faster the further you push. Spring: the stick sets the pointer's distance from screen center, and it returns to center at rest.</string>
           </property>
           <item>
            <property name="text">
@@ -115,24 +106,7 @@ axis is moved back to the dead zone.</string>
         <item>
          <widget class="QComboBox" name="accelerationComboBox">
           <property name="toolTip">
-           <string>Enhanced: Three tier curve that makes the mouse move
-slow on the low end of an axis and fast on the high end.
-
-Linear: Mouse moves proportionally to axis.
-
-Quadratic: Mouse accelerates slowly on low end.
-
-Cubic: Mouse accelerates slower than Quadratic.
-
-Quadratic Extreme: Raises mouse speed 1.5 times once
-95% axis travel has been reached.
-
-Power Function: Allows for a more custom curve option.
-
-Easing Quadratic: Axis high end is gradually accelerated over a period of time using a Quadratic curve.
-
-Easing Cubic: Axis high end is gradually accelerated over
-a period of time using a Cubic curve.</string>
+           <string>Enhanced: slow at low travel, fast at high travel. Linear: proportional to stick travel. Quadratic and Cubic: gentle at first, steeper near the edge. Quadratic Extreme: 1.5x speed past 95% travel. Power Function: custom curve. Easing Quadratic and Easing Cubic: speed ramps up over time at full travel.</string>
           </property>
           <item>
            <property name="text">
@@ -589,12 +563,7 @@ after reaching the high end of an axis.</string>
           <bool>true</bool>
          </property>
          <property name="toolTip">
-          <string>Options for adding more acceleration to the mouse
-movement beyond what the acceleration curve would
-produce. Acceleration is added based on how quickly an axis is
-moved in one gamepad poll. This is meant to help work around
-some of the issues of the very limited input range available
-using typical gamepad analog sticks.</string>
+          <string>Extra acceleration for fast stick flicks. Helps when a stick's small range limits cursor speed.</string>
          </property>
          <property name="title">
           <string>Delta Acceleration</string>

@@ -66,9 +66,7 @@
       <item>
        <widget class="QPushButton" name="detectWinPropsSelectWindowPushButton">
         <property name="toolTip">
-         <string>Select Window. Click on the appropriate application
-window and the application file path will be populated
-in the form.</string>
+         <string>Click an application window to fill in its file path.</string>
         </property>
         <property name="text">
          <string>Detect Window Properties</string>
@@ -141,9 +139,7 @@ in the form.</string>
         <item>
          <widget class="QPushButton" name="selectWindowPushButton">
           <property name="toolTip">
-           <string>Select Window. Click on the appropriate application
-window and the application file path will be populated
-in the form.</string>
+           <string>Click an application window to fill in its file path.</string>
           </property>
           <property name="text">
            <string>Select</string>
@@ -176,9 +172,7 @@ in the form.</string>
         <bool>false</bool>
        </property>
        <property name="toolTip">
-        <string>Select this profile to be the default loaded for
-the specified device. The selection will be used instead
-of the all default profile option.</string>
+        <string>Use this profile as the default for the device, instead of the all-devices default.</string>
        </property>
        <property name="text">
         <string>Set as Default for Controller</string>

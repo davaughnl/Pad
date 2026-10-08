@@ -574,15 +574,15 @@ void AdvanceButtonDialog::joinSlot()
     } else if (ui->slotListWidget->count() < 3)
     {
         QMessageBox::warning(this, tr("Not enough slots"),
-                             tr("It's impossible to join slots. Add at least one other slot."));
+                             tr("Add at least one more slot to join."));
     } else if (ui->slotListWidget->selectedItems().count() < 2)
     {
         QMessageBox::warning(this, tr("Not selected slots"),
-                             tr("It's impossible to join slots. Select at least two slots before joining them"));
+                             tr("Select at least two slots to join."));
     } else if (anySelectedNotKeybSlot())
     {
         QMessageBox::warning(this, tr("Only keyboard slots"),
-                             tr("It's only possible to join simple and mix keyboard slots"));
+                             tr("Only simple and mixed keyboard slots can be joined."));
     } else
     {
         qDebug() << "Chosen " << ui->slotListWidget->selectedItems().count() << " slots";
@@ -676,7 +676,7 @@ void AdvanceButtonDialog::splitSlot()
     } else if (ui->slotListWidget->count() < 2)
     {
         QMessageBox::warning(this, tr("Not enough slots"),
-                             tr("It's impossible to split slots. Add at least one other slot."));
+                             tr("Add at least one more slot to split."));
     } else if (ui->slotListWidget->selectedItems().count() < 1)
     {
         QMessageBox::warning(this, tr("Not selected slot"), tr("Select your slot before splitting."));
@@ -1660,7 +1660,7 @@ void AdvanceButtonDialog::changeSlotHelpText(int index)
         break;
 
     case 6:
-        ui->slotTypeHelpLabel->setText(tr("Chose a profile to load when this slot is activated."));
+        ui->slotTypeHelpLabel->setText(tr("Choose a profile to load when this slot is activated."));
         break;
 
     case 7:

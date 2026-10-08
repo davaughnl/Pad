@@ -100,7 +100,7 @@ QFrame#verticalLayoutCard, QFrame#verticalLayout_2Card { background: #19191c; bo
            <item>
             <widget class="QLabel" name="versionTwoMessageLabel">
              <property name="text">
-              <string>This window supports legacy profiles. For new profiles, use the Game Controller Mapping window.</string>
+              <string>For legacy profiles. New profiles use Game Controller Mapping.</string>
              </property>
              <property name="wordWrap">
               <bool>true</bool>

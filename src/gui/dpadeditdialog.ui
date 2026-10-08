@@ -138,18 +138,7 @@ QGroupBox::indicator:checked { background: #eeeeef; image: url(:/pad/icons/check
           </size>
          </property>
          <property name="toolTip">
-          <string>Standard: 8 region dpad with two direction buttons active
-when the dpad is in a diagonal region.
-
-Eight Way: 8 region dpad with each direction having its
-own dedicated button. Only one button is ever active at
-at time. Useful for rougelike games.
-
-4 Way Cardinal: 4 region dpad with regions corresponding to
-the cardinal directions of the dpad. Useful for menus.
-
-4 Way Diagonal: 4 region dpad with each region corresponding
-to a diagonal zone.</string>
+          <string>Standard: 8 directions; diagonals press two buttons. Eight Way: 8 directions, each with its own button, one active at a time. 4 Way Cardinal: up, down, left and right only. 4 Way Diagonal: the four diagonals only.</string>
          </property>
          <item>
           <property name="text">
@@ -210,7 +199,7 @@ to a diagonal zone.</string>
      <item>
       <widget class="QSlider" name="dpadDelaySlider">
        <property name="toolTip">
-        <string>Time lapsed before a direction change is taken into effect.</string>
+        <string>Delay before a direction change applies.</string>
        </property>
        <property name="minimum">
         <number>0</number>
@@ -244,7 +233,7 @@ to a diagonal zone.</string>
      <item>
       <widget class="QDoubleSpinBox" name="dpadDelayDoubleSpinBox">
        <property name="toolTip">
-        <string>Time lapsed before a direction change is taken into effect.</string>
+        <string>Delay before a direction change applies.</string>
        </property>
        <property name="readOnly">
         <bool>false</bool>

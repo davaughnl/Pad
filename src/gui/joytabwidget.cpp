@@ -2315,8 +2315,7 @@ void JoyTabWidget::fillSetButtons(SetJoystick *set)
 
     if (current_layout->count() == 0)
     {
-        QLabel *newlabel = new QLabel(tr("No buttons have been assigned. Please use Quick Set to assign keys\nto buttons or "
-                                         "disable hiding empty buttons."));
+        QLabel *newlabel = new QLabel(tr("No buttons are assigned yet.\nUse Quick Set, or turn off hiding empty buttons in Settings."));
         current_layout->addWidget(newlabel, 0, 0, Qt::AlignCenter);
     }
     PadUi::makeMappingTable(current_layout);
