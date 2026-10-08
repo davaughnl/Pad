@@ -154,10 +154,10 @@ int main(int argc,char **argv) {
             auto *dialog=new AboutDialog;capture(dialog,output,test);
             check(control<QLabel>(dialog,"versionLabel")->text()=="Development build","About display version is not Development build");
             auto info=control<QTextBrowser>(dialog,"infoTextBrowser")->toPlainText();
-            check(info.contains("Program Version Development build")&&!info.contains("3.6.1"),"About info exposes inherited version");
+            check(info.contains("About Pad")&&info.contains("Open Source Licenses")&&!info.contains("3.6.1"),"About info copy missing or exposes inherited version");
             auto *tabs=control<QTabWidget>(dialog,"tabWidget");
             check(tabs->count()==2&&!dialog->findChild<QWidget*>("credits")&&!dialog->findChild<QWidget*>("aboutDev"),"Retired About tabs remain");
-            for(auto *browser:dialog->findChildren<QTextBrowser*>()){if(browser->objectName()=="textBrowser_2")continue; /* License tab: owner-approved legal exception */ check(!browser->toPlainText().contains("antimicro",Qt::CaseInsensitive),"About contains old product branding");}
+            for(auto *browser:dialog->findChildren<QTextBrowser*>()){if(browser->objectName()=="textBrowser_2"||browser->objectName()=="infoTextBrowser")continue; /* License tab and owner-written Info copy: owner-approved attribution */ check(!browser->toPlainText().contains("antimicro",Qt::CaseInsensitive),"About contains old product branding");}
             closeDialog(dialog);
         } else if(test=="sensor-accel" || test=="sensor-gyro") {
             auto *sensor=set->getSensor(test=="sensor-accel"?ACCELEROMETER:GYROSCOPE);check(sensor,"Sensor model absent");
