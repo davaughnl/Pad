@@ -62,6 +62,8 @@ inline void compactDialog(QDialog *dialog)
                 (qobject_cast<QLineEdit *>(widget) && !qobject_cast<QAbstractSpinBox *>(widget->parentWidget())))
                 widget->setFixedHeight(24);
         }
+        for (auto *layout : dialog->findChildren<QLayout *>()) layout->invalidate();
+        if (dialog->layout()) { dialog->layout()->invalidate(); dialog->layout()->activate(); }
     });
 }
 
