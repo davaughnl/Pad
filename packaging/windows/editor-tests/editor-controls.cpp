@@ -304,13 +304,7 @@ int main(int argc,char **argv) {
                 check(menu->grab().save(output+"/screen-menu-"+(menu->objectName().isEmpty()?QString::number(qintptr(menu)%9973):menu->objectName())+".png"),"menu capture");
                 menu->hide();
             }
-            std::fprintf(stderr,"STEP update\n");std::fflush(stderr);window->show();
-            if(auto *strip=window->findChild<PadUpdateStrip*>()){
-                using S=PadUpdateStrip::State;
-                struct{S st;const char *n;const char *d;int pct;} states[]={{S::Checking,"checking","",0},{S::UpToDate,"uptodate","",0},{S::Available,"available","1.2.0",0},{S::Downloading,"downloading","",42},{S::Ready,"ready","1.2.0",0},{S::Error,"error","Could not reach the update server",0}};
-                for(auto &st:states){strip->setState(st.st,st.d,st.pct);QTest::qWait(400);check(window->grab().save(output+QString("/screen-update-")+st.n+"-full.png"),"update capture");}
-                strip->setState(S::Hidden);
-            }
+            window->show();
             window->hide();std::fprintf(stderr,"STEP msgbox\n");std::fflush(stderr);
             {
                 QMessageBox box(QMessageBox::Warning,"Profile could not be loaded","The profile file is missing or damaged.",QMessageBox::Ok|QMessageBox::Cancel);
@@ -326,6 +320,14 @@ int main(int argc,char **argv) {
                 multi->makeJoystickTabs();multi->fillButtons();multi->resize(1000,700);multi->show();QTest::qWait(1000);
                 check(multi->grab().save(output+"/screen-main-two-controllers-full.png"),"multi capture");
                 multi->hide();
+            }
+            window->show();
+            std::fprintf(stderr,"STEP update\n");std::fflush(stderr);window->show();
+            if(auto *strip=window->findChild<PadUpdateStrip*>()){
+                using S=PadUpdateStrip::State;
+                struct{S st;const char *n;const char *d;int pct;} states[]={{S::Checking,"checking","",0},{S::UpToDate,"uptodate","",0},{S::Available,"available","1.2.0",0},{S::Downloading,"downloading","",42},{S::Ready,"ready","1.2.0",0},{S::Error,"error","Could not reach the update server",0}};
+                for(auto &st:states){std::fprintf(stderr,"STATE %s\n",st.n);std::fflush(stderr);strip->setState(st.st,st.d,st.pct);QTest::qWait(400);check(window->grab().save(output+QString("/screen-update-")+st.n+"-full.png"),"update capture");}
+                strip->setState(S::Hidden);
             }
         } else throw std::runtime_error("Unknown case");
         QMetaObject::invokeMethod(joystick,[joystick]{delete joystick;},Qt::BlockingQueuedConnection);
