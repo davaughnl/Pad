@@ -62,7 +62,7 @@ ButtonEditDialog::ButtonEditDialog(InputDevice *joystick, bool isNumKeypad, QWid
     ui->advancedPushButton->setIconSize(QSize(16, 16));
     setStyleSheet(QStringLiteral(
         "QDialog#padAssignmentDialog QPushButton { min-height: 26px; }"
-        "QLabel#slotSummaryLabel { color: #eeeeef; background: #131316; border-radius: 4px; padding: 8px; }"
+        "QLabel#slotSummaryLabel { color: #f4f4f5; background: #131316; border-radius: 4px; padding: 8px; }"
         "QComboBox, QLineEdit, QSpinBox, QDoubleSpinBox { min-height: 26px; }"
         "QFrame#line { background: #1c1c20; color: #1c1c20; border: none; max-height: 1px; }"));
 
