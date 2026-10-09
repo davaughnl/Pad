@@ -98,12 +98,21 @@ static const QPointF psMarks[] = {
     {265, 215}, {455, 215}, {265, 215}, {265, 215}, {455, 215}, {455, 215}, {215, 2}, {505, 2},
     {130, 85}, {104, 125}, {142, 156}, {165, 125}};
 
+// DualSense render (hero-ps5.png 720x453), same order.
+static const QPointF dsMarks[] = {
+    {592, 170}, {634, 128}, {548, 128}, {592, 85}, {187, 50}, {533, 50}, {361, 219}, {139, 14}, {581, 14},
+    {241, 219}, {479, 219}, {241, 219}, {241, 219}, {479, 219}, {479, 219}, {128, 4}, {592, 4},
+    {130, 92}, {96, 126}, {130, 160}, {162, 126}};
+
 void GameControllerExample::setDevice(const QString &name)
 {
     const QString n = name.toLower();
     playstation = n.contains(QStringLiteral("ps4")) || n.contains(QStringLiteral("ps5")) || n.contains(QStringLiteral("dualshock"))
         || n.contains(QStringLiteral("dualsense")) || n.contains(QStringLiteral("playstation")) || n.contains(QStringLiteral("wireless controller"));
-    art = QPixmap(playstation ? QStringLiteral(":/images/hero-ps4.png") : QStringLiteral(":/images/hero-xbox.png"));
+    dualsense = n.contains(QStringLiteral("dualsense")) || n.contains(QStringLiteral("ps5"));
+    if (dualsense) playstation = true;
+    art = QPixmap(dualsense ? QStringLiteral(":/images/hero-ps5.png")
+                            : playstation ? QStringLiteral(":/images/hero-ps4.png") : QStringLiteral(":/images/hero-xbox.png"));
     update();
 }
 
@@ -122,7 +131,7 @@ void GameControllerExample::paintEvent(QPaintEvent *event)
     QPixmap out = scaled; out.setDevicePixelRatio(dpr);
     paint.drawPixmap(origin, out);
 
-    const QPointF mark = (playstation ? psMarks : xboxMarks)[qBound(0, currentIndex, MAXBUTTONINDEX)];
+    const QPointF mark = (dualsense ? dsMarks : playstation ? psMarks : xboxMarks)[qBound(0, currentIndex, MAXBUTTONINDEX)];
     const qreal scale = logical.width() / 720.0;
     const QPointF centre = origin + mark * scale;
     const bool large = currentIndex == 9 || currentIndex == 10 || (currentIndex >= 11 && currentIndex <= 14);

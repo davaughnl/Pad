@@ -110,7 +110,8 @@ GameControllerMappingDialog::GameControllerMappingDialog(InputDevice *device, An
     ui->setupUi(this);
     ui->buttonMappingTableWidget->verticalHeader()->setDefaultSectionSize(26);
     ui->buttonMappingTableWidget->verticalHeader()->setMinimumSectionSize(26);
-    ui->gameControllerDisplayWidget->setDevice(device ? device->getName() + QLatin1Char(' ') + device->getSDLName() : QString());
+    ui->gameControllerDisplayWidget->setDevice(device ? device->getName() + QLatin1Char(' ') + device->getSDLName()
+                                                            + (device->getControllerType() == SDL_CONTROLLER_TYPE_PS5 ? QStringLiteral(" dualsense") : QString()) : QString());
     setAttribute(Qt::WA_DeleteOnClose);
 
     buttonGrabs = 0;
