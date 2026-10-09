@@ -178,3 +178,10 @@ QComboBox { background: #111114; border: 1px solid #26262b; border-radius: 8px; 
 QComboBox::drop-down { width: 28px; }
 QPushButton { border-radius: 8px; background: #141417; border: 1px solid #26262b; }
 QPushButton:hover { background: #1b1b20; border-color: #3a3a42; }
+
+QLabel#padHeadline { font-size: 40px; color: #fafafa; }
+QLabel#padConnection { color: #8a8a93; font-size: 12px; }
+QLabel#padConnection[connected="true"] { color: #e4e4e7; }
+QMenuBar { background: #0b0b0d; border-bottom: 1px solid #1c1c20; padding: 6px 8px; }
+QMenuBar::item { padding: 7px 14px; border-radius: 6px; color: #b8b8bf; }
+QMenuBar::item:selected { background: #17171b; color: #fafafa; }

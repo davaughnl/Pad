@@ -21,6 +21,7 @@
 #include <QPainterPath>
 #include <QPalette>
 #include <QProxyStyle>
+#include <QStyle>
 #include <QStyleFactory>
 #include <QIcon>
 #include <QPixmap>
@@ -205,19 +206,8 @@ void PadUi::install(QMainWindow *window, QWidget *central, QStackedWidget *stack
     auto *settingsButton = button(QObject::tr("Settings"), "settings", sidebar);
     auto *updateStrip = new PadUpdateStrip(sidebar);
     auto *updateButton = button(PadUpdateStrip::buttonLabel(PadUpdateStrip::State::Hidden), "refresh", sidebar);
-    // The classic menu bar is folded into one "More" menu so the window is just sidebar + workspace.
-    auto *moreButton = button(QObject::tr("More"), "ellipsis", sidebar);
-    auto *moreMenu = new QMenu(moreButton);
-    if (auto *bar = window->menuBar())
-    {
-        for (QAction *top : bar->actions())
-            if (top->menu()) moreMenu->addMenu(top->menu());
-        for (QAction *top : bar->actions()) window->addAction(top); // keep shortcuts alive
-        bar->hide();
-    }
-    moreButton->setMenu(moreMenu);
-    for (auto *nav : {refreshButton, updateButton, settingsButton, moreButton}) nav->setProperty("padNav", true);
-    side->addWidget(updateStrip); side->addWidget(refreshButton); side->addWidget(updateButton); side->addWidget(settingsButton); side->addWidget(moreButton);
+    for (auto *nav : {refreshButton, updateButton, settingsButton}) nav->setProperty("padNav", true);
+    side->addWidget(updateStrip); side->addWidget(refreshButton); side->addWidget(updateButton); side->addWidget(settingsButton);
     QObject::connect(refreshButton, &QPushButton::clicked, refresh, &QAction::trigger);
     // Updater: this block only presents UpdateManager state and forwards clicks.
     auto *updates = new UpdateManager(PadderCommon::releaseVersion, window);
@@ -277,21 +267,38 @@ void PadUi::install(QMainWindow *window, QWidget *central, QStackedWidget *stack
     layout->addWidget(sidebar);
     auto *workspace = new QWidget(shell); workspace->setObjectName("padWorkspace");
     auto *body = new QVBoxLayout(workspace); body->setContentsMargins(28, 24, 28, 16); body->setSpacing(8);
-    body->addWidget(text(QObject::tr("Controller mapping"), "padTitle", workspace));
-    body->addWidget(text(QObject::tr("Assign keyboard and mouse inputs to your controller."), "padSubtitle", workspace));
-    body->addSpacing(8);
+    auto *hero = new QHBoxLayout(); hero->setContentsMargins(0, 0, 0, 0);
+    auto *heroText = new QVBoxLayout(); heroText->setSpacing(8); heroText->setAlignment(Qt::AlignVCenter);
+    heroText->addWidget(text(QObject::tr("Controller mapping"), "padHeadline", workspace));
+    heroText->addWidget(text(QObject::tr("Assign keyboard and mouse inputs to your controller."), "padSubtitle", workspace));
+    hero->addLayout(heroText, 1);
+    auto *outline = new ControllerOutline(workspace); outline->setFixedSize(360, 214);
+    hero->addWidget(outline, 0, Qt::AlignRight | Qt::AlignVCenter);
+    body->addLayout(hero);
     auto *overview = new QFrame(workspace); overview->setObjectName("padOverview");
-    auto *overviewLayout = new QHBoxLayout(overview); overviewLayout->setContentsMargins(28, 16, 28, 16);
+    auto *overviewLayout = new QHBoxLayout(overview); overviewLayout->setContentsMargins(24, 14, 24, 14);
     auto *details = new QVBoxLayout(); details->setSpacing(2); details->setAlignment(Qt::AlignVCenter);
     auto *deviceName = text(QObject::tr("No controller connected"), "padDeviceName", overview);
     deviceName->setWordWrap(true); details->addWidget(deviceName);
     auto *profileName = text(QString(), "padSubtitle", overview); profileName->setWordWrap(true); details->addWidget(profileName);
-    details->addSpacing(10); details->addWidget(text(QObject::tr("Keyboard + mouse"), "padSubtitle", overview));
     overviewLayout->addLayout(details, 1);
-    auto *outline = new ControllerOutline(overview); outline->setFixedSize(280, 170);
-    overviewLayout->addWidget(outline, 0, Qt::AlignRight | Qt::AlignVCenter);
+    overviewLayout->addWidget(text(QObject::tr("Keyboard + mouse"), "padSubtitle", overview), 0, Qt::AlignRight | Qt::AlignVCenter);
     body->addWidget(overview); body->addWidget(stack, 1); layout->addWidget(workspace, 1);
     root->insertWidget(0, shell, 1);
+    if (auto *bar = window->menuBar())
+    {
+        auto *logo = new QLabel(bar); QPixmap mark(QStringLiteral(":/images/pad-mark.png")); logo->setPixmap(mark.scaled(22, 22, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+        logo->setContentsMargins(12, 0, 6, 0); bar->setCornerWidget(logo, Qt::TopLeftCorner);
+        auto *status = new QLabel(bar); status->setObjectName("padConnection"); status->setContentsMargins(0, 0, 14, 0);
+        bar->setCornerWidget(status, Qt::TopRightCorner); logo->show(); status->show();
+        auto *tick = new QTimer(status); tick->setInterval(400);
+        QObject::connect(tick, &QTimer::timeout, status, [status, controllers]() {
+            const bool on = controllers->count() > 0;
+            status->setText(on ? QObject::tr("\u25CF  Connected") : QObject::tr("\u25CF  No controller"));
+            status->setProperty("connected", on); status->style()->unpolish(status); status->style()->polish(status);
+        });
+        tick->start();
+    }
     if (auto *bar = controllers->findChild<QTabBar *>()) bar->hide();
     if (auto *empty = stack->findChild<QLabel *>("label"))
     {
@@ -319,7 +326,7 @@ void PadUi::install(QMainWindow *window, QWidget *central, QStackedWidget *stack
         if (oldProfiles != profiles) { profileList->clear(); profileList->addItems(profiles); }
         profileList->setCurrentRow(box ? box->currentIndex() : -1);
         profileList->setEnabled(box != nullptr);
-        overview->setVisible(controllers->count() > 0);
+        overview->setVisible(controllers->count() > 0); outline->setVisible(controllers->count() > 0);
         deviceName->setText(controllers->currentIndex() >= 0 ? controllers->tabText(controllers->currentIndex()) : QObject::tr("No controller connected"));
         profileName->setText(box ? box->currentText() : QString());
         outline->setDevice(controllers->currentIndex() >= 0 ? controllers->tabText(controllers->currentIndex()) : QString());
