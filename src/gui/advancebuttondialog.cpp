@@ -70,7 +70,7 @@ AdvanceButtonDialog::AdvanceButtonDialog(JoyButton *button, QWidget *parent)
     for (int i = 0; i < ui->listWidget->count(); ++i)
         ui->listWidget->item(i)->setIcon(QIcon(QStringLiteral(":/pad/icons/%1.svg").arg(sectionIcons.at(i))));
     setStyleSheet(QStringLiteral(
-        "QDialog#padAdvancedAssignmentDialog QPushButton { min-height: 26px; }"
+        "QDialog#padAdvancedAssignmentDialog QPushButton { min-height: 24px; }"
         "QListWidget#listWidget { background: #171719; border: 1px solid #303035; padding: 8px; }"
         "QListWidget#listWidget::item { min-height: 32px; padding: 4px 8px; margin: 0 0 8px 0; border-radius: 4px; }"
         "QListWidget#listWidget::item:selected { background: #303035; }"
@@ -78,14 +78,15 @@ AdvanceButtonDialog::AdvanceButtonDialog(JoyButton *button, QWidget *parent)
         "#slotListWidget { padding: 8px; }"
         "#slotListWidget::item { border: none; background: transparent; }"
         "#slotListWidget::item:selected { border: none; background: transparent; }"
-        "QComboBox, QLineEdit, QSpinBox, QDoubleSpinBox { min-height: 26px; }"
+        "QComboBox, QLineEdit, QSpinBox, QDoubleSpinBox { min-height: 24px; }"
         "QFrame#line { background: #303035; color: #303035; border: none; max-height: 1px; }"));
     ui->stackedWidget->setCurrentWidget(ui->page);
     // Match the top-level footprint to the active page, with Close always outside the content.
     auto fitPage = [this](int row) {
-        const int pageHeight = row == 0 ? 360 : (row == 2 ? 360 : 320);
-        setMinimumHeight(row == 0 ? 340 : 280);
-        resize(960, pageHeight);
+        Q_UNUSED(row);
+        setMinimumSize(0, 0);
+        layout()->activate();
+        resize(820, layout()->totalMinimumSize().height() + (row == 0 ? 90 : 0));
     };
     connect(ui->listWidget, &QListWidget::currentRowChanged, this, fitPage);
     fitPage(0);

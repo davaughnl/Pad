@@ -27,7 +27,7 @@ inline void compactDialog(QDialog *dialog)
         "QGroupBox { padding: 16px; margin-top: 16px; }"
         "QGroupBox::title { color: #b8b8bf; left: 16px; }"
         "QFrame[frameShape=\"4\"] { background: #303035; color: #303035; }"
-        "QComboBox, QLineEdit, QSpinBox, QDoubleSpinBox, QPushButton { min-height: 32px; max-height: 32px; padding: 0 12px; }"
+        "QComboBox, QLineEdit, QSpinBox, QDoubleSpinBox, QPushButton { min-height: 24px; max-height: 24px; padding: 0 10px; }"
         "QSpinBox QLineEdit, QDoubleSpinBox QLineEdit { min-height: 0; max-height: 16777215px; padding: 0; border: none; background: transparent; }"
         "QFrame[frameShape=\"4\"] { color: #303035; background: #303035; max-height: 1px; border: none; }"));
     for (auto *layout : dialog->findChildren<QLayout *>()) {
@@ -47,7 +47,7 @@ inline void compactDialog(QDialog *dialog)
         QFont font = qApp->font(); font.setWeight(QFont::Normal); font.setItalic(false); widget->setFont(font);
         if (qobject_cast<QAbstractSpinBox *>(widget) || qobject_cast<QComboBox *>(widget) ||
             (qobject_cast<QLineEdit *>(widget) && !qobject_cast<QAbstractSpinBox *>(widget->parentWidget())) || qobject_cast<QPushButton *>(widget))
-            widget->setFixedHeight(32);
+            widget->setFixedHeight(24);
         if (qobject_cast<QCheckBox *>(widget)) widget->setMinimumHeight(24);
         if (auto *frame = qobject_cast<QFrame *>(widget))
             if (frame->frameShape() == QFrame::HLine) frame->hide();

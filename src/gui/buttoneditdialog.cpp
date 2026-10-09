@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QTimer>
 #include "buttoneditdialog.h"
 #include "ui_buttoneditdialog.h"
 
@@ -61,9 +62,9 @@ ButtonEditDialog::ButtonEditDialog(InputDevice *joystick, bool isNumKeypad, QWid
     ui->actionNameLineEdit->setPlaceholderText(tr("Action name"));
     ui->advancedPushButton->setIconSize(QSize(16, 16));
     setStyleSheet(QStringLiteral(
-        "QDialog#padAssignmentDialog QPushButton { min-height: 26px; }"
+        "QDialog#padAssignmentDialog QPushButton { min-height: 24px; }"
         "QLabel#slotSummaryLabel { color: #eeeeef; background: #242428; border-radius: 4px; padding: 8px; }"
-        "QComboBox, QLineEdit, QSpinBox, QDoubleSpinBox { min-height: 26px; }"
+        "QComboBox, QLineEdit, QSpinBox, QDoubleSpinBox { min-height: 24px; }"
         "QFrame#line { background: #303035; color: #303035; border: none; max-height: 1px; }"));
 
     withoutQuickSetDialog = false;
@@ -72,6 +73,12 @@ ButtonEditDialog::ButtonEditDialog(InputDevice *joystick, bool isNumKeypad, QWid
 
     setAttribute(Qt::WA_DeleteOnClose);
     setWindowTitle(tr("Choose your keyboard key"));
+    // Hug the contents instead of opening a mostly empty canvas.
+    QTimer::singleShot(0, this, [this]() {
+        setMinimumSize(0, 0);
+        layout()->activate();
+        resize(qMax(680, layout()->totalMinimumSize().width()) + 0, layout()->totalMinimumSize().height());
+    });
     update();
 
     instance = this;

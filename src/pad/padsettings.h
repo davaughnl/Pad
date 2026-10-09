@@ -88,7 +88,7 @@ inline void polishSettings(QDialog *dialog)
         QFont font = qApp->font(); font.setWeight(QFont::Normal); font.setItalic(false); widget->setFont(font);
         if (qobject_cast<QComboBox *>(widget) || qobject_cast<QLineEdit *>(widget) ||
             qobject_cast<QAbstractSpinBox *>(widget) || qobject_cast<QPushButton *>(widget)) {
-            widget->setFixedHeight(32); widget->setSizePolicy(widget->sizePolicy().horizontalPolicy(), QSizePolicy::Fixed);
+            widget->setFixedHeight(24); widget->setSizePolicy(widget->sizePolicy().horizontalPolicy(), QSizePolicy::Fixed);
         }
         if (auto *check = qobject_cast<QCheckBox *>(widget)) check->setMinimumHeight(24);
         if (auto *label = qobject_cast<QLabel *>(widget)) {
