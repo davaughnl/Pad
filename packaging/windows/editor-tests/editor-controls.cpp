@@ -296,25 +296,27 @@ int main(int argc,char **argv) {
             auto *ap=new AddEditAutoProfileDialog(&info,settings,&list,reserved,false);shot(ap,"autoprofile-add");ap->hide();
             auto *window=new MainWindow(&devices,new CommandLineUtility,settings);
             window->makeJoystickTabs();window->fillButtons();window->resize(1000,700);window->show();QTest::qWait(800);
+            std::fprintf(stderr,"STEP menus\n");std::fflush(stderr);
             for(auto *menu:window->findChildren<QMenu*>()){
                 if(menu->actions().isEmpty())continue;
                 menu->popup(window->mapToGlobal(QPoint(300,120)));QTest::qWait(400);
                 check(menu->grab().save(output+"/screen-menu-"+(menu->objectName().isEmpty()?QString::number(qintptr(menu)%9973):menu->objectName())+".png"),"menu capture");
                 menu->hide();
             }
-            window->show();
+            std::fprintf(stderr,"STEP update\n");std::fflush(stderr);window->show();
             if(auto *strip=window->findChild<PadUpdateStrip*>()){
                 using S=PadUpdateStrip::State;
                 struct{S st;const char *n;const char *d;int pct;} states[]={{S::Checking,"checking","",0},{S::UpToDate,"uptodate","",0},{S::Available,"available","1.2.0",0},{S::Downloading,"downloading","",42},{S::Ready,"ready","1.2.0",0},{S::Error,"error","Could not reach the update server",0}};
                 for(auto &st:states){strip->setState(st.st,st.d,st.pct);QTest::qWait(400);check(window->grab().save(output+QString("/screen-update-")+st.n+"-full.png"),"update capture");}
                 strip->setState(S::Hidden);
             }
-            window->hide();
+            window->hide();std::fprintf(stderr,"STEP msgbox\n");std::fflush(stderr);
             {
                 QMessageBox box(QMessageBox::Warning,"Profile could not be loaded","The profile file is missing or damaged.",QMessageBox::Ok|QMessageBox::Cancel);
                 box.setInformativeText("Choose another profile or create a new one.");
                 shot(&box,"messagebox");
             }
+            std::fprintf(stderr,"STEP multi\n");std::fflush(stderr);
             {
                 const int i2=SDL_JoystickAttachVirtual(SDL_JOYSTICK_TYPE_UNKNOWN,4,10,1);check(i2>=0,"second virtual attach failed");
                 auto *joy2=new SensorFixtureJoystick(SDL_JoystickOpen(i2),i2,settings,nullptr);
