@@ -348,7 +348,7 @@ QDialog *PadUi::createOnboardingDialog(QWidget *parent, QTabWidget *controllers,
 {
     auto *dialog = new QDialog(parent);
     dialog->setWindowTitle(QObject::tr("Welcome to Pad"));
-    dialog->setFixedSize(560, 420);
+    dialog->setFixedSize(560, 380);
     auto *root = new QVBoxLayout(dialog); root->setContentsMargins(24, 20, 24, 20); root->setSpacing(12);
 
     auto *step = text(QString(), "padOnboardStep", dialog); step->setProperty("padMuted", true);
@@ -368,7 +368,10 @@ QDialog *PadUi::createOnboardingDialog(QWidget *parent, QTabWidget *controllers,
     auto *art = new ControllerOutline(dialog);
     auto *status = text(QString(), "padOnboardStatus", dialog); status->setAlignment(Qt::AlignCenter);
     auto *plug = new QWidget(dialog); auto *pl = new QVBoxLayout(plug); pl->setContentsMargins(0, 0, 0, 0); pl->setSpacing(8);
-    pl->addWidget(art, 0, Qt::AlignHCenter); pl->addWidget(status);
+    auto *noPad = new QLabel(dialog); noPad->setAlignment(Qt::AlignCenter);
+    noPad->setPixmap(QIcon(QStringLiteral(":/pad/icons/gamepad.svg")).pixmap(QSize(32, 32)));
+    noPad->setMinimumHeight(170);
+    pl->addWidget(art, 0, Qt::AlignHCenter); pl->addWidget(noPad); pl->addWidget(status);
     addPage(QObject::tr("Plug in your controller"),
             QObject::tr("Connect it by USB or Bluetooth. Pad shows it here the moment it is detected."), plug);
 
@@ -427,6 +430,7 @@ QDialog *PadUi::createOnboardingDialog(QWidget *parent, QTabWidget *controllers,
                 if (tab->getJoystick()) name += padArtTag(static_cast<int>(tab->getJoystick()->getControllerType()));
         }
         art->setDevice(name);
+        art->setVisible(on); noPad->setVisible(!on);
         status->setText(on ? QObject::tr("Connected: %1").arg(controllers->tabText(controllers->currentIndex())) : QObject::tr("Waiting for a controller"));
     };
     QObject::connect(timer, &QTimer::timeout, dialog, sync);

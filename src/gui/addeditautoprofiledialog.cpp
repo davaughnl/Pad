@@ -38,6 +38,7 @@
 #endif
 
 #include <QApplication>
+#include <QIcon>
 #include <QDebug>
 #include <QFileInfo>
 #include <QList>
@@ -126,7 +127,15 @@ AddEditAutoProfileDialog::AddEditAutoProfileDialog(AutoProfileInfo *info, AntiMi
     const bool hasTitle = !info->getWindowName().isEmpty() || !info->getWindowClass().isEmpty();
     ui->advancedWidget->setVisible(hasTitle);
     ui->advancedToggleButton->setChecked(hasTitle);
-    connect(ui->advancedToggleButton, &QPushButton::toggled, this, [this](bool on) {
+    auto chevron = [this](bool on) {
+        ui->advancedToggleButton->setIcon(QIcon(on ? QStringLiteral(":/pad/icons/chevron-up.svg") : QStringLiteral(":/pad/icons/chevron-down.svg")));
+    };
+    ui->advancedToggleButton->setIconSize(QSize(14, 14));
+    ui->advancedToggleButton->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Fixed);
+    layout()->setAlignment(ui->advancedToggleButton, Qt::AlignLeft);
+    chevron(hasTitle);
+    connect(ui->advancedToggleButton, &QPushButton::toggled, this, [this, chevron](bool on) {
+        chevron(on);
         ui->advancedWidget->setVisible(on);
         adjustSize();
     });

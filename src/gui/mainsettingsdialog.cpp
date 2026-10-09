@@ -322,6 +322,11 @@ MainSettingsDialog::MainSettingsDialog(AntiMicroSettings *settings, QList<InputD
     connect(ui->autoProfileTableWidget, &QTableWidget::itemSelectionChanged, this,
             &MainSettingsDialog::changeAutoProfileButtonsState);
 
+    // Add game works straight away; adding one turns automatic switching on.
+    ui->activeCheckBox->setText(tr("Switch profiles automatically"));
+    ui->autoProfileTableWidget->setEnabled(true);
+    ui->autoProfileAddPushButton->setEnabled(true);
+
     // First-run guide hands off here: open on Auto Profile with the Add game dialog ready.
     if (qApp->property("padOpenAddGame").toBool())
     {
@@ -1673,6 +1678,7 @@ void MainSettingsDialog::transferEditsToCurrentTableRow(AddEditAutoProfileDialog
 void MainSettingsDialog::addNewAutoProfile(AddEditAutoProfileDialog *dialog)
 { // AddEditAutoProfileDialog *dialog = static_cast<AddEditAutoProfileDialog*>(sender());
     AutoProfileInfo *info = dialog->getAutoProfile();
+    ui->activeCheckBox->setChecked(true);
 
     if (info->isCurrentDefault() && defaultAutoProfiles.contains(info->getUniqueID()))
     {
