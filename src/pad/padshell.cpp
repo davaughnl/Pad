@@ -21,6 +21,7 @@
 #include <QPainterPath>
 #include <QPalette>
 #include <QProxyStyle>
+#include <QStyle>
 #include <QStyleFactory>
 #include <QIcon>
 #include <QPixmap>
@@ -84,26 +85,37 @@ QPushButton *button(const QString &value, const char *icon, QWidget *parent)
     result->setIconSize(QSize(16, 16));
     return result;
 }
-// The same single-line controller drawing the mapping dialog uses, rendered crisp at any scale.
+// Realistic render of the controller that is actually connected (Xbox or PlayStation).
 class ControllerOutline : public QWidget
 {
 public:
     explicit ControllerOutline(QWidget *parent) : QWidget(parent)
     {
-        setMinimumSize(232, 144);
+        setMinimumSize(280, 170);
         setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         setAccessibleName(tr("Controller illustration"));
+        setDevice(QString());
+    }
+    void setDevice(const QString &name)
+    {
+        const QString n = name.toLower();
+        const bool playstation = n.contains(QStringLiteral("ps4")) || n.contains(QStringLiteral("ps5")) || n.contains(QStringLiteral("dualshock"))
+            || n.contains(QStringLiteral("dualsense")) || n.contains(QStringLiteral("playstation")) || n.contains(QStringLiteral("wireless controller"));
+        art = QPixmap(playstation ? QStringLiteral(":/images/hero-ps4.png") : QStringLiteral(":/images/hero-xbox.png"));
+        update();
     }
 protected:
     void paintEvent(QPaintEvent *) override
     {
         QPainter p(this);
         p.setRenderHint(QPainter::SmoothPixmapTransform);
-        const qreal ratio = devicePixelRatioF();
-        QPixmap art = QIcon(QStringLiteral(":/images/controllermap.svg")).pixmap(QSize(qRound(width() * ratio), qRound(height() * ratio)));
-        art.setDevicePixelRatio(ratio);
-        p.drawPixmap(0, 0, art);
+        const QPixmap scaled = art.scaled(size() * devicePixelRatioF(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        QPixmap out = scaled; out.setDevicePixelRatio(devicePixelRatioF());
+        const QSizeF logical = QSizeF(scaled.size()) / devicePixelRatioF();
+        p.drawPixmap(QPointF((width() - logical.width()) / 2, (height() - logical.height()) / 2), out);
     }
+private:
+    QPixmap art;
 };
 void polishController(QWidget *page)
 {
@@ -176,11 +188,7 @@ void PadUi::install(QMainWindow *window, QWidget *central, QStackedWidget *stack
     auto *layout = new QHBoxLayout(shell); layout->setContentsMargins(0, 0, 0, 0); layout->setSpacing(0);
     auto *sidebar = new QFrame(shell); sidebar->setObjectName("padSidebar"); sidebar->setFixedWidth(232);
     auto *side = new QVBoxLayout(sidebar); side->setContentsMargins(12, 16, 12, 12); side->setSpacing(6);
-    auto *brandRow = new QHBoxLayout(); brandRow->setContentsMargins(10, 4, 0, 4); brandRow->setSpacing(10);
-    auto *brandMark = new QLabel(sidebar);
-    QPixmap brandPixmap(QStringLiteral(":/images/pad-mark.png")); brandPixmap.setDevicePixelRatio(2); brandMark->setPixmap(brandPixmap);
-    brandRow->addWidget(brandMark); brandRow->addWidget(text(QObject::tr("Pad"), "padBrand", sidebar)); brandRow->addStretch(1);
-    side->addLayout(brandRow); side->addSpacing(20);
+    side->addSpacing(8);
     side->addWidget(text(QObject::tr("Controllers"), "padSection", sidebar));
     auto *deviceList = new QListWidget(sidebar); deviceList->setObjectName("padControllers");
     deviceList->setMaximumHeight(102);
@@ -255,21 +263,38 @@ void PadUi::install(QMainWindow *window, QWidget *central, QStackedWidget *stack
     layout->addWidget(sidebar);
     auto *workspace = new QWidget(shell); workspace->setObjectName("padWorkspace");
     auto *body = new QVBoxLayout(workspace); body->setContentsMargins(28, 24, 28, 16); body->setSpacing(8);
-    body->addWidget(text(QObject::tr("Controller mapping"), "padTitle", workspace));
-    body->addWidget(text(QObject::tr("Assign keyboard and mouse inputs to your controller."), "padSubtitle", workspace));
-    body->addSpacing(8);
+    auto *hero = new QHBoxLayout(); hero->setContentsMargins(0, 0, 0, 0);
+    auto *heroText = new QVBoxLayout(); heroText->setSpacing(8); heroText->setAlignment(Qt::AlignVCenter);
+    heroText->addWidget(text(QObject::tr("Controller mapping"), "padHeadline", workspace));
+    heroText->addWidget(text(QObject::tr("Assign keyboard and mouse inputs to your controller."), "padSubtitle", workspace));
+    hero->addLayout(heroText, 1);
+    auto *outline = new ControllerOutline(workspace); outline->setFixedSize(360, 214);
+    hero->addWidget(outline, 0, Qt::AlignRight | Qt::AlignVCenter);
+    body->addLayout(hero);
     auto *overview = new QFrame(workspace); overview->setObjectName("padOverview");
-    auto *overviewLayout = new QHBoxLayout(overview); overviewLayout->setContentsMargins(28, 16, 28, 16);
+    auto *overviewLayout = new QHBoxLayout(overview); overviewLayout->setContentsMargins(24, 14, 24, 14);
     auto *details = new QVBoxLayout(); details->setSpacing(2); details->setAlignment(Qt::AlignVCenter);
     auto *deviceName = text(QObject::tr("No controller connected"), "padDeviceName", overview);
     deviceName->setWordWrap(true); details->addWidget(deviceName);
     auto *profileName = text(QString(), "padSubtitle", overview); profileName->setWordWrap(true); details->addWidget(profileName);
-    details->addSpacing(10); details->addWidget(text(QObject::tr("Keyboard + mouse"), "padSubtitle", overview));
     overviewLayout->addLayout(details, 1);
-    auto *outline = new ControllerOutline(overview); outline->setFixedSize(232, 144);
-    overviewLayout->addWidget(outline, 0, Qt::AlignRight | Qt::AlignVCenter);
+    overviewLayout->addWidget(text(QObject::tr("Keyboard + mouse"), "padSubtitle", overview), 0, Qt::AlignRight | Qt::AlignVCenter);
     body->addWidget(overview); body->addWidget(stack, 1); layout->addWidget(workspace, 1);
     root->insertWidget(0, shell, 1);
+    if (auto *bar = window->menuBar())
+    {
+        auto *logo = new QLabel(bar); QPixmap mark(QStringLiteral(":/images/pad-mark.png")); logo->setPixmap(mark.scaled(22, 22, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+        logo->setContentsMargins(12, 0, 6, 0); bar->setCornerWidget(logo, Qt::TopLeftCorner);
+        auto *status = new QLabel(bar); status->setObjectName("padConnection"); status->setContentsMargins(0, 0, 14, 0);
+        bar->setCornerWidget(status, Qt::TopRightCorner); logo->show(); status->show();
+        auto *tick = new QTimer(status); tick->setInterval(400);
+        QObject::connect(tick, &QTimer::timeout, status, [status, controllers]() {
+            const bool on = controllers->count() > 0;
+            status->setText(on ? QObject::tr("Connected") : QObject::tr("No controller"));
+            status->setProperty("connected", on); status->style()->unpolish(status); status->style()->polish(status);
+        });
+        tick->start(); QMetaObject::invokeMethod(tick, "timeout");
+    }
     if (auto *bar = controllers->findChild<QTabBar *>()) bar->hide();
     if (auto *empty = stack->findChild<QLabel *>("label"))
     {
@@ -277,7 +302,7 @@ void PadUi::install(QMainWindow *window, QWidget *central, QStackedWidget *stack
         empty->setAlignment(Qt::AlignCenter);
         empty->setText(QObject::tr("Connect a controller to get started.\nThen choose Refresh controllers in the sidebar."));
     }
-    auto sync = [controllers, deviceList, profileList, deviceName, profileName, overview, refresh, refreshButton]() {
+    auto sync = [controllers, deviceList, profileList, deviceName, profileName, overview, refresh, refreshButton, outline]() {
         QStringList devices;
         for (int i = 0; i < controllers->count(); ++i)
         {
@@ -297,9 +322,10 @@ void PadUi::install(QMainWindow *window, QWidget *central, QStackedWidget *stack
         if (oldProfiles != profiles) { profileList->clear(); profileList->addItems(profiles); }
         profileList->setCurrentRow(box ? box->currentIndex() : -1);
         profileList->setEnabled(box != nullptr);
-        overview->setVisible(controllers->count() > 0);
+        overview->setVisible(controllers->count() > 0); outline->setVisible(controllers->count() > 0);
         deviceName->setText(controllers->currentIndex() >= 0 ? controllers->tabText(controllers->currentIndex()) : QObject::tr("No controller connected"));
         profileName->setText(box ? box->currentText() : QString());
+        outline->setDevice(controllers->currentIndex() >= 0 ? controllers->tabText(controllers->currentIndex()) : QString());
         refreshButton->setEnabled(refresh->isEnabled());
     };
     auto *timer = new QTimer(shell); timer->setInterval(400);
