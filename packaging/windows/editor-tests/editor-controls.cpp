@@ -85,6 +85,7 @@ static void toggle(QDialog *dialog,const char *name) { click(control<QCheckBox>(
 static void capture(QDialog *dialog,const QString &output,const QString &name) {
     dialog->setAttribute(Qt::WA_DeleteOnClose,false); dialog->show(); dialog->raise(); dialog->activateWindow();
     QTest::qWait(750);
+    check(dialog->grab().save(output+"/"+name+"-window.png"),"Window grab failed");
     const auto screen=QApplication::primaryScreen();
     check(screen && screen->geometry().size()==QSize(1024,768), "Runner desktop must be 1024x768");
     check(screen->grabWindow(0).save(output+"/"+name+".png"), "Screenshot save failed");

@@ -258,3 +258,4 @@ QListWidget { background: transparent; border: none; outline: none; padding: 0; 
 QListWidget::item { min-height: 24px; padding: 0 10px; margin: 1px 0; border: none; border-radius: 6px; color: #9d9da5; }
 QListWidget::item:selected { background: #26262c; color: #f4f4f5; }
 QListWidget::item:hover:!selected { background: #1f1f24; color: #f4f4f5; }
+QPushButton#padUpdateRetry { color: #f4f4f5; text-decoration: none; padding: 0; border: none; min-height: 20px; }
