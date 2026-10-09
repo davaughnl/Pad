@@ -216,3 +216,5 @@ QTreeWidget#padMappingTable::item { height: 34px; }
 QTreeWidget#padMappingTable QHeaderView::section { height: 24px; }
 QFrame#padOverview { border-radius: 8px; }
 QCheckBox, QRadioButton { min-height: 20px; font-size: 12px; }
+QPushButton::menu-indicator { image: url(:/pad/icons/chevron-down.svg); width: 10px; height: 10px; subcontrol-position: right center; subcontrol-origin: padding; right: 8px; }
+QPushButton[padNav="true"]::menu-indicator { image: none; width: 0; }

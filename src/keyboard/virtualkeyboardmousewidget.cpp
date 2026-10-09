@@ -523,7 +523,7 @@ void VirtualKeyboardMouseWidget::setupMouseControlLayout()
     auto add = [this](QGridLayout *grid, const QString &label, int code,
                      JoyButtonSlot::JoySlotInputAction mode, int row, int column) {
         auto *key = new VirtualMousePushButton(label, code, mode, this);
-        key->setMinimumHeight(40);
+        key->setMinimumHeight(32);
         key->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
         grid->addWidget(key, row, column);
     };
@@ -688,7 +688,7 @@ VirtualKeyPushButton *VirtualKeyboardMouseWidget::createNewKey(QString xcodestri
         pushButton->setText(keyLabels.value(xcodestring));
     }
     pushButton->setObjectName(xcodestring);
-    pushButton->setMinimumSize(qMax(36, ((width + 7) / 8) * 8), qMax(36, ((height + 7) / 8) * 8));
+    pushButton->setMinimumSize(qMax(32, ((width + 7) / 8) * 8), qMax(30, ((height + 7) / 8) * 8 - 6));
     pushButton->setFont(font1);
     pushButton->setProperty("padTall", height > 40);
 
