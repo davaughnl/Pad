@@ -107,6 +107,7 @@ GameControllerMappingDialog::GameControllerMappingDialog(InputDevice *device, An
     , helper(device)
 {
     ui->setupUi(this);
+    ui->gameControllerDisplayWidget->setDevice(device ? device->getName() + QLatin1Char(' ') + device->getSDLName() : QString());
     setAttribute(Qt::WA_DeleteOnClose);
 
     buttonGrabs = 0;
