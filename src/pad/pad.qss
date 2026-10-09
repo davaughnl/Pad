@@ -195,3 +195,24 @@ QLineEdit#padSearch { background: #131316; border: 1px solid #26262b; border-rad
 QLineEdit#padSearch:focus { border: 1px solid #45454d; }
 QTreeWidget#padMappingTable::item { height: 40px; }
 QTreeWidget#padMappingTable QHeaderView::section { background: #131316; color: #55555c; height: 28px; font-size: 11px; padding: 4px 14px; border: none; border-bottom: 1px solid #1e1e22; }
+
+/* ---------- slim pass: thinner, lighter controls ---------- */
+QPushButton, QToolButton { min-height: 26px; padding: 0 10px; border: 1px solid #222226; border-radius: 6px; background: transparent; color: #d4d4d8; font-size: 12px; }
+QPushButton:hover, QToolButton:hover { background: #17171b; border-color: #2e2e34; color: #f4f4f5; }
+QPushButton:pressed, QToolButton:pressed { background: #1f1f24; }
+QPushButton#saveButton, QPushButton[padPrimary="true"] { background: #f4f4f5; color: #0e0e10; border-color: #f4f4f5; }
+QPushButton#saveButton:hover, QPushButton[padPrimary="true"]:hover { background: #ffffff; }
+QPushButton[padNav="true"] { min-height: 28px; padding: 0 10px; border: none; background: transparent; color: #a1a1aa; font-size: 13px; }
+QPushButton[padNav="true"]:hover { background: #17171b; color: #f4f4f5; }
+QPushButton[padSetTab="true"] { min-height: 24px; font-size: 12px; border: none; border-radius: 5px; }
+QPushButton[padMappingAction="true"] { min-height: 24px; background: transparent; border: 1px solid #222226; border-radius: 5px; font-size: 12px; }
+QPushButton[padMappingAction="true"]:hover { background: #17171b; border-color: #2e2e34; }
+QComboBox, QLineEdit, QSpinBox, QDoubleSpinBox { min-height: 26px; border: 1px solid #222226; border-radius: 6px; background: #0f0f12; padding: 0 8px; font-size: 12px; }
+QComboBox::drop-down { width: 22px; }
+QComboBox::down-arrow { width: 10px; height: 10px; }
+QLineEdit#padSearch { min-height: 20px; padding: 4px 10px; border-radius: 6px; }
+QListWidget#padControllers::item { min-height: 28px; }
+QTreeWidget#padMappingTable::item { height: 34px; }
+QTreeWidget#padMappingTable QHeaderView::section { height: 24px; }
+QFrame#padOverview { border-radius: 8px; }
+QCheckBox, QRadioButton { min-height: 20px; font-size: 12px; }
