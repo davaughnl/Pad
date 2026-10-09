@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "padshell.h"
+#include "padart.h"
 #include "common.h"
 #include "padupdatestrip.h"
 #include "updatemanager.h"
@@ -101,11 +102,7 @@ public:
     }
     void setDevice(const QString &name)
     {
-        const QString n = name.toLower();
-        const bool dualsense = n.contains(QStringLiteral("dualsense")) || n.contains(QStringLiteral("ps5"));
-        const bool playstation = dualsense || n.contains(QStringLiteral("ps4")) || n.contains(QStringLiteral("ps5")) || n.contains(QStringLiteral("dualshock"))
-            || n.contains(QStringLiteral("dualsense")) || n.contains(QStringLiteral("playstation")) || n.contains(QStringLiteral("wireless controller"));
-        art = QPixmap(dualsense ? QStringLiteral(":/images/hero-ps5.png") : playstation ? QStringLiteral(":/images/hero-ps4.png") : QStringLiteral(":/images/hero-xbox.png"));
+        art = QPixmap(QString::fromLatin1(padArtFor(name).path));
         update();
     }
 protected:
@@ -331,7 +328,7 @@ void PadUi::install(QMainWindow *window, QWidget *central, QStackedWidget *stack
         profileName->setText(box ? box->currentText() : QString());
         QString artName = controllers->currentIndex() >= 0 ? controllers->tabText(controllers->currentIndex()) : QString();
         if (auto *tab = qobject_cast<JoyTabWidget *>(controllers->currentWidget()))
-            if (tab->getJoystick() && tab->getJoystick()->getControllerType() == SDL_CONTROLLER_TYPE_PS5) artName += QStringLiteral(" dualsense");
+            if (tab->getJoystick()) artName += padArtTag(static_cast<int>(tab->getJoystick()->getControllerType()));
         outline->setDevice(artName);
         refreshButton->setEnabled(refresh->isEnabled());
     };

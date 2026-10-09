@@ -156,8 +156,11 @@ int main(int argc,char **argv) {
             for(int row:{17,20}){table->setCurrentCell(row,0);settle();check(dialog->grab().save(output+"/controller-mapping-xbox-row"+QString::number(row)+"-full.png"),"Xbox dpad capture failed");}
             art->setDevice("Wireless Controller");
             for(int row:{0,3,17,18,19,20,6}){table->setCurrentCell(row,0);settle();check(dialog->grab().save(output+"/controller-mapping-ps4-row"+QString::number(row)+"-full.png"),"PS4 capture failed");}
-            art->setDevice("DualSense Wireless Controller");
-            for(int row:{0,1,2,3,4,5,6,7,8,9,10,11,13,15,16,17,18,19,20}){table->setCurrentCell(row,0);settle();check(dialog->grab().save(output+"/controller-mapping-ps5-row"+QString::number(row)+"-full.png"),"PS5 capture failed");}
+                        const QPair<const char*,const char*> devs[]={{"DualSense Wireless Controller","ps5"},{"Xbox 360 Controller","x360"},{"Nintendo Switch Pro Controller","switch"},{"Stadia Controller","stadia"},{"8BitDo Pro 2","8bitdo"},{"Xbox One Controller","xboxone"},{"Wireless Controller","ps4"}};
+            for(const auto &dv:devs){
+                art->setDevice(dv.first);
+                for(int row=0;row<21;++row){table->setCurrentCell(row,0);settle();check(dialog->grab().save(output+"/controller-mapping-"+dv.second+"-row"+QString::number(row)+"-full.png"),"art capture failed");}
+            }
             closeDialog(dialog);delete window;
         } else if(test=="status") {
             // Richer virtual device matching the row-clipping regression shape.

@@ -18,6 +18,7 @@
 
 #include <QHeaderView>
 #include "gamecontrollermappingdialog.h"
+#include "pad/padart.h"
 #include "ui_gamecontrollermappingdialog.h"
 #include "pad/paddialogpresentation.h"
 
@@ -111,7 +112,7 @@ GameControllerMappingDialog::GameControllerMappingDialog(InputDevice *device, An
     ui->buttonMappingTableWidget->verticalHeader()->setDefaultSectionSize(26);
     ui->buttonMappingTableWidget->verticalHeader()->setMinimumSectionSize(26);
     ui->gameControllerDisplayWidget->setDevice(device ? device->getName() + QLatin1Char(' ') + device->getSDLName()
-                                                            + (device->getControllerType() == SDL_CONTROLLER_TYPE_PS5 ? QStringLiteral(" dualsense") : QString()) : QString());
+                                                            + padArtTag(static_cast<int>(device->getControllerType())) : QString());
     setAttribute(Qt::WA_DeleteOnClose);
 
     buttonGrabs = 0;
