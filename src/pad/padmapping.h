@@ -168,7 +168,6 @@ public:
         table->header()->setStretchLastSection(true); table->header()->setMinimumSectionSize(64);
         auto *search = new QLineEdit(this); search->setObjectName(QStringLiteral("padSearch"));
         search->setPlaceholderText(tr("Search inputs and actions")); search->setClearButtonEnabled(true);
-        search->addAction(QIcon(QStringLiteral(":/pad/icons/search.svg")), QLineEdit::LeadingPosition);
         layout->addWidget(search); layout->addSpacing(8);
         QObject::connect(search, &QLineEdit::textChanged, this, [this](const QString &needle) {
             for (const Row &row : rows)

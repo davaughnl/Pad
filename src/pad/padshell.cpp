@@ -290,7 +290,7 @@ void PadUi::install(QMainWindow *window, QWidget *central, QStackedWidget *stack
         auto *tick = new QTimer(status); tick->setInterval(400);
         QObject::connect(tick, &QTimer::timeout, status, [status, controllers]() {
             const bool on = controllers->count() > 0;
-            status->setText(on ? QObject::tr("\u25CF  Connected") : QObject::tr("\u25CF  No controller"));
+            status->setText(on ? QObject::tr("Connected") : QObject::tr("No controller"));
             status->setProperty("connected", on); status->style()->unpolish(status); status->style()->polish(status);
         });
         tick->start(); QMetaObject::invokeMethod(tick, "timeout");
