@@ -17,6 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QHash>
 #include "common.h"
 
 #include <QApplication>
@@ -159,8 +160,24 @@ void lockInputDevices() { sdlWaitMutex.lock(); }
 
 void unlockInputDevices() { sdlWaitMutex.unlock(); }
 
+static QIcon padLucideIcon(const QString &name)
+{
+    static const QHash<QString, QString> alias = {
+        {"document-open", "folder"}, {"document-save", "save"}, {"document-save-as", "copy"},
+        {"document-revert", "undo"}, {"user-trash", "trash"}, {"application-exit", "exit"},
+        {"view-restore", "minimize"}, {"view-fullscreen", "maximize"}, {"view-refresh", "refresh"}};
+    for (const QString &candidate : {alias.value(name), name})
+    {
+        if (candidate.isEmpty()) continue;
+        const QString path = QStringLiteral(":/pad/icons/%1.svg").arg(candidate);
+        if (QFileInfo::exists(path)) return QIcon(path);
+    }
+    return QIcon();
+}
+
 QIcon loadIcon(const QString &name, const QString &fallback_location)
 {
+    if (const QIcon lucide = padLucideIcon(name); !lucide.isNull()) return lucide;
     qDebug() << " Application theme has icon named: " << name << " " << QIcon::hasThemeIcon(name);
     QFileInfo f(fallback_location);
     if (!f.exists())
@@ -172,6 +189,7 @@ QIcon loadIcon(const QString &name, const QString &fallback_location)
 
 QIcon loadIcon(QString name)
 {
+    if (const QIcon lucide = padLucideIcon(name); !lucide.isNull()) return lucide;
     bool has_icon = QIcon::hasThemeIcon(name);
     qDebug() << " Application theme has icon named: " << name << " " << has_icon;
     // Always use the bundled icon family for consistent cross-platform rendering.

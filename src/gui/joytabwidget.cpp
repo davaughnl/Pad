@@ -431,7 +431,7 @@ JoyTabWidget::JoyTabWidget(InputDevice *joystick, AntiMicroSettings *settings, Q
     stickAssignPushButton = new QPushButton(tr("Stick/Pad Assign"), this);
     stickAssignPushButton->setObjectName(QString::fromUtf8("stickAssignPushButton"));
     QIcon icon7(
-        QIcon(":/images/actions/games_config_options.png"));
+        QIcon(":/pad/icons/gamepad.svg"));
 
     stickAssignPushButton->setIcon(icon7);
     horizontalLayout_3->addWidget(stickAssignPushButton);
@@ -439,7 +439,7 @@ JoyTabWidget::JoyTabWidget(InputDevice *joystick, AntiMicroSettings *settings, Q
     gameControllerMappingPushButton = new QPushButton(tr("Controller Mapping"), this);
     gameControllerMappingPushButton->setObjectName(QString::fromUtf8("gameControllerMappingPushButton"));
     gameControllerMappingPushButton->setIcon(
-        QIcon(":/images/actions/games_config_options.png"));
+        QIcon(":/pad/icons/gamepad.svg"));
 
     gameControllerMappingPushButton->setEnabled(false);
     gameControllerMappingPushButton->setVisible(false);
@@ -457,7 +457,7 @@ JoyTabWidget::JoyTabWidget(InputDevice *joystick, AntiMicroSettings *settings, Q
     namesPushButton->setObjectName(QString::fromUtf8("namesPushButton"));
     namesPushButton->setToolTip(tr("Toggle button name displaying."));
     namesPushButton->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
-    namesPushButton->setIcon(QIcon(":/images/actions/text_field.png"));
+    namesPushButton->setIcon(QIcon(":/pad/icons/text.svg"));
 
     horizontalLayout_3->addWidget(namesPushButton);
 
