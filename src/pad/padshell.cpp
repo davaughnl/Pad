@@ -268,11 +268,11 @@ void PadUi::install(QMainWindow *window, QWidget *central, QStackedWidget *stack
     heroText->addWidget(text(QObject::tr("Controller mapping"), "padHeadline", workspace));
     heroText->addWidget(text(QObject::tr("Assign keyboard and mouse inputs to your controller."), "padSubtitle", workspace));
     hero->addLayout(heroText, 1);
-    auto *outline = new ControllerOutline(workspace); outline->setFixedSize(360, 214);
+    auto *outline = new ControllerOutline(workspace); outline->setFixedSize(300, 178);
     hero->addWidget(outline, 0, Qt::AlignRight | Qt::AlignVCenter);
     body->addLayout(hero);
     auto *overview = new QFrame(workspace); overview->setObjectName("padOverview");
-    auto *overviewLayout = new QHBoxLayout(overview); overviewLayout->setContentsMargins(24, 14, 24, 14);
+    auto *overviewLayout = new QHBoxLayout(overview); overviewLayout->setContentsMargins(20, 9, 20, 9);
     auto *details = new QVBoxLayout(); details->setSpacing(2); details->setAlignment(Qt::AlignVCenter);
     auto *deviceName = text(QObject::tr("No controller connected"), "padDeviceName", overview);
     deviceName->setWordWrap(true); details->addWidget(deviceName);

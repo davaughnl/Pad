@@ -218,3 +218,19 @@ QFrame#padOverview { border-radius: 8px; }
 QCheckBox, QRadioButton { min-height: 20px; font-size: 12px; }
 QPushButton::menu-indicator { image: url(:/pad/icons/chevron-down.svg); width: 10px; height: 10px; subcontrol-position: right center; subcontrol-origin: padding; right: 8px; }
 QPushButton[padNav="true"]::menu-indicator { image: none; width: 0; }
+
+/* ---------- slim pass 2 ---------- */
+QPushButton, QToolButton { min-height: 24px; padding: 0 9px; border: 1px solid #1c1c20; font-size: 12px; }
+QPushButton:hover, QToolButton:hover { border-color: #2a2a30; }
+QPushButton[padSetTab="true"] { min-height: 22px; }
+QPushButton[padMappingAction="true"] { min-height: 22px; border: 1px solid #1c1c20; }
+QPushButton[padNav="true"] { min-height: 26px; }
+QComboBox, QLineEdit, QSpinBox, QDoubleSpinBox { min-height: 24px; border: 1px solid #1c1c20; padding: 0 8px; }
+QLineEdit#padSearch { min-height: 16px; padding: 3px 10px; }
+QTreeWidget#padMappingTable::item { height: 30px; }
+QTreeWidget#padMappingTable QHeaderView::section { height: 22px; }
+QListWidget#padControllers::item { min-height: 26px; }
+QLabel#padHeadline { font-size: 32px; }
+QLabel#padSubtitle { font-size: 12px; }
+QLabel#padDeviceName { font-size: 14px; }
+QMenuBar::item { padding: 4px 10px; }
