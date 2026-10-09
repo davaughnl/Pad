@@ -322,6 +322,7 @@ int main(int argc,char **argv) {
                 double phase=0;
                 auto *st=padCreateStickTester(nullptr,"Fixture pad",[&phase](){PadStickReading r;r.lx=0.62;r.ly=-0.35;r.rx=0.05;r.ry=0.04;r.leftDeadzone=0.18;r.rightDeadzone=0.18;(void)phase;return r;});
                 shot(st,"stick-tester");st->hide();
+                if(auto *tl=window->findChild<PadDeviceTools*>("padDeviceTools")){tl->setBattery(PadDeviceTools::Battery::Medium);tl->setGyro(true,true);window->repaint();check(window->grab().save(output+"/screen-main-tools.png"),"main tools capture");}
                 padShowToast(window,"Valorant profile loaded",60000);QTest::qWait(300);
                 check(window->grab().save(output+"/screen-toast.png"),"toast capture");
             }

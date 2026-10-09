@@ -163,7 +163,7 @@ inline void padShowToast(QWidget *window, const QString &message, int millisecon
     auto *label = new QLabel(message, toast); label->setObjectName("padToastText");
     row->addWidget(icon); row->addWidget(label);
     toast->adjustSize(); toast->setFixedHeight(36);
-    toast->move((window->width() - toast->width()) / 2, window->height() - toast->height() - 28);
+    toast->move(window->width() - toast->width() - 24, 52);
     toast->show(); toast->raise();
     QTimer::singleShot(milliseconds, toast, [toast]() { toast->hide(); toast->deleteLater(); });
 }
