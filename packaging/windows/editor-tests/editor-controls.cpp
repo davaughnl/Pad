@@ -50,6 +50,7 @@
 #include "gui/advancestickassignmentdialog.h"
 #include "gui/winappprofiletimerdialog.h"
 #include "autoprofileinfo.h"
+#include <QListWidget>
 #include <QMenu>
 #include <QMenuBar>
 #include <QPushButton>
@@ -276,7 +277,7 @@ int main(int argc,char **argv) {
             auto *quick=new QuickSetDialog(joystick);shot(quick,"quickset");quick->hide();
             auto *names=new SetNamesDialog(joystick);shot(names,"setnames");names->hide();
             auto *settingsDlg=new MainSettingsDialog(settings,&list);shot(settingsDlg,"settings");
-            if(auto *tabs=settingsDlg->findChild<QTabWidget*>()) for(int i=1;i<tabs->count();++i){tabs->setCurrentIndex(i);QTest::qWait(300);check(settingsDlg->grab().save(output+"/screen-settings-tab"+QString::number(i)+".png"),"tab capture");}
+            if(auto *cats=settingsDlg->findChild<QListWidget*>("categoriesListWidget")) for(int i=1;i<cats->count();++i){cats->setCurrentRow(i);QTest::qWait(400);check(settingsDlg->grab().save(output+"/screen-settings-"+QString::number(i)+".png"),"tab capture");}
             settingsDlg->hide();
             std::fprintf(stderr,"MAKE cal\n");std::fflush(stderr);auto *cal=new Calibration(joystick);shot(cal,"calibration");cal->hide();
             auto *extra=new ExtraProfileSettingsDialog(joystick);shot(extra,"extraprofile");extra->hide();

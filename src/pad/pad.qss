@@ -251,3 +251,10 @@ QPushButton[padMappingAction="true"] { min-height: 24px; max-height: 24px; paddi
 QTreeWidget#padMappingTable::item { height: 34px; }
 QTableCornerButton::section { background: #131316; border: none; border-bottom: 1px solid #26262c; }
 QTableWidget QHeaderView::section:vertical { height: 26px; padding: 0 10px; }
+
+/* ---------- final: spin boxes keep room for the arrows, lists share the sidebar row style ---------- */
+QSpinBox, QDoubleSpinBox { padding: 0 24px 0 8px; min-width: 72px; }
+QListWidget { background: transparent; border: none; outline: none; padding: 0; }
+QListWidget::item { min-height: 24px; padding: 0 10px; margin: 1px 0; border: none; border-radius: 6px; color: #9d9da5; }
+QListWidget::item:selected { background: #26262c; color: #f4f4f5; }
+QListWidget::item:hover:!selected { background: #1f1f24; color: #f4f4f5; }
