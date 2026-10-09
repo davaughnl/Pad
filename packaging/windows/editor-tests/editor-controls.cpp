@@ -36,6 +36,22 @@
 #include "keyboard/virtualmousepushbutton.h"
 #include "pad/padshell.h"
 #include "gui/joybuttonslot.h"
+#include "gui/quicksetdialog.h"
+#include "gui/setnamesdialog.h"
+#include "gui/mainsettingsdialog.h"
+#include "gui/calibration.h"
+#include "gui/extraprofilesettingsdialog.h"
+#include "gui/addeditautoprofiledialog.h"
+#include "gui/editalldefaultautoprofiledialog.h"
+#include "gui/dpadeditdialog.h"
+#include "gui/axiseditdialog.h"
+#include "gui/setaxisthrottledialog.h"
+#include "gui/qkeydisplaydialog.h"
+#include "gui/advancestickassignmentdialog.h"
+#include "gui/winappprofiletimerdialog.h"
+#include "autoprofileinfo.h"
+#include <QMenu>
+#include <QMenuBar>
 #include <QPushButton>
 #include <QPixmap>
 #include <QApplication>
@@ -249,6 +265,39 @@ int main(int argc,char **argv) {
             check(button->getSpringWidth()==321&&button->getSpringHeight()==245,"Spring geometry failed");
             control<QComboBox>(dialog,"mouseModeComboBox")->setCurrentIndex(1);settle();check(button->getMouseMode()==JoyButton::MouseCursor,"Cursor mode restore failed");
             closeDialog(dialog);
+        } else if(test=="screens") {
+            QMap<SDL_JoystickID,InputDevice*> devices;
+            devices.insert(SDL_JoystickInstanceID(joystick->getJoyHandle()),joystick);
+            QList<InputDevice*> list; list.append(joystick);
+            auto shot=[&](QWidget *w,const char *name){
+                w->show();w->raise();w->activateWindow();QTest::qWait(600);
+                check(w->grab().save(output+"/screen-"+name+".png"),"Screen capture failed");
+            };
+            auto *quick=new QuickSetDialog(joystick);shot(quick,"quickset");delete quick;
+            auto *names=new SetNamesDialog(joystick);shot(names,"setnames");delete names;
+            auto *settingsDlg=new MainSettingsDialog(settings,&list);shot(settingsDlg,"settings");
+            if(auto *tabs=settingsDlg->findChild<QTabWidget*>()) for(int i=1;i<tabs->count();++i){tabs->setCurrentIndex(i);QTest::qWait(300);check(settingsDlg->grab().save(output+"/screen-settings-tab"+QString::number(i)+".png"),"tab capture");}
+            delete settingsDlg;
+            auto *cal=new Calibration(joystick);shot(cal,"calibration");delete cal;
+            auto *extra=new ExtraProfileSettingsDialog(joystick);shot(extra,"extraprofile");delete extra;
+            auto *axis=new AxisEditDialog(set->getJoyAxis(0),false);shot(axis,"axis");delete axis;
+            auto *thr=new SetAxisThrottleDialog(set->getJoyAxis(0));shot(thr,"axisthrottle");delete thr;
+            auto *kd=new QKeyDisplayDialog;shot(kd,"keydisplay");delete kd;
+            auto *adv=new AdvanceStickAssignmentDialog(joystick);shot(adv,"stickassign");delete adv;
+            auto *tmr=new WinAppProfileTimerDialog;shot(tmr,"apptimer");delete tmr;
+            AutoProfileInfo info("default","",true,false,nullptr);
+            auto *eall=new EditAllDefaultAutoProfileDialog(&info,settings);shot(eall,"autoprofile-default");delete eall;
+            QList<QString> reserved;
+            auto *ap=new AddEditAutoProfileDialog(&info,settings,&list,reserved,false);shot(ap,"autoprofile-add");delete ap;
+            auto *window=new MainWindow(&devices,new CommandLineUtility,settings);
+            window->makeJoystickTabs();window->fillButtons();window->resize(1000,700);window->show();QTest::qWait(800);
+            for(auto *menu:window->findChildren<QMenu*>()){
+                if(menu->actions().isEmpty())continue;
+                menu->popup(window->mapToGlobal(QPoint(300,120)));QTest::qWait(400);
+                check(menu->grab().save(output+"/screen-menu-"+(menu->objectName().isEmpty()?QString::number(qintptr(menu)%9973):menu->objectName())+".png"),"menu capture");
+                menu->hide();
+            }
+            delete window;
         } else throw std::runtime_error("Unknown case");
         QMetaObject::invokeMethod(joystick,[joystick]{delete joystick;},Qt::BlockingQueuedConnection);
         worker.quit();worker.wait();delete settings;SDL_JoystickDetachVirtual(index);SDL_Quit();
