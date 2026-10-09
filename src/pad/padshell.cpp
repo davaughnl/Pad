@@ -3,6 +3,9 @@
 #include "common.h"
 #include "padupdatestrip.h"
 #include "updatemanager.h"
+#include "gui/joytabwidget.h"
+#include "inputdevice.h"
+#include <SDL2/SDL_gamecontroller.h>
 #include <QApplication>
 #include <QAction>
 #include <QComboBox>
@@ -99,9 +102,10 @@ public:
     void setDevice(const QString &name)
     {
         const QString n = name.toLower();
-        const bool playstation = n.contains(QStringLiteral("ps4")) || n.contains(QStringLiteral("ps5")) || n.contains(QStringLiteral("dualshock"))
+        const bool dualsense = n.contains(QStringLiteral("dualsense")) || n.contains(QStringLiteral("ps5"));
+        const bool playstation = dualsense || n.contains(QStringLiteral("ps4")) || n.contains(QStringLiteral("ps5")) || n.contains(QStringLiteral("dualshock"))
             || n.contains(QStringLiteral("dualsense")) || n.contains(QStringLiteral("playstation")) || n.contains(QStringLiteral("wireless controller"));
-        art = QPixmap(playstation ? QStringLiteral(":/images/hero-ps4.png") : QStringLiteral(":/images/hero-xbox.png"));
+        art = QPixmap(dualsense ? QStringLiteral(":/images/hero-ps5.png") : playstation ? QStringLiteral(":/images/hero-ps4.png") : QStringLiteral(":/images/hero-xbox.png"));
         update();
     }
 protected:
@@ -325,7 +329,10 @@ void PadUi::install(QMainWindow *window, QWidget *central, QStackedWidget *stack
         overview->setVisible(controllers->count() > 0); outline->setVisible(controllers->count() > 0);
         deviceName->setText(controllers->currentIndex() >= 0 ? controllers->tabText(controllers->currentIndex()) : QObject::tr("No controller connected"));
         profileName->setText(box ? box->currentText() : QString());
-        outline->setDevice(controllers->currentIndex() >= 0 ? controllers->tabText(controllers->currentIndex()) : QString());
+        QString artName = controllers->currentIndex() >= 0 ? controllers->tabText(controllers->currentIndex()) : QString();
+        if (auto *tab = qobject_cast<JoyTabWidget *>(controllers->currentWidget()))
+            if (tab->getJoystick() && tab->getJoystick()->getControllerType() == SDL_CONTROLLER_TYPE_PS5) artName += QStringLiteral(" dualsense");
+        outline->setDevice(artName);
         refreshButton->setEnabled(refresh->isEnabled());
     };
     auto *timer = new QTimer(shell); timer->setInterval(400);

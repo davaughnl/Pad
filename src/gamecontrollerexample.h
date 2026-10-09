@@ -60,6 +60,7 @@ class GameControllerExample : public QWidget
   private:
     QPixmap art;
     bool playstation = false;
+    bool dualsense = false;
     QImage controllerimage;
     QImage buttonimage;
     QImage axisimage;
