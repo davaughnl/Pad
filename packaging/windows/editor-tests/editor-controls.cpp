@@ -269,26 +269,26 @@ int main(int argc,char **argv) {
             QMap<SDL_JoystickID,InputDevice*> devices;
             devices.insert(SDL_JoystickInstanceID(joystick->getJoyHandle()),joystick);
             QList<InputDevice*> list; list.append(joystick);
-            auto shot=[&](QWidget *w,const char *name){
+            auto shot=[&](QWidget *w,const char *name){std::fprintf(stderr,"SHOT %s\n",name);std::fflush(stderr);
                 w->show();w->raise();w->activateWindow();QTest::qWait(600);
                 check(w->grab().save(output+"/screen-"+name+".png"),"Screen capture failed");
             };
-            auto *quick=new QuickSetDialog(joystick);shot(quick,"quickset");delete quick;
-            auto *names=new SetNamesDialog(joystick);shot(names,"setnames");delete names;
+            auto *quick=new QuickSetDialog(joystick);shot(quick,"quickset");quick->hide();
+            auto *names=new SetNamesDialog(joystick);shot(names,"setnames");names->hide();
             auto *settingsDlg=new MainSettingsDialog(settings,&list);shot(settingsDlg,"settings");
             if(auto *tabs=settingsDlg->findChild<QTabWidget*>()) for(int i=1;i<tabs->count();++i){tabs->setCurrentIndex(i);QTest::qWait(300);check(settingsDlg->grab().save(output+"/screen-settings-tab"+QString::number(i)+".png"),"tab capture");}
-            delete settingsDlg;
-            auto *cal=new Calibration(joystick);shot(cal,"calibration");delete cal;
-            auto *extra=new ExtraProfileSettingsDialog(joystick);shot(extra,"extraprofile");delete extra;
-            auto *axis=new AxisEditDialog(set->getJoyAxis(0),false);shot(axis,"axis");delete axis;
-            auto *thr=new SetAxisThrottleDialog(set->getJoyAxis(0));shot(thr,"axisthrottle");delete thr;
-            auto *kd=new QKeyDisplayDialog;shot(kd,"keydisplay");delete kd;
-            auto *adv=new AdvanceStickAssignmentDialog(joystick);shot(adv,"stickassign");delete adv;
-            auto *tmr=new WinAppProfileTimerDialog;shot(tmr,"apptimer");delete tmr;
+            settingsDlg->hide();
+            std::fprintf(stderr,"MAKE cal\n");std::fflush(stderr);auto *cal=new Calibration(joystick);shot(cal,"calibration");cal->hide();
+            auto *extra=new ExtraProfileSettingsDialog(joystick);shot(extra,"extraprofile");extra->hide();
+            auto *axis=new AxisEditDialog(set->getJoyAxis(0),false);shot(axis,"axis");axis->hide();
+            auto *thr=new SetAxisThrottleDialog(set->getJoyAxis(0));shot(thr,"axisthrottle");thr->hide();
+            auto *kd=new QKeyDisplayDialog;shot(kd,"keydisplay");kd->hide();
+            auto *adv=new AdvanceStickAssignmentDialog(joystick);shot(adv,"stickassign");adv->hide();
+            auto *tmr=new WinAppProfileTimerDialog;shot(tmr,"apptimer");tmr->hide();
             AutoProfileInfo info("default","",true,false,nullptr);
-            auto *eall=new EditAllDefaultAutoProfileDialog(&info,settings);shot(eall,"autoprofile-default");delete eall;
+            auto *eall=new EditAllDefaultAutoProfileDialog(&info,settings);shot(eall,"autoprofile-default");eall->hide();
             QList<QString> reserved;
-            auto *ap=new AddEditAutoProfileDialog(&info,settings,&list,reserved,false);shot(ap,"autoprofile-add");delete ap;
+            auto *ap=new AddEditAutoProfileDialog(&info,settings,&list,reserved,false);shot(ap,"autoprofile-add");ap->hide();
             auto *window=new MainWindow(&devices,new CommandLineUtility,settings);
             window->makeJoystickTabs();window->fillButtons();window->resize(1000,700);window->show();QTest::qWait(800);
             for(auto *menu:window->findChildren<QMenu*>()){
@@ -297,7 +297,7 @@ int main(int argc,char **argv) {
                 check(menu->grab().save(output+"/screen-menu-"+(menu->objectName().isEmpty()?QString::number(qintptr(menu)%9973):menu->objectName())+".png"),"menu capture");
                 menu->hide();
             }
-            delete window;
+            window->hide();
         } else throw std::runtime_error("Unknown case");
         QMetaObject::invokeMethod(joystick,[joystick]{delete joystick;},Qt::BlockingQueuedConnection);
         worker.quit();worker.wait();delete settings;SDL_JoystickDetachVirtual(index);SDL_Quit();
