@@ -72,6 +72,23 @@ MouseSettingsDialog::MouseSettingsDialog(QWidget *parent)
     resize(736, qMin(720, availableHeight - 96));
     ui->horizontalSpinBox->setMaximum(GlobalVariables::JoyButton::MAXMOUSESPEED);
     ui->verticalSpinBox->setMaximum(GlobalVariables::JoyButton::MAXMOUSESPEED);
+
+    // One-tap speed presets. The game entries are starting points to tune from, not measured equivalents.
+    struct SpeedPreset { const char *label; int value; };
+    static const SpeedPreset presets[] = {
+        {"Precision", 15}, {"Slow", 40}, {"Medium", 75}, {"Fast", 120}, {"Rapid", 180},
+        {"Desktop (starting point)", 50}, {"Call of Duty (starting point)", 90}, {"Valorant (starting point)", 70}};
+    ui->speedPresetComboBox->addItem(tr("Choose a preset"), 0);
+    for (const SpeedPreset &preset : presets)
+        ui->speedPresetComboBox->addItem(tr("%1  -  %2").arg(tr(preset.label)).arg(preset.value), preset.value);
+    connect(ui->speedPresetComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::activated), this, [this](int index) {
+        const int value = ui->speedPresetComboBox->itemData(index).toInt();
+        if (value <= 0) return;
+        const int speed = qMin(value, GlobalVariables::JoyButton::MAXMOUSESPEED);
+        if (ui->horizontalSpinBox->isEnabled()) ui->horizontalSpinBox->setValue(speed);
+        if (ui->verticalSpinBox->isEnabled()) ui->verticalSpinBox->setValue(speed);
+        ui->speedPresetComboBox->setCurrentIndex(0);
+    });
     setAttribute(Qt::WA_DeleteOnClose);
 
     JoyButtonMouseHelper *mouseHelper = JoyButton::getMouseHelper();

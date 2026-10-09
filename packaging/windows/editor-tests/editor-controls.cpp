@@ -35,6 +35,7 @@
 #include "keyboard/virtualkeypushbutton.h"
 #include "keyboard/virtualmousepushbutton.h"
 #include "pad/padshell.h"
+#include "mousedialog/mousecontrolsticksettingsdialog.h"
 #include "gui/joybuttonslot.h"
 #include "gui/quicksetdialog.h"
 #include "gui/setnamesdialog.h"
@@ -105,7 +106,7 @@ public:
 };
 #include "../../../tests/pad/keyboard_reachability.h"
 int main(int argc,char **argv) {
-    QApplication app(argc,argv); PadUi::initializeApplicationStyle(); Logger::createInstance(nullptr,Logger::LOG_NONE);
+    qputenv("PAD_NO_ONBOARDING","1"); QApplication app(argc,argv); PadUi::initializeApplicationStyle(); Logger::createInstance(nullptr,Logger::LOG_NONE);
     QThread worker;
     try {
         check(argc==3,"Usage: pad-editor-tests CASE OUTPUT_DIRECTORY"); const QString test=argv[1], output=argv[2];
@@ -304,6 +305,13 @@ int main(int argc,char **argv) {
             auto *ap=new AddEditAutoProfileDialog(&info,settings,&list,reserved,false);shot(ap,"autoprofile-add");ap->hide();
             auto *window=new MainWindow(&devices,new CommandLineUtility,settings);
             window->makeJoystickTabs();window->fillButtons();window->resize(1000,700);window->show();QTest::qWait(800);
+            {
+                auto *smd=new MouseControlStickSettingsDialog(stick);shot(smd,"stick-mouse-settings");smd->hide();
+                auto *ob=PadUi::createOnboardingDialog(nullptr,nullptr,nullptr);shot(ob,"onboarding-1");
+                const auto buttons=ob->findChildren<QPushButton*>();
+                for(int step=2;step<=3;++step){for(auto *b:buttons) if(b->text()=="Next"&&b->isVisible()){b->click();break;} shot(ob,(std::string("onboarding-")+std::to_string(step)).c_str());}
+                ob->hide();
+            }
             std::fprintf(stderr,"STEP menus\n");std::fflush(stderr);
             for(auto *menu:window->findChildren<QMenu*>()){
                 if(menu->actions().isEmpty())continue;

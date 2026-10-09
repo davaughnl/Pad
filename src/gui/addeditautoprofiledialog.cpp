@@ -122,6 +122,16 @@ AddEditAutoProfileDialog::AddEditAutoProfileDialog(AutoProfileInfo *info, AntiMi
 #endif
     ui->asDefaultCheckBox->setEnabled(info->isCurrentDefault());
 
+    // Simple by default: game + profile. Window-title matching stays one click away.
+    const bool hasTitle = !info->getWindowName().isEmpty() || !info->getWindowClass().isEmpty();
+    ui->advancedWidget->setVisible(hasTitle);
+    ui->advancedToggleButton->setChecked(hasTitle);
+    connect(ui->advancedToggleButton, &QPushButton::toggled, this, [this](bool on) {
+        ui->advancedWidget->setVisible(on);
+        adjustSize();
+    });
+    setWindowTitle(edit ? tr("Edit game") : tr("Add game"));
+
     connect(ui->profileBrowsePushButton, &QPushButton::clicked, this, &AddEditAutoProfileDialog::openProfileBrowseDialog);
     connect(ui->applicationPushButton, &QPushButton::clicked, this, &AddEditAutoProfileDialog::openApplicationBrowseDialog);
     connect(ui->devicesComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this,

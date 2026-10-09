@@ -38,6 +38,7 @@
 #endif
 
 #include <QApplication>
+#include <QTimer>
 #include "pad/padsettings.h"
 #include <QComboBox>
 #include <QDebug>
@@ -107,6 +108,7 @@ MainSettingsDialog::MainSettingsDialog(AntiMicroSettings *settings, QList<InputD
     ui->autoProfileTableWidget->hideColumn(3);
 #endif
     ui->autoProfileTableWidget->hideColumn(7);
+    ui->autoProfileTableWidget->hideColumn(4);
 
 #if defined(WITH_X11)
     if (QApplication::platformName() == QStringLiteral("xcb"))
@@ -319,6 +321,15 @@ MainSettingsDialog::MainSettingsDialog(AntiMicroSettings *settings, QList<InputD
     connect(ui->autoProfileEditPushButton, &QPushButton::clicked, this, &MainSettingsDialog::openEditAutoProfileDialog);
     connect(ui->autoProfileTableWidget, &QTableWidget::itemSelectionChanged, this,
             &MainSettingsDialog::changeAutoProfileButtonsState);
+
+    // First-run guide hands off here: open on Auto Profile with the Add game dialog ready.
+    if (qApp->property("padOpenAddGame").toBool())
+    {
+        qApp->setProperty("padOpenAddGame", false);
+        ui->activeCheckBox->setChecked(true);
+        ui->categoriesListWidget->setCurrentRow(3);
+        QTimer::singleShot(0, this, &MainSettingsDialog::openAddAutoProfileDialog);
+    }
 
     connect(ui->keyRepeatEnableCheckBox, &QCheckBox::clicked, this, &MainSettingsDialog::changeKeyRepeatWidgetsStatus);
     connect(ui->keyDelayHorizontalSlider, &QSlider::valueChanged, ui->keyDelaySpinBox, &QSpinBox::setValue);

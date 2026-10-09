@@ -36,6 +36,11 @@
 #include <QTabBar>
 #include <QTabWidget>
 #include <QTimer>
+#include <QFileInfo>
+#include <QFileDialog>
+#include <QStandardPaths>
+#include <QDir>
+#include <QDialog>
 #include <QVBoxLayout>
 
 namespace {
@@ -336,4 +341,112 @@ void PadUi::install(QMainWindow *window, QWidget *central, QStackedWidget *stack
     QObject::connect(timer, &QTimer::timeout, shell, sync);
     QObject::connect(controllers, &QTabWidget::currentChanged, shell, [sync](int) { sync(); });
     sync(); timer->start();
+}
+
+// First-run guide: three steps. Plug in, pick a game, assign a profile.
+QDialog *PadUi::createOnboardingDialog(QWidget *parent, QTabWidget *controllers, QAction *settings)
+{
+    auto *dialog = new QDialog(parent);
+    dialog->setWindowTitle(QObject::tr("Welcome to Pad"));
+    dialog->setFixedSize(560, 420);
+    auto *root = new QVBoxLayout(dialog); root->setContentsMargins(24, 20, 24, 20); root->setSpacing(12);
+
+    auto *step = text(QString(), "padOnboardStep", dialog); step->setProperty("padMuted", true);
+    auto *stack = new QStackedWidget(dialog);
+
+    auto addPage = [&](const QString &title, const QString &body, QWidget *extra) {
+        auto *page = new QWidget(stack); auto *l = new QVBoxLayout(page); l->setContentsMargins(0, 0, 0, 0); l->setSpacing(8);
+        auto *head = text(title, "padOnboardTitle", page); head->setStyleSheet(QStringLiteral("font-size: 20px; color: #f4f4f5;"));
+        auto *sub = text(body, "padSubtitle", page); sub->setWordWrap(true);
+        l->addWidget(head); l->addWidget(sub);
+        if (extra) { extra->setParent(page); l->addSpacing(8); l->addWidget(extra, 1); }
+        else l->addStretch(1);
+        stack->addWidget(page);
+    };
+
+    // 1: controller
+    auto *art = new ControllerOutline(dialog);
+    auto *status = text(QString(), "padOnboardStatus", dialog); status->setAlignment(Qt::AlignCenter);
+    auto *plug = new QWidget(dialog); auto *pl = new QVBoxLayout(plug); pl->setContentsMargins(0, 0, 0, 0); pl->setSpacing(8);
+    pl->addWidget(art, 0, Qt::AlignHCenter); pl->addWidget(status);
+    addPage(QObject::tr("Plug in your controller"),
+            QObject::tr("Connect it by USB or Bluetooth. Pad shows it here the moment it is detected."), plug);
+
+    // 2: game
+    auto *gameLabel = text(QObject::tr("No game chosen yet. You can skip this and add one later."), "padOnboardGame", dialog); gameLabel->setWordWrap(true);
+    gameLabel->setProperty("padMuted", true);
+    auto *chooseGame = button(QObject::tr("Add a game"), "folder", dialog);
+    auto *gamePage = new QWidget(dialog); auto *gl = new QVBoxLayout(gamePage); gl->setContentsMargins(0, 0, 0, 0); gl->setSpacing(8);
+    gl->addWidget(chooseGame, 0, Qt::AlignLeft); gl->addWidget(gameLabel); gl->addStretch(1);
+    addPage(QObject::tr("Pick your game"),
+            QObject::tr("Choose the game's .exe. Pad watches for it so your controller setup follows you into the game."), gamePage);
+
+    // 3: profile
+    auto *profilePage = new QWidget(dialog); auto *pgl = new QVBoxLayout(profilePage); pgl->setContentsMargins(0, 0, 0, 0); pgl->setSpacing(8);
+    auto *openAuto = button(QObject::tr("Add game and profile"), "settings", dialog);
+    pgl->addWidget(openAuto, 0, Qt::AlignLeft); pgl->addStretch(1);
+    addPage(QObject::tr("Assign a profile"),
+            QObject::tr("Pick the saved profile for that game. Pad loads it when the game is in front and switches back when you leave. Build profiles in the main window."), profilePage);
+
+    auto *nav = new QHBoxLayout(); nav->setSpacing(8);
+    auto *skip = new QPushButton(QObject::tr("Skip"), dialog);
+    auto *back = new QPushButton(QObject::tr("Back"), dialog);
+    auto *next = new QPushButton(QObject::tr("Next"), dialog);
+    nav->addWidget(skip); nav->addStretch(1); nav->addWidget(back); nav->addWidget(next);
+    root->addWidget(step); root->addWidget(stack, 1); root->addLayout(nav);
+
+    auto refreshStep = [=]() {
+        const int i = stack->currentIndex();
+        step->setText(QObject::tr("%1 of %2").arg(i + 1).arg(stack->count()));
+        back->setVisible(i > 0);
+        next->setText(i == stack->count() - 1 ? QObject::tr("Done") : QObject::tr("Next"));
+    };
+    QObject::connect(next, &QPushButton::clicked, dialog, [=]() {
+        if (stack->currentIndex() == stack->count() - 1) dialog->accept(); else stack->setCurrentIndex(stack->currentIndex() + 1);
+        refreshStep();
+    });
+    QObject::connect(back, &QPushButton::clicked, dialog, [=]() { stack->setCurrentIndex(qMax(0, stack->currentIndex() - 1)); refreshStep(); });
+    QObject::connect(skip, &QPushButton::clicked, dialog, &QDialog::accept);
+    auto openAddGame = [=]() {
+        if (!settings) return;
+        qApp->setProperty("padOpenAddGame", true);
+        dialog->accept();
+        settings->trigger();
+    };
+    QObject::connect(chooseGame, &QPushButton::clicked, dialog, openAddGame);
+    QObject::connect(openAuto, &QPushButton::clicked, dialog, openAddGame);
+
+    auto *timer = new QTimer(dialog); timer->setInterval(400);
+    auto sync = [=]() {
+        const bool on = controllers && controllers->count() > 0;
+        QString name;
+        if (on && controllers->currentIndex() >= 0)
+        {
+            name = controllers->tabText(controllers->currentIndex());
+            if (auto *tab = qobject_cast<JoyTabWidget *>(controllers->currentWidget()))
+                if (tab->getJoystick()) name += padArtTag(static_cast<int>(tab->getJoystick()->getControllerType()));
+        }
+        art->setDevice(name);
+        status->setText(on ? QObject::tr("Connected: %1").arg(controllers->tabText(controllers->currentIndex())) : QObject::tr("Waiting for a controller"));
+    };
+    QObject::connect(timer, &QTimer::timeout, dialog, sync);
+    sync(); timer->start(); refreshStep();
+    return dialog;
+}
+
+void PadUi::showOnboardingIfFirstRun(QMainWindow *window, QTabWidget *controllers, QAction *settings)
+{
+    if (qEnvironmentVariableIsSet("PAD_NO_ONBOARDING")) return;
+    const QString dir = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    const QString marker = dir + QStringLiteral("/onboarding-done");
+    if (QFileInfo::exists(marker)) return;
+    QTimer::singleShot(900, window, [=]() {
+        QDialog *dialog = createOnboardingDialog(window, controllers, settings);
+        dialog->setAttribute(Qt::WA_DeleteOnClose);
+        QObject::connect(dialog, &QDialog::finished, window, [=]() {
+            QDir().mkpath(dir);
+            QFile file(marker); if (file.open(QIODevice::WriteOnly)) file.write("1");
+        });
+        dialog->show();
+    });
 }

@@ -207,6 +207,13 @@ boxes at the same time.</string>
            </widget>
           </item>
           <item>
+           <layout class="QHBoxLayout" name="speedPresetLayout">
+            <property name="spacing"><number>8</number></property>
+            <item><widget class="QLabel" name="speedPresetLabel"><property name="text"><string>Preset</string></property></widget></item>
+            <item><widget class="QComboBox" name="speedPresetComboBox"/></item>
+           </layout>
+          </item>
+          <item>
            <layout class="QHBoxLayout" name="horizontalLayout_10">
             <property name="spacing"><number>8</number></property>
             <property name="leftMargin"><number>0</number></property>
