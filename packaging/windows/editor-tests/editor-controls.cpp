@@ -51,6 +51,7 @@
 #include "gui/winappprofiletimerdialog.h"
 #include "autoprofileinfo.h"
 #include <QListWidget>
+#include <QVBoxLayout>
 #include <QMessageBox>
 #include "pad/padupdatestrip.h"
 #include <QMenu>
@@ -321,13 +322,15 @@ int main(int argc,char **argv) {
                 check(multi->grab().save(output+"/screen-main-two-controllers-full.png"),"multi capture");
                 multi->hide();
             }
-            window->show();
-            std::fprintf(stderr,"STEP update\n");std::fflush(stderr);window->show();
-            if(auto *strip=window->findChild<PadUpdateStrip*>()){
+            {
+                QWidget panel;panel.setObjectName("padUpdatePanel");panel.setFixedSize(220,120);
+                auto *lay=new QVBoxLayout(&panel);lay->setContentsMargins(0,12,0,0);
+                auto *strip=new PadUpdateStrip(&panel);lay->addWidget(strip);lay->addStretch(1);
                 using S=PadUpdateStrip::State;
-                struct{S st;const char *n;const char *d;int pct;} states[]={{S::Checking,"checking","",0},{S::UpToDate,"uptodate","",0},{S::Available,"available","1.2.0",0},{S::Downloading,"downloading","",42},{S::Ready,"ready","1.2.0",0},{S::Error,"error","Could not reach the update server",0}};
-                for(auto &st:states){std::fprintf(stderr,"STATE %s\n",st.n);std::fflush(stderr);strip->setState(st.st,st.d,st.pct);QTest::qWait(400);check(window->grab().save(output+QString("/screen-update-")+st.n+"-full.png"),"update capture");}
-                strip->setState(S::Hidden);
+                struct Row{S st;const char *n;const char *d;int pct;};
+                const Row states[]={{S::UpToDate,"uptodate","",0},{S::Available,"available","1.2.0",0},{S::Downloading,"downloading","",42},{S::Ready,"ready","1.2.0",0},{S::Error,"error","Could not reach the update server",0},{S::Checking,"checking","",0}};
+                panel.show();
+                for(const Row &st:states){std::fprintf(stderr,"STATE %s\n",st.n);std::fflush(stderr);strip->setState(st.st,QString::fromLatin1(st.d),st.pct);QTest::qWait(300);check(panel.grab().save(output+QString("/screen-update-")+st.n+".png"),"update capture");}
             }
         } else throw std::runtime_error("Unknown case");
         QMetaObject::invokeMethod(joystick,[joystick]{delete joystick;},Qt::BlockingQueuedConnection);
