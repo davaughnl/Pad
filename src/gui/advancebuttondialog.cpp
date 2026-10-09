@@ -51,7 +51,7 @@ AdvanceButtonDialog::AdvanceButtonDialog(JoyButton *button, QWidget *parent)
 {
     ui->setupUi(this);
     setObjectName(QStringLiteral("padAdvancedAssignmentDialog"));
-    ui->listWidget->setFixedWidth(168);
+    ui->listWidget->setFixedWidth(132);
     ui->slotListWidget->setStyleSheet(QStringLiteral(
         "QListView { selection-background-color: transparent; outline: none; }"
         "QListView::item, QListView::item:selected, QListView::item:hover { background: transparent; border: none; }"));
@@ -71,8 +71,8 @@ AdvanceButtonDialog::AdvanceButtonDialog(JoyButton *button, QWidget *parent)
         ui->listWidget->item(i)->setIcon(QIcon(QStringLiteral(":/pad/icons/%1.svg").arg(sectionIcons.at(i))));
     setStyleSheet(QStringLiteral(
         "QDialog#padAdvancedAssignmentDialog QPushButton { min-height: 26px; }"
-        "QListWidget#listWidget { background: #131316; border: 1px solid #1c1c20; padding: 8px; }"
-        "QListWidget#listWidget::item { min-height: 32px; padding: 4px 8px; margin: 0 0 8px 0; border-radius: 4px; }"
+        "QListWidget#listWidget { background: #131316; border: 1px solid #1c1c20; border-radius: 6px; padding: 4px; font-size: 12px; }"
+        "QListWidget#listWidget::item { min-height: 24px; padding: 0 8px; margin: 0 0 2px 0; border-radius: 4px; }"
         "QListWidget#listWidget::item:selected { background: #26262c; }"
         "QListWidget#listWidget::item:hover { background: #1c1c21; }"
         "#slotListWidget { padding: 8px; }"
