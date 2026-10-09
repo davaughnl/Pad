@@ -104,6 +104,14 @@ int main(int argc,char **argv) {
             QMap<SDL_JoystickID,InputDevice*> devices;
             devices.insert(SDL_JoystickInstanceID(joystick->getJoyHandle()),joystick);
             CommandLineUtility command;
+            {
+                QMap<SDL_JoystickID,InputDevice*> none; CommandLineUtility emptyCommand;
+                auto *empty=new MainWindow(&none,&emptyCommand,settings);
+                empty->makeJoystickTabs();empty->fillButtons();
+                empty->resize(1000,700);empty->show();empty->raise();empty->activateWindow();QTest::qWait(1000);
+                check(empty->grab().save(output+"/main-empty-full.png"),"Empty state capture failed");
+                empty->hide();
+            }
             auto *window=new MainWindow(&devices,&command,settings);
             window->makeJoystickTabs();window->fillButtons();
             window->resize(1000,700);window->show();window->raise();window->activateWindow();QTest::qWait(1000);

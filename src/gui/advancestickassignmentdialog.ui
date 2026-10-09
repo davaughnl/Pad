@@ -22,26 +22,6 @@
   <property name="modal">
    <bool>true</bool>
   </property>
-  <property name="styleSheet">
-   <string notr="true">QWidget { font-family: "Geist"; font-size: 13px; font-weight: 400; }
-QListWidget#listWidget { background: #171719; border: 1px solid #29292d; padding: 8px; min-width: 144px; max-width: 144px; }
-QListWidget#listWidget::item { padding: 12px; margin-bottom: 8px; border-radius: 6px; }
-QListWidget#listWidget::item:selected { background: #303035; color: #eeeeef; }
-QListWidget#listWidget::item:hover { background: #242428; }
-QDialog { background: #111113; }
-QPushButton, QToolButton { min-height: 24px; padding: 5px 12px; }
-QComboBox, QLineEdit, QSpinBox, QDoubleSpinBox { min-height: 24px; padding-top: 5px; padding-bottom: 5px; }
-QGroupBox { padding: 16px; margin-top: 16px; }
-QGroupBox::title { color: #b8b8bf; left: 16px; }
-QLabel:disabled, QCheckBox:disabled { color: #67676f; }
-JoyControlStickButtonPushButton[isflashing="true"] { background: #e8e8eb; color: #111113; border-color: #ffffff; }
-QDialogButtonBox { border: none; padding-top: 8px; }
-QFrame[frameShape="4"], QFrame[frameShape="5"] { color: #29292d; background: #29292d; max-height: 1px; border: none; }
-QGroupBox::indicator { width: 16px; height: 16px; border: 1px solid #505058; border-radius: 4px; background: #19191c; }
-QGroupBox::indicator:checked { background: #eeeeef; image: url(:/pad/icons/check-dark.svg); }
-
-QFrame#verticalLayoutCard, QFrame#verticalLayout_2Card { background: #19191c; border: 1px solid #303035; border-radius: 8px; }</string>
-  </property>
   <layout class="QVBoxLayout" name="verticalLayout_5">
    <property name="spacing"><number>8</number></property>
    <property name="leftMargin"><number>24</number></property>

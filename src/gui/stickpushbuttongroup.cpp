@@ -54,7 +54,7 @@ void StickPushButtonGroup::generateButtons()
 
     stickWidget = new JoyControlStickPushButton(stick, displayNames, parentWidget());
     stickWidget->setIcon(
-        QIcon(":/images/actions/games_config_options.png"));
+        QIcon(":/pad/icons/gamepad.svg"));
 
     connect(stickWidget, &JoyControlStickPushButton::clicked, this, &StickPushButtonGroup::showStickDialog);
 

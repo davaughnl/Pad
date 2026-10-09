@@ -195,3 +195,57 @@ QLineEdit#padSearch { background: #131316; border: 1px solid #26262b; border-rad
 QLineEdit#padSearch:focus { border: 1px solid #45454d; }
 QTreeWidget#padMappingTable::item { height: 40px; }
 QTreeWidget#padMappingTable QHeaderView::section { background: #131316; color: #55555c; height: 28px; font-size: 11px; padding: 4px 14px; border: none; border-bottom: 1px solid #1e1e22; }
+
+/* ---------- slim pass: thinner, lighter controls ---------- */
+QPushButton, QToolButton { min-height: 26px; padding: 0 10px; border: 1px solid #222226; border-radius: 6px; background: transparent; color: #d4d4d8; font-size: 12px; }
+QPushButton:hover, QToolButton:hover { background: #17171b; border-color: #2e2e34; color: #f4f4f5; }
+QPushButton:pressed, QToolButton:pressed { background: #1f1f24; }
+QPushButton#saveButton, QPushButton[padPrimary="true"] { background: #f4f4f5; color: #0e0e10; border-color: #f4f4f5; }
+QPushButton#saveButton:hover, QPushButton[padPrimary="true"]:hover { background: #ffffff; }
+QPushButton[padNav="true"] { min-height: 28px; padding: 0 10px; border: none; background: transparent; color: #a1a1aa; font-size: 13px; }
+QPushButton[padNav="true"]:hover { background: #17171b; color: #f4f4f5; }
+QPushButton[padSetTab="true"] { min-height: 24px; font-size: 12px; border: none; border-radius: 5px; }
+QPushButton[padMappingAction="true"] { min-height: 24px; background: transparent; border: 1px solid #222226; border-radius: 5px; font-size: 12px; }
+QPushButton[padMappingAction="true"]:hover { background: #17171b; border-color: #2e2e34; }
+QComboBox, QLineEdit, QSpinBox, QDoubleSpinBox { min-height: 26px; border: 1px solid #222226; border-radius: 6px; background: #0f0f12; padding: 0 8px; font-size: 12px; }
+QComboBox::drop-down { width: 22px; }
+QComboBox::down-arrow { width: 10px; height: 10px; }
+QLineEdit#padSearch { min-height: 20px; padding: 4px 10px; border-radius: 6px; }
+QListWidget#padControllers::item { min-height: 28px; }
+QTreeWidget#padMappingTable::item { height: 34px; }
+QTreeWidget#padMappingTable QHeaderView::section { height: 24px; }
+QFrame#padOverview { border-radius: 8px; }
+QCheckBox, QRadioButton { min-height: 20px; font-size: 12px; }
+QPushButton::menu-indicator { image: url(:/pad/icons/chevron-down.svg); width: 10px; height: 10px; subcontrol-position: right center; subcontrol-origin: padding; right: 8px; }
+QPushButton[padNav="true"]::menu-indicator { image: none; width: 0; }
+
+/* ---------- slim pass 2 ---------- */
+QPushButton, QToolButton { min-height: 24px; padding: 0 9px; border: 1px solid #1c1c20; font-size: 12px; }
+QPushButton:hover, QToolButton:hover { border-color: #2a2a30; }
+QPushButton[padSetTab="true"] { min-height: 22px; }
+QPushButton[padMappingAction="true"] { min-height: 22px; border: 1px solid #1c1c20; }
+QPushButton[padNav="true"] { min-height: 26px; }
+QComboBox, QLineEdit, QSpinBox, QDoubleSpinBox { min-height: 24px; border: 1px solid #1c1c20; padding: 0 8px; }
+QLineEdit#padSearch { min-height: 16px; padding: 3px 10px; }
+QTreeWidget#padMappingTable::item { height: 30px; }
+QTreeWidget#padMappingTable QHeaderView::section { height: 22px; }
+QListWidget#padControllers::item { min-height: 26px; }
+QLabel#padHeadline { font-size: 32px; }
+QLabel#padSubtitle { font-size: 12px; }
+QLabel#padDeviceName { font-size: 14px; }
+QMenuBar::item { padding: 4px 10px; }
+
+/* ---------- one button style: everything matches the bottom bar ---------- */
+QPushButton { icon-size: 14px; }
+QPushButton#removeButton, QPushButton#loadButton, QPushButton#saveButton, QPushButton#saveAsButton, QPushButton#gameControllerMappingPushButton, QPushButton#quickSetPushButton, QPushButton#namesPushButton, QPushButton#resetButton, QPushButton#delayButton, QPushButton#setsMenuButton { min-height: 24px; max-height: 24px; padding: 0 10px; background: transparent; color: #d4d4d8; border: 1px solid #1c1c20; border-radius: 6px; font-size: 12px; }
+QPushButton#removeButton:hover, QPushButton#loadButton:hover, QPushButton#saveButton:hover, QPushButton#saveAsButton:hover, QPushButton#gameControllerMappingPushButton:hover, QPushButton#quickSetPushButton:hover, QPushButton#namesPushButton:hover, QPushButton#resetButton:hover, QPushButton#delayButton:hover, QPushButton#setsMenuButton:hover { background: #17171b; border-color: #2a2a30; color: #f4f4f5; }
+QPushButton#saveButton:disabled, QPushButton#removeButton:disabled, QPushButton#loadButton:disabled, QPushButton#saveAsButton:disabled { color: #4a4a52; background: transparent; border-color: #19191c; }
+
+/* dialogs share the exact main-window canvas */
+QMainWindow, QDialog { background: #0b0b0d; }
+
+/* ---------- main window control grid: every control renders 26px ---------- */
+QLineEdit#padSearch { min-height: 24px; max-height: 24px; padding: 0 10px; border: 1px solid #1c1c20; border-radius: 6px; }
+QPushButton[padSetTab="true"] { min-height: 26px; max-height: 26px; padding: 0; margin: 0 2px; border: none; border-radius: 6px; }
+QPushButton[padMappingAction="true"] { min-height: 24px; max-height: 24px; padding: 0 10px; border: 1px solid #1c1c20; border-radius: 6px; }
+QTreeWidget#padMappingTable::item { height: 34px; }

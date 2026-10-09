@@ -13,6 +13,7 @@
 #include <QLineEdit>
 #include <QListWidget>
 #include <QStackedWidget>
+#include <QTimer>
 #include <QPushButton>
 #include <QSlider>
 #include <QScrollArea>
@@ -26,10 +27,10 @@ inline void compactDialog(QDialog *dialog)
     dialog->setStyleSheet(dialog->styleSheet() + QStringLiteral(
         "QGroupBox { padding: 16px; margin-top: 16px; }"
         "QGroupBox::title { color: #b8b8bf; left: 16px; }"
-        "QFrame[frameShape=\"4\"] { background: #303035; color: #303035; }"
-        "QComboBox, QLineEdit, QSpinBox, QDoubleSpinBox, QPushButton { min-height: 32px; max-height: 32px; padding: 0 12px; }"
+        "QFrame[frameShape=\"4\"] { background: #1c1c20; color: #1c1c20; }"
+        "QComboBox, QLineEdit, QSpinBox, QDoubleSpinBox, QPushButton { min-height: 26px; max-height: 26px; padding: 0 10px; }"
         "QSpinBox QLineEdit, QDoubleSpinBox QLineEdit { min-height: 0; max-height: 16777215px; padding: 0; border: none; background: transparent; }"
-        "QFrame[frameShape=\"4\"] { color: #303035; background: #303035; max-height: 1px; border: none; }"));
+        "QFrame[frameShape=\"4\"] { color: #1c1c20; background: #1c1c20; max-height: 1px; border: none; }"));
     for (auto *layout : dialog->findChildren<QLayout *>()) {
         const bool root = layout == dialog->layout();
         layout->setContentsMargins(root ? 20 : 0, root ? 20 : 0, root ? 20 : 0, root ? 20 : 0);
@@ -47,13 +48,23 @@ inline void compactDialog(QDialog *dialog)
         QFont font = qApp->font(); font.setWeight(QFont::Normal); font.setItalic(false); widget->setFont(font);
         if (qobject_cast<QAbstractSpinBox *>(widget) || qobject_cast<QComboBox *>(widget) ||
             (qobject_cast<QLineEdit *>(widget) && !qobject_cast<QAbstractSpinBox *>(widget->parentWidget())) || qobject_cast<QPushButton *>(widget))
-            widget->setFixedHeight(32);
+            widget->setFixedHeight(26);
         if (qobject_cast<QCheckBox *>(widget)) widget->setMinimumHeight(24);
         if (auto *frame = qobject_cast<QFrame *>(widget))
             if (frame->frameShape() == QFrame::HLine) frame->hide();
         if (auto *group = qobject_cast<QGroupBox *>(widget))
             group->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
     }
+    // Re-assert control height after the dialog finishes constructing and showing.
+    QTimer::singleShot(0, dialog, [dialog]() {
+        for (auto *widget : dialog->findChildren<QWidget *>()) {
+            if (qobject_cast<QAbstractSpinBox *>(widget) || qobject_cast<QComboBox *>(widget) || qobject_cast<QPushButton *>(widget) ||
+                (qobject_cast<QLineEdit *>(widget) && !qobject_cast<QAbstractSpinBox *>(widget->parentWidget())))
+                widget->setFixedHeight(26);
+        }
+        for (auto *layout : dialog->findChildren<QLayout *>()) layout->invalidate();
+        if (dialog->layout()) { dialog->layout()->invalidate(); dialog->layout()->activate(); }
+    });
 }
 
 // Expanding-content variant: same normalization, but native layout expansion is

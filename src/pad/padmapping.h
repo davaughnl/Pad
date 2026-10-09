@@ -183,11 +183,11 @@ public:
                 return model(a) == nullptr && model(b) != nullptr;
             });
             for (auto *source : sources) {
-                auto *item = new QTreeWidgetItem(table); item->setSizeHint(0, QSize(0, 40));
+                auto *item = new QTreeWidgetItem(table); item->setSizeHint(0, QSize(0, 30));
                 const bool group = model(source) == nullptr;
                 item->setIcon(0, QIcon(group ? ":/pad/icons/move.svg" : ":/pad/icons/gamepad.svg"));
                 auto *cell = new QWidget(table); auto *cellLayout = new QVBoxLayout(cell);
-                cellLayout->setContentsMargins(0, 6, 14, 6);
+                cellLayout->setContentsMargins(0, 3, 14, 3);
                 auto *action = new ActionButton(cell); cellLayout->addWidget(action); action->setFixedHeight(26); action->setProperty("padMappingAction", true);
                 action->setMinimumHeight(0); action->setIcon(QIcon(group ? ":/pad/icons/sliders.svg" : ":/pad/icons/keyboard.svg")); action->setIconSize(QSize(14, 14));
                 action->setContextMenuPolicy(Qt::CustomContextMenu);

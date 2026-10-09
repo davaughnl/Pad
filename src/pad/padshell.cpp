@@ -268,11 +268,11 @@ void PadUi::install(QMainWindow *window, QWidget *central, QStackedWidget *stack
     heroText->addWidget(text(QObject::tr("Controller mapping"), "padHeadline", workspace));
     heroText->addWidget(text(QObject::tr("Assign keyboard and mouse inputs to your controller."), "padSubtitle", workspace));
     hero->addLayout(heroText, 1);
-    auto *outline = new ControllerOutline(workspace); outline->setFixedSize(360, 214);
+    auto *outline = new ControllerOutline(workspace); outline->setFixedSize(300, 178);
     hero->addWidget(outline, 0, Qt::AlignRight | Qt::AlignVCenter);
     body->addLayout(hero);
     auto *overview = new QFrame(workspace); overview->setObjectName("padOverview");
-    auto *overviewLayout = new QHBoxLayout(overview); overviewLayout->setContentsMargins(24, 14, 24, 14);
+    auto *overviewLayout = new QHBoxLayout(overview); overviewLayout->setContentsMargins(20, 9, 20, 9);
     auto *details = new QVBoxLayout(); details->setSpacing(2); details->setAlignment(Qt::AlignVCenter);
     auto *deviceName = text(QObject::tr("No controller connected"), "padDeviceName", overview);
     deviceName->setWordWrap(true); details->addWidget(deviceName);
@@ -284,8 +284,8 @@ void PadUi::install(QMainWindow *window, QWidget *central, QStackedWidget *stack
     if (auto *bar = window->menuBar())
     {
         auto *logo = new QLabel(bar); QPixmap mark(QStringLiteral(":/images/pad-mark.png")); logo->setPixmap(mark.scaled(22, 22, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-        logo->setContentsMargins(12, 0, 6, 0); bar->setCornerWidget(logo, Qt::TopLeftCorner);
-        auto *status = new QLabel(bar); status->setObjectName("padConnection"); status->setContentsMargins(0, 0, 14, 0);
+        logo->setContentsMargins(12, 4, 6, 0); logo->setFixedHeight(40); logo->setAlignment(Qt::AlignVCenter); bar->setCornerWidget(logo, Qt::TopLeftCorner);
+        auto *status = new QLabel(bar); status->setObjectName("padConnection"); status->setContentsMargins(0, 4, 14, 0); status->setFixedHeight(40); status->setAlignment(Qt::AlignVCenter | Qt::AlignRight);
         bar->setCornerWidget(status, Qt::TopRightCorner); logo->show(); status->show();
         auto *tick = new QTimer(status); tick->setInterval(400);
         QObject::connect(tick, &QTimer::timeout, status, [status, controllers]() {
@@ -300,7 +300,7 @@ void PadUi::install(QMainWindow *window, QWidget *central, QStackedWidget *stack
     {
         empty->setObjectName("padEmpty");
         empty->setAlignment(Qt::AlignCenter);
-        empty->setText(QObject::tr("Connect a controller to get started.\nThen choose Refresh controllers in the sidebar."));
+        empty->setTextFormat(Qt::RichText); empty->setText(QStringLiteral("<div style='font-size:16px; color:#e8e8eb;'>%1</div><div style='font-size:12px; color:#7c7c85;'>%2</div>").arg(QObject::tr("No controller connected"), QObject::tr("Plug one in, then choose Refresh controllers in the sidebar.")));
     }
     auto sync = [controllers, deviceList, profileList, deviceName, profileName, overview, refresh, refreshButton, outline]() {
         QStringList devices;
