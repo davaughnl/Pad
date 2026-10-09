@@ -20,6 +20,7 @@
         <file alias="icons/minimize.svg">pad/icons/minimize.svg</file>
         <file alias="icons/sliders.svg">pad/icons/sliders.svg</file>
         <file alias="icons/crosshair.svg">pad/icons/crosshair.svg</file>
+        <file alias="icons/rotate-3d.svg">pad/icons/rotate-3d.svg</file>
         <file alias="icons/exit.svg">pad/icons/exit.svg</file>
         <file alias="icons/battery-good.svg">pad/icons/battery-good.svg</file>
         <file alias="icons/folder.svg">pad/icons/folder.svg</file>

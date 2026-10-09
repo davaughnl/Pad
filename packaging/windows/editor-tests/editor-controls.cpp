@@ -35,6 +35,7 @@
 #include "keyboard/virtualkeypushbutton.h"
 #include "keyboard/virtualmousepushbutton.h"
 #include "pad/padshell.h"
+#include "pad/paddevicetools.h"
 #include "mousedialog/mousecontrolsticksettingsdialog.h"
 #include "gui/joybuttonslot.h"
 #include "gui/quicksetdialog.h"
@@ -311,6 +312,18 @@ int main(int argc,char **argv) {
                 const auto buttons=ob->findChildren<QPushButton*>();
                 for(int step=2;step<=3;++step){for(auto *b:buttons) if(b->text()=="Next"&&b->isVisible()){b->click();break;} shot(ob,(std::string("onboarding-")+std::to_string(step)).c_str());}
                 ob->hide();
+                // Device tools in each state, on the overview card background.
+                auto *sheet=new QFrame;sheet->setObjectName("padOverview");sheet->setFixedSize(520,230);
+                auto *sl=new QVBoxLayout(sheet);sl->setContentsMargins(20,12,20,12);
+                struct S{PadDeviceTools::Battery b;bool avail;bool on;};
+                for(S st:{S{PadDeviceTools::Battery::Full,true,false},S{PadDeviceTools::Battery::Medium,true,true},S{PadDeviceTools::Battery::Low,false,false},S{PadDeviceTools::Battery::Empty,false,false},S{PadDeviceTools::Battery::None,false,false}}){
+                    auto *t=new PadDeviceTools(sheet);t->setBattery(st.b);t->setGyro(st.avail,st.on);sl->addWidget(t,0,Qt::AlignRight);}
+                shot(sheet,"device-tools");sheet->hide();
+                double phase=0;
+                auto *st=padCreateStickTester(nullptr,"Fixture pad",[&phase](){PadStickReading r;r.lx=0.62;r.ly=-0.35;r.rx=0.05;r.ry=0.04;r.leftDeadzone=0.18;r.rightDeadzone=0.18;(void)phase;return r;});
+                shot(st,"stick-tester");st->hide();
+                padShowToast(window,"Valorant profile loaded",60000);QTest::qWait(300);
+                check(window->grab().save(output+"/screen-toast.png"),"toast capture");
             }
             std::fprintf(stderr,"STEP menus\n");std::fflush(stderr);
             for(auto *menu:window->findChildren<QMenu*>()){
