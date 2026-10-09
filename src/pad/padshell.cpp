@@ -65,7 +65,7 @@ public:
         case SP_DialogOpenButton: case SP_DirIcon: name = "folder"; break;
         case SP_DialogResetButton: case SP_DialogDiscardButton: name = "undo"; break;
         case SP_DialogHelpButton: case SP_MessageBoxInformation: case SP_MessageBoxQuestion: name = "info"; break;
-        case SP_MessageBoxWarning: case SP_MessageBoxCritical: name = "bug"; break;
+        case SP_MessageBoxWarning: case SP_MessageBoxCritical: name = "triangle-alert"; break;
         case SP_TrashIcon: name = "trash"; break;
         default: return QProxyStyle::standardIcon(icon, option, widget);
         }
