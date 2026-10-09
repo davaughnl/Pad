@@ -194,8 +194,19 @@ void PadUi::install(QMainWindow *window, QWidget *central, QStackedWidget *stack
     auto *settingsButton = button(QObject::tr("Settings"), "settings", sidebar);
     auto *updateStrip = new PadUpdateStrip(sidebar);
     auto *updateButton = button(PadUpdateStrip::buttonLabel(PadUpdateStrip::State::Hidden), "refresh", sidebar);
-    for (auto *nav : {refreshButton, updateButton, settingsButton}) nav->setProperty("padNav", true);
-    side->addWidget(updateStrip); side->addWidget(refreshButton); side->addWidget(updateButton); side->addWidget(settingsButton);
+    // The classic menu bar is folded into one "More" menu so the window is just sidebar + workspace.
+    auto *moreButton = button(QObject::tr("More"), "ellipsis", sidebar);
+    auto *moreMenu = new QMenu(moreButton);
+    if (auto *bar = window->menuBar())
+    {
+        for (QAction *top : bar->actions())
+            if (top->menu()) moreMenu->addMenu(top->menu());
+        for (QAction *top : bar->actions()) window->addAction(top); // keep shortcuts alive
+        bar->hide();
+    }
+    moreButton->setMenu(moreMenu);
+    for (auto *nav : {refreshButton, updateButton, settingsButton, moreButton}) nav->setProperty("padNav", true);
+    side->addWidget(updateStrip); side->addWidget(refreshButton); side->addWidget(updateButton); side->addWidget(settingsButton); side->addWidget(moreButton);
     QObject::connect(refreshButton, &QPushButton::clicked, refresh, &QAction::trigger);
     // Updater: this block only presents UpdateManager state and forwards clicks.
     auto *updates = new UpdateManager(PadderCommon::releaseVersion, window);
