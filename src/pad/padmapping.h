@@ -166,6 +166,15 @@ public:
         table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         table->header()->setSectionResizeMode(QHeaderView::Fixed);
         table->header()->setStretchLastSection(true); table->header()->setMinimumSectionSize(64);
+        auto *search = new QLineEdit(this); search->setObjectName(QStringLiteral("padSearch"));
+        search->setPlaceholderText(tr("Search inputs and actions")); search->setClearButtonEnabled(true);
+        search->addAction(QIcon(QStringLiteral(":/pad/icons/search.svg")), QLineEdit::LeadingPosition);
+        layout->addWidget(search); layout->addSpacing(8);
+        QObject::connect(search, &QLineEdit::textChanged, this, [this](const QString &needle) {
+            for (const Row &row : rows)
+                row.item->setHidden(!needle.isEmpty() && !row.item->text(0).contains(needle, Qt::CaseInsensitive)
+                                    && !row.action->text().contains(needle, Qt::CaseInsensitive));
+        });
         layout->addWidget(table);
         for (QWidget *root : roots) {
             QList<FlashButtonWidget *> sources = root->findChildren<FlashButtonWidget *>();

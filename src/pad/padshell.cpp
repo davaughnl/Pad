@@ -188,11 +188,7 @@ void PadUi::install(QMainWindow *window, QWidget *central, QStackedWidget *stack
     auto *layout = new QHBoxLayout(shell); layout->setContentsMargins(0, 0, 0, 0); layout->setSpacing(0);
     auto *sidebar = new QFrame(shell); sidebar->setObjectName("padSidebar"); sidebar->setFixedWidth(232);
     auto *side = new QVBoxLayout(sidebar); side->setContentsMargins(12, 16, 12, 12); side->setSpacing(6);
-    auto *brandRow = new QHBoxLayout(); brandRow->setContentsMargins(10, 4, 0, 4); brandRow->setSpacing(10);
-    auto *brandMark = new QLabel(sidebar);
-    QPixmap brandPixmap(QStringLiteral(":/images/pad-mark.png")); brandPixmap.setDevicePixelRatio(2); brandMark->setPixmap(brandPixmap);
-    brandRow->addWidget(brandMark); brandRow->addWidget(text(QObject::tr("Pad"), "padBrand", sidebar)); brandRow->addStretch(1);
-    side->addLayout(brandRow); side->addSpacing(20);
+    side->addSpacing(8);
     side->addWidget(text(QObject::tr("Controllers"), "padSection", sidebar));
     auto *deviceList = new QListWidget(sidebar); deviceList->setObjectName("padControllers");
     deviceList->setMaximumHeight(102);
@@ -297,7 +293,7 @@ void PadUi::install(QMainWindow *window, QWidget *central, QStackedWidget *stack
             status->setText(on ? QObject::tr("\u25CF  Connected") : QObject::tr("\u25CF  No controller"));
             status->setProperty("connected", on); status->style()->unpolish(status); status->style()->polish(status);
         });
-        tick->start();
+        tick->start(); QMetaObject::invokeMethod(tick, "timeout");
     }
     if (auto *bar = controllers->findChild<QTabBar *>()) bar->hide();
     if (auto *empty = stack->findChild<QLabel *>("label"))
