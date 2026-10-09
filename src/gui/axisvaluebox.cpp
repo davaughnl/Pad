@@ -213,9 +213,9 @@ void AxisValueBox::paintEvent(QPaintEvent *event)
 
     QPainter paint(this);
 
-    paint.setPen(QColor("#19191c"));
-    paint.setBrush(QColor("#19191c"));
-    QBrush brush(QColor("#19191c"));
+    paint.setPen(QColor("#131316"));
+    paint.setBrush(QColor("#131316"));
+    QBrush brush(QColor("#131316"));
 
     if (m_throttle == 0)
     {

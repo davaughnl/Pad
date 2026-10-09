@@ -26,10 +26,10 @@ inline void compactDialog(QDialog *dialog)
     dialog->setStyleSheet(dialog->styleSheet() + QStringLiteral(
         "QGroupBox { padding: 16px; margin-top: 16px; }"
         "QGroupBox::title { color: #b8b8bf; left: 16px; }"
-        "QFrame[frameShape=\"4\"] { background: #303035; color: #303035; }"
+        "QFrame[frameShape=\"4\"] { background: #1c1c20; color: #1c1c20; }"
         "QComboBox, QLineEdit, QSpinBox, QDoubleSpinBox, QPushButton { min-height: 24px; max-height: 24px; padding: 0 10px; }"
         "QSpinBox QLineEdit, QDoubleSpinBox QLineEdit { min-height: 0; max-height: 16777215px; padding: 0; border: none; background: transparent; }"
-        "QFrame[frameShape=\"4\"] { color: #303035; background: #303035; max-height: 1px; border: none; }"));
+        "QFrame[frameShape=\"4\"] { color: #1c1c20; background: #1c1c20; max-height: 1px; border: none; }"));
     for (auto *layout : dialog->findChildren<QLayout *>()) {
         const bool root = layout == dialog->layout();
         layout->setContentsMargins(root ? 20 : 0, root ? 20 : 0, root ? 20 : 0, root ? 20 : 0);
