@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QTimer>
 #include "buttoneditdialog.h"
 #include "ui_buttoneditdialog.h"
 
@@ -73,12 +72,6 @@ ButtonEditDialog::ButtonEditDialog(InputDevice *joystick, bool isNumKeypad, QWid
 
     setAttribute(Qt::WA_DeleteOnClose);
     setWindowTitle(tr("Choose your keyboard key"));
-    // Hug the contents instead of opening a mostly empty canvas.
-    QTimer::singleShot(0, this, [this]() {
-        setMinimumSize(0, 0);
-        layout()->activate();
-        resize(qMax(680, layout()->totalMinimumSize().width()) + 0, layout()->totalMinimumSize().height());
-    });
     update();
 
     instance = this;

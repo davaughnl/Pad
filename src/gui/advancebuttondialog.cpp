@@ -83,10 +83,9 @@ AdvanceButtonDialog::AdvanceButtonDialog(JoyButton *button, QWidget *parent)
     ui->stackedWidget->setCurrentWidget(ui->page);
     // Match the top-level footprint to the active page, with Close always outside the content.
     auto fitPage = [this](int row) {
-        Q_UNUSED(row);
-        setMinimumSize(0, 0);
-        layout()->activate();
-        resize(820, layout()->totalMinimumSize().height() + (row == 0 ? 90 : 0));
+        const int pageHeight = row == 0 ? 360 : (row == 2 ? 360 : 320);
+        setMinimumHeight(row == 0 ? 340 : 280);
+        resize(960, pageHeight);
     };
     connect(ui->listWidget, &QListWidget::currentRowChanged, this, fitPage);
     fitPage(0);
