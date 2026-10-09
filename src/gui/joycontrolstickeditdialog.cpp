@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QTimer>
 #include "joycontrolstickeditdialog.h"
 #include "ui_joycontrolstickeditdialog.h"
 #include "pad/paddialogpresentation.h"
@@ -43,6 +44,7 @@ JoyControlStickEditDialog::JoyControlStickEditDialog(JoyControlStick *stick, boo
     , helper(stick)
 {
     ui->setupUi(this);
+    QTimer::singleShot(0, this, [this]() { resize(width(), minimumSizeHint().height()); });
     this->keypadUnlocked = keypadUnlocked;
     setAttribute(Qt::WA_DeleteOnClose);
 
