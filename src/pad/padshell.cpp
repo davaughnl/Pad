@@ -284,8 +284,8 @@ void PadUi::install(QMainWindow *window, QWidget *central, QStackedWidget *stack
     if (auto *bar = window->menuBar())
     {
         auto *logo = new QLabel(bar); QPixmap mark(QStringLiteral(":/images/pad-mark.png")); logo->setPixmap(mark.scaled(22, 22, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-        logo->setContentsMargins(12, 0, 6, 0); logo->setFixedHeight(40); logo->setAlignment(Qt::AlignVCenter); bar->setCornerWidget(logo, Qt::TopLeftCorner);
-        auto *status = new QLabel(bar); status->setObjectName("padConnection"); status->setContentsMargins(0, 0, 14, 0); status->setFixedHeight(40); status->setAlignment(Qt::AlignVCenter | Qt::AlignRight);
+        logo->setContentsMargins(12, 4, 6, 0); logo->setFixedHeight(40); logo->setAlignment(Qt::AlignVCenter); bar->setCornerWidget(logo, Qt::TopLeftCorner);
+        auto *status = new QLabel(bar); status->setObjectName("padConnection"); status->setContentsMargins(0, 4, 14, 0); status->setFixedHeight(40); status->setAlignment(Qt::AlignVCenter | Qt::AlignRight);
         bar->setCornerWidget(status, Qt::TopRightCorner); logo->show(); status->show();
         auto *tick = new QTimer(status); tick->setInterval(400);
         QObject::connect(tick, &QTimer::timeout, status, [status, controllers]() {
