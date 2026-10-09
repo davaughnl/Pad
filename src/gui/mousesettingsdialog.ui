@@ -16,21 +16,6 @@
   <property name="windowTitle">
    <string>Mouse Settings</string>
   </property>
-  <property name="styleSheet">
-   <string notr="true">QWidget { font-family: "Geist"; font-size: 13px; font-weight: 400; }
-QDialog { background: #111113; }
-QPushButton, QToolButton { min-height: 24px; padding: 5px 12px; }
-QComboBox, QLineEdit, QSpinBox, QDoubleSpinBox { min-height: 24px; padding-top: 5px; padding-bottom: 5px; }
-QGroupBox { padding: 16px; margin-top: 16px; }
-QGroupBox::title { color: #b8b8bf; left: 16px; }
-QLabel:disabled, QCheckBox:disabled { color: #67676f; }
-JoyControlStickButtonPushButton[isflashing="true"] { background: #e8e8eb; color: #111113; border-color: #ffffff; }
-QDialogButtonBox { border: none; padding-top: 8px; }
-QFrame[frameShape="4"], QFrame[frameShape="5"] { color: #29292d; background: #29292d; max-height: 1px; border: none; }
-QGroupBox::indicator { width: 16px; height: 16px; border: 1px solid #505058; border-radius: 4px; background: #19191c; }
-QGroupBox::indicator:checked { background: #eeeeef; image: url(:/pad/icons/check-dark.svg); }
- </string>
-  </property>
   <layout class="QVBoxLayout" name="verticalLayout_9">
    <property name="spacing"><number>8</number></property>
    <property name="leftMargin"><number>24</number></property>
