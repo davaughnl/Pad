@@ -395,6 +395,7 @@ QDialog *PadUi::createOnboardingDialog(QWidget *parent, QTabWidget *controllers,
     auto *skip = new QPushButton(QObject::tr("Skip"), dialog);
     auto *back = new QPushButton(QObject::tr("Back"), dialog);
     auto *next = new QPushButton(QObject::tr("Next"), dialog);
+    skip->setAutoDefault(false); back->setAutoDefault(false); next->setDefault(true); next->setFocus();
     nav->addWidget(skip); nav->addStretch(1); nav->addWidget(back); nav->addWidget(next);
     root->addWidget(step); root->addWidget(stack, 1); root->addLayout(nav);
 
