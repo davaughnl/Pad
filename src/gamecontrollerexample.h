@@ -21,6 +21,7 @@
 
 #include <QImage>
 #include <QPixmap>
+#include <QPointF>
 #include <QWidget>
 
 class QPaintEvent;
@@ -59,8 +60,7 @@ class GameControllerExample : public QWidget
 
   private:
     QPixmap art;
-    bool playstation = false;
-    bool dualsense = false;
+    const QPointF *marks = nullptr;
     QImage controllerimage;
     QImage buttonimage;
     QImage axisimage;

@@ -2,202 +2,43 @@
 <ui version="4.0">
  <class>AddEditAutoProfileDialog</class>
  <widget class="QDialog" name="AddEditAutoProfileDialog">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>478</width>
-    <height>461</height>
-   </rect>
-  </property>
-  <property name="windowTitle">
-   <string>Auto Profile Dialog</string>
-  </property>
-  <property name="modal">
-   <bool>true</bool>
-  </property>
+  <property name="geometry"><rect><x>0</x><y>0</y><width>478</width><height>330</height></rect></property>
+  <property name="windowTitle"><string>Add game</string></property>
+  <property name="modal"><bool>true</bool></property>
   <layout class="QVBoxLayout" name="verticalLayout_7">
-   <item>
-    <layout class="QVBoxLayout" name="verticalLayout_5">
-     <item>
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>Pro&amp;file:</string>
-       </property>
-       <property name="buddy">
-        <cstring>profileLineEdit</cstring>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout">
-       <item>
-        <widget class="QLineEdit" name="profileLineEdit"/>
-       </item>
-       <item>
-        <widget class="QPushButton" name="profileBrowsePushButton">
-         <property name="text">
-          <string>Browse</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <widget class="QGroupBox" name="groupBox">
-     <property name="title">
-      <string>Window:</string>
-     </property>
-     <property name="flat">
-      <bool>false</bool>
-     </property>
-     <property name="checkable">
-      <bool>false</bool>
-     </property>
+   <item><widget class="QLabel" name="introLabel"><property name="text"><string>Pick a game and the profile to load when it is in front. Pad switches back when you leave it.</string></property><property name="wordWrap"><bool>true</bool></property></widget></item>
+   <item><widget class="QLabel" name="label_2"><property name="text"><string>Game</string></property><property name="buddy"><cstring>applicationLineEdit</cstring></property></widget></item>
+   <item><layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item><widget class="QLineEdit" name="applicationLineEdit"><property name="placeholderText"><string>Choose the game's .exe</string></property></widget></item>
+     <item><widget class="QPushButton" name="applicationPushButton"><property name="text"><string>Browse</string></property></widget></item>
+     <item><widget class="QPushButton" name="selectWindowPushButton"><property name="toolTip"><string>Click an application window to fill in its file path.</string></property><property name="text"><string>Select</string></property></widget></item>
+   </layout></item>
+   <item><widget class="QLabel" name="label"><property name="text"><string>Profile</string></property><property name="buddy"><cstring>profileLineEdit</cstring></property></widget></item>
+   <item><layout class="QHBoxLayout" name="horizontalLayout">
+     <item><widget class="QLineEdit" name="profileLineEdit"><property name="placeholderText"><string>Choose a saved profile</string></property></widget></item>
+     <item><widget class="QPushButton" name="profileBrowsePushButton"><property name="text"><string>Browse</string></property></widget></item>
+   </layout></item>
+   <item><widget class="QLabel" name="devicesLabel"><property name="text"><string>Controller</string></property><property name="buddy"><cstring>devicesComboBox</cstring></property></widget></item>
+   <item><widget class="QComboBox" name="devicesComboBox"/></item>
+   <item><widget class="QCheckBox" name="asDefaultCheckBox"><property name="enabled"><bool>false</bool></property><property name="toolTip"><string>Use this profile as the default for the device, instead of the all-devices default.</string></property><property name="text"><string>Set as Default for Controller</string></property></widget></item>
+   <item><widget class="QPushButton" name="advancedToggleButton"><property name="checkable"><bool>true</bool></property><property name="flat"><bool>true</bool></property><property name="text"><string>Match by window title</string></property></widget></item>
+   <item><widget class="QWidget" name="advancedWidget">
      <layout class="QVBoxLayout" name="verticalLayout_2">
-      <property name="spacing">
-       <number>6</number>
-      </property>
-      <property name="bottomMargin">
-       <number>4</number>
-      </property>
-      <item>
-       <widget class="QPushButton" name="detectWinPropsSelectWindowPushButton">
-        <property name="toolTip">
-         <string>Click an application window to fill in its file path.</string>
-        </property>
-        <property name="text">
-         <string>Detect Window Properties</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
-        <item>
-         <widget class="QLabel" name="winClassLabel">
-          <property name="text">
-           <string>&amp;Class:</string>
-          </property>
-          <property name="buddy">
-           <cstring>applicationLineEdit</cstring>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLineEdit" name="winClassLineEdit"/>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_4">
-        <item>
-         <widget class="QLabel" name="winNameLabel">
-          <property name="text">
-           <string>T&amp;itle:  </string>
-          </property>
-          <property name="buddy">
-           <cstring>applicationLineEdit</cstring>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLineEdit" name="winNameLineEdit"/>
-        </item>
-        <item>
-         <widget class="QCheckBox" name="setPartialCheckBox">
-          <property name="text">
-           <string>set partial title</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <item>
-         <widget class="QLabel" name="label_2">
-          <property name="text">
-           <string>Application:    </string>
-          </property>
-          <property name="buddy">
-           <cstring>applicationLineEdit</cstring>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLineEdit" name="applicationLineEdit"/>
-        </item>
-        <item>
-         <widget class="QPushButton" name="applicationPushButton">
-          <property name="text">
-           <string>Browse</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="selectWindowPushButton">
-          <property name="toolTip">
-           <string>Click an application window to fill in its file path.</string>
-          </property>
-          <property name="text">
-           <string>Select</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
+      <property name="leftMargin"><number>0</number></property><property name="topMargin"><number>0</number></property><property name="rightMargin"><number>0</number></property><property name="bottomMargin"><number>0</number></property>
+      <item><widget class="QPushButton" name="detectWinPropsSelectWindowPushButton"><property name="toolTip"><string>Click an application window to fill in its file path.</string></property><property name="text"><string>Detect Window Properties</string></property></widget></item>
+      <item><layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item><widget class="QLabel" name="winClassLabel"><property name="text"><string>&amp;Class:</string></property><property name="buddy"><cstring>winClassLineEdit</cstring></property></widget></item>
+        <item><widget class="QLineEdit" name="winClassLineEdit"/></item>
+      </layout></item>
+      <item><layout class="QHBoxLayout" name="horizontalLayout_4">
+        <item><widget class="QLabel" name="winNameLabel"><property name="text"><string>Title</string></property><property name="buddy"><cstring>winNameLineEdit</cstring></property></widget></item>
+        <item><widget class="QLineEdit" name="winNameLineEdit"/></item>
+        <item><widget class="QCheckBox" name="setPartialCheckBox"><property name="text"><string>partial match</string></property></widget></item>
+      </layout></item>
      </layout>
-    </widget>
-   </item>
-   <item>
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <item>
-      <widget class="QLabel" name="devicesLabel">
-       <property name="text">
-        <string>De&amp;vices:</string>
-       </property>
-       <property name="buddy">
-        <cstring>devicesComboBox</cstring>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QComboBox" name="devicesComboBox"/>
-     </item>
-     <item>
-      <widget class="QCheckBox" name="asDefaultCheckBox">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="toolTip">
-        <string>Use this profile as the default for the device, instead of the all-devices default.</string>
-       </property>
-       <property name="text">
-        <string>Set as Default for Controller</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <widget class="Line" name="line">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-     </property>
-    </widget>
-   </item>
+   </widget></item>
+   <item><spacer name="verticalSpacer"><property name="orientation"><enum>Qt::Vertical</enum></property><property name="sizeHint" stdset="0"><size><width>20</width><height>0</height></size></property></spacer></item>
+   <item><widget class="QDialogButtonBox" name="buttonBox"><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="standardButtons"><set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set></property></widget></item>
   </layout>
  </widget>
  <resources/>

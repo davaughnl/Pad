@@ -38,6 +38,7 @@
 #endif
 
 #include <QApplication>
+#include <QIcon>
 #include <QDebug>
 #include <QFileInfo>
 #include <QList>
@@ -121,6 +122,24 @@ AddEditAutoProfileDialog::AddEditAutoProfileDialog(AutoProfileInfo *info, AntiMi
     // ui->winNameLabel->setVisible(false);
 #endif
     ui->asDefaultCheckBox->setEnabled(info->isCurrentDefault());
+
+    // Simple by default: game + profile. Window-title matching stays one click away.
+    const bool hasTitle = !info->getWindowName().isEmpty() || !info->getWindowClass().isEmpty();
+    ui->advancedWidget->setVisible(hasTitle);
+    ui->advancedToggleButton->setChecked(hasTitle);
+    auto chevron = [this](bool on) {
+        ui->advancedToggleButton->setIcon(QIcon(on ? QStringLiteral(":/pad/icons/chevron-up.svg") : QStringLiteral(":/pad/icons/chevron-down.svg")));
+    };
+    ui->advancedToggleButton->setIconSize(QSize(14, 14));
+    ui->advancedToggleButton->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Fixed);
+    layout()->setAlignment(ui->advancedToggleButton, Qt::AlignLeft);
+    chevron(hasTitle);
+    connect(ui->advancedToggleButton, &QPushButton::toggled, this, [this, chevron](bool on) {
+        chevron(on);
+        ui->advancedWidget->setVisible(on);
+        adjustSize();
+    });
+    setWindowTitle(edit ? tr("Edit game") : tr("Add game"));
 
     connect(ui->profileBrowsePushButton, &QPushButton::clicked, this, &AddEditAutoProfileDialog::openProfileBrowseDialog);
     connect(ui->applicationPushButton, &QPushButton::clicked, this, &AddEditAutoProfileDialog::openApplicationBrowseDialog);

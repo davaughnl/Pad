@@ -96,6 +96,7 @@ MainWindow::MainWindow(QMap<SDL_JoystickID, InputDevice *> *joysticks, CommandLi
     ui->setupUi(this);
     PadUi::install(this, ui->centralWidget, ui->stackedWidget, ui->tabWidget,
                    ui->actionUpdate_Joysticks, ui->actionOptions);
+    PadUi::showOnboardingIfFirstRun(this, ui->tabWidget, ui->actionOptions);
 
     setWindowIcon(PadderCommon::loadIcon("io.github.davaughnl.Pad", ":/images/pad.png"));
     ui->stackedWidget->setCurrentIndex(0);

@@ -52,6 +52,10 @@
         <file>images/hero-xbox.png</file>
         <file>images/hero-ps4.png</file>
         <file>images/hero-ps5.png</file>
+        <file>images/hero-x360.png</file>
+        <file>images/hero-switch.png</file>
+        <file>images/hero-stadia.png</file>
+        <file>images/hero-8bitdo.png</file>
 
         <file alias="images/actions/wiki.png">pad/icons/book.svg</file>
         <file alias="images/actions/about_qt.png">pad/icons/info.svg</file>

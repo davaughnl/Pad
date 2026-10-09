@@ -17,6 +17,7 @@
  */
 
 #include "gamecontrollerexample.h"
+#include "pad/padart.h"
 
 #include <QDebug>
 #include <QPaintEvent>
@@ -86,33 +87,11 @@ GameControllerExample::GameControllerExample(QWidget *parent)
     connect(this, &GameControllerExample::indexUpdated, this, [=]() { update(); });
 }
 
-// Marker positions on the realistic renders (hero-xbox.png 720x485, hero-ps4.png 720x429).
-// Order follows the mapping table: A,B,X,Y,Back,Start,Guide,LB,RB,LS,RS,
-// axes LX,LY,RX,RY, LT,RT, D-pad up,left,down,right.
-static const QPointF xboxMarks[] = {
-    {548, 188}, {598, 140}, {500, 140}, {550, 90}, {305, 138}, {413, 140}, {360, 78}, {175, 28}, {545, 28},
-    {165, 130}, {460, 240}, {165, 130}, {165, 130}, {460, 240}, {460, 240}, {150, 8}, {570, 8},
-    {262, 212}, {232, 243}, {262, 274}, {293, 243}};
-static const QPointF psMarks[] = {
-    {578, 175}, {630, 125}, {525, 125}, {578, 75}, {212, 60}, {508, 60}, {360, 215}, {190, 10}, {530, 10},
-    {265, 215}, {455, 215}, {265, 215}, {265, 215}, {455, 215}, {455, 215}, {215, 2}, {505, 2},
-    {130, 85}, {104, 125}, {142, 156}, {165, 125}};
-
-// DualSense render (hero-ps5.png 720x453), same order.
-static const QPointF dsMarks[] = {
-    {592, 170}, {634, 128}, {548, 128}, {592, 85}, {187, 50}, {533, 50}, {361, 219}, {139, 14}, {581, 14},
-    {241, 219}, {479, 219}, {241, 219}, {241, 219}, {479, 219}, {479, 219}, {128, 4}, {592, 4},
-    {130, 92}, {96, 126}, {130, 160}, {162, 126}};
-
 void GameControllerExample::setDevice(const QString &name)
 {
-    const QString n = name.toLower();
-    playstation = n.contains(QStringLiteral("ps4")) || n.contains(QStringLiteral("ps5")) || n.contains(QStringLiteral("dualshock"))
-        || n.contains(QStringLiteral("dualsense")) || n.contains(QStringLiteral("playstation")) || n.contains(QStringLiteral("wireless controller"));
-    dualsense = n.contains(QStringLiteral("dualsense")) || n.contains(QStringLiteral("ps5"));
-    if (dualsense) playstation = true;
-    art = QPixmap(dualsense ? QStringLiteral(":/images/hero-ps5.png")
-                            : playstation ? QStringLiteral(":/images/hero-ps4.png") : QStringLiteral(":/images/hero-xbox.png"));
+    const PadArt chosen = padArtFor(name);
+    art = QPixmap(QString::fromLatin1(chosen.path));
+    marks = chosen.marks;
     update();
 }
 
@@ -131,7 +110,7 @@ void GameControllerExample::paintEvent(QPaintEvent *event)
     QPixmap out = scaled; out.setDevicePixelRatio(dpr);
     paint.drawPixmap(origin, out);
 
-    const QPointF mark = (dualsense ? dsMarks : playstation ? psMarks : xboxMarks)[qBound(0, currentIndex, MAXBUTTONINDEX)];
+    const QPointF mark = marks[qBound(0, currentIndex, MAXBUTTONINDEX)];
     const qreal scale = logical.width() / 720.0;
     const QPointF centre = origin + mark * scale;
     const bool large = currentIndex == 9 || currentIndex == 10 || (currentIndex >= 11 && currentIndex <= 14);

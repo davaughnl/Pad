@@ -699,7 +699,7 @@ per seconds.</string>
          <item>
           <widget class="QLabel" name="autoProfileDescription">
            <property name="text">
-            <string>Switch profiles automatically based on the active application window.</string>
+            <string>Load a profile automatically when a game is in front. Add a game, choose its profile, done.</string>
            </property>
            <property name="wordWrap">
             <bool>true</bool>
@@ -808,7 +808,7 @@ per seconds.</string>
            </column>
            <column>
             <property name="text">
-             <string>Device</string>
+             <string>Controller</string>
             </property>
            </column>
            <column>
@@ -828,7 +828,7 @@ per seconds.</string>
            </column>
            <column>
             <property name="text">
-             <string>Program</string>
+             <string>Game</string>
             </property>
            </column>
            <column>
@@ -867,7 +867,7 @@ per seconds.</string>
               <bool>false</bool>
              </property>
              <property name="text">
-              <string>Add</string>
+              <string>Add game</string>
              </property>
              <property name="icon">
               <iconset resource="../resources.qrc"><normaloff>:/pad/icons/plus.svg</normaloff></iconset>
