@@ -13,6 +13,7 @@
 #include <QLineEdit>
 #include <QListWidget>
 #include <QStackedWidget>
+#include <QTimer>
 #include <QPushButton>
 #include <QSlider>
 #include <QScrollArea>
@@ -54,6 +55,14 @@ inline void compactDialog(QDialog *dialog)
         if (auto *group = qobject_cast<QGroupBox *>(widget))
             group->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
     }
+    // Re-assert control height after the dialog finishes constructing and showing.
+    QTimer::singleShot(0, dialog, [dialog]() {
+        for (auto *widget : dialog->findChildren<QWidget *>()) {
+            if (qobject_cast<QAbstractSpinBox *>(widget) || qobject_cast<QComboBox *>(widget) || qobject_cast<QPushButton *>(widget) ||
+                (qobject_cast<QLineEdit *>(widget) && !qobject_cast<QAbstractSpinBox *>(widget->parentWidget())))
+                widget->setFixedHeight(24);
+        }
+    });
 }
 
 // Expanding-content variant: same normalization, but native layout expansion is
