@@ -3,6 +3,7 @@
 // editor, context menu and controller signal. No mapping state is duplicated.
 #ifndef PADMAPPING_H
 #define PADMAPPING_H
+#include <QLineEdit>
 #include "joybuttonwidget.h"
 #include "joyaxiswidget.h"
 #include "joycontrolstickbuttonpushbutton.h"
@@ -165,6 +166,15 @@ public:
         table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         table->header()->setSectionResizeMode(QHeaderView::Fixed);
         table->header()->setStretchLastSection(true); table->header()->setMinimumSectionSize(64);
+        auto *search = new QLineEdit(this); search->setObjectName(QStringLiteral("padSearch"));
+        search->setPlaceholderText(tr("Search inputs and actions")); search->setClearButtonEnabled(true);
+        search->addAction(QIcon(QStringLiteral(":/pad/icons/search.svg")), QLineEdit::LeadingPosition);
+        layout->addWidget(search); layout->addSpacing(8);
+        QObject::connect(search, &QLineEdit::textChanged, this, [this](const QString &needle) {
+            for (const Row &row : rows)
+                row.item->setHidden(!needle.isEmpty() && !row.item->text(0).contains(needle, Qt::CaseInsensitive)
+                                    && !row.action->text().contains(needle, Qt::CaseInsensitive));
+        });
         layout->addWidget(table);
         for (QWidget *root : roots) {
             QList<FlashButtonWidget *> sources = root->findChildren<FlashButtonWidget *>();
@@ -174,11 +184,11 @@ public:
                 return model(a) == nullptr && model(b) != nullptr;
             });
             for (auto *source : sources) {
-                auto *item = new QTreeWidgetItem(table); item->setSizeHint(0, QSize(0, 36));
+                auto *item = new QTreeWidgetItem(table); item->setSizeHint(0, QSize(0, 40));
                 const bool group = model(source) == nullptr;
                 item->setIcon(0, QIcon(group ? ":/pad/icons/move.svg" : ":/pad/icons/gamepad.svg"));
                 auto *cell = new QWidget(table); auto *cellLayout = new QVBoxLayout(cell);
-                cellLayout->setContentsMargins(0, 5, 14, 5);
+                cellLayout->setContentsMargins(0, 6, 14, 6);
                 auto *action = new ActionButton(cell); cellLayout->addWidget(action); action->setFixedHeight(26); action->setProperty("padMappingAction", true);
                 action->setMinimumHeight(0); action->setIcon(QIcon(group ? ":/pad/icons/sliders.svg" : ":/pad/icons/keyboard.svg")); action->setIconSize(QSize(14, 14));
                 action->setContextMenuPolicy(Qt::CustomContextMenu);

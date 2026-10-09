@@ -39,6 +39,7 @@
         <file alias="icons/download.svg">pad/icons/download.svg</file>
         <file alias="icons/bug.svg">pad/icons/bug.svg</file>
         <file alias="icons/ellipsis.svg">pad/icons/ellipsis.svg</file>
+        <file alias="icons/search.svg">pad/icons/search.svg</file>
     </qresource>
     <qresource prefix="/">
         <file>pad/icons/chevron-up.svg</file>

@@ -185,3 +185,13 @@ QLabel#padConnection[connected="true"] { color: #e4e4e7; }
 QMenuBar { background: #0b0b0d; border-bottom: 1px solid #1c1c20; padding: 6px 8px; }
 QMenuBar::item { padding: 7px 14px; border-radius: 6px; color: #b8b8bf; }
 QMenuBar::item:selected { background: #17171b; color: #fafafa; }
+
+/* ---------- segmented sets + search ---------- */
+QPushButton[padSetTab="true"] { background: transparent; color: #9d9da5; border: none; border-radius: 6px; padding: 0; min-height: 28px; margin: 0 2px; }
+QPushButton[padSetTab="true"][setActive="true"] { background: #26262c; color: #f4f4f5; border: none; }
+QPushButton[padSetTab="true"]:hover { background: #1c1c21; color: #e8e8eb; }
+QPushButton#setsMenuButton { background: #17171a; border: 1px solid #2a2a30; border-radius: 6px; padding: 0 12px; }
+QLineEdit#padSearch { background: #131316; border: 1px solid #26262b; border-radius: 8px; padding: 7px 10px; color: #f4f4f5; min-height: 20px; }
+QLineEdit#padSearch:focus { border: 1px solid #45454d; }
+QTreeWidget#padMappingTable::item { height: 40px; }
+QTreeWidget#padMappingTable QHeaderView::section { background: #131316; color: #55555c; height: 28px; font-size: 11px; padding: 4px 14px; border: none; border-bottom: 1px solid #1e1e22; }

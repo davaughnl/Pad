@@ -321,6 +321,7 @@ JoyTabWidget::JoyTabWidget(InputDevice *joystick, AntiMicroSettings *settings, Q
     horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
 
     setsMenuButton = new QPushButton(tr("Sets"), this);
+    setsMenuButton->setObjectName(QStringLiteral("setsMenuButton"));
     QMenu *setMenu = new QMenu(setsMenuButton);
     copySetMenu = new QMenu(tr("Copy from Set"), setMenu);
     QAction *setSettingsAction = new QAction(tr("Settings"), setMenu);
