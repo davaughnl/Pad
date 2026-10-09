@@ -22,6 +22,7 @@
 #include <QPalette>
 #include <QProxyStyle>
 #include <QStyleFactory>
+#include <QIcon>
 #include <QPixmap>
 #include <QPointer>
 #include <QPushButton>
@@ -45,6 +46,12 @@ public:
         if (sheet.contains(QStringLiteral("\"Geist\"")) && qApp->font().family() != QStringLiteral("Geist"))
             widget->setStyleSheet(QString(sheet).replace(QStringLiteral("\"Geist\""),
                 QStringLiteral("\"%1\"").arg(qApp->font().family())));
+    }
+    int styleHint(StyleHint hint, const QStyleOption *option = nullptr, const QWidget *widget = nullptr,
+                  QStyleHintReturn *returnData = nullptr) const override
+    {
+        if (hint == SH_UnderlineShortcut) return 0; // No mnemonic underlines in the menu bar or buttons.
+        return QProxyStyle::styleHint(hint, option, widget, returnData);
     }
     QIcon standardIcon(StandardPixmap icon, const QStyleOption *option = nullptr,
                        const QWidget *widget = nullptr) const override
@@ -77,13 +84,13 @@ QPushButton *button(const QString &value, const char *icon, QWidget *parent)
     result->setIconSize(QSize(16, 16));
     return result;
 }
-// A generic modern controller, not the connected device's physical layout.
+// The same single-line controller drawing the mapping dialog uses, rendered crisp at any scale.
 class ControllerOutline : public QWidget
 {
 public:
     explicit ControllerOutline(QWidget *parent) : QWidget(parent)
     {
-        setMinimumSize(190, 100);
+        setMinimumSize(232, 144);
         setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         setAccessibleName(tr("Controller illustration"));
     }
@@ -91,77 +98,11 @@ protected:
     void paintEvent(QPaintEvent *) override
     {
         QPainter p(this);
-        p.setRenderHint(QPainter::Antialiasing);
-        const qreal scale = qMin(width() / 332.0, height() / 178.0);
-        p.translate((width() - 332 * scale) / 2, (height() - 178 * scale) / 2);
-        p.scale(scale, scale);
-        p.translate(-14, -20);
-        // The floating body has broad shoulders and tapering, sculpted grips.
-        QPainterPath body;
-        body.moveTo(91, 31);
-        body.cubicTo(68, 29, 48, 41, 40, 68);
-        body.cubicTo(27, 102, 19, 149, 31, 177);
-        body.cubicTo(39, 197, 59, 192, 73, 173);
-        body.cubicTo(91, 147, 99, 138, 118, 137);
-        body.cubicTo(151, 133, 209, 133, 242, 137);
-        body.cubicTo(261, 138, 269, 147, 287, 173);
-        body.cubicTo(301, 192, 321, 197, 329, 177);
-        body.cubicTo(341, 149, 333, 102, 320, 68);
-        body.cubicTo(312, 41, 292, 29, 269, 31);
-        body.cubicTo(231, 36, 129, 36, 91, 31);
-        body.closeSubpath();
-        QLinearGradient shoulder(0, 20, 0, 60);
-        shoulder.setColorAt(0, QColor("#626262")); shoulder.setColorAt(1, QColor("#222222"));
-        p.setBrush(shoulder); p.setPen(QPen(QColor("#727272"), 0.8));
-        p.drawRoundedRect(QRectF(65, 22, 64, 22), 8, 8);
-        p.drawRoundedRect(QRectF(231, 22, 64, 22), 8, 8);
-        QLinearGradient shell(75, 30, 195, 187);
-        shell.setColorAt(0, QColor("#4c4c4c")); shell.setColorAt(0.42, QColor("#2c2c2c"));
-        shell.setColorAt(1, QColor("#171717"));
-        p.setBrush(shell); p.setPen(QPen(QColor("#737373"), 1.2)); p.drawPath(body);
-        p.save(); p.setClipPath(body);
-        QLinearGradient rim(0, 30, 0, 112);
-        rim.setColorAt(0, QColor(255, 255, 255, 100)); rim.setColorAt(1, QColor(255, 255, 255, 0));
-        p.setBrush(Qt::NoBrush); p.setPen(QPen(rim, 3)); p.drawPath(body);
-        // Grip seams disappear into the underside, not an outlined cartoon.
-        p.setPen(QPen(QColor(255, 255, 255, 22), 1));
-        p.drawLine(QPointF(79, 116), QPointF(46, 179));
-        p.drawLine(QPointF(281, 116), QPointF(314, 179));
-        p.restore();
-        QLinearGradient panel(0, 47, 0, 90);
-        panel.setColorAt(0, QColor("#1d1d1d")); panel.setColorAt(1, QColor("#292929"));
-        p.setBrush(panel); p.setPen(QPen(QColor("#515151"), 0.8));
-        p.drawRoundedRect(QRectF(135, 48, 90, 43), 10, 10);
-        p.setPen(QPen(QColor(255, 255, 255, 25), 5, Qt::SolidLine, Qt::RoundCap));
-        p.drawLine(QPointF(148, 43), QPointF(212, 43));
-        p.setPen(QPen(QColor("#d2d2d2"), 1.8, Qt::SolidLine, Qt::RoundCap));
-        p.drawLine(QPointF(148, 43), QPointF(212, 43));
-        // Recessed symmetric sticks with matte caps and concentric rims.
-        for (const QPointF &c : {QPointF(123, 119), QPointF(237, 119)}) {
-            p.setPen(QPen(QColor("#474747"), 1)); p.setBrush(QColor("#131313")); p.drawEllipse(c, 25, 25);
-            QRadialGradient well(c - QPointF(5, 6), 24);
-            well.setColorAt(0, QColor("#555555")); well.setColorAt(1, QColor("#232323"));
-            p.setBrush(well); p.setPen(QPen(QColor("#686868"), 0.8)); p.drawEllipse(c, 19, 19);
-            p.setBrush(QColor("#252525")); p.setPen(QPen(QColor("#424242"), 0.8)); p.drawEllipse(c, 15, 15);
-        }
-        QPainterPath cross;
-        cross.moveTo(76, 58); cross.lineTo(89, 58); cross.lineTo(89, 72);
-        cross.lineTo(103, 72); cross.lineTo(103, 85); cross.lineTo(89, 85);
-        cross.lineTo(89, 99); cross.lineTo(76, 99); cross.lineTo(76, 85);
-        cross.lineTo(62, 85); cross.lineTo(62, 72); cross.lineTo(76, 72); cross.closeSubpath();
-        p.setBrush(QColor("#151515")); p.setPen(QPen(QColor("#6a6a6a"), 1)); p.drawPath(cross);
-        p.setPen(QPen(QColor("#343434"), 1)); p.drawLine(QPointF(78, 79), QPointF(87, 79));
-        for (const QPointF &c : {QPointF(278, 60), QPointF(295, 78), QPointF(278, 96), QPointF(261, 78)}) {
-            p.setPen(Qt::NoPen); p.setBrush(QColor(255, 255, 255, 12)); p.drawEllipse(c, 12, 12);
-            QLinearGradient face(c - QPointF(0, 8), c + QPointF(0, 8));
-            face.setColorAt(0, QColor("#5a5a5a")); face.setColorAt(1, QColor("#282828"));
-            p.setBrush(face); p.setPen(QPen(QColor("#818181"), 0.8)); p.drawEllipse(c, 8.5, 8.5);
-        }
-        p.setBrush(QColor("#171717")); p.setPen(QPen(QColor("#616161"), 0.8));
-        p.drawRoundedRect(QRectF(113, 61, 12, 7), 3, 3);
-        p.drawRoundedRect(QRectF(235, 61, 12, 7), 3, 3);
-        p.drawEllipse(QPointF(180, 112), 7, 7);
-        p.setPen(QPen(QColor("#bcbcbc"), 1)); p.drawLine(QPointF(177, 112), QPointF(183, 112));
+        p.setRenderHint(QPainter::SmoothPixmapTransform);
+        const qreal ratio = devicePixelRatioF();
+        QPixmap art = QIcon(QStringLiteral(":/images/controllermap.svg")).pixmap(QSize(qRound(width() * ratio), qRound(height() * ratio)));
+        art.setDevicePixelRatio(ratio);
+        p.drawPixmap(0, 0, art);
     }
 };
 void polishController(QWidget *page)
@@ -253,6 +194,7 @@ void PadUi::install(QMainWindow *window, QWidget *central, QStackedWidget *stack
     auto *settingsButton = button(QObject::tr("Settings"), "settings", sidebar);
     auto *updateStrip = new PadUpdateStrip(sidebar);
     auto *updateButton = button(PadUpdateStrip::buttonLabel(PadUpdateStrip::State::Hidden), "refresh", sidebar);
+    for (auto *nav : {refreshButton, updateButton, settingsButton}) nav->setProperty("padNav", true);
     side->addWidget(updateStrip); side->addWidget(refreshButton); side->addWidget(updateButton); side->addWidget(settingsButton);
     QObject::connect(refreshButton, &QPushButton::clicked, refresh, &QAction::trigger);
     // Updater: this block only presents UpdateManager state and forwards clicks.
@@ -317,14 +259,14 @@ void PadUi::install(QMainWindow *window, QWidget *central, QStackedWidget *stack
     body->addWidget(text(QObject::tr("Assign keyboard and mouse inputs to your controller."), "padSubtitle", workspace));
     body->addSpacing(8);
     auto *overview = new QFrame(workspace); overview->setObjectName("padOverview");
-    auto *overviewLayout = new QHBoxLayout(overview); overviewLayout->setContentsMargins(20, 10, 20, 10);
+    auto *overviewLayout = new QHBoxLayout(overview); overviewLayout->setContentsMargins(28, 16, 28, 16);
     auto *details = new QVBoxLayout(); details->setSpacing(2); details->setAlignment(Qt::AlignVCenter);
     auto *deviceName = text(QObject::tr("No controller connected"), "padDeviceName", overview);
     deviceName->setWordWrap(true); details->addWidget(deviceName);
     auto *profileName = text(QString(), "padSubtitle", overview); profileName->setWordWrap(true); details->addWidget(profileName);
     details->addSpacing(10); details->addWidget(text(QObject::tr("Keyboard + mouse"), "padSubtitle", overview));
     overviewLayout->addLayout(details, 1);
-    auto *outline = new ControllerOutline(overview); outline->setFixedSize(190, 100);
+    auto *outline = new ControllerOutline(overview); outline->setFixedSize(232, 144);
     overviewLayout->addWidget(outline, 0, Qt::AlignRight | Qt::AlignVCenter);
     body->addWidget(overview); body->addWidget(stack, 1); layout->addWidget(workspace, 1);
     root->insertWidget(0, shell, 1);
