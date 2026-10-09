@@ -84,26 +84,37 @@ QPushButton *button(const QString &value, const char *icon, QWidget *parent)
     result->setIconSize(QSize(16, 16));
     return result;
 }
-// The same single-line controller drawing the mapping dialog uses, rendered crisp at any scale.
+// Realistic render of the controller that is actually connected (Xbox or PlayStation).
 class ControllerOutline : public QWidget
 {
 public:
     explicit ControllerOutline(QWidget *parent) : QWidget(parent)
     {
-        setMinimumSize(232, 144);
+        setMinimumSize(280, 170);
         setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         setAccessibleName(tr("Controller illustration"));
+        setDevice(QString());
+    }
+    void setDevice(const QString &name)
+    {
+        const QString n = name.toLower();
+        const bool playstation = n.contains(QStringLiteral("ps4")) || n.contains(QStringLiteral("ps5")) || n.contains(QStringLiteral("dualshock"))
+            || n.contains(QStringLiteral("dualsense")) || n.contains(QStringLiteral("playstation")) || n.contains(QStringLiteral("wireless controller"));
+        art = QPixmap(playstation ? QStringLiteral(":/images/hero-ps4.png") : QStringLiteral(":/images/hero-xbox.png"));
+        update();
     }
 protected:
     void paintEvent(QPaintEvent *) override
     {
         QPainter p(this);
         p.setRenderHint(QPainter::SmoothPixmapTransform);
-        const qreal ratio = devicePixelRatioF();
-        QPixmap art = QIcon(QStringLiteral(":/images/controllermap.svg")).pixmap(QSize(qRound(width() * ratio), qRound(height() * ratio)));
-        art.setDevicePixelRatio(ratio);
-        p.drawPixmap(0, 0, art);
+        const QPixmap scaled = art.scaled(size() * devicePixelRatioF(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        QPixmap out = scaled; out.setDevicePixelRatio(devicePixelRatioF());
+        const QSizeF logical = QSizeF(scaled.size()) / devicePixelRatioF();
+        p.drawPixmap(QPointF((width() - logical.width()) / 2, (height() - logical.height()) / 2), out);
     }
+private:
+    QPixmap art;
 };
 void polishController(QWidget *page)
 {
@@ -277,7 +288,7 @@ void PadUi::install(QMainWindow *window, QWidget *central, QStackedWidget *stack
     auto *profileName = text(QString(), "padSubtitle", overview); profileName->setWordWrap(true); details->addWidget(profileName);
     details->addSpacing(10); details->addWidget(text(QObject::tr("Keyboard + mouse"), "padSubtitle", overview));
     overviewLayout->addLayout(details, 1);
-    auto *outline = new ControllerOutline(overview); outline->setFixedSize(232, 144);
+    auto *outline = new ControllerOutline(overview); outline->setFixedSize(280, 170);
     overviewLayout->addWidget(outline, 0, Qt::AlignRight | Qt::AlignVCenter);
     body->addWidget(overview); body->addWidget(stack, 1); layout->addWidget(workspace, 1);
     root->insertWidget(0, shell, 1);
@@ -288,7 +299,7 @@ void PadUi::install(QMainWindow *window, QWidget *central, QStackedWidget *stack
         empty->setAlignment(Qt::AlignCenter);
         empty->setText(QObject::tr("Connect a controller to get started.\nThen choose Refresh controllers in the sidebar."));
     }
-    auto sync = [controllers, deviceList, profileList, deviceName, profileName, overview, refresh, refreshButton]() {
+    auto sync = [controllers, deviceList, profileList, deviceName, profileName, overview, refresh, refreshButton, outline]() {
         QStringList devices;
         for (int i = 0; i < controllers->count(); ++i)
         {
@@ -311,6 +322,7 @@ void PadUi::install(QMainWindow *window, QWidget *central, QStackedWidget *stack
         overview->setVisible(controllers->count() > 0);
         deviceName->setText(controllers->currentIndex() >= 0 ? controllers->tabText(controllers->currentIndex()) : QObject::tr("No controller connected"));
         profileName->setText(box ? box->currentText() : QString());
+        outline->setDevice(controllers->currentIndex() >= 0 ? controllers->tabText(controllers->currentIndex()) : QString());
         refreshButton->setEnabled(refresh->isEnabled());
     };
     auto *timer = new QTimer(shell); timer->setInterval(400);
