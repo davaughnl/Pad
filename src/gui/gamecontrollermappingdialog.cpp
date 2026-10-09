@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QHeaderView>
 #include "gamecontrollermappingdialog.h"
 #include "ui_gamecontrollermappingdialog.h"
 #include "pad/paddialogpresentation.h"
@@ -107,6 +108,9 @@ GameControllerMappingDialog::GameControllerMappingDialog(InputDevice *device, An
     , helper(device)
 {
     ui->setupUi(this);
+    ui->buttonMappingTableWidget->verticalHeader()->setDefaultSectionSize(26);
+    ui->buttonMappingTableWidget->verticalHeader()->setMinimumSectionSize(26);
+    ui->gameControllerDisplayWidget->setDevice(device ? device->getName() + QLatin1Char(' ') + device->getSDLName() : QString());
     setAttribute(Qt::WA_DeleteOnClose);
 
     buttonGrabs = 0;

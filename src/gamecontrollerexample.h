@@ -20,6 +20,7 @@
 #define GAMECONTROLLEREXAMPLE_H
 
 #include <QImage>
+#include <QPixmap>
 #include <QWidget>
 
 class QPaintEvent;
@@ -54,8 +55,11 @@ class GameControllerExample : public QWidget
 
   public slots:
     void setActiveButton(int button);
+    void setDevice(const QString &name);
 
   private:
+    QPixmap art;
+    bool playstation = false;
     QImage controllerimage;
     QImage buttonimage;
     QImage axisimage;

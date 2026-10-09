@@ -36,6 +36,26 @@
 #include "keyboard/virtualmousepushbutton.h"
 #include "pad/padshell.h"
 #include "gui/joybuttonslot.h"
+#include "gui/quicksetdialog.h"
+#include "gui/setnamesdialog.h"
+#include "gui/mainsettingsdialog.h"
+#include "gui/calibration.h"
+#include "gui/extraprofilesettingsdialog.h"
+#include "gui/addeditautoprofiledialog.h"
+#include "gui/editalldefaultautoprofiledialog.h"
+#include "gui/dpadeditdialog.h"
+#include "gui/axiseditdialog.h"
+#include "gui/setaxisthrottledialog.h"
+#include "gui/qkeydisplaydialog.h"
+#include "gui/advancestickassignmentdialog.h"
+#include "gui/winappprofiletimerdialog.h"
+#include "autoprofileinfo.h"
+#include <QListWidget>
+#include <QVBoxLayout>
+#include <QMessageBox>
+#include "pad/padupdatestrip.h"
+#include <QMenu>
+#include <QMenuBar>
 #include <QPushButton>
 #include <QPixmap>
 #include <QApplication>
@@ -65,6 +85,7 @@ static void toggle(QDialog *dialog,const char *name) { click(control<QCheckBox>(
 static void capture(QDialog *dialog,const QString &output,const QString &name) {
     dialog->setAttribute(Qt::WA_DeleteOnClose,false); dialog->show(); dialog->raise(); dialog->activateWindow();
     QTest::qWait(750);
+    check(dialog->grab().save(output+"/"+name+"-window.png"),"Window grab failed");
     const auto screen=QApplication::primaryScreen();
     check(screen && screen->geometry().size()==QSize(1024,768), "Runner desktop must be 1024x768");
     check(screen->grabWindow(0).save(output+"/"+name+".png"), "Screenshot save failed");
@@ -132,6 +153,9 @@ int main(int argc,char **argv) {
             check(dialog->grab().save(output+"/controller-mapping-highlight-dpad-left-full.png"),"Mapping highlighted DPad Left capture failed");
             table->setCurrentCell(19,0);settle();
             check(dialog->grab().save(output+"/controller-mapping-highlight-dpad-down-full.png"),"Mapping highlighted DPad Down capture failed");
+            for(int row:{17,20}){table->setCurrentCell(row,0);settle();check(dialog->grab().save(output+"/controller-mapping-xbox-row"+QString::number(row)+"-full.png"),"Xbox dpad capture failed");}
+            art->setDevice("Wireless Controller");
+            for(int row:{0,3,17,18,19,20,6}){table->setCurrentCell(row,0);settle();check(dialog->grab().save(output+"/controller-mapping-ps4-row"+QString::number(row)+"-full.png"),"PS4 capture failed");}
             closeDialog(dialog);delete window;
         } else if(test=="status") {
             // Richer virtual device matching the row-clipping regression shape.
@@ -249,6 +273,66 @@ int main(int argc,char **argv) {
             check(button->getSpringWidth()==321&&button->getSpringHeight()==245,"Spring geometry failed");
             control<QComboBox>(dialog,"mouseModeComboBox")->setCurrentIndex(1);settle();check(button->getMouseMode()==JoyButton::MouseCursor,"Cursor mode restore failed");
             closeDialog(dialog);
+        } else if(test=="screens") {
+            QMap<SDL_JoystickID,InputDevice*> devices;
+            devices.insert(SDL_JoystickInstanceID(joystick->getJoyHandle()),joystick);
+            QList<InputDevice*> list; list.append(joystick);
+            auto shot=[&](QWidget *w,const char *name){std::fprintf(stderr,"SHOT %s\n",name);std::fflush(stderr);
+                w->show();w->raise();w->activateWindow();QTest::qWait(600);
+                check(w->grab().save(output+"/screen-"+name+".png"),"Screen capture failed");
+            };
+            auto *quick=new QuickSetDialog(joystick);shot(quick,"quickset");quick->hide();
+            auto *names=new SetNamesDialog(joystick);shot(names,"setnames");names->hide();
+            auto *settingsDlg=new MainSettingsDialog(settings,&list);shot(settingsDlg,"settings");
+            if(auto *cats=settingsDlg->findChild<QListWidget*>("categoriesListWidget")) for(int i=1;i<cats->count();++i){cats->setCurrentRow(i);QTest::qWait(400);check(settingsDlg->grab().save(output+"/screen-settings-"+QString::number(i)+".png"),"tab capture");}
+            settingsDlg->hide();
+            std::fprintf(stderr,"MAKE cal\n");std::fflush(stderr);auto *cal=new Calibration(joystick);shot(cal,"calibration");cal->hide();
+            auto *extra=new ExtraProfileSettingsDialog(joystick);shot(extra,"extraprofile");extra->hide();
+            auto *axis=new AxisEditDialog(set->getJoyAxis(0),false);shot(axis,"axis");axis->hide();
+            auto *thr=new SetAxisThrottleDialog(set->getJoyAxis(0));shot(thr,"axisthrottle");thr->hide();
+            auto *kd=new QKeyDisplayDialog;shot(kd,"keydisplay");kd->hide();
+            auto *adv=new AdvanceStickAssignmentDialog(joystick);shot(adv,"stickassign");adv->hide();
+            auto *tmr=new WinAppProfileTimerDialog;shot(tmr,"apptimer");tmr->hide();
+            AutoProfileInfo info("default","",true,false,nullptr);
+            auto *eall=new EditAllDefaultAutoProfileDialog(&info,settings);shot(eall,"autoprofile-default");eall->hide();
+            QList<QString> reserved;
+            auto *ap=new AddEditAutoProfileDialog(&info,settings,&list,reserved,false);shot(ap,"autoprofile-add");ap->hide();
+            auto *window=new MainWindow(&devices,new CommandLineUtility,settings);
+            window->makeJoystickTabs();window->fillButtons();window->resize(1000,700);window->show();QTest::qWait(800);
+            std::fprintf(stderr,"STEP menus\n");std::fflush(stderr);
+            for(auto *menu:window->findChildren<QMenu*>()){
+                if(menu->actions().isEmpty())continue;
+                menu->popup(window->mapToGlobal(QPoint(300,120)));QTest::qWait(400);
+                check(menu->grab().save(output+"/screen-menu-"+(menu->objectName().isEmpty()?QString::number(qintptr(menu)%9973):menu->objectName())+".png"),"menu capture");
+                menu->hide();
+            }
+            window->show();
+            window->hide();std::fprintf(stderr,"STEP msgbox\n");std::fflush(stderr);
+            {
+                QMessageBox box(QMessageBox::Warning,"Profile could not be loaded","The profile file is missing or damaged.",QMessageBox::Ok|QMessageBox::Cancel);
+                box.setInformativeText("Choose another profile or create a new one.");
+                shot(&box,"messagebox");
+            }
+            std::fprintf(stderr,"STEP multi\n");std::fflush(stderr);
+            {
+                const int i2=SDL_JoystickAttachVirtual(SDL_JOYSTICK_TYPE_UNKNOWN,4,10,1);check(i2>=0,"second virtual attach failed");
+                auto *joy2=new SensorFixtureJoystick(SDL_JoystickOpen(i2),i2,settings,nullptr);
+                QMap<SDL_JoystickID,InputDevice*> two;two.insert(SDL_JoystickInstanceID(joystick->getJoyHandle()),joystick);two.insert(SDL_JoystickInstanceID(joy2->getJoyHandle()),joy2);
+                CommandLineUtility c2;auto *multi=new MainWindow(&two,&c2,settings);
+                multi->makeJoystickTabs();multi->fillButtons();multi->resize(1000,700);multi->show();QTest::qWait(1000);
+                check(multi->grab().save(output+"/screen-main-two-controllers-full.png"),"multi capture");
+                multi->hide();
+            }
+            {
+                QWidget panel;panel.setObjectName("padUpdatePanel");panel.setFixedSize(220,120);
+                auto *lay=new QVBoxLayout(&panel);lay->setContentsMargins(0,12,0,0);
+                auto *strip=new PadUpdateStrip(&panel);lay->addWidget(strip);lay->addStretch(1);
+                using S=PadUpdateStrip::State;
+                struct Row{S st;const char *n;const char *d;int pct;};
+                const Row states[]={{S::UpToDate,"uptodate","",0},{S::Available,"available","1.2.0",0},{S::Downloading,"downloading","",42},{S::Ready,"ready","1.2.0",0},{S::Error,"error","Could not reach the update server",0},{S::Checking,"checking","",0}};
+                panel.show();
+                for(const Row &st:states){std::fprintf(stderr,"STATE %s\n",st.n);std::fflush(stderr);strip->setState(st.st,QString::fromLatin1(st.d),st.pct);QTest::qWait(300);check(panel.grab().save(output+QString("/screen-update-")+st.n+".png"),"update capture");}
+            }
         } else throw std::runtime_error("Unknown case");
         QMetaObject::invokeMethod(joystick,[joystick]{delete joystick;},Qt::BlockingQueuedConnection);
         worker.quit();worker.wait();delete settings;SDL_JoystickDetachVirtual(index);SDL_Quit();

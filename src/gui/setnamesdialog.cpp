@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QHeaderView>
 #include "setnamesdialog.h"
 #include "ui_setnamesdialog.h"
 #include "pad/paddialogpresentation.h"
@@ -32,6 +33,8 @@ SetNamesDialog::SetNamesDialog(InputDevice *device, QWidget *parent)
     , ui(new Ui::SetNamesDialog)
 {
     ui->setupUi(this);
+    ui->setNamesTableWidget->verticalHeader()->setDefaultSectionSize(26);
+    ui->setNamesTableWidget->verticalHeader()->setMinimumSectionSize(26);
     setAttribute(Qt::WA_DeleteOnClose);
     this->device = device;
 

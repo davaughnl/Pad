@@ -246,7 +246,7 @@ QStackedWidget#stackedWidget{
   <action name="actionQuit">
    <property name="icon">
     <iconset resource="../resources.qrc">
-     <normaloff>:/images/actions/application_exit.png</normaloff>:/images/actions/application_exit.png</iconset>
+     <normaloff>:/pad/icons/exit.svg</normaloff>:/pad/icons/exit.svg</iconset>
    </property>
    <property name="text">
     <string>&amp;Quit</string>
@@ -261,7 +261,7 @@ QStackedWidget#stackedWidget{
    </property>
    <property name="icon">
     <iconset resource="../resources.qrc">
-     <normaloff>:/images/actions/view_refresh.png</normaloff>:/images/actions/view_refresh.png</iconset>
+     <normaloff>:/pad/icons/refresh.svg</normaloff>:/pad/icons/refresh.svg</iconset>
    </property>
    <property name="text">
     <string>&amp;Refresh controllers</string>
@@ -273,7 +273,7 @@ QStackedWidget#stackedWidget{
   <action name="actionHide">
    <property name="icon">
     <iconset resource="../resources.qrc">
-     <normaloff>:/images/actions/view_restore.png</normaloff>:/images/actions/view_restore.png</iconset>
+     <normaloff>:/pad/icons/minimize.svg</normaloff>:/pad/icons/minimize.svg</iconset>
    </property>
    <property name="text">
     <string>&amp;Hide</string>
@@ -285,7 +285,7 @@ QStackedWidget#stackedWidget{
   <action name="actionAbout">
    <property name="icon">
     <iconset resource="../resources.qrc">
-     <normaloff>:/images/actions/about_antimicrox.png</normaloff>:/images/actions/about_antimicrox.png</iconset>
+     <normaloff>:/pad/icons/info.svg</normaloff>:/pad/icons/info.svg</iconset>
    </property>
    <property name="text">
     <string>&amp;About</string>
@@ -297,7 +297,7 @@ QStackedWidget#stackedWidget{
   <action name="actionProperties">
    <property name="icon">
     <iconset resource="../resources.qrc">
-     <normaloff>:/images/actions/sliders.png</normaloff>:/images/actions/sliders.png</iconset>
+     <normaloff>:/pad/icons/sliders.svg</normaloff>:/pad/icons/sliders.svg</iconset>
    </property>
    <property name="text">
     <string>&amp;Properties</string>
@@ -309,7 +309,7 @@ QStackedWidget#stackedWidget{
   <action name="actionKeyValue">
    <property name="icon">
     <iconset resource="../resources.qrc">
-     <normaloff>:/images/actions/key_checker.png</normaloff>:/images/actions/key_checker.png</iconset>
+     <normaloff>:/pad/icons/keyboard.svg</normaloff>:/pad/icons/keyboard.svg</iconset>
    </property>
    <property name="text">
     <string>&amp;Key Checker</string>
@@ -329,7 +329,7 @@ QStackedWidget#stackedWidget{
   <action name="actionGitHubPage">
    <property name="icon">
     <iconset resource="../resources.qrc">
-     <normaloff>:/images/actions/github_page.png</normaloff>:/images/actions/github_page.png</iconset>
+     <normaloff>:/pad/icons/github.svg</normaloff>:/pad/icons/github.svg</iconset>
    </property>
    <property name="text">
     <string>&amp;GitHub Page</string>
@@ -341,7 +341,7 @@ QStackedWidget#stackedWidget{
   <action name="actionOptions">
    <property name="icon">
     <iconset resource="../resources.qrc">
-     <normaloff>:/images/actions/settings.png</normaloff>:/images/actions/settings.png</iconset>
+     <normaloff>:/pad/icons/settings.svg</normaloff>:/pad/icons/settings.svg</iconset>
    </property>
    <property name="text">
     <string>S&amp;ettings</string>
@@ -353,7 +353,7 @@ QStackedWidget#stackedWidget{
   <action name="actionStick_Pad_Assign">
    <property name="icon">
     <iconset resource="../resources.qrc">
-     <normaloff>:/images/actions/stick_pad_assign.png</normaloff>:/images/actions/stick_pad_assign.png</iconset>
+     <normaloff>:/pad/icons/gamepad.svg</normaloff>:/pad/icons/gamepad.svg</iconset>
    </property>
    <property name="text">
     <string>&amp;Stick/Pad Assign</string>
@@ -365,7 +365,7 @@ QStackedWidget#stackedWidget{
   <action name="actionWiki">
    <property name="icon">
     <iconset resource="../resources.qrc">
-     <normaloff>:/images/actions/wiki.png</normaloff>:/images/actions/wiki.png</iconset>
+     <normaloff>:/pad/icons/book.svg</normaloff>:/pad/icons/book.svg</iconset>
    </property>
    <property name="text">
     <string>&amp;Wiki</string>
@@ -377,7 +377,7 @@ QStackedWidget#stackedWidget{
   <action name="actionIssues">
    <property name="icon">
     <iconset resource="../resources.qrc">
-     <normaloff>:/images/actions/issues.png</normaloff>:/images/actions/issues.png</iconset>
+     <normaloff>:/pad/icons/bug.svg</normaloff>:/pad/icons/bug.svg</iconset>
    </property>
    <property name="text">
     <string>&amp;Issues</string>
@@ -389,7 +389,7 @@ QStackedWidget#stackedWidget{
   <action name="actionCalibration">
    <property name="icon">
     <iconset resource="../resources.qrc">
-     <normaloff>:/images/actions/calibration.png</normaloff>:/images/actions/calibration.png</iconset>
+     <normaloff>:/pad/icons/crosshair.svg</normaloff>:/pad/icons/crosshair.svg</iconset>
    </property>
    <property name="text">
     <string>&amp;Calibration</string>

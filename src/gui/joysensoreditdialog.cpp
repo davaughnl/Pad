@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QTimer>
 #include "pad/paddialogpresentation.h"
 #include "joysensoreditdialog.h"
 #include "ui_joysensoreditdialog.h"
@@ -43,6 +44,7 @@ JoySensorEditDialog::JoySensorEditDialog(JoySensor *sensor, QWidget *parent)
     , m_preset(sensor)
 {
     m_ui->setupUi(this);
+    QTimer::singleShot(0, this, [this]() { resize(width(), minimumSizeHint().height()); });
     setAttribute(Qt::WA_DeleteOnClose);
 
     auto min_width = m_ui->xCoordinateValue->fontMetrics().boundingRect(QString("X.XXXXXXXXXXX")).width();

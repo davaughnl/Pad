@@ -72,9 +72,9 @@ AdvanceButtonDialog::AdvanceButtonDialog(JoyButton *button, QWidget *parent)
     setStyleSheet(QStringLiteral(
         "QDialog#padAdvancedAssignmentDialog QPushButton { min-height: 26px; }"
         "QListWidget#listWidget { background: transparent; border: none; padding: 0; font-size: 12px; }"
-        "QListWidget#listWidget::item { min-height: 26px; padding: 0 10px; margin: 1px 0; border-radius: 6px; color: #c9c9cf; }"
+        "QListWidget#listWidget::item { min-height: 26px; padding: 0 10px; margin: 1px 0; border-radius: 6px; color: #9d9da5; }"
         "QListWidget#listWidget::item:selected { background: #26262c; color: #f4f4f5; }"
-        "QListWidget#listWidget::item:hover { background: #1c1c21; }"
+        "QListWidget#listWidget::item:hover { background: #1f1f24; }"
         "#slotListWidget { padding: 8px; }"
         "#slotListWidget::item { border: none; background: transparent; }"
         "#slotListWidget::item:selected { border: none; background: transparent; }"

@@ -22,6 +22,7 @@
 #include <QPaintEvent>
 #include <QPainter>
 #include <QPixmap>
+#include <QPen>
 #include <QTransform>
 
 struct ButtonImagePlacement
@@ -85,33 +86,58 @@ GameControllerExample::GameControllerExample(QWidget *parent)
     connect(this, &GameControllerExample::indexUpdated, this, [=]() { update(); });
 }
 
+// Marker positions on the realistic renders (hero-xbox.png 720x485, hero-ps4.png 720x429).
+// Order follows the mapping table: A,B,X,Y,Back,Start,Guide,LB,RB,LS,RS,
+// axes LX,LY,RX,RY, LT,RT, D-pad up,left,down,right.
+static const QPointF xboxMarks[] = {
+    {548, 188}, {598, 140}, {500, 140}, {550, 90}, {305, 138}, {413, 140}, {360, 78}, {175, 28}, {545, 28},
+    {165, 130}, {460, 240}, {165, 130}, {165, 130}, {460, 240}, {460, 240}, {150, 8}, {570, 8},
+    {262, 212}, {232, 243}, {262, 274}, {293, 243}};
+static const QPointF psMarks[] = {
+    {578, 175}, {630, 125}, {525, 125}, {578, 75}, {212, 60}, {508, 60}, {360, 215}, {190, 10}, {530, 10},
+    {265, 215}, {455, 215}, {265, 215}, {265, 215}, {455, 215}, {455, 215}, {215, 2}, {505, 2},
+    {130, 85}, {104, 125}, {142, 156}, {165, 125}};
+
+void GameControllerExample::setDevice(const QString &name)
+{
+    const QString n = name.toLower();
+    playstation = n.contains(QStringLiteral("ps4")) || n.contains(QStringLiteral("ps5")) || n.contains(QStringLiteral("dualshock"))
+        || n.contains(QStringLiteral("dualsense")) || n.contains(QStringLiteral("playstation")) || n.contains(QStringLiteral("wireless controller"));
+    art = QPixmap(playstation ? QStringLiteral(":/images/hero-ps4.png") : QStringLiteral(":/images/hero-xbox.png"));
+    update();
+}
+
 void GameControllerExample::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
+    if (art.isNull()) setDevice(QString());
 
     QPainter paint(this);
-    // 300x186 is hardcoded size of original image
-    paint.drawImage(QRect(0, 0, 300, 186), controllerimage);
-    ButtonImagePlacement current = buttonLocations[currentIndex];
+    paint.setRenderHint(QPainter::Antialiasing);
+    paint.setRenderHint(QPainter::SmoothPixmapTransform);
+    const qreal dpr = devicePixelRatioF();
+    const QPixmap scaled = art.scaled(size() * dpr, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    const QSizeF logical = QSizeF(scaled.size()) / dpr;
+    const QPointF origin((width() - logical.width()) / 2, (height() - logical.height()) / 2);
+    QPixmap out = scaled; out.setDevicePixelRatio(dpr);
+    paint.drawPixmap(origin, out);
 
-    paint.setOpacity(0.85);
-
-    switch (current.buttontype)
+    const QPointF mark = (playstation ? psMarks : xboxMarks)[qBound(0, currentIndex, MAXBUTTONINDEX)];
+    const qreal scale = logical.width() / 720.0;
+    const QPointF centre = origin + mark * scale;
+    const bool large = currentIndex == 9 || currentIndex == 10 || (currentIndex >= 11 && currentIndex <= 14);
+    const qreal radius = (large ? 46 : 22) * scale * 1.6;
+    paint.setBrush(QColor(244, 244, 245, 46));
+    paint.setPen(QPen(QColor(244, 244, 245, 235), 1.5));
+    paint.drawEllipse(centre, radius, radius);
+    if (currentIndex >= 11 && currentIndex <= 14)
     {
-    case Button:
-        paint.drawImage(QRect(current.x, current.y, buttonimage.width(), buttonimage.height()), buttonimage);
-        break;
-
-    case AxisX:
-        paint.drawImage(QRect(current.x, current.y, axisimage.width(), axisimage.height()), axisimage);
-        break;
-
-    case AxisY:
-        paint.drawImage(QRect(current.x, current.y, rotatedaxisimage.width(), rotatedaxisimage.height()), rotatedaxisimage);
-        break;
+        const bool horizontal = currentIndex == 11 || currentIndex == 13;
+        paint.setPen(QPen(QColor(244, 244, 245, 235), 1.5));
+        const qreal reach = radius * 0.7;
+        if (horizontal) paint.drawLine(centre - QPointF(reach, 0), centre + QPointF(reach, 0));
+        else paint.drawLine(centre - QPointF(0, reach), centre + QPointF(0, reach));
     }
-
-    paint.setOpacity(1.0);
 }
 
 void GameControllerExample::setActiveButton(int button)

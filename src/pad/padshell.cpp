@@ -65,7 +65,7 @@ public:
         case SP_DialogOpenButton: case SP_DirIcon: name = "folder"; break;
         case SP_DialogResetButton: case SP_DialogDiscardButton: name = "undo"; break;
         case SP_DialogHelpButton: case SP_MessageBoxInformation: case SP_MessageBoxQuestion: name = "info"; break;
-        case SP_MessageBoxWarning: case SP_MessageBoxCritical: name = "bug"; break;
+        case SP_MessageBoxWarning: case SP_MessageBoxCritical: name = "triangle-alert"; break;
         case SP_TrashIcon: name = "trash"; break;
         default: return QProxyStyle::standardIcon(icon, option, widget);
         }
@@ -153,22 +153,22 @@ void PadUi::initializeApplicationStyle()
     appFont.setBold(false);
     qApp->setFont(appFont);
     QPalette palette;
-    palette.setColor(QPalette::Window, QColor("#0e0e10"));
-    palette.setColor(QPalette::WindowText, QColor("#e8e8eb"));
+    palette.setColor(QPalette::Window, QColor("#0b0b0d"));
+    palette.setColor(QPalette::WindowText, QColor("#f4f4f5"));
     palette.setColor(QPalette::Base, QColor("#131316"));
-    palette.setColor(QPalette::AlternateBase, QColor("#17171a"));
-    palette.setColor(QPalette::Text, QColor("#e8e8eb"));
+    palette.setColor(QPalette::AlternateBase, QColor("#131316"));
+    palette.setColor(QPalette::Text, QColor("#f4f4f5"));
     palette.setColor(QPalette::Button, QColor("#1f1f24"));
-    palette.setColor(QPalette::ButtonText, QColor("#e8e8eb"));
+    palette.setColor(QPalette::ButtonText, QColor("#f4f4f5"));
     palette.setColor(QPalette::Highlight, QColor("#333339"));
     palette.setColor(QPalette::HighlightedText, Qt::white);
-    palette.setColor(QPalette::Link, QColor("#e8e8eb"));
+    palette.setColor(QPalette::Link, QColor("#f4f4f5"));
     palette.setColor(QPalette::LinkVisited, QColor("#9d9da5"));
     palette.setColor(QPalette::PlaceholderText, QColor("#66666e"));
     palette.setColor(QPalette::ToolTipBase, QColor("#26262c"));
-    palette.setColor(QPalette::ToolTipText, QColor("#e8e8eb"));
-    palette.setColor(QPalette::Disabled, QPalette::Text, QColor("#5c5c64"));
-    palette.setColor(QPalette::Disabled, QPalette::ButtonText, QColor("#5c5c64"));
+    palette.setColor(QPalette::ToolTipText, QColor("#f4f4f5"));
+    palette.setColor(QPalette::Disabled, QPalette::Text, QColor("#66666e"));
+    palette.setColor(QPalette::Disabled, QPalette::ButtonText, QColor("#66666e"));
     qApp->setPalette(palette);
     QFile sheet(QStringLiteral(":/pad/pad.qss"));
     if (sheet.open(QIODevice::ReadOnly)) qApp->setStyleSheet(QString::fromUtf8(sheet.readAll()).replace(QStringLiteral("\"Geist\""), QStringLiteral("\"%1\"").arg(appFont.family())));
@@ -300,7 +300,7 @@ void PadUi::install(QMainWindow *window, QWidget *central, QStackedWidget *stack
     {
         empty->setObjectName("padEmpty");
         empty->setAlignment(Qt::AlignCenter);
-        empty->setTextFormat(Qt::RichText); empty->setText(QStringLiteral("<div style='font-size:16px; color:#e8e8eb;'>%1</div><div style='font-size:12px; color:#7c7c85;'>%2</div>").arg(QObject::tr("No controller connected"), QObject::tr("Plug one in, then choose Refresh controllers in the sidebar.")));
+        empty->setTextFormat(Qt::RichText); empty->setText(QStringLiteral("<div style='font-size:16px; color:#f4f4f5;'>%1</div><div style='font-size:12px; color:#7c7c85;'>%2</div>").arg(QObject::tr("No controller connected"), QObject::tr("Plug one in, then choose Refresh controllers in the sidebar.")));
     }
     auto sync = [controllers, deviceList, profileList, deviceName, profileName, overview, refresh, refreshButton, outline]() {
         QStringList devices;
