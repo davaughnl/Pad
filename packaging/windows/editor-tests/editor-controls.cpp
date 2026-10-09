@@ -51,6 +51,8 @@
 #include "gui/winappprofiletimerdialog.h"
 #include "autoprofileinfo.h"
 #include <QListWidget>
+#include <QMessageBox>
+#include "pad/padupdatestrip.h"
 #include <QMenu>
 #include <QMenuBar>
 #include <QPushButton>
@@ -300,7 +302,28 @@ int main(int argc,char **argv) {
                 check(menu->grab().save(output+"/screen-menu-"+(menu->objectName().isEmpty()?QString::number(qintptr(menu)%9973):menu->objectName())+".png"),"menu capture");
                 menu->hide();
             }
+            window->show();
+            if(auto *strip=window->findChild<PadUpdateStrip*>()){
+                using S=PadUpdateStrip::State;
+                struct{S st;const char *n;const char *d;int pct;} states[]={{S::Checking,"checking","",0},{S::UpToDate,"uptodate","",0},{S::Available,"available","1.2.0",0},{S::Downloading,"downloading","",42},{S::Ready,"ready","1.2.0",0},{S::Error,"error","Could not reach the update server",0}};
+                for(auto &st:states){strip->setState(st.st,st.d,st.pct);QTest::qWait(400);check(window->grab().save(output+QString("/screen-update-")+st.n+"-full.png"),"update capture");}
+                strip->setState(S::Hidden);
+            }
             window->hide();
+            {
+                QMessageBox box(QMessageBox::Warning,"Profile could not be loaded","The profile file is missing or damaged.",QMessageBox::Ok|QMessageBox::Cancel);
+                box.setInformativeText("Choose another profile or create a new one.");
+                shot(&box,"messagebox");
+            }
+            {
+                const int i2=SDL_JoystickAttachVirtual(SDL_JOYSTICK_TYPE_UNKNOWN,4,10,1);check(i2>=0,"second virtual attach failed");
+                auto *joy2=new SensorFixtureJoystick(SDL_JoystickOpen(i2),i2,settings,nullptr);
+                QMap<SDL_JoystickID,InputDevice*> two;two.insert(SDL_JoystickInstanceID(joystick->getJoyHandle()),joystick);two.insert(SDL_JoystickInstanceID(joy2->getJoyHandle()),joy2);
+                CommandLineUtility c2;auto *multi=new MainWindow(&two,&c2,settings);
+                multi->makeJoystickTabs();multi->fillButtons();multi->resize(1000,700);multi->show();QTest::qWait(1000);
+                check(multi->grab().save(output+"/screen-main-two-controllers-full.png"),"multi capture");
+                multi->hide();
+            }
         } else throw std::runtime_error("Unknown case");
         QMetaObject::invokeMethod(joystick,[joystick]{delete joystick;},Qt::BlockingQueuedConnection);
         worker.quit();worker.wait();delete settings;SDL_JoystickDetachVirtual(index);SDL_Quit();
