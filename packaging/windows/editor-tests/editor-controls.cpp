@@ -151,8 +151,9 @@ int main(int argc,char **argv) {
             check(dialog->grab().save(output+"/controller-mapping-highlight-dpad-left-full.png"),"Mapping highlighted DPad Left capture failed");
             table->setCurrentCell(19,0);settle();
             check(dialog->grab().save(output+"/controller-mapping-highlight-dpad-down-full.png"),"Mapping highlighted DPad Down capture failed");
+            for(int row:{17,20}){table->setCurrentCell(row,0);settle();check(dialog->grab().save(output+"/controller-mapping-xbox-row"+QString::number(row)+"-full.png"),"Xbox dpad capture failed");}
             art->setDevice("Wireless Controller");
-            for(int row:{0,3,18,19,6}){table->setCurrentCell(row,0);settle();check(dialog->grab().save(output+"/controller-mapping-ps4-row"+QString::number(row)+"-full.png"),"PS4 capture failed");}
+            for(int row:{0,3,17,18,19,20,6}){table->setCurrentCell(row,0);settle();check(dialog->grab().save(output+"/controller-mapping-ps4-row"+QString::number(row)+"-full.png"),"PS4 capture failed");}
             closeDialog(dialog);delete window;
         } else if(test=="status") {
             // Richer virtual device matching the row-clipping regression shape.
