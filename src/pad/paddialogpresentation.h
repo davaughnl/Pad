@@ -28,7 +28,7 @@ inline void compactDialog(QDialog *dialog)
         "QGroupBox { padding: 16px; margin-top: 16px; }"
         "QGroupBox::title { color: #b8b8bf; left: 16px; }"
         "QFrame[frameShape=\"4\"] { background: #1c1c20; color: #1c1c20; }"
-        "QComboBox, QLineEdit, QSpinBox, QDoubleSpinBox, QPushButton { min-height: 24px; max-height: 24px; padding: 0 10px; }"
+        "QComboBox, QLineEdit, QSpinBox, QDoubleSpinBox, QPushButton { min-height: 26px; max-height: 26px; padding: 0 10px; }"
         "QSpinBox QLineEdit, QDoubleSpinBox QLineEdit { min-height: 0; max-height: 16777215px; padding: 0; border: none; background: transparent; }"
         "QFrame[frameShape=\"4\"] { color: #1c1c20; background: #1c1c20; max-height: 1px; border: none; }"));
     for (auto *layout : dialog->findChildren<QLayout *>()) {
@@ -48,7 +48,7 @@ inline void compactDialog(QDialog *dialog)
         QFont font = qApp->font(); font.setWeight(QFont::Normal); font.setItalic(false); widget->setFont(font);
         if (qobject_cast<QAbstractSpinBox *>(widget) || qobject_cast<QComboBox *>(widget) ||
             (qobject_cast<QLineEdit *>(widget) && !qobject_cast<QAbstractSpinBox *>(widget->parentWidget())) || qobject_cast<QPushButton *>(widget))
-            widget->setFixedHeight(24);
+            widget->setFixedHeight(26);
         if (qobject_cast<QCheckBox *>(widget)) widget->setMinimumHeight(24);
         if (auto *frame = qobject_cast<QFrame *>(widget))
             if (frame->frameShape() == QFrame::HLine) frame->hide();
@@ -60,7 +60,7 @@ inline void compactDialog(QDialog *dialog)
         for (auto *widget : dialog->findChildren<QWidget *>()) {
             if (qobject_cast<QAbstractSpinBox *>(widget) || qobject_cast<QComboBox *>(widget) || qobject_cast<QPushButton *>(widget) ||
                 (qobject_cast<QLineEdit *>(widget) && !qobject_cast<QAbstractSpinBox *>(widget->parentWidget())))
-                widget->setFixedHeight(24);
+                widget->setFixedHeight(26);
         }
         for (auto *layout : dialog->findChildren<QLayout *>()) layout->invalidate();
         if (dialog->layout()) { dialog->layout()->invalidate(); dialog->layout()->activate(); }
