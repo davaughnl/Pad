@@ -24,6 +24,8 @@
 #include "advancestickassignmentdialog.h"
 #include "antimicrosettings.h"
 #include "autoprofileinfo.h"
+#include "pad/paddevicetools.h"
+#include <QFileInfo>
 #include "calibration.h"
 #include "commandlineutility.h"
 #include "common.h"
@@ -1552,6 +1554,7 @@ void MainWindow::autoprofileLoad(AutoProfileInfo *info)
         return;
     #endif
 
+    QString loadedProfile;
     for (int i = 0; i < ui->tabWidget->count(); i++)
     {
         JoyTabWidget *widget = qobject_cast<JoyTabWidget *>(ui->tabWidget->widget(i)); // static_cast
@@ -1613,6 +1616,7 @@ void MainWindow::autoprofileLoad(AutoProfileInfo *info)
                     } else
                     {
                         widget->loadConfigFile(info->getProfileLocation());
+                        loadedProfile = info->getProfileLocation();
                         qDebug() << "loaded config file for current AutoLoadInfo";
                     }
                 }
@@ -1633,10 +1637,13 @@ void MainWindow::autoprofileLoad(AutoProfileInfo *info)
                 {
                     qDebug() << "load config file for AutoProfileInfo";
                     widget->loadConfigFile(info->getProfileLocation());
+                    loadedProfile = info->getProfileLocation();
                 }
             }
         }
     }
+    if (!loadedProfile.isEmpty())
+        padShowToast(this, tr("%1 profile loaded").arg(QFileInfo(loadedProfile).completeBaseName()));
 
 #endif
 }

@@ -259,3 +259,9 @@ QListWidget::item { min-height: 24px; padding: 0 10px; margin: 1px 0; border: no
 QListWidget::item:selected { background: #26262c; color: #f4f4f5; }
 QListWidget::item:hover:!selected { background: #1f1f24; color: #f4f4f5; }
 QPushButton#padUpdateRetry { color: #f4f4f5; text-decoration: none; padding: 0; border: none; min-height: 20px; }
+
+QPushButton[padToggle="true"]:checked { background: #26262c; color: #f4f4f5; border-color: #333339; }
+QPushButton#padGyroSettings { padding: 0; }
+QFrame#padToast { background: #17171a; border: 1px solid #26262c; border-radius: 8px; }
+QFrame#padToast QLabel { background: transparent; color: #f4f4f5; font-size: 12px; }
+QDialog#padStickTester QLabel#padSubtitle { color: #9d9da5; }

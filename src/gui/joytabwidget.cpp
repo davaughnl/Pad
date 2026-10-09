@@ -2604,23 +2604,23 @@ void JoyTabWidget::updateBatteryIcon()
     switch (power_level)
     {
     case SDL_JOYSTICK_POWER_EMPTY:
-        batteryIcon->setVisible(true);
+        batteryIcon->setVisible(false); // Pad shows battery in the overview bar
         batteryIcon->setPixmap(PadderCommon::loadIcon("battery-empty").pixmap(QSize(20, 20)));
         break;
 
     case SDL_JOYSTICK_POWER_LOW:
-        batteryIcon->setVisible(true);
+        batteryIcon->setVisible(false); // Pad shows battery in the overview bar
         batteryIcon->setPixmap(PadderCommon::loadIcon("battery-low").pixmap(QSize(20, 20)));
         break;
 
     case SDL_JOYSTICK_POWER_MEDIUM:
-        batteryIcon->setVisible(true);
+        batteryIcon->setVisible(false); // Pad shows battery in the overview bar
         batteryIcon->setPixmap(PadderCommon::loadIcon("battery-good").pixmap(QSize(20, 20)));
         break;
 
     case SDL_JOYSTICK_POWER_FULL:
     case SDL_JOYSTICK_POWER_MAX:
-        batteryIcon->setVisible(true);
+        batteryIcon->setVisible(false); // Pad shows battery in the overview bar
         batteryIcon->setPixmap(PadderCommon::loadIcon("battery-full").pixmap(QSize(20, 20)));
         break;
 
@@ -2629,7 +2629,7 @@ void JoyTabWidget::updateBatteryIcon()
         break;
 
     case SDL_JOYSTICK_POWER_WIRED:
-        batteryIcon->setVisible(true);
+        batteryIcon->setVisible(false); // Pad shows battery in the overview bar
         batteryIcon->setPixmap(PadderCommon::loadIcon("battery-good-charging").pixmap(QSize(20, 20)));
         break;
 

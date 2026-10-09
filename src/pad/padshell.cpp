@@ -3,6 +3,14 @@
 #include "padart.h"
 #include "common.h"
 #include "padupdatestrip.h"
+#include "paddevicetools.h"
+#include "joystick.h"
+#include "joyaxis.h"
+#include "setjoystick.h"
+#include "sensors/joysensor.h"
+#include "sensors/joysensorpreset.h"
+#include "mousedialog/mousesensorsettingsdialog.h"
+#include <SDL2/SDL_joystick.h>
 #include "updatemanager.h"
 #include "gui/joytabwidget.h"
 #include "inputdevice.h"
@@ -36,6 +44,7 @@
 #include <QTabBar>
 #include <QTabWidget>
 #include <QTimer>
+#include <memory>
 #include <QFileInfo>
 #include <QFileDialog>
 #include <QStandardPaths>
@@ -284,7 +293,38 @@ void PadUi::install(QMainWindow *window, QWidget *central, QStackedWidget *stack
     deviceName->setWordWrap(true); details->addWidget(deviceName);
     auto *profileName = text(QString(), "padSubtitle", overview); profileName->setWordWrap(true); details->addWidget(profileName);
     overviewLayout->addLayout(details, 1);
+    auto *tools = new PadDeviceTools(overview);
+    overviewLayout->addWidget(tools, 0, Qt::AlignRight | Qt::AlignVCenter);
+    overviewLayout->addSpacing(8);
     overviewLayout->addWidget(text(QObject::tr("Keyboard + mouse"), "padSubtitle", overview), 0, Qt::AlignRight | Qt::AlignVCenter);
+    auto currentTab = [controllers]() { return qobject_cast<JoyTabWidget *>(controllers->currentWidget()); };
+    auto gyroSensor = [currentTab]() -> JoySensor * {
+        auto *tab = currentTab();
+        if (!tab || !tab->getJoystick() || !tab->getJoystick()->getActiveSetJoystick()) return nullptr;
+        return tab->getJoystick()->getActiveSetJoystick()->getSensor(GYROSCOPE);
+    };
+    tools->onGyroToggled = [gyroSensor](bool on) {
+        if (auto *sensor = gyroSensor())
+        {
+            auto *preset = new JoySensorPreset(sensor); // Applies on the input thread; outlive that call.
+            preset->setSensorPreset(on ? JoySensorPreset::PRESET_MOUSE : JoySensorPreset::PRESET_NONE);
+            QTimer::singleShot(3000, preset, &QObject::deleteLater);
+        }
+    };
+    tools->onGyroSettings = [gyroSensor, window]() {
+        if (auto *sensor = gyroSensor()) { auto *dialog = new MouseSensorSettingsDialog(sensor, window); dialog->setAttribute(Qt::WA_DeleteOnClose); dialog->show(); }
+    };
+    tools->onTestSticks = [currentTab, window]() {
+        auto *tab = currentTab(); if (!tab || !tab->getJoystick()) return;
+        InputDevice *device = tab->getJoystick();
+        auto *dialog = padCreateStickTester(window, device->getSDLName(), [device]() {
+            PadStickReading r; auto *set = device->getActiveSetJoystick(); if (!set) return r;
+            auto axis = [set](int i, double &v, double &dz) { if (auto *a = set->getJoyAxis(i)) { v = qBound(-1.0, a->getCurrentRawValue() / 32767.0, 1.0); dz = a->getDeadZone() / 32767.0; } };
+            axis(0, r.lx, r.leftDeadzone); double d; axis(1, r.ly, d); axis(2, r.rx, r.rightDeadzone); axis(3, r.ry, d);
+            return r;
+        });
+        dialog->setAttribute(Qt::WA_DeleteOnClose); dialog->show();
+    };
     body->addWidget(overview); body->addWidget(stack, 1); layout->addWidget(workspace, 1);
     root->insertWidget(0, shell, 1);
     if (auto *bar = window->menuBar())
@@ -308,7 +348,8 @@ void PadUi::install(QMainWindow *window, QWidget *central, QStackedWidget *stack
         empty->setAlignment(Qt::AlignCenter);
         empty->setTextFormat(Qt::RichText); empty->setText(QStringLiteral("<div style='font-size:16px; color:#f4f4f5;'>%1</div><div style='font-size:12px; color:#7c7c85;'>%2</div>").arg(QObject::tr("No controller connected"), QObject::tr("Plug one in, then choose Refresh controllers in the sidebar.")));
     }
-    auto sync = [controllers, deviceList, profileList, deviceName, profileName, overview, refresh, refreshButton, outline]() {
+    auto gyroTicks = std::make_shared<int>(0); auto gyroCached = std::make_shared<bool>(false);
+    auto sync = [gyroTicks, gyroCached, tools, gyroSensor, controllers, deviceList, profileList, deviceName, profileName, overview, refresh, refreshButton, outline]() {
         QStringList devices;
         for (int i = 0; i < controllers->count(); ++i)
         {
@@ -335,6 +376,31 @@ void PadUi::install(QMainWindow *window, QWidget *central, QStackedWidget *stack
         if (auto *tab = qobject_cast<JoyTabWidget *>(controllers->currentWidget()))
             if (tab->getJoystick()) artName += padArtTag(static_cast<int>(tab->getJoystick()->getControllerType()));
         outline->setDevice(artName);
+        {
+            auto battery = PadDeviceTools::Battery::None;
+            if (auto *tab = qobject_cast<JoyTabWidget *>(controllers->currentWidget()))
+                if (tab->getJoystick() && tab->getJoystick()->getJoyHandle())
+                    switch (SDL_JoystickCurrentPowerLevel(tab->getJoystick()->getJoyHandle()))
+                    {
+                    case SDL_JOYSTICK_POWER_EMPTY: battery = PadDeviceTools::Battery::Empty; break;
+                    case SDL_JOYSTICK_POWER_LOW: battery = PadDeviceTools::Battery::Low; break;
+                    case SDL_JOYSTICK_POWER_MEDIUM: battery = PadDeviceTools::Battery::Medium; break;
+                    case SDL_JOYSTICK_POWER_FULL: case SDL_JOYSTICK_POWER_MAX: battery = PadDeviceTools::Battery::Full; break;
+                    default: break;
+                    }
+            tools->setBattery(battery);
+            JoySensor *gyro = gyroSensor();
+            // Reading the preset locks the input thread, so refresh it every 2 seconds, not every tick.
+            if (!gyro) *gyroCached = false;
+            else if ((*gyroTicks)++ % 5 == 0)
+            {
+                auto *probe = new JoySensorPreset(gyro);
+                *gyroCached = probe->currentPreset() != JoySensorPreset::PRESET_NONE;
+                QTimer::singleShot(3000, probe, &QObject::deleteLater);
+            }
+            tools->setGyro(gyro != nullptr, *gyroCached);
+            tools->setVisible(controllers->count() > 0);
+        }
         refreshButton->setEnabled(refresh->isEnabled());
     };
     auto *timer = new QTimer(shell); timer->setInterval(400);
