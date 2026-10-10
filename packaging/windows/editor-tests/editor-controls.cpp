@@ -170,15 +170,39 @@ int main(int argc,char **argv) {
             closeDialog(dialog);delete window;
         } else if(test=="film") {
             // Real captures of the real widgets at high scale (QT_SCALE_FACTOR), saved as numbered frames per scene for the promo edit.
+            SDL_VirtualJoystickDesc vd; SDL_zero(vd); vd.version=SDL_VIRTUAL_JOYSTICK_DESC_VERSION; vd.type=SDL_JOYSTICK_TYPE_GAMECONTROLLER;
+            vd.naxes=6; vd.nbuttons=12; vd.nhats=0; vd.name="Xbox Wireless Controller";
+            const int findex=SDL_JoystickAttachVirtualEx(&vd); check(findex>=0,"film virtual attach");
+            auto *fj=new SensorFixtureJoystick(SDL_JoystickOpen(findex),findex,settings,nullptr);
+            for(auto *current:fj->getJoystick_sets()){
+                current->addControlStick(0,new JoyControlStick(current->getJoyAxis(0),current->getJoyAxis(1),0,current->getIndex(),current));
+                current->addControlStick(1,new JoyControlStick(current->getJoyAxis(3),current->getJoyAxis(4),1,current->getIndex(),current));}
+            fj->moveToThread(&worker);
+            auto *fset=fj->getSetJoystick(0); auto *fstick=fset->getJoyStick(0);
+            QMetaObject::invokeMethod(fset,[&]{
+                struct K{int btn;int vk;int qt;};
+                for(K k:{K{0,0x20,Qt::Key_Space},K{1,0x11,Qt::Key_Control},K{2,0x52,Qt::Key_R},K{3,0x45,Qt::Key_E},K{4,0x51,Qt::Key_Q},K{5,0x10,Qt::Key_Shift},K{6,0x31,Qt::Key_1},K{7,0x32,Qt::Key_2}})
+                    if(auto *jb=fset->getJoyButton(k.btn)) jb->setAssignedSlot(k.vk,k.qt,JoyButtonSlot::JoyKeyboard);
+                if(auto *jb=fset->getJoyButton(8)) jb->setAssignedSlot(1,JoyButtonSlot::JoyMouseButton);
+                if(auto *jb=fset->getJoyButton(9)) jb->setAssignedSlot(3,JoyButtonSlot::JoyMouseButton);
+                struct D{JoyStickDirectionsType::JoyStickDirections d;int vk;int qt;};
+                for(D d:{D{JoyStickDirectionsType::StickUp,0x57,Qt::Key_W},D{JoyStickDirectionsType::StickLeft,0x41,Qt::Key_A},D{JoyStickDirectionsType::StickDown,0x53,Qt::Key_S},D{JoyStickDirectionsType::StickRight,0x44,Qt::Key_D}})
+                    if(auto *db=fstick->getDirectionButton(d.d)) db->setAssignedSlot(d.vk,d.qt,JoyButtonSlot::JoyKeyboard);
+            },Qt::BlockingQueuedConnection);
             QMap<SDL_JoystickID,InputDevice*> devices;
-            devices.insert(SDL_JoystickInstanceID(joystick->getJoyHandle()),joystick);
+            devices.insert(SDL_JoystickInstanceID(fj->getJoyHandle()),fj);
             CommandLineUtility command;
             auto frame=[&](QWidget *w,const QString &scene,int n){QDir().mkpath(output+"/"+scene);check(w->grab().save(output+"/"+scene+"/"+QString("%1.png").arg(n,4,10,QChar('0'))),"film frame");};
             auto *window=new MainWindow(&devices,&command,settings);
             window->makeJoystickTabs();window->fillButtons();
-            window->resize(1000,700);window->show();window->raise();window->activateWindow();QTest::qWait(1200);
+            window->resize(1000,700);window->show();window->raise();window->activateWindow();QTest::qWait(1500);
             frame(window,"main",0);
-            auto *dialog=new GameControllerMappingDialog(joystick,settings,window);
+            QAbstractItemView *view=nullptr; int best=0;
+            for(auto *v:window->findChildren<QAbstractItemView*>()) if(v->isVisible()&&v->width()*v->height()>best){best=v->width()*v->height();view=v;}
+            if(view&&view->verticalScrollBar()){auto *sb=view->verticalScrollBar();const int mx=sb->maximum();
+                for(int i=0;i<=120;++i){sb->setValue(mx*i/120);QTest::qWait(30);frame(window,"main-scroll",i);}
+                sb->setValue(0);QTest::qWait(200);}
+            auto *dialog=new GameControllerMappingDialog(fj,settings,window);
             dialog->show();dialog->raise();QTest::qWait(800);
             auto *table=control<QTableWidget>(dialog,"buttonMappingTableWidget");
             auto *art=control<GameControllerExample>(dialog,"gameControllerDisplayWidget");
