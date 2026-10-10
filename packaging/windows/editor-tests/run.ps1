@@ -11,7 +11,7 @@ if($LASTEXITCODE -ne 0){throw 'Editor fixture runtime deployment failed'}
 Copy-Item "$QtDir/bin/Qt5Test.dll" $bin
 Copy-Item "$SdlDir/lib/x64/SDL2.dll" $bin
 $env:QT_QPA_PLATFORM='windows'
-if($env:PAD_FILM -eq '1'){ $env:QT_SCALE_FACTOR='2.5'; $cases=@('film') } else { $cases=@('button','keyboard-mouse','advanced','stick','mouse','sensor-accel','sensor-gyro','about','status','controller-art','screens') }
+if($env:PAD_FILM -eq '1'){ $env:QT_SCALE_FACTOR='4'; $cases=@('film') } else { $cases=@('button','keyboard-mouse','advanced','stick','mouse','sensor-accel','sensor-gyro','about','status','controller-art','screens') }
 foreach($case in $cases){
     $process=Start-Process $exe -ArgumentList $case,$output -WorkingDirectory $bin -PassThru -RedirectStandardOutput "$output/$case.stdout.txt" -RedirectStandardError "$output/$case.stderr.txt"
     if(-not $process.WaitForExit($(if($env:PAD_FILM -eq '1'){600000}else{45000}))){$process.Kill();throw "Editor case timed out: $case"}
