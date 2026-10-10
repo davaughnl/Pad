@@ -168,6 +168,30 @@ int main(int argc,char **argv) {
                 for(int row=0;row<21;++row){table->setCurrentCell(row,0);settle();check(dialog->grab().save(output+"/controller-mapping-"+dv.second+"-row"+QString::number(row)+"-full.png"),"art capture failed");}
             }
             closeDialog(dialog);delete window;
+        } else if(test=="film") {
+            // Real captures of the real widgets at high scale (QT_SCALE_FACTOR), saved as numbered frames per scene for the promo edit.
+            QMap<SDL_JoystickID,InputDevice*> devices;
+            devices.insert(SDL_JoystickInstanceID(joystick->getJoyHandle()),joystick);
+            CommandLineUtility command;
+            auto frame=[&](QWidget *w,const QString &scene,int n){QDir().mkpath(output+"/"+scene);check(w->grab().save(output+"/"+scene+"/"+QString("%1.png").arg(n,4,10,QChar('0'))),"film frame");};
+            auto *window=new MainWindow(&devices,&command,settings);
+            window->makeJoystickTabs();window->fillButtons();
+            window->resize(1000,700);window->show();window->raise();window->activateWindow();QTest::qWait(1200);
+            frame(window,"main",0);
+            auto *dialog=new GameControllerMappingDialog(joystick,settings,window);
+            dialog->show();dialog->raise();QTest::qWait(800);
+            auto *table=control<QTableWidget>(dialog,"buttonMappingTableWidget");
+            auto *art=control<GameControllerExample>(dialog,"gameControllerDisplayWidget");
+            art->setActiveButton(-1);QTest::qWait(300);frame(dialog,"mapping-idle",0);
+            const char *devs[]={"Xbox 360 Controller","Wireless Controller","DualSense Wireless Controller","Nintendo Switch Pro Controller"};
+            for(int d=0;d<4;++d){art->setDevice(devs[d]);QTest::qWait(300);
+                for(int row=0;row<21;++row){table->setCurrentCell(row,0);QTest::qWait(150);frame(dialog,QString("mapping-dev%1").arg(d),row);}}
+            dialog->hide();
+            double phase=0;
+            auto *st=padCreateStickTester(nullptr,"Pad",[&phase](){PadStickReading r;r.lx=0.7*std::cos(phase);r.ly=0.7*std::sin(phase);r.rx=0.5*std::sin(phase*0.7);r.ry=-0.4*std::cos(phase*0.7);r.leftDeadzone=0.18;r.rightDeadzone=0.18;return r;});
+            st->show();st->raise();QTest::qWait(400);
+            for(int i=0;i<150;++i){phase=i*0.09;QTest::qWait(40);frame(st,"sticks",i);}
+            st->hide();
         } else if(test=="status") {
             // Richer virtual device matching the row-clipping regression shape.
             const int sindex=SDL_JoystickAttachVirtual(SDL_JOYSTICK_TYPE_UNKNOWN,6,12,1);check(sindex>=0,"Status virtual attach failed");
