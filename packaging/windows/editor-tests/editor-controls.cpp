@@ -9,6 +9,7 @@
 #include "joyaxis.h"
 #include "gui/joytabwidget.h"
 #include "xmlconfigwriter.h"
+#include "xml/inputdevicexml.h"
 #include "joybuttontypes/joyaxisbutton.h"
 #include "joycontrolstick.h"
 #include "joybuttontypes/joybutton.h"
@@ -207,7 +208,7 @@ int main(int argc,char **argv) {
             {   // Save the mapping as a named profile and load it through the app, so the window shows a real profile name.
                 const QString profilePath=temp.filePath("Default FPS.amgp");
                 XMLConfigWriter writer; writer.setFileName(profilePath);
-                QMetaObject::invokeMethod(fj,[&]{writer.write(fj);},Qt::BlockingQueuedConnection);
+                QMetaObject::invokeMethod(fj,[&]{InputDeviceXml dx(fj);writer.write(&dx);},Qt::BlockingQueuedConnection);
                 check(!writer.hasError(),"film profile write");
                 QMetaObject::invokeMethod(fj,[&]{fj->revertProfileEdited();},Qt::BlockingQueuedConnection);
                 auto *jt=window->findChild<JoyTabWidget*>(); check(jt!=nullptr,"film joy tab");
