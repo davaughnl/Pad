@@ -178,7 +178,7 @@ int main(int argc,char **argv) {
             vd.naxes=6; vd.nbuttons=12; vd.nhats=0; vd.name="Xbox Wireless Controller";
             const int findex=SDL_JoystickAttachVirtualEx(&vd); check(findex>=0,"film virtual attach");
             std::fprintf(stderr,"FILM device index %d\n",findex);
-            auto *fj=new SensorFixtureJoystick(SDL_JoystickOpen(findex),findex,settings,nullptr);
+            auto *fj=new Joystick(SDL_JoystickOpen(findex),findex,settings,nullptr);  // no sensor stand-in: an Xbox pad has no gyro
             for(auto *current:fj->getJoystick_sets()){
                 current->addControlStick(0,new JoyControlStick(current->getJoyAxis(0),current->getJoyAxis(1),0,current->getIndex(),current));
                 current->addControlStick(1,new JoyControlStick(current->getJoyAxis(3),current->getJoyAxis(4),1,current->getIndex(),current));}
