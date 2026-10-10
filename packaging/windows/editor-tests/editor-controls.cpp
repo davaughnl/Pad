@@ -348,7 +348,7 @@ int main(int argc,char **argv) {
                     r=run([&](auto cb){lic.validate(cb);}); check(r.kind==PadLicenseResult::Ok,"validate ok"); check(seen.last().contains("instance_id=inst-1"),"validate sends the instance");
                     replies<<R"({"valid":false,"error":"license_key is disabled.","license_key":{"status":"disabled"},"instance":null,"meta":null})";
                     r=run([&](auto cb){lic.validate(cb);}); check(r.kind==PadLicenseResult::Disabled,"disabled key must be refused on re-check");
-                    fake.close(); PadLicense offline(&net,7,9,base,cache);
+                    fake.close(); PadLicense offline(std::make_unique<LemonSqueezyProvider>(&net,7,9,base),cache);
                     r=run([&](auto cb){offline.validate(cb);}); check(r.kind==PadLicenseResult::Network,"offline re-check must be Network, not a refusal");
                     check(offline.hasCached(),"going offline must not remove the saved activation");
                     std::fprintf(stderr,"LICENSE logic ok (%d requests)\n",int(seen.size()));
