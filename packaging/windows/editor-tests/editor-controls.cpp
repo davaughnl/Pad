@@ -7,6 +7,8 @@
 #include "logger.h"
 #include "joystick.h"
 #include "joyaxis.h"
+#include "gui/joytabwidget.h"
+#include "xmlconfigwriter.h"
 #include "joybuttontypes/joyaxisbutton.h"
 #include "joycontrolstick.h"
 #include "joybuttontypes/joybutton.h"
@@ -174,6 +176,7 @@ int main(int argc,char **argv) {
             SDL_VirtualJoystickDesc vd; SDL_zero(vd); vd.version=SDL_VIRTUAL_JOYSTICK_DESC_VERSION; vd.type=SDL_JOYSTICK_TYPE_GAMECONTROLLER;
             vd.naxes=6; vd.nbuttons=12; vd.nhats=0; vd.name="Xbox Wireless Controller";
             const int findex=SDL_JoystickAttachVirtualEx(&vd); check(findex>=0,"film virtual attach");
+            std::fprintf(stderr,"FILM device index %d\n",findex);
             auto *fj=new SensorFixtureJoystick(SDL_JoystickOpen(findex),findex,settings,nullptr);
             for(auto *current:fj->getJoystick_sets()){
                 current->addControlStick(0,new JoyControlStick(current->getJoyAxis(0),current->getJoyAxis(1),0,current->getIndex(),current));
@@ -201,6 +204,15 @@ int main(int argc,char **argv) {
                 check(pm.save(output+"/"+scene+"/"+QString("%1.png").arg(n,4,10,QChar('0'))),"film frame");};
             auto *window=new MainWindow(&devices,&command,settings);
             window->makeJoystickTabs();window->fillButtons();
+            {   // Save the mapping as a named profile and load it through the app, so the window shows a real profile name.
+                const QString profilePath=temp.filePath("Default FPS.amgp");
+                XMLConfigWriter writer; writer.setFileName(profilePath);
+                QMetaObject::invokeMethod(fj,[&]{writer.write(fj);},Qt::BlockingQueuedConnection);
+                check(!writer.hasError(),"film profile write");
+                QMetaObject::invokeMethod(fj,[&]{fj->revertProfileEdited();},Qt::BlockingQueuedConnection);
+                auto *jt=window->findChild<JoyTabWidget*>(); check(jt!=nullptr,"film joy tab");
+                jt->loadConfigFile(profilePath);QTest::qWait(800);
+            }
             window->resize(1000,700);window->show();window->raise();window->activateWindow();QTest::qWait(1500);
             frame(window,"hero",0);
             QAbstractItemView *view=nullptr; int best=0;
