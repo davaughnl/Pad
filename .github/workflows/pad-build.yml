@@ -14,6 +14,11 @@ concurrency:
   group: pad-build-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  # Placeholders until the Dodo Payments product exists. Real values replace these two lines.
+  PAD_DODO_PRODUCT_ID: pdt_REPLACE_ME
+  PAD_BUY_URL: ""
+
 jobs:
   branding:
     name: Pad branding and resource regression tests
@@ -80,6 +85,13 @@ jobs:
           "INTERCEPTION_ZIP=$zip" | Out-File -Append -Encoding utf8 $env:GITHUB_ENV
       - name: Install SDL2
         run: ./packaging/windows/get-sdl2.ps1 -Destination "$env:RUNNER_TEMP/sdl2"
+      - name: Prepare license gate (test token is random per run, only its hash is built in)
+        run: |
+          $tok = [Convert]::ToHexString([Security.Cryptography.RandomNumberGenerator]::GetBytes(32)).ToLower()
+          Write-Host "::add-mask::$tok"
+          $sha = ([BitConverter]::ToString([Security.Cryptography.SHA256]::HashData([Text.Encoding]::UTF8.GetBytes($tok))) -replace '-','').ToLower()
+          "PAD_LICENSE_TEST_TOKEN=$tok" | Out-File -Append -Encoding utf8 $env:GITHUB_ENV
+          "PAD_TOKEN_SHA=$sha" | Out-File -Append -Encoding utf8 $env:GITHUB_ENV
       - name: Configure Release portable build
         run: |
           cmake -S . -B build -G Ninja `
@@ -87,6 +99,11 @@ jobs:
             -DUSE_QT6_BY_DEFAULT=OFF `
             -DPORTABLE_WIN=ON `
             -DCHECK_FOR_UPDATES=OFF `
+            -DPAD_LICENSE_GATE=ON `
+            "-DPAD_LICENSE_PROVIDER=dodo" `
+            "-DPAD_DODO_PRODUCT_ID=$env:PAD_DODO_PRODUCT_ID" `
+            "-DPAD_BUY_URL=$env:PAD_BUY_URL" `
+            "-DPAD_TEST_TOKEN_SHA256=$env:PAD_TOKEN_SHA" `
             "-DCMAKE_PREFIX_PATH=$env:QT_ROOT_DIR" `
             "-DSDL2_PATH=$env:RUNNER_TEMP/sdl2" `
             "-DSDL2_INCLUDE_DIR=$env:RUNNER_TEMP/sdl2/include" `

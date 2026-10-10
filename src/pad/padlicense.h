@@ -29,6 +29,12 @@
 #include <QHBoxLayout>
 #include <QDialog>
 
+#ifndef PAD_DODO_PRODUCT_ID
+#define PAD_DODO_PRODUCT_ID ""
+#endif
+#ifndef PAD_DODO_API
+#define PAD_DODO_API "https://live.dodopayments.com"
+#endif
 #ifndef PAD_LS_STORE_ID
 #define PAD_LS_STORE_ID 0
 #endif
@@ -119,10 +125,79 @@ private:
     QNetworkAccessManager *m_net; qint64 m_store, m_product; QString m_api;
 };
 
+// Dodo Payments: public endpoints, no API key. Activate returns 201 with an instance id (lki_...);
+// 403 key not active, 404 unknown key, 422 activation limit reached. Validate returns {"valid": bool}.
+class DodoProvider : public PadLicenseProvider
+{
+public:
+    explicit DodoProvider(QNetworkAccessManager *net, const QString &productId = QStringLiteral(PAD_DODO_PRODUCT_ID),
+                          const QString &apiBase = QStringLiteral(PAD_DODO_API))
+        : m_net(net), m_product(productId), m_api(apiBase) {}
+    void activate(const QString &key, const QString &name, std::function<void(PadLicenseResult)> done) override
+    {
+        QJsonObject o; o["license_key"] = key; o["name"] = name;
+        post(QStringLiteral("/licenses/activate"), o, key, QString(), false, done);
+    }
+    void validate(const QString &key, const QString &instance, std::function<void(PadLicenseResult)> done) override
+    {
+        QJsonObject o; o["license_key"] = key; o["license_key_instance_id"] = instance;
+        post(QStringLiteral("/licenses/validate"), o, key, instance, true, done);
+    }
+private:
+    void post(const QString &path, const QJsonObject &body, const QString &key, const QString &instance, bool validating,
+              std::function<void(PadLicenseResult)> done)
+    {
+        QNetworkRequest req(QUrl(m_api + path));
+        req.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/json"));
+        req.setRawHeader("Accept", "application/json");
+        req.setTransferTimeout(15000);
+        QNetworkReply *reply = m_net->post(req, QJsonDocument(body).toJson(QJsonDocument::Compact));
+        const QString product = m_product;
+        QObject::connect(reply, &QNetworkReply::finished, reply, [=]() {
+            PadLicenseResult r; r.key = key;
+            const int http = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+            const QByteArray data = reply->readAll(); reply->deleteLater();
+            const QJsonObject o = QJsonDocument::fromJson(data).object();
+            if (http == 0 || http >= 500)
+            {
+                r.kind = PadLicenseResult::Network;
+                r.message = QObject::tr("Could not reach the license server. Check your internet connection and try again.");
+                done(r); return;
+            }
+            if (http == 404) { r.kind = PadLicenseResult::Invalid; r.message = QObject::tr("That license key was not recognised. Check it and try again."); done(r); return; }
+            if (http == 403) { r.kind = PadLicenseResult::Disabled; r.message = QObject::tr("This license key is not active."); done(r); return; }
+            if (http == 422 && !validating) { r.kind = PadLicenseResult::Limit; r.message = QObject::tr("This key is already active on its maximum number of PCs. Deactivate one, or contact support."); done(r); return; }
+            if (validating)
+            {
+                if (http == 200 && o.value("valid").toBool()) { r.kind = PadLicenseResult::Ok; r.instanceId = instance; }
+                else { r.kind = PadLicenseResult::Invalid; r.message = QObject::tr("That license key was not recognised. Check it and try again."); }
+                done(r); return;
+            }
+            if (http != 200 && http != 201) { r.kind = PadLicenseResult::Invalid; r.message = QObject::tr("That license key was not recognised. Check it and try again."); done(r); return; }
+            r.instanceId = o.value("id").toString();
+            const QString gotProduct = o.value("product").toObject().value("product_id").toString();
+            if (r.instanceId.isEmpty() || (!gotProduct.isEmpty() && !product.isEmpty() && gotProduct != product))
+            {
+                r.kind = PadLicenseResult::WrongProduct; r.message = QObject::tr("That key is for a different product.");
+                done(r); return;
+            }
+            r.kind = PadLicenseResult::Ok; done(r);
+        });
+    }
+    QNetworkAccessManager *m_net; QString m_product, m_api;
+};
+
+#ifdef PAD_LICENSE_PROVIDER_LEMONSQUEEZY
 inline std::unique_ptr<PadLicenseProvider> padMakeProvider(QNetworkAccessManager *net)
 {
     return std::make_unique<LemonSqueezyProvider>(net);
 }
+#else
+inline std::unique_ptr<PadLicenseProvider> padMakeProvider(QNetworkAccessManager *net)
+{
+    return std::make_unique<DodoProvider>(net);
+}
+#endif
 
 class PadLicense
 {

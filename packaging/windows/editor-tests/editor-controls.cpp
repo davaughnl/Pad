@@ -327,8 +327,8 @@ int main(int argc,char **argv) {
                             static QByteArray buf; buf+=c->readAll(); int h=buf.indexOf("\r\n\r\n"); if(h<0)return;
                             int cl=0; for(auto &l:buf.left(h).split('\n')) if(l.toLower().startsWith("content-length:")) cl=l.mid(15).trimmed().toInt();
                             if(buf.size()<h+4+cl)return; seen<<QString::fromUtf8(buf.left(h).split('\n').first().trimmed())+" | "+QString::fromUtf8(buf.mid(h+4,cl)); buf.clear();
-                            QByteArray body=(replies.isEmpty()?QString("{}"):replies.takeFirst()).toUtf8();
-                            c->write("HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nConnection: close\r\nContent-Length: "+QByteArray::number(body.size())+"\r\n\r\n"+body); c->disconnectFromHost();});});
+                            QString rep=replies.isEmpty()?QString("{}"):replies.takeFirst(); QByteArray code="200 OK"; if(rep.size()>4&&rep[3]==':'){code=rep.left(3).toUtf8()+" X"; rep=rep.mid(4);} QByteArray body=rep.toUtf8();
+                            c->write("HTTP/1.1 "+code+"\r\nContent-Type: application/json\r\nConnection: close\r\nContent-Length: "+QByteArray::number(body.size())+"\r\n\r\n"+body); c->disconnectFromHost();});});
                     const QString base=QString("http://127.0.0.1:%1").arg(fake.serverPort());
                     QTemporaryDir tmp; const QString cache=tmp.path()+"/license.json";
                     QNetworkAccessManager net; PadLicense lic(std::make_unique<LemonSqueezyProvider>(&net,7,9,base),cache);
@@ -348,6 +348,26 @@ int main(int argc,char **argv) {
                     r=run([&](auto cb){lic.validate(cb);}); check(r.kind==PadLicenseResult::Ok,"validate ok"); check(seen.last().contains("instance_id=inst-1"),"validate sends the instance");
                     replies<<R"({"valid":false,"error":"license_key is disabled.","license_key":{"status":"disabled"},"instance":null,"meta":null})";
                     r=run([&](auto cb){lic.validate(cb);}); check(r.kind==PadLicenseResult::Disabled,"disabled key must be refused on re-check");
+                    {   // Dodo Payments provider: same PadLicense logic, different store API.
+                        PadLicense d(std::make_unique<DodoProvider>(&net,"pdt_test",base),tmp.path()+"/dodo.json");
+                        replies<<R"(404:{"code":"NOT_FOUND","message":"nope"})";
+                        auto q=run([&](auto cb){d.activate("nope",cb);}); check(q.kind==PadLicenseResult::Invalid,"dodo 404 must be Invalid"); check(!d.hasCached(),"dodo invalid must not be cached");
+                        replies<<R"(422:{"code":"LIMIT","message":"limit"})";
+                        q=run([&](auto cb){d.activate("limit",cb);}); check(q.kind==PadLicenseResult::Limit,"dodo 422 must be Limit");
+                        replies<<R"(403:{"code":"INACTIVE","message":"inactive"})";
+                        q=run([&](auto cb){d.activate("off",cb);}); check(q.kind==PadLicenseResult::Disabled,"dodo 403 must be Disabled");
+                        replies<<R"(201:{"id":"lki_1","name":"x","product":{"product_id":"pdt_other","name":"o"}})";
+                        q=run([&](auto cb){d.activate("other",cb);}); check(q.kind==PadLicenseResult::WrongProduct,"dodo other product refused"); check(!d.hasCached(),"dodo wrong product not cached");
+                        replies<<R"(201:{"id":"lki_1","name":"x","product":{"product_id":"pdt_test","name":"p"}})";
+                        q=run([&](auto cb){d.activate(" good ",cb);}); check(q.kind==PadLicenseResult::Ok,"dodo good key activates"); check(d.hasCached(),"dodo good key cached");
+                        check(seen.last().contains("\"license_key\":\"good\""),"dodo sends trimmed key as JSON");
+                        replies<<R"({"valid":true})";
+                        q=run([&](auto cb){d.validate(cb);}); check(q.kind==PadLicenseResult::Ok,"dodo validate ok"); check(seen.last().contains("lki_1"),"dodo validate sends the instance");
+                        replies<<R"({"valid":false})";
+                        q=run([&](auto cb){d.validate(cb);}); check(q.kind==PadLicenseResult::Invalid,"dodo valid=false is a refusal");
+                        replies<<R"(500:{})";
+                        q=run([&](auto cb){d.validate(cb);}); check(q.kind==PadLicenseResult::Network,"dodo 5xx is not a refusal");
+                    }
                     fake.close(); PadLicense offline(std::make_unique<LemonSqueezyProvider>(&net,7,9,base),cache);
                     r=run([&](auto cb){offline.validate(cb);}); check(r.kind==PadLicenseResult::Network,"offline re-check must be Network, not a refusal");
                     check(offline.hasCached(),"going offline must not remove the saved activation");
