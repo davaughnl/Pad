@@ -14,6 +14,8 @@
 #include <QJsonObject>
 #include <QLabel>
 #include <QLineEdit>
+#include <memory>
+#include <functional>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QNetworkRequest>
@@ -49,66 +51,27 @@ struct PadLicenseResult
     QString instanceId;
 };
 
-class PadLicense
+// The only place that knows a store's API. To move to another platform (Paddle, FastSpring...),
+// write another PadLicenseProvider and change padMakeProvider(); activation, caching and UI stay as they are.
+class PadLicenseProvider
 {
 public:
-    explicit PadLicense(QNetworkAccessManager *net, qint64 storeId = PAD_LS_STORE_ID, qint64 productId = PAD_LS_PRODUCT_ID,
-                        const QString &apiBase = QStringLiteral("https://api.lemonsqueezy.com"), const QString &cachePath = QString())
-        : m_net(net), m_store(storeId), m_product(productId), m_api(apiBase),
-          m_cache(cachePath.isEmpty() ? defaultCachePath() : cachePath) {}
+    virtual ~PadLicenseProvider() = default;
+    virtual void activate(const QString &key, const QString &instanceName, std::function<void(PadLicenseResult)> done) = 0;
+    virtual void validate(const QString &key, const QString &instanceId, std::function<void(PadLicenseResult)> done) = 0;
+};
 
-    static QString defaultCachePath()
-    {
-        return QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + QStringLiteral("/license.json");
-    }
-
-    // True when this PC holds a saved activation. It does not mean the key is still valid.
-    bool hasCached() { load(); return !m_savedKey.isEmpty() && !m_savedInstance.isEmpty(); }
-    qint64 lastValidated() { load(); return m_savedWhen; }
-    void clear() { QFile::remove(m_cache); m_savedKey.clear(); m_savedInstance.clear(); m_savedWhen = 0; }
-
-    // Test-only bypass for release smoke tests: needs a secret token that matches a hash baked in at build time.
-    static bool testBypass()
-    {
-        const QByteArray want = QByteArrayLiteral(PAD_TEST_TOKEN_SHA256);
-        const QByteArray token = qgetenv("PAD_LICENSE_TEST_TOKEN");
-        if (want.isEmpty() || token.isEmpty()) return false;
-        return QCryptographicHash::hash(token, QCryptographicHash::Sha256).toHex() == want;
-    }
-
-    void activate(const QString &rawKey, std::function<void(PadLicenseResult)> done)
-    {
-        const QString key = rawKey.trimmed();
-        if (key.isEmpty()) { PadLicenseResult r; r.kind = PadLicenseResult::Invalid; r.message = QObject::tr("Enter your license key."); done(r); return; }
-        QString name = QHostInfo::localHostName(); if (name.isEmpty()) name = QStringLiteral("Windows PC");
-        post(QStringLiteral("/v1/licenses/activate"), {{"license_key", key}, {"instance_name", name}}, key, QString(),
-             [this, key, done](PadLicenseResult r) { if (r.kind == PadLicenseResult::Ok) save(key, r.instanceId); done(r); });
-    }
-
-    void validate(std::function<void(PadLicenseResult)> done)
-    {
-        load();
-        const QString key = m_savedKey, instance = m_savedInstance;
-        post(QStringLiteral("/v1/licenses/validate"), {{"license_key", key}, {"instance_id", instance}}, key, instance,
-             [this, key, instance, done](PadLicenseResult r) { if (r.kind == PadLicenseResult::Ok) save(key, instance); done(r); });
-    }
-
+class LemonSqueezyProvider : public PadLicenseProvider
+{
+public:
+    explicit LemonSqueezyProvider(QNetworkAccessManager *net, qint64 storeId = PAD_LS_STORE_ID, qint64 productId = PAD_LS_PRODUCT_ID,
+                                  const QString &apiBase = QStringLiteral("https://api.lemonsqueezy.com"))
+        : m_net(net), m_store(storeId), m_product(productId), m_api(apiBase) {}
+    void activate(const QString &key, const QString &name, std::function<void(PadLicenseResult)> done) override
+    { post(QStringLiteral("/v1/licenses/activate"), {{"license_key", key}, {"instance_name", name}}, key, QString(), done); }
+    void validate(const QString &key, const QString &instance, std::function<void(PadLicenseResult)> done) override
+    { post(QStringLiteral("/v1/licenses/validate"), {{"license_key", key}, {"instance_id", instance}}, key, instance, done); }
 private:
-    void load()
-    {
-        QFile f(m_cache); if (!f.open(QIODevice::ReadOnly)) return;
-        const QJsonObject o = QJsonDocument::fromJson(f.readAll()).object();
-        m_savedKey = o.value("key").toString(); m_savedInstance = o.value("instance_id").toString();
-        m_savedWhen = static_cast<qint64>(o.value("validated_at").toDouble());
-    }
-    void save(const QString &key, const QString &instance)
-    {
-        QDir().mkpath(QFileInfo(m_cache).absolutePath());
-        QSaveFile f(m_cache); if (!f.open(QIODevice::WriteOnly)) return;
-        QJsonObject o; o["key"] = key; o["instance_id"] = instance; o["validated_at"] = static_cast<double>(QDateTime::currentSecsSinceEpoch());
-        f.write(QJsonDocument(o).toJson()); f.commit();
-        m_savedKey = key; m_savedInstance = instance; m_savedWhen = QDateTime::currentSecsSinceEpoch();
-    }
     void post(const QString &path, const QList<QPair<QString, QString>> &fields, const QString &key, const QString &instance,
               std::function<void(PadLicenseResult)> done)
     {
@@ -153,7 +116,74 @@ private:
             r.kind = PadLicenseResult::Ok; done(r);
         });
     }
-    QNetworkAccessManager *m_net; qint64 m_store, m_product; QString m_api, m_cache;
+    QNetworkAccessManager *m_net; qint64 m_store, m_product; QString m_api;
+};
+
+inline std::unique_ptr<PadLicenseProvider> padMakeProvider(QNetworkAccessManager *net)
+{
+    return std::make_unique<LemonSqueezyProvider>(net);
+}
+
+class PadLicense
+{
+public:
+    explicit PadLicense(std::unique_ptr<PadLicenseProvider> provider, const QString &cachePath = QString())
+        : m_provider(std::move(provider)),
+          m_cache(cachePath.isEmpty() ? defaultCachePath() : cachePath) {}
+
+    static QString defaultCachePath()
+    {
+        return QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + QStringLiteral("/license.json");
+    }
+
+    // True when this PC holds a saved activation. It does not mean the key is still valid.
+    bool hasCached() { load(); return !m_savedKey.isEmpty() && !m_savedInstance.isEmpty(); }
+    qint64 lastValidated() { load(); return m_savedWhen; }
+    void clear() { QFile::remove(m_cache); m_savedKey.clear(); m_savedInstance.clear(); m_savedWhen = 0; }
+
+    // Test-only bypass for release smoke tests: needs a secret token that matches a hash baked in at build time.
+    static bool testBypass()
+    {
+        const QByteArray want = QByteArrayLiteral(PAD_TEST_TOKEN_SHA256);
+        const QByteArray token = qgetenv("PAD_LICENSE_TEST_TOKEN");
+        if (want.isEmpty() || token.isEmpty()) return false;
+        return QCryptographicHash::hash(token, QCryptographicHash::Sha256).toHex() == want;
+    }
+
+    void activate(const QString &rawKey, std::function<void(PadLicenseResult)> done)
+    {
+        const QString key = rawKey.trimmed();
+        if (key.isEmpty()) { PadLicenseResult r; r.kind = PadLicenseResult::Invalid; r.message = QObject::tr("Enter your license key."); done(r); return; }
+        QString name = QHostInfo::localHostName(); if (name.isEmpty()) name = QStringLiteral("Windows PC");
+        m_provider->activate(key, name,
+             [this, key, done](PadLicenseResult r) { if (r.kind == PadLicenseResult::Ok) save(key, r.instanceId); done(r); });
+    }
+
+    void validate(std::function<void(PadLicenseResult)> done)
+    {
+        load();
+        const QString key = m_savedKey, instance = m_savedInstance;
+        m_provider->validate(key, instance,
+             [this, key, instance, done](PadLicenseResult r) { if (r.kind == PadLicenseResult::Ok) save(key, instance); done(r); });
+    }
+
+private:
+    void load()
+    {
+        QFile f(m_cache); if (!f.open(QIODevice::ReadOnly)) return;
+        const QJsonObject o = QJsonDocument::fromJson(f.readAll()).object();
+        m_savedKey = o.value("key").toString(); m_savedInstance = o.value("instance_id").toString();
+        m_savedWhen = static_cast<qint64>(o.value("validated_at").toDouble());
+    }
+    void save(const QString &key, const QString &instance)
+    {
+        QDir().mkpath(QFileInfo(m_cache).absolutePath());
+        QSaveFile f(m_cache); if (!f.open(QIODevice::WriteOnly)) return;
+        QJsonObject o; o["key"] = key; o["instance_id"] = instance; o["validated_at"] = static_cast<double>(QDateTime::currentSecsSinceEpoch());
+        f.write(QJsonDocument(o).toJson()); f.commit();
+        m_savedKey = key; m_savedInstance = instance; m_savedWhen = QDateTime::currentSecsSinceEpoch();
+    }
+    std::unique_ptr<PadLicenseProvider> m_provider; QString m_cache;
     QString m_savedKey, m_savedInstance; qint64 m_savedWhen = 0;
 };
 
@@ -177,7 +207,7 @@ inline QDialog *padCreateActivationDialog(QWidget *parent, PadLicense *license, 
     auto *quit = new QPushButton(QObject::tr("Quit"), dialog); quit->setAutoDefault(false);
     quit->setIcon(QIcon(QStringLiteral(":/pad/icons/close.svg"))); quit->setIconSize(QSize(14, 14));
     auto *buy = new QPushButton(QObject::tr("Buy a license"), dialog); buy->setAutoDefault(false);
-    buy->setIcon(QIcon(QStringLiteral(":/pad/icons/download.svg"))); buy->setIconSize(QSize(14, 14));
+    buy->setIcon(QIcon(QStringLiteral(":/pad/icons/external-link.svg"))); buy->setIconSize(QSize(14, 14));
     buy->setVisible(!buyUrl.isEmpty());
     auto *go = new QPushButton(QObject::tr("Activate"), dialog); go->setDefault(true); go->setProperty("padPrimary", true);
     row->addWidget(quit); row->addWidget(buy); row->addStretch(1); row->addWidget(go);
@@ -203,7 +233,7 @@ inline QDialog *padCreateActivationDialog(QWidget *parent, PadLicense *license, 
 inline bool padLicenseGate(QNetworkAccessManager *net)
 {
     if (PadLicense::testBypass()) return true;
-    PadLicense license(net);
+    PadLicense license(padMakeProvider(net));
     if (license.hasCached()) return true;
     QDialog *dialog = padCreateActivationDialog(nullptr, &license);
     const bool ok = dialog->exec() == QDialog::Accepted;
@@ -216,7 +246,7 @@ inline bool padLicenseGate(QNetworkAccessManager *net)
 inline void padLicenseRecheck(QNetworkAccessManager *net, QObject *owner)
 {
     if (PadLicense::testBypass()) return;
-    auto *license = new PadLicense(net);
+    auto *license = new PadLicense(padMakeProvider(net));
     if (!license->hasCached() || QDateTime::currentSecsSinceEpoch() - license->lastValidated() < 7 * 24 * 3600) { delete license; return; }
     license->validate([license](PadLicenseResult r) {
         const bool refused = r.kind == PadLicenseResult::Invalid || r.kind == PadLicenseResult::Expired

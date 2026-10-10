@@ -331,7 +331,7 @@ int main(int argc,char **argv) {
                             c->write("HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nConnection: close\r\nContent-Length: "+QByteArray::number(body.size())+"\r\n\r\n"+body); c->disconnectFromHost();});});
                     const QString base=QString("http://127.0.0.1:%1").arg(fake.serverPort());
                     QTemporaryDir tmp; const QString cache=tmp.path()+"/license.json";
-                    QNetworkAccessManager net; PadLicense lic(&net,7,9,base,cache);
+                    QNetworkAccessManager net; PadLicense lic(std::make_unique<LemonSqueezyProvider>(&net,7,9,base),cache);
                     auto run=[&](std::function<void(std::function<void(PadLicenseResult)>)> go){PadLicenseResult out;bool done=false;go([&](PadLicenseResult r){out=r;done=true;});
                         for(int i=0;i<200&&!done;++i)QTest::qWait(50); check(done,"license call timed out"); return out;};
                     check(!lic.hasCached(),"fresh PC must not have a cached license");
