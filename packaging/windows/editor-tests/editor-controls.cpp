@@ -352,7 +352,7 @@ int main(int argc,char **argv) {
                     r=run([&](auto cb){offline.validate(cb);}); check(r.kind==PadLicenseResult::Network,"offline re-check must be Network, not a refusal");
                     check(offline.hasCached(),"going offline must not remove the saved activation");
                     std::fprintf(stderr,"LICENSE logic ok (%d requests)\n",int(seen.size()));
-                    PadLicense shown(&net,7,9,base,tmp.path()+"/none.json");
+                    PadLicense shown(std::make_unique<LemonSqueezyProvider>(&net,7,9,base),tmp.path()+"/none.json");
                     auto *act=padCreateActivationDialog(nullptr,&shown,"https://example.com/buy");shot(act,"activation-1");
                     if(auto *e=act->findChild<QLabel*>("padLicenseError"))e->setText("That license key was not recognised. Check it and try again.");
                     if(auto *k=act->findChild<QLineEdit*>("padLicenseKey"))k->setText("AAAA1111-BBBB-2222-CCCC-3333DDDD4444");
