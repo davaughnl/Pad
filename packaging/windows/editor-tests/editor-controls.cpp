@@ -218,8 +218,8 @@ int main(int argc,char **argv) {
             frame(window,"hero",0);
             QAbstractItemView *view=nullptr; int best=0;
             for(auto *v:window->findChildren<QAbstractItemView*>()) if(v->isVisible()&&v->width()*v->height()>best){best=v->width()*v->height();view=v;}
-            if(view&&view->verticalScrollBar()){auto *sb=view->verticalScrollBar();const int mx=sb->maximum();
-                for(int i=0;i<=240;++i){sb->setValue(mx*i/240);QTest::qWait(25);frame(window,"zoom",i,QRect(200,250,800,450));}
+            if(view&&view->verticalScrollBar()){view->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);QTest::qWait(300);auto *sb=view->verticalScrollBar();const int mx=sb->maximum();std::fprintf(stderr,"Film scroll max=%d\n",mx);
+                for(int i=0;i<=240;++i){const double t=i/240.0;sb->setValue(int(mx*(t*t*(3-2*t))));QTest::qWait(25);frame(window,"zoom",i,QRect(200,250,800,450));}
                 sb->setValue(0);QTest::qWait(200);}
             auto *dialog=new GameControllerMappingDialog(fj,settings,window);
             dialog->show();dialog->raise();QTest::qWait(800);
