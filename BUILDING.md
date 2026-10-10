@@ -1,6 +1,6 @@
 # Building Pad
 
-Most of these packages are already built and available on [Release Page](https://github.com/davaughnl/Pad), but if you want, you can also build Pad by yourself.
+Most of these packages are already built and available on [Release Page](https://github.com/davaughnl/Pad1), but if you want, you can also build Pad by yourself.
 
 The simplest way is to use devcontainer (Docker required) which sets up proper build environment for you (tested only with Linux host).
 
@@ -83,7 +83,7 @@ directory. Enter the following commands in order to:
 Clone repository
 
 ```bash
-git clone https://github.com/davaughnl/Pad.git
+git clone https://github.com/davaughnl/Pad1.git
 ```
 
 Build the program:
@@ -261,7 +261,7 @@ Create AppImage file
 ## Building Flatpak
 
 The command builds the package into the `build` folder and installs the created flatpak.
-The local manifest is in this repository; Pad is not published on Flathub. See the [Pad repository](https://github.com/davaughnl/Pad).
+The local manifest is in this repository; Pad is not published on Flathub. See the [Pad repository](https://github.com/davaughnl/Pad1).
 
 ```bash
 flatpak install flathub org.kde.Platform//6.10 org.kde.Sdk//6.10

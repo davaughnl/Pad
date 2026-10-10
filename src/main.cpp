@@ -27,6 +27,10 @@
 #include "commandlineutility.h"
 #include "common.h"
 #include "pad/padshell.h"
+#ifdef PAD_LICENSE_GATE
+#include "pad/padlicense.h"
+#include <QNetworkAccessManager>
+#endif
 #include "inputdaemon.h"
 #include "inputdevice.h"
 #include "joybuttonslot.h"
@@ -563,6 +567,14 @@ int main(int argc, char *argv[])
     inputEventThread = new QThread();
     inputEventThread->setObjectName("inputEventThread");
 
+#ifdef PAD_LICENSE_GATE
+    static QNetworkAccessManager licenseNet;
+    if (!padLicenseGate(&licenseNet))
+    {
+        return 0;
+    }
+    padLicenseRecheck(&licenseNet, &antimicrox);
+#endif
     MainWindow *mainWindow = new MainWindow(joysticks, &cmdutility, &settings);
 
     mainWindow->setAppTranslator(&qtTranslator);

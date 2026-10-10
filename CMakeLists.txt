@@ -102,6 +102,20 @@ if(PAD_VERSION)
     add_compile_definitions(PAD_VERSION="${PAD_VERSION}")
 endif(PAD_VERSION)
 
+# Paid builds: require a Lemon Squeezy license key before Pad opens. Off for development builds.
+option(PAD_LICENSE_GATE "Require a Lemon Squeezy license key on first run" OFF)
+set(PAD_LS_STORE_ID "0" CACHE STRING "Lemon Squeezy store ID that must own the license key")
+set(PAD_LS_PRODUCT_ID "0" CACHE STRING "Lemon Squeezy product ID that must own the license key")
+set(PAD_BUY_URL "" CACHE STRING "Where the Buy a license button goes")
+set(PAD_TEST_TOKEN_SHA256 "" CACHE STRING "SHA-256 of the release-test token that skips the gate in smoke tests")
+if(PAD_LICENSE_GATE)
+    if(PAD_LS_STORE_ID STREQUAL "0" OR PAD_LS_PRODUCT_ID STREQUAL "0")
+        message(FATAL_ERROR "PAD_LICENSE_GATE needs PAD_LS_STORE_ID and PAD_LS_PRODUCT_ID")
+    endif()
+    add_compile_definitions(PAD_LICENSE_GATE=1 PAD_LS_STORE_ID=${PAD_LS_STORE_ID} PAD_LS_PRODUCT_ID=${PAD_LS_PRODUCT_ID}
+        PAD_BUY_URL="${PAD_BUY_URL}" PAD_TEST_TOKEN_SHA256="${PAD_TEST_TOKEN_SHA256}")
+endif()
+
 if(CHECK_FOR_UPDATES)
     message("This build will check for updates using GitHub API.")
     add_compile_definitions(CHECK_FOR_UPDATES="${CHECK_FOR_UPDATES}")
@@ -839,7 +853,7 @@ include(InstallRequiredSystemLibraries)
 
 
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Pad maps controllers to keyboard and mouse controls.")
-set(CPACK_PACKAGE_HOMEPAGE_URL "https://github.com/davaughnl/Pad/")
+set(CPACK_PACKAGE_HOMEPAGE_URL "https://github.com/davaughnl/Pad1/")
 
 
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
@@ -913,8 +927,8 @@ if(WIN32 AND NOT UNIX)
 
         set(CPACK_NSIS_DISPLAY_NAME "Pad")
         set(CPACK_NSIS_PACKAGE_NAME "Pad")
-        set(CPACK_NSIS_HELP_LINK "http:\\\\\\\\github.com/davaughnl/Pad")
-        set(CPACK_NSIS_URL_INFO_ABOUT "http:\\\\\\\\github.com/davaughnl/Pad")
+        set(CPACK_NSIS_HELP_LINK "http:\\\\\\\\github.com/davaughnl/Pad1")
+        set(CPACK_NSIS_URL_INFO_ABOUT "http:\\\\\\\\github.com/davaughnl/Pad1")
         set(CPACK_NSIS_MODIFY_PATH ON)
     else()
         set(CPACK_GENERATOR ZIP)

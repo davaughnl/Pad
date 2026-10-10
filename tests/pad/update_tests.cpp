@@ -102,7 +102,7 @@ int main(int argc, char **argv)
         scenario("versions-and-hosts", unit);
         const QByteArray setup(5000, 'S');
         const QString good = QCryptographicHash::hash(setup, QCryptographicHash::Sha256).toHex();
-        const QString api = "/repos/davaughnl/Pad/releases/latest";
+        const QString api = "/repos/davaughnl/Pad1/releases/latest";
         const QString nm = "Pad-1.2.0-Windows-x64-Setup.exe";
         auto mk = [&](Mock &m, const QString &tag = "v1.2.0") {
             m.routes[api] = {200, releaseJson(m, tag, setup)};

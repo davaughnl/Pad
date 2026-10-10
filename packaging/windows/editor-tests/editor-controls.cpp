@@ -36,6 +36,10 @@
 #include "keyboard/virtualmousepushbutton.h"
 #include "pad/padshell.h"
 #include "pad/paddevicetools.h"
+#include "pad/padlicense.h"
+#include <QTcpServer>
+#include <QTcpSocket>
+#include <QNetworkAccessManager>
 #include "mousedialog/mousecontrolsticksettingsdialog.h"
 #include "gui/joybuttonslot.h"
 #include "gui/quicksetdialog.h"
@@ -312,6 +316,48 @@ int main(int argc,char **argv) {
                 const auto buttons=ob->findChildren<QPushButton*>();
                 for(int step=2;step<=3;++step){for(auto *b:buttons) if(b->text()=="Next"&&b->isVisible()){b->click();break;} shot(ob,(std::string("onboarding-")+std::to_string(step)).c_str());}
                 ob->hide();
+
+                // ---- License gate: logic against a local fake of the Lemon Squeezy API, then the screens.
+                {
+                    QTcpServer fake; check(fake.listen(QHostAddress::LocalHost,0),"fake license server");
+                    QStringList replies; QStringList seen;
+                    QObject::connect(&fake,&QTcpServer::newConnection,[&](){
+                        auto *c=fake.nextPendingConnection();
+                        QObject::connect(c,&QTcpSocket::readyRead,[c,&replies,&seen](){
+                            static QByteArray buf; buf+=c->readAll(); int h=buf.indexOf("\r\n\r\n"); if(h<0)return;
+                            int cl=0; for(auto &l:buf.left(h).split('\n')) if(l.toLower().startsWith("content-length:")) cl=l.mid(15).trimmed().toInt();
+                            if(buf.size()<h+4+cl)return; seen<<QString::fromUtf8(buf.left(h).split('\n').first().trimmed())+" | "+QString::fromUtf8(buf.mid(h+4,cl)); buf.clear();
+                            QByteArray body=(replies.isEmpty()?QString("{}"):replies.takeFirst()).toUtf8();
+                            c->write("HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nConnection: close\r\nContent-Length: "+QByteArray::number(body.size())+"\r\n\r\n"+body); c->disconnectFromHost();});});
+                    const QString base=QString("http://127.0.0.1:%1").arg(fake.serverPort());
+                    QTemporaryDir tmp; const QString cache=tmp.path()+"/license.json";
+                    QNetworkAccessManager net; PadLicense lic(&net,7,9,base,cache);
+                    auto run=[&](std::function<void(std::function<void(PadLicenseResult)>)> go){PadLicenseResult out;bool done=false;go([&](PadLicenseResult r){out=r;done=true;});
+                        for(int i=0;i<200&&!done;++i)QTest::qWait(50); check(done,"license call timed out"); return out;};
+                    check(!lic.hasCached(),"fresh PC must not have a cached license");
+                    replies<<R"({"activated":false,"error":"license_key not found.","license_key":null,"instance":null,"meta":null})";
+                    auto r=run([&](auto cb){lic.activate("nope",cb);}); check(r.kind==PadLicenseResult::Invalid,"unknown key must be Invalid"); check(!lic.hasCached(),"invalid key must not be cached");
+                    replies<<R"({"activated":false,"error":"This license key has reached the activation limit.","license_key":{"status":"active"},"instance":null,"meta":null})";
+                    r=run([&](auto cb){lic.activate("limit",cb);}); check(r.kind==PadLicenseResult::Limit,"limit must be Limit");
+                    replies<<R"({"activated":true,"error":null,"license_key":{"status":"active"},"instance":{"id":"inst-1","name":"x"},"meta":{"store_id":7,"product_id":99}})";
+                    r=run([&](auto cb){lic.activate("other-product",cb);}); check(r.kind==PadLicenseResult::WrongProduct,"other product must be refused"); check(!lic.hasCached(),"wrong product must not be cached");
+                    replies<<R"({"activated":true,"error":null,"license_key":{"status":"active"},"instance":{"id":"inst-1","name":"x"},"meta":{"store_id":7,"product_id":9}})";
+                    r=run([&](auto cb){lic.activate("  good-key ",cb);}); check(r.kind==PadLicenseResult::Ok,"good key must activate"); check(lic.hasCached(),"good key must be cached");
+                    check(seen.last().contains("license_key=good-key")&&seen.last().contains("instance_name="),"activate body");
+                    replies<<R"({"valid":true,"error":null,"license_key":{"status":"active"},"instance":{"id":"inst-1"},"meta":{"store_id":7,"product_id":9}})";
+                    r=run([&](auto cb){lic.validate(cb);}); check(r.kind==PadLicenseResult::Ok,"validate ok"); check(seen.last().contains("instance_id=inst-1"),"validate sends the instance");
+                    replies<<R"({"valid":false,"error":"license_key is disabled.","license_key":{"status":"disabled"},"instance":null,"meta":null})";
+                    r=run([&](auto cb){lic.validate(cb);}); check(r.kind==PadLicenseResult::Disabled,"disabled key must be refused on re-check");
+                    fake.close(); PadLicense offline(&net,7,9,base,cache);
+                    r=run([&](auto cb){offline.validate(cb);}); check(r.kind==PadLicenseResult::Network,"offline re-check must be Network, not a refusal");
+                    check(offline.hasCached(),"going offline must not remove the saved activation");
+                    std::fprintf(stderr,"LICENSE logic ok (%d requests)\n",int(seen.size()));
+                    PadLicense shown(&net,7,9,base,tmp.path()+"/none.json");
+                    auto *act=padCreateActivationDialog(nullptr,&shown,"https://example.com/buy");shot(act,"activation-1");
+                    if(auto *e=act->findChild<QLabel*>("padLicenseError"))e->setText("That license key was not recognised. Check it and try again.");
+                    if(auto *k=act->findChild<QLineEdit*>("padLicenseKey"))k->setText("AAAA1111-BBBB-2222-CCCC-3333DDDD4444");
+                    shot(act,"activation-2");act->hide();
+                }
                 // Device tools in each state, on the overview card background.
                 auto *sheet=new QFrame;sheet->setObjectName("padOverview");sheet->setFixedSize(520,230);
                 auto *sl=new QVBoxLayout(sheet);sl->setContentsMargins(20,12,20,12);
