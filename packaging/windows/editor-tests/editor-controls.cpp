@@ -91,9 +91,28 @@ static void settle() { QTest::qWait(100); }
 static void click(QAbstractButton *button) { check(button->isEnabled(), "Control disabled"); button->click(); settle(); }
 static void spin(QDialog *dialog,const char *name,int value) { control<QSpinBox>(dialog,name)->setValue(value); settle(); }
 static void toggle(QDialog *dialog,const char *name) { click(control<QCheckBox>(dialog,name)); }
+static void fontCheckWidget(QWidget *root,const char *name){
+    int bad=0,seen=0;
+    const auto widgets=root->findChildren<QWidget*>();
+    for(QWidget *c:widgets){
+        if(!c->isVisible()) continue;
+        QString text;
+        if(auto *l=qobject_cast<QLabel*>(c)) text=l->text();
+        else if(auto *b=qobject_cast<QAbstractButton*>(c)) text=b->text();
+        else if(auto *e=qobject_cast<QLineEdit*>(c)) text=e->text().isEmpty()?e->placeholderText():e->text();
+        else if(auto *g=qobject_cast<QGroupBox*>(c)) text=g->title();
+        if(text.trimmed().isEmpty()) continue;
+        ++seen;
+        const QString fam=QFontInfo(c->font()).family();
+        if(fam!=QStringLiteral("Geist")){++bad;std::fprintf(stderr,"FONTBAD screen=%s class=%s text='%s' family=%s\n",name,c->metaObject()->className(),text.left(30).toUtf8().constData(),fam.toUtf8().constData());}
+    }
+    std::fprintf(stderr,"FONTCHECK screen=%s texts=%d bad=%d\n",name,seen,bad);
+    check(bad==0,"A screen renders text outside Geist");
+}
 static void capture(QDialog *dialog,const QString &output,const QString &name) {
     dialog->setAttribute(Qt::WA_DeleteOnClose,false); dialog->show(); dialog->raise(); dialog->activateWindow();
     QTest::qWait(750);
+    fontCheckWidget(dialog,name.toUtf8().constData());
     check(dialog->grab().save(output+"/"+name+"-window.png"),"Window grab failed");
     const auto screen=QApplication::primaryScreen();
     check(screen && screen->geometry().size()==QSize(1024,768), "Runner desktop must be 1024x768");
@@ -146,6 +165,7 @@ int main(int argc,char **argv) {
             window->makeJoystickTabs();window->fillButtons();
             window->resize(1000,700);window->show();window->raise();window->activateWindow();QTest::qWait(1000);
             auto *overview=control<QWidget>(window,"padOverview");check(overview->isVisible(),"Connected controller overview hidden");
+            fontCheckWidget(window,"main-window");
             check(window->grab().save(output+"/controller-overview-full.png"),"Overview full capture failed");
             auto *dialog=new GameControllerMappingDialog(joystick,settings,window);
             capture(dialog,output,"controller-mapping");
