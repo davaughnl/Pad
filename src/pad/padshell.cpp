@@ -159,8 +159,15 @@ void PadUi::initializeApplicationStyle()
     initialized = true;
     qApp->setStyle(new PadStyle);
     qApp->setWindowIcon(QIcon(QStringLiteral(":/images/pad.png")));
-    const int geistId = QFontDatabase::addApplicationFont(QStringLiteral(":/pad/Geist.ttf"));
-    const QStringList families = QFontDatabase::applicationFontFamilies(geistId);
+    // Static Geist files register reliably on every Qt platform. The variable
+    // font stays as a fallback only, because some Qt builds refuse it and the
+    // UI then silently falls back to the system font.
+    const int geistId = QFontDatabase::addApplicationFont(QStringLiteral(":/pad/Geist-Regular.ttf"));
+    QFontDatabase::addApplicationFont(QStringLiteral(":/pad/Geist-Medium.ttf"));
+    QFontDatabase::addApplicationFont(QStringLiteral(":/pad/Geist-SemiBold.ttf"));
+    QStringList families = QFontDatabase::applicationFontFamilies(geistId);
+    if (families.isEmpty())
+        families = QFontDatabase::applicationFontFamilies(QFontDatabase::addApplicationFont(QStringLiteral(":/pad/Geist.ttf")));
     QFont appFont = QFontDatabase::systemFont(QFontDatabase::GeneralFont);
     if (!families.isEmpty()) appFont.setFamily(families.first());
     appFont.setPointSize(10);
