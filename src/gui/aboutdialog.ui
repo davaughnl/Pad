@@ -141,7 +141,7 @@
      </widget>
      <widget class="QWidget" name="license">
       <attribute name="title">
-       <string>License</string>
+       <string>Legal</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_3">
 
