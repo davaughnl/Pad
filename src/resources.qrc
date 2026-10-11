@@ -2,6 +2,9 @@
     <qresource prefix="/pad">
         <file alias="pad.qss">pad/pad.qss</file>
         <file alias="Geist.ttf">pad/Geist.ttf</file>
+        <file alias="Geist-Regular.ttf">pad/Geist-Regular.ttf</file>
+        <file alias="Geist-Medium.ttf">pad/Geist-Medium.ttf</file>
+        <file alias="Geist-SemiBold.ttf">pad/Geist-SemiBold.ttf</file>
         <file alias="icons/minus.svg">pad/icons/minus.svg</file>
         <file alias="icons/battery-full.svg">pad/icons/battery-full.svg</file>
         <file alias="icons/battery-good-charging.svg">pad/icons/battery-good-charging.svg</file>
