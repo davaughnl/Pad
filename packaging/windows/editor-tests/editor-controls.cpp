@@ -65,6 +65,9 @@
 #include <QPushButton>
 #include <QPixmap>
 #include <QApplication>
+#include <QGroupBox>
+#include <QAbstractButton>
+#include <QFontInfo>
 #include <QScreen>
 #include <QDir>
 #include <QFile>
@@ -289,9 +292,28 @@ int main(int argc,char **argv) {
             QMap<SDL_JoystickID,InputDevice*> devices;
             devices.insert(SDL_JoystickInstanceID(joystick->getJoyHandle()),joystick);
             QList<InputDevice*> list; list.append(joystick);
+            auto fontCheck=[&](QWidget *root,const char *name){
+                int bad=0,seen=0;
+                const auto widgets=root->findChildren<QWidget*>();
+                for(QWidget *c:widgets){
+                    if(!c->isVisible()) continue;
+                    QString text;
+                    if(auto *l=qobject_cast<QLabel*>(c)) text=l->text();
+                    else if(auto *b=qobject_cast<QAbstractButton*>(c)) text=b->text();
+                    else if(auto *e=qobject_cast<QLineEdit*>(c)) text=e->text().isEmpty()?e->placeholderText():e->text();
+                    else if(auto *g=qobject_cast<QGroupBox*>(c)) text=g->title();
+                    if(text.trimmed().isEmpty()) continue;
+                    ++seen;
+                    const QString fam=QFontInfo(c->font()).family();
+                    if(fam!=QStringLiteral("Geist")){++bad;std::fprintf(stderr,"FONTBAD screen=%s class=%s text='%s' family=%s\n",name,c->metaObject()->className(),text.left(30).toUtf8().constData(),fam.toUtf8().constData());}
+                }
+                std::fprintf(stderr,"FONTCHECK screen=%s texts=%d bad=%d\n",name,seen,bad);
+                check(bad==0,"A screen renders text outside Geist");
+            };
             auto shot=[&](QWidget *w,const char *name){std::fprintf(stderr,"SHOT %s\n",name);std::fflush(stderr);
                 w->show();w->raise();w->activateWindow();QTest::qWait(600);
                 check(w->grab().save(output+"/screen-"+name+".png"),"Screen capture failed");
+                fontCheck(w,name);
             };
             auto *quick=new QuickSetDialog(joystick);shot(quick,"quickset");quick->hide();
             auto *names=new SetNamesDialog(joystick);shot(names,"setnames");names->hide();
