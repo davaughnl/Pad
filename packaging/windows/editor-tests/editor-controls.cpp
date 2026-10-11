@@ -148,8 +148,6 @@ int main(int argc,char **argv) {
             }
             auto *window=new MainWindow(&devices,&command,settings);
             window->makeJoystickTabs();window->fillButtons();
-            {QFontDatabase fdb;std::fprintf(stderr,"FONTDIAG qrcRegular=%d qrcVar=%d appFont=%s hasGeist=%d\n",int(QFile::exists(":/pad/Geist-Regular.ttf")),int(QFile::exists(":/pad/Geist.ttf")),qApp->font().family().toUtf8().constData(),int(fdb.families().contains("Geist")));
-             for(auto *l:window->findChildren<QLabel*>()){if(!l->isVisible())continue;QFontInfo fi(l->font());std::fprintf(stderr,"FONTDIAG label '%s' req=%s actual=%s\n",l->text().left(24).toUtf8().constData(),l->font().family().toUtf8().constData(),fi.family().toUtf8().constData());}}
             window->resize(1000,700);window->show();window->raise();window->activateWindow();QTest::qWait(1000);
             auto *overview=control<QWidget>(window,"padOverview");check(overview->isVisible(),"Connected controller overview hidden");
             check(window->grab().save(output+"/controller-overview-full.png"),"Overview full capture failed");
@@ -221,6 +219,8 @@ int main(int argc,char **argv) {
             }
             window->resize(1000,700);window->show();window->raise();window->activateWindow();QTest::qWait(1500);
             frame(window,"hero",0);
+            {QFontDatabase fdb;std::fprintf(stderr,"FONTDIAG qrcRegular=%d qrcVar=%d appFont=%s hasGeist=%d\n",int(QFile::exists(":/pad/Geist-Regular.ttf")),int(QFile::exists(":/pad/Geist.ttf")),qApp->font().family().toUtf8().constData(),int(fdb.families().contains("Geist")));
+             for(auto *l:window->findChildren<QLabel*>()){if(!l->isVisible())continue;QFontInfo fi(l->font());std::fprintf(stderr,"FONTDIAG label '%s' req=%s actual=%s\n",l->text().left(24).toUtf8().constData(),l->font().family().toUtf8().constData(),fi.family().toUtf8().constData());}}
             QAbstractItemView *view=nullptr; int best=0;
             for(auto *v:window->findChildren<QAbstractItemView*>()) if(v->isVisible()&&v->width()*v->height()>best){best=v->width()*v->height();view=v;}
             if(view&&view->verticalScrollBar()){view->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);QTest::qWait(300);auto *sb=view->verticalScrollBar();const int mx=sb->maximum();std::fprintf(stderr,"Film scroll max=%d\n",mx);
