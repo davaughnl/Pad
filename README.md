@@ -4,6 +4,8 @@ Pad maps your game controller to keyboard and mouse controls. Plug in a pad, pic
 
 Pad is a mapper. It reads your controller and sends keyboard and mouse input. It is not a virtual gamepad driver.
 
+Pad runs on Windows (x64) and Linux (Ubuntu 22.04 amd64, X11). macOS is not supported yet.
+
 ## Contents
 
 - [Get started](#get-started)
@@ -12,11 +14,14 @@ Pad is a mapper. It reads your controller and sends keyboard and mouse input. It
 - [Optional driver mode](#optional-driver-mode)
 - [Status and limits](#status-and-limits)
 - [Build from source](#build)
+- [Credits](#credits)
 - [License](#license)
 
 ## Get started
 
-1. Download the Windows x64 installer or the portable zip from the Releases page and run it.
+1. Download Pad from the [Releases page](https://github.com/davaughnl/Pad/releases). No release has been published yet, so check back there for the first one.
+   - **Windows x64:** run `Pad-<version>-Windows-x64-Setup.exe`, or unzip `Pad-<version>-Windows-x64.zip` for the portable build.
+   - **Ubuntu 22.04 amd64 (X11):** run `sudo apt install ./Pad-<version>-Ubuntu-22.04-amd64.deb`, then start `pad`. A `.sha256` file is published next to each download so you can verify it.
 2. Plug in your controller. It appears under **Controllers** in the sidebar, with a picture of that pad.
 3. On first run Pad shows a short three-step guide: plug in your pad, pick a game, assign a profile. You can skip it.
 4. Map inputs on the main screen, then choose **Save** to keep the profile.
@@ -71,7 +76,9 @@ Choose **Check for updates** in the sidebar. Pad checks the latest release, down
 
 ## Profiles and compatibility
 
-Pad keeps its own settings file. On first run it copies compatible settings from earlier versions without changing the originals.
+Pad works with controllers that SDL2 supports, including Xbox 360, Xbox One and Series, PlayStation 4 (DualShock 4), PlayStation 5 (DualSense), Nintendo Switch Pro, 8BitDo, Logitech and Stadia pads. Unusual devices such as wheels and flight sticks can be mapped by hand in **Controller Mapping**.
+
+Existing `.amgp` profiles work as they are. Pad keeps its own settings file and, on first run, copies compatible settings from earlier versions without changing the originals.
 
 ## Optional driver mode
 
@@ -91,10 +98,10 @@ cmake --build build --parallel
 ./build/bin/pad
 ```
 
-## Compatibility
+## Credits
 
-Existing `.amgp` profiles are supported. Pad uses its own settings file and copies compatible settings on first run without changing the original.
+Pad began as a fork of [AntiMicroX](https://github.com/AntiMicroX/antimicrox), a GPL-licensed gamepad mapper by the AntiMicroX developers and contributors, itself a continuation of Antimicro. Pad's interface, features and packaging have since been redesigned and extended. Pad uses Qt and SDL2, and bundles Geist fonts and Lucide icons. Required copyright and license notices are kept in the source and package legal files.
 
 ## License
 
-GPL-3.0-or-later. Required copyright and license notices are preserved in the source and package legal files. See the [license](LICENSE) and the legal notices included with the source and packages.
+Pad is licensed under GPL-3.0-or-later, inherited from AntiMicroX. Required copyright and license notices are preserved in the source and package legal files. See the [license](LICENSE) and the legal notices included with the source and packages.
