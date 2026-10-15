@@ -49,9 +49,6 @@ AboutDialog::AboutDialog(QWidget *parent)
         "Copyright (C) 2026 Pad\n\n"
         "Pad is free software, released under the GNU General Public License version 3 or later. "
         "You can copy, change and share it under that license. It comes with no warranty.\n\n"
-        "Source code: github.com/davaughnl/Pad\n\n"
-        "Pad is based on AntiMicroX. Copyright (C) 2015 Travis Nickles, Copyright (C) 2020 Jagoda G\u00f3rska. "
-        "Qt and SDL are used under their own licenses.\n\n"
         "The full license text follows.\n\n");
     if (licenseFile.open(QIODevice::ReadOnly | QIODevice::Text))
         legalNotice += QString::fromUtf8(licenseFile.readAll());
@@ -64,7 +61,7 @@ AboutDialog::~AboutDialog() { delete ui; }
 
 void AboutDialog::fillInfoTextBrowser()
 {
-    // Keep attribution and the full GPL notice in Legal, not the product overview.
+    // Product overview; license terms are available in Legal.
     ui->infoTextBrowser->setOpenLinks(false);
     ui->infoTextBrowser->setHtml(
         QStringLiteral("<p style=\"font-size:15px\">%1</p>"

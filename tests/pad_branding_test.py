@@ -87,7 +87,8 @@ class PadBrandingTests(unittest.TestCase):
         overview = about.split('void AboutDialog::fillInfoTextBrowser()', 1)[1].split('void AboutDialog::changeEvent', 1)[0]
         self.assertNotIn('AntiMicroX', overview)
         self.assertIn('tr("Legal")', overview)
-        self.assertIn('Pad is based on AntiMicroX.', about)
+        self.assertNotIn('Pad is based on AntiMicroX.', about)
+        self.assertNotIn('Source code:', about)
         self.assertIn('<string>Legal</string>', (ROOT / 'src/gui/aboutdialog.ui').read_text())
         retranslate = about.split('void AboutDialog::retranslateUi()', 1)[1]
         self.assertIn('fillInfoTextBrowser();', retranslate)
