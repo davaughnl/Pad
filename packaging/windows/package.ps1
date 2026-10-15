@@ -21,8 +21,8 @@ $name = if ($Version) { "Pad-$Version-Windows-x64" } else { "Pad-$($Revision.Sub
 $stage = Join-Path $output $name
 if (Test-Path $stage) { Remove-Item $stage -Recurse -Force }
 $bin = Join-Path $stage 'bin'
-$data = Join-Path $stage 'share/antimicrox'
-New-Item -ItemType Directory -Path $bin, "$data/translations", "$bin/profiles", "$bin/share/antimicrox/translations", "$bin/share/qt/translations", "$stage/licenses" -Force | Out-Null
+$data = Join-Path $stage 'share/pad'
+New-Item -ItemType Directory -Path $bin, "$data/translations", "$bin/profiles", "$bin/share/pad/translations", "$bin/share/qt/translations", "$stage/licenses" -Force | Out-Null
 Copy-Item "$build/bin/pad.exe" $bin
 Copy-Item "$sdl/lib/x64/SDL2.dll" $bin
 & "$qt/bin/windeployqt.exe" --release --no-compiler-runtime --no-opengl-sw --no-system-d3d-compiler "$bin/pad.exe"
@@ -64,11 +64,11 @@ if ($InterceptionZip) {
     Copy-Item "$source/packaging/windows/DRIVER-RECOVERY.md" "$stage/licenses/Pad-driver-recovery.md"
     Remove-Item $x -Recurse -Force
 }
-$translations = @(Get-ChildItem "$build/share/antimicrox/translations" -Filter '*.qm')
+$translations = @(Get-ChildItem "$build/share/pad/translations" -Filter '*.qm')
 if ($translations.Count -eq 0) { throw 'No compiled Pad translations; build the updateqm target first' }
 $translations | Copy-Item -Destination "$data/translations"
 # Initial loading uses ../share; language reload on Windows uses bin/share.
-$translations | Copy-Item -Destination "$bin/share/antimicrox/translations"
+$translations | Copy-Item -Destination "$bin/share/pad/translations"
 Copy-Item "$qt/translations/qt_*.qm" "$bin/share/qt/translations"
 Copy-Item "$qt/translations/qtbase_*.qm" "$bin/share/qt/translations"
 Copy-Item "$source/share/gamecontrollerdb_windows.txt" "$data/gamecontrollerdb.txt"

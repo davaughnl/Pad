@@ -574,7 +574,7 @@ else()
 endif()
 message("Found QT: ${QT_VERSION}")
 
-add_subdirectory("share/antimicrox/translations")
+add_subdirectory("share/pad/translations")
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # SDL
@@ -703,7 +703,7 @@ if(UNIX)
     install(FILES other/io.github.antimicrox.antimicrox.xml DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/mime/packages")
 
     # Copy current Changelog file to location that the resource file expects.
-    install(FILES PAD-CHANGELOG.md DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/antimicrox")
+    install(FILES PAD-CHANGELOG.md DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/pad")
 endif(UNIX)
 
 # Add man page for *nix platforms.
@@ -825,11 +825,11 @@ endif(WITH_TESTS)
 
 # Install SDL database with linked License file
 if(UNIX)
-    install(FILES share/gamecontrollerdb_linux.txt DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/antimicrox/" RENAME gamecontrollerdb.txt)
+    install(FILES share/gamecontrollerdb_linux.txt DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/pad/" RENAME gamecontrollerdb.txt)
 elseif(WIN32)
-    install(FILES share/gamecontrollerdb_windows.txt DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/antimicrox/" RENAME gamecontrollerdb.txt)
+    install(FILES share/gamecontrollerdb_windows.txt DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/pad/" RENAME gamecontrollerdb.txt)
 endif(UNIX)
-install(FILES share/LICENSE_SDL_GameControllerDB DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/antimicrox/")
+install(FILES share/LICENSE_SDL_GameControllerDB DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/pad/")
 
 ###############################
 # PACKAGES BUILDING WITH CPACK

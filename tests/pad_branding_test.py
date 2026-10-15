@@ -40,7 +40,7 @@ class PadBrandingTests(unittest.TestCase):
         self.assertIsNone(root.find('screenshots'))
 
     def test_translation_catalogs_keep_contexts_and_brand(self):
-        catalogs = list((ROOT / 'share/antimicrox/translations').glob('*.ts'))
+        catalogs = list((ROOT / 'share/pad/translations').glob('*.ts'))
         self.assertGreater(len(catalogs), 20)
         for path in catalogs:
             root = ET.parse(path).getroot()
