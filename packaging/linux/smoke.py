@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Smoke the extracted /usr/bin/pad and capture real pixels on an isolated X display."""
-import os,pathlib,subprocess,sys,tempfile,time
+import json,os,pathlib,subprocess,sys,tempfile,time
 archive=pathlib.Path(sys.argv[1]).resolve(); output=pathlib.Path(sys.argv[2]).resolve();output.mkdir(parents=True,exist_ok=True)
 with tempfile.TemporaryDirectory(prefix='pad-deb-smoke-') as tmp:
     root=pathlib.Path(tmp);subprocess.run(['dpkg-deb','--extract',str(archive),str(root)],check=True)
@@ -11,7 +11,10 @@ with tempfile.TemporaryDirectory(prefix='pad-deb-smoke-') as tmp:
     (output/'dependencies.txt').write_text(deps.stdout)
     env=dict(os.environ,XDG_CONFIG_HOME=str(root/'config'),XDG_DATA_HOME=str(root/'data'),QT_QPA_PLATFORM='xcb')
     version=subprocess.run([str(binary),'--version'],env=env,capture_output=True,text=True,timeout=10,check=True)
-    assert 'Pad 1.0.0' in version.stdout,version.stdout
+    metadata=json.loads((archive.parent/'build-info.json').read_text())
+    expected=metadata['version']
+    assert 'Pad' in version.stdout and '3.6.1' not in version.stdout,version.stdout
+    assert (expected in version.stdout if expected != 'development' else 'Development build' in version.stdout),version.stdout
     (output/'version.txt').write_text(version.stdout)
     with (output/'startup.log').open('w') as log:
         app=subprocess.Popen([str(binary),'--show','--no-tray','--eventgen','xtest'],env=env,stdout=log,stderr=log)

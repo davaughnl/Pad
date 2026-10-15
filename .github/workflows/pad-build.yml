@@ -24,6 +24,7 @@ jobs:
       - name: Prepare configure-generated resource and run tests
         run: |
           python3 -m unittest discover -s tests -p 'pad_branding_test.py' -v
+          python3 tests/pad_release_test.py
 
   windows:
     name: Windows x64 / Qt5 / MSVC
@@ -122,6 +123,8 @@ jobs:
         run: ./packaging/windows/package.ps1 -BuildDir build -QtDir "$env:QT_ROOT_DIR" -SdlDir "$env:RUNNER_TEMP/sdl2" -OutputDir dist -Revision '${{ github.sha }}' -OpenSslDir "$env:OPENSSL_DIR" -InterceptionZip "$env:INTERCEPTION_ZIP"
       - name: Test extracted zip without build dependencies in PATH
         run: ./packaging/windows/smoke-test.ps1 -Archive (Get-ChildItem dist/Pad-*-Windows-x64.zip | Select-Object -First 1).FullName -OutputDir smoke
+      - name: Install NSIS
+        run: choco install nsis -y --no-progress
       - name: Build installer (CI version 0.0.0)
         run: ./packaging/windows/make-installer.ps1 -StageDir (Get-ChildItem dist -Directory -Filter 'Pad-*-Windows-x64' | Select-Object -First 1).FullName -Version 0.0.0 -OutputDir dist
       - name: Test silent install, upgrade and uninstall
