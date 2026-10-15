@@ -72,7 +72,7 @@ void AboutDialog::fillInfoTextBrowser()
             .arg(tr("About Pad"),
                  tr("Pad is a modern controller mapping application designed for a simple, reliable, and highly configurable experience."),
                  tr("Legal"),
-                 tr("Copyright (C) 2026 Pad")));
+                 tr("(c) 2026 Pad")));
 }
 
 void AboutDialog::changeEvent(QEvent *event)
