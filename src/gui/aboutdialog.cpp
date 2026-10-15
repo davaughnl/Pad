@@ -68,7 +68,7 @@ void AboutDialog::fillInfoTextBrowser()
     ui->infoTextBrowser->setOpenLinks(false);
     ui->infoTextBrowser->setHtml(
         QStringLiteral("<p style=\"font-size:15px\">%1</p>"
-                       "<p>%2</p><p><a href=\"#licenses\">%3</a></p><p>%4</p>")
+                       "<p>%2</p><p><a href=\"#licenses\" style=\"color:#f4f4f5\">%3</a></p><p>%4</p>")
             .arg(tr("About Pad"),
                  tr("Pad is a modern controller mapping application designed for a simple, reliable, and highly configurable experience."),
                  tr("Legal"),
