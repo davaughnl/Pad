@@ -1,7 +1,7 @@
 name: Publish release (owner-approved)
 
 # Pushing a tag named publish/vX.Y.Z flips the existing DRAFT release vX.Y.Z to published.
-# It builds nothing and changes no code: it only checks the draft's four assets and publishes it.
+# It builds nothing and changes no code: it checks all six assets before publishing.
 on:
   push:
     tags: ['publish/v[0-9]+.[0-9]+.[0-9]+']
@@ -25,7 +25,7 @@ jobs:
           gh release view "$tag" --json isDraft,tagName,assets > rel.json
           cat rel.json
           [ "$(jq -r .isDraft rel.json)" = "true" ] || { echo "::error::$tag is not a draft"; exit 1; }
-          for n in "Pad-$ver-Windows-x64-Setup.exe" "Pad-$ver-Windows-x64-Setup.exe.sha256" "Pad-$ver-Windows-x64.zip" "Pad-$ver-Windows-x64.zip.sha256"; do
+          for n in "Pad-$ver-Windows-x64-Setup.exe" "Pad-$ver-Windows-x64-Setup.exe.sha256" "Pad-$ver-Windows-x64.zip" "Pad-$ver-Windows-x64.zip.sha256" "Pad-$ver-Ubuntu-22.04-amd64.deb" "Pad-$ver-Ubuntu-22.04-amd64.deb.sha256"; do
             jq -e --arg n "$n" '.assets | map(.name) | index($n)' rel.json >/dev/null || { echo "::error::missing asset $n"; exit 1; }
           done
           echo "Tag $tag points at: $(gh api "repos/$GH_REPO/commits/$tag" --jq .sha)"

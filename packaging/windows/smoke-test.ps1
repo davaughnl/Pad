@@ -1,5 +1,5 @@
 [CmdletBinding()]
-param([Parameter(Mandatory)][string]$Archive, [string]$OutputDir = 'smoke')
+param([Parameter(Mandatory)][string]$Archive, [string]$OutputDir = 'smoke', [string]$ExpectedVersion = '')
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 New-Item -ItemType Directory -Path $OutputDir -Force | Out-Null
@@ -35,6 +35,10 @@ try {
             if ($offline) { Write-Host 'update-check could not reach the network; TLS runtime loaded, continuing.' }
             else { throw "$arg exited with code $($p.ExitCode)" }
         }
+    }
+    if ($ExpectedVersion) {
+        $reported = Get-Content "$output/version.stdout.txt" -Raw
+        if ($reported -notmatch ('(?<![0-9.])' + [regex]::Escape($ExpectedVersion) + '(?![0-9.])')) { throw "Wrong app version: $reported" }
     }
     # Real HTTPS to GitHub with only the bundled runtime: proves Qt found OpenSSL 1.1.1 next to pad.exe.
     $uc = Get-Content "$output/update-check.stdout.txt" -Raw

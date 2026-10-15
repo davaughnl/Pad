@@ -1,14 +1,19 @@
 name: Release (draft)
 
-# Tag vX.Y.Z builds Pad for Windows, runs the Windows gates and creates a DRAFT
-# release with four assets. It never publishes: the owner reviews the draft and
-# publishes it by hand.
+# Tag vX.Y.Z builds and tests both platforms before creating a DRAFT release.
+# Manual dispatch validates the same packages without creating any release or tag.
 on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Package version to validate (no release or tag is created)'
+        required: true
+        default: '1.0.0'
   push:
     tags: ['v[0-9]+.[0-9]+.[0-9]+']
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: pad-release-${{ github.ref }}
@@ -25,9 +30,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Version from tag
+        env:
+          REQUESTED_VERSION: ${{ inputs.version }}
         run: |
-          $tag = '${{ github.ref_name }}'
-          if ($tag -notmatch '^v([0-9]+\.[0-9]+\.[0-9]+)$') { throw "Bad tag: $tag" }
+          $tag = if ('${{ github.event_name }}' -eq 'workflow_dispatch') { "v$env:REQUESTED_VERSION" } else { '${{ github.ref_name }}' }
+          if ($tag -notmatch '^v([0-9]+\.[0-9]+\.[0-9]+)$') { throw "Bad version: $tag" }
           "PAD_VERSION=$($Matches[1])" | Out-File -Append -Encoding utf8 $env:GITHUB_ENV
       - uses: ilammy/msvc-dev-cmd@v1
         with:
@@ -79,6 +86,8 @@ jobs:
             "-DSDL2MAIN_LIBRARY=$env:RUNNER_TEMP/sdl2/lib/x64/SDL2main.lib" `
             "-DSDL2_DLL_LOCATION_DIR=$env:RUNNER_TEMP/sdl2/lib/x64"
           if ($LASTEXITCODE -ne 0) { throw 'CMake configure failed' }
+      - name: Test release packaging contract
+        run: python tests/pad_release_test.py
       - name: Build
         run: |
           cmake --build build --target antimicrox updateqm --parallel 4
@@ -86,7 +95,9 @@ jobs:
       - name: Stage portable distribution
         run: ./packaging/windows/package.ps1 -BuildDir build -QtDir "$env:QT_ROOT_DIR" -SdlDir "$env:RUNNER_TEMP/sdl2" -OutputDir dist -Revision '${{ github.sha }}' -Version $env:PAD_VERSION -OpenSslDir "$env:OPENSSL_DIR" -InterceptionZip "$env:INTERCEPTION_ZIP"
       - name: Smoke test extracted zip
-        run: ./packaging/windows/smoke-test.ps1 -Archive "dist/Pad-$env:PAD_VERSION-Windows-x64.zip" -OutputDir smoke
+        run: ./packaging/windows/smoke-test.ps1 -Archive "dist/Pad-$env:PAD_VERSION-Windows-x64.zip" -OutputDir smoke -ExpectedVersion $env:PAD_VERSION
+      - name: Install NSIS
+        run: choco install nsis -y --no-progress
       - name: Build installer
         run: ./packaging/windows/make-installer.ps1 -StageDir "dist/Pad-$env:PAD_VERSION-Windows-x64" -Version $env:PAD_VERSION -OutputDir dist
       - name: Test silent install, upgrade and uninstall
@@ -106,18 +117,103 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: Pad-release-${{ github.ref_name }}
+          name: Pad-release-Windows-${{ github.run_id }}
           path: |
             dist/Pad-*.zip
             dist/Pad-*.exe
             dist/*.sha256
             smoke/
           retention-days: 30
-      - name: Create DRAFT release
+
+  linux:
+    name: Ubuntu 22.04 amd64 / Qt5 / DEB
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Version from tag or validation input
+        env:
+          REQUESTED_VERSION: ${{ inputs.version }}
+        run: |
+          set -euo pipefail
+          if [[ "$GITHUB_EVENT_NAME" == workflow_dispatch ]]; then version="$REQUESTED_VERSION"; else version="${GITHUB_REF_NAME#v}"; fi
+          [[ $version =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || exit 1
+          echo "PAD_VERSION=$version" >> "$GITHUB_ENV"
+      - name: Test release packaging contract
+        run: python3 tests/pad_release_test.py
+      - name: Install build and test dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y extra-cmake-modules qtbase5-dev qttools5-dev qttools5-dev-tools libsdl2-dev libxi-dev libxtst-dev libx11-dev itstool gettext dpkg-dev xvfb xauth xdotool imagemagick
+      - name: Configure and build
+        run: |
+          cmake -S . -B build -G 'Unix Makefiles' -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DUSE_QT6_BY_DEFAULT=OFF -DCHECK_FOR_UPDATES=OFF -DCPACK_GENERATOR=DEB -DPAD_VERSION="$PAD_VERSION"
+          cmake --build build --parallel 4
+      - name: Build functional fixtures
+        run: |
+          python3 tests/pad/build_harness.py build build/pad-tests
+          python3 tests/pad/build_dialog_harness.py build
+          python3 tests/pad/build_sensor_harness.py build build/pad-tests
+      - name: Functional gates
+        run: |
+          set -o pipefail
+          mkdir -p evidence
+          xvfb-run -a -s '-screen 0 1024x768x24' sh -ec '
+            build/pad-tests/profile-roundtrip tests/pad/mapping.amgp
+            python3 tests/pad/input_regression.py build/bin/pad build/pad-tests
+            python3 tests/pad/run_dialog_tests.py build/pad-tests/dialog-controls
+            build/pad-tests/sensor-orientation evidence/sensor-invalid.png evidence/sensor-valid.png
+          ' 2>&1 | tee evidence/functional.log
+          python3 tests/pad_branding_test.py 2>&1 | tee evidence/branding.log
+      - name: Package
+        run: bash packaging/linux/package.sh build dist '${{ github.sha }}' "$PAD_VERSION"
+      - name: Install and test distribution
+        run: |
+          set -o pipefail
+          sudo apt-get install -y ./dist/*.deb
+          xvfb-run -a -s '-screen 0 1024x768x24' python3 packaging/linux/smoke.py "$(find dist -name '*.deb')" evidence
+          xvfb-run -a -s '-screen 0 1024x768x24' python3 tests/pad/input_regression.py /usr/bin/pad build/pad-tests 2>&1 | tee evidence/installed-input.log
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Pad-release-Linux-${{ github.run_id }}
+          path: |
+            dist/*.deb
+            dist/*.sha256
+          if-no-files-found: error
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Pad-release-Linux-evidence-${{ github.run_id }}
+          path: evidence/
+          if-no-files-found: warn
+          retention-days: 14
+
+  draft:
+    name: Assemble draft after both platform gates pass
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    needs: [windows, linux]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: Pad-release-*-${{ github.run_id }}
+          path: artifacts
+      - name: Verify all six release assets and create draft
         env:
           GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
         run: |
-          gh release create '${{ github.ref_name }}' --draft --verify-tag --title "Pad $env:PAD_VERSION" --notes "Pad $env:PAD_VERSION for Windows x64. Unsigned build: Windows SmartScreen may warn on first run." `
-            "dist/Pad-$env:PAD_VERSION-Windows-x64-Setup.exe" "dist/Pad-$env:PAD_VERSION-Windows-x64-Setup.exe.sha256" `
-            "dist/Pad-$env:PAD_VERSION-Windows-x64.zip" "dist/Pad-$env:PAD_VERSION-Windows-x64.zip.sha256"
-          if ($LASTEXITCODE -ne 0) { throw 'gh release create failed' }
+          set -euo pipefail
+          version="${GITHUB_REF_NAME#v}"
+          mkdir release
+          for name in "Pad-$version-Windows-x64-Setup.exe" "Pad-$version-Windows-x64.zip" "Pad-$version-Ubuntu-22.04-amd64.deb"; do
+            mapfile -t found < <(find artifacts -type f -name "$name")
+            [[ ${#found[@]} == 1 ]] || { echo "Expected exactly one $name"; exit 1; }
+            cp "${found[0]}" "${found[0]}.sha256" release/
+          done
+          (cd release && sha256sum -c -- *.sha256)
+          gh release create "$GITHUB_REF_NAME" --draft --verify-tag --title "Pad $version" --notes "Pad $version. Free for Windows x64 and Ubuntu 22.04 amd64 (X11). Unsigned Windows builds may show a SmartScreen warning." release/*
