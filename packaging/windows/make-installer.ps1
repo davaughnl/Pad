@@ -22,5 +22,5 @@ if (Test-Path $out) { Remove-Item $out -Force }
 & $makensis /V2 "/DVERSION=$Version" "/DSTAGE=$stage" "/DOUTFILE=$out" "/DIMAGES=$source\src\images" "$source\packaging\windows\installer\pad.nsi"
 if ($LASTEXITCODE -ne 0) { throw 'makensis failed' }
 $hash = (Get-FileHash $out -Algorithm SHA256).Hash.ToLowerInvariant()
-"$hash  $name" | Set-Content "$out.sha256" -Encoding ascii
+[System.IO.File]::WriteAllText("$out.sha256", "$hash  $name`n", [System.Text.Encoding]::ASCII)
 Write-Host "Installer: $out"

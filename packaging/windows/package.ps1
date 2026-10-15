@@ -100,5 +100,5 @@ $archive = Join-Path $output "$name.zip"
 if (Test-Path $archive) { Remove-Item $archive -Force }
 Compress-Archive -Path $stage -DestinationPath $archive -CompressionLevel Optimal
 $hash = (Get-FileHash $archive -Algorithm SHA256).Hash.ToLowerInvariant()
-"$hash  $name.zip" | Set-Content "$archive.sha256" -Encoding ascii
+[System.IO.File]::WriteAllText("$archive.sha256", "$hash  $name.zip`n", [System.Text.Encoding]::ASCII)
 Write-Host "Portable package: $archive"
