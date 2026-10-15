@@ -53,7 +53,7 @@ AboutDialog::AboutDialog(QWidget *parent)
     if (licenseFile.open(QIODevice::ReadOnly | QIODevice::Text))
         legalNotice += QString::fromUtf8(licenseFile.readAll());
     ui->textBrowser_2->setPlainText(legalNotice);
-    ui->tabWidget->removeTab(ui->tabWidget->indexOf(ui->changelog)); // About keeps Info and License only.
+    ui->tabWidget->removeTab(ui->tabWidget->indexOf(ui->changelog)); // About keeps Info and Legal only.
     PadUi::polishAboutDialog(this);
 }
 

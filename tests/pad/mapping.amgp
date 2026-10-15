@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<joystick configversion="19" appversion="3.6.1">
+<joystick configversion="19" appversion="1.0.0">
  <profilename>Pad deterministic input regression</profilename>
  <sets><set index="1"><name>Regression</name>
   <button index="1"><slots><slot><code>0x41</code><mode>keyboard</mode></slot></slots></button>
