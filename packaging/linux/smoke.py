@@ -5,8 +5,11 @@ archive=pathlib.Path(sys.argv[1]).resolve(); output=pathlib.Path(sys.argv[2]).re
 with tempfile.TemporaryDirectory(prefix='pad-deb-smoke-') as tmp:
     root=pathlib.Path(tmp);subprocess.run(['dpkg-deb','--extract',str(archive),str(root)],check=True)
     binary=root/'usr/bin/pad';assert binary.exists(),'No /usr/bin/pad'
-    for item in ['usr/share/applications/io.github.davaughnl.Pad.desktop','usr/share/licenses/Pad/LICENSE','usr/share/licenses/Pad/UPSTREAM-DEVELOPMENT.txt','usr/share/antimicrox/gamecontrollerdb.txt']:
+    for item in ['usr/share/applications/io.github.davaughnl.Pad.desktop','usr/share/licenses/Pad/LICENSE','usr/share/licenses/Pad/UPSTREAM-DEVELOPMENT.txt','usr/share/pad/gamecontrollerdb.txt']:
         assert (root/item).exists(), 'Missing '+item
+    catalogs=list((root/'usr/share/pad/translations').glob('pad_*.qm'))
+    assert len(catalogs)>20,'Missing Pad translation catalogs'
+    assert not (root/'usr/share/antimicrox').exists(),'Legacy runtime directory shipped'
     deps=subprocess.run(['ldd',str(binary)],capture_output=True,text=True,check=True);assert 'not found' not in deps.stdout,deps.stdout
     (output/'dependencies.txt').write_text(deps.stdout)
     env=dict(os.environ,XDG_CONFIG_HOME=str(root/'config'),XDG_DATA_HOME=str(root/'data'),QT_QPA_PLATFORM='xcb')

@@ -1,7 +1,7 @@
 # This will ensure that the *.qm files will be stored
 # in the right place within the build directory.
-file(GLOB antimicrox_TRANSLATIONS antimicrox_*.ts)
-list(APPEND antimicrox_TRANSLATIONS antimicrox.ts)
+file(GLOB antimicrox_TRANSLATIONS pad_*.ts)
+list(APPEND antimicrox_TRANSLATIONS pad.ts)
 file(GLOB_RECURSE antimicrox_BASE_SOURCES ${PROJECT_SOURCE_DIR}/src/*.cpp)
 file(GLOB_RECURSE antimicrox_BASE_FORMS ${PROJECT_SOURCE_DIR}/src/*.ui)
 
@@ -30,6 +30,6 @@ endif()
 
 
 add_custom_target(updateqm DEPENDS ${antimicrox_QMFILES} COMMENT "Update translation files based on source and ui files")
-install(FILES ${antimicrox_QMFILES} DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/antimicrox/translations")
+install(FILES ${antimicrox_QMFILES} DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/pad/translations")
 
 set_directory_properties(PROPERTIES CLEAN_NO_CUSTOM true)

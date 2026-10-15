@@ -117,6 +117,22 @@ QStringList parseArgumentsString(const QString &tempString)
     return finalList;
 }
 
+// New distributions use Pad names. Legacy runtime data remains a read-only
+// fallback so in-place upgrades and custom installs keep their translations.
+bool loadPadTranslation(QTranslator *translator, const QString &language)
+{
+    const QString base = QApplication::applicationDirPath();
+    const QStringList roots = {base + "/../share/pad/translations", base + "/share/pad/translations",
+                               "/app/share/pad/translations"};
+    for (const QString &root : roots)
+        if (translator->load("pad_" + language, root)) return true;
+    const QStringList legacy = {base + "/../share/antimicrox/translations", base + "/share/antimicrox/translations",
+                                "/app/share/antimicrox/translations"};
+    for (const QString &root : legacy)
+        if (translator->load("antimicrox_" + language, root)) return true;
+    return false;
+}
+
 /**
  * @brief Reload main application and base Qt translation files.
  * @param Based Qt translator
@@ -132,26 +148,20 @@ void reloadTranslations(QTranslator *translator, QTranslator *appTranslator, con
 
 // Load new Qt translation strings
 #if defined(Q_OS_UNIX)
-    translator->load(QString("qt_").append(language), QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+    appTranslator->load(QString("qt_").append(language), QLibraryInfo::location(QLibraryInfo::TranslationsPath));
 #elif defined(Q_OS_WIN)
     #ifdef QT_DEBUG
-    translator->load(QString("qt_").append(language), QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+    appTranslator->load(QString("qt_").append(language), QLibraryInfo::location(QLibraryInfo::TranslationsPath));
     #else
-    translator->load(QString("qt_").append(language),
+    appTranslator->load(QString("qt_").append(language),
                      QApplication::applicationDirPath().append("\\share\\qt\\translations"));
     #endif
 #endif
 
     qApp->installTranslator(appTranslator);
 
-// Load application specific translation strings
-#if defined(Q_OS_UNIX)
-    translator->load("antimicrox_" + language,
-                     QApplication::applicationDirPath().append("/../share/antimicrox/translations"));
-#elif defined(Q_OS_WIN)
-    translator->load("antimicrox_" + language,
-                     QApplication::applicationDirPath().append("\\share\\antimicrox\\translations"));
-#endif
+// Load application specific translation strings.
+    loadPadTranslation(translator, language);
 
     qApp->installTranslator(translator);
 }

@@ -13,6 +13,9 @@ $bin = $exe[0].DirectoryName
 foreach ($f in 'driver/interception.dll','driver/install-interception.exe','driver/RECOVERY.md','licenses/Interception-LGPL-3.0.txt') {
     if (-not (Test-Path (Join-Path (Split-Path $bin -Parent) $f))) { throw "Missing driver-mode file in package: $f" }
 }
+$stage = Split-Path $bin -Parent
+if (@(Get-ChildItem "$stage/share/pad/translations" -Filter 'pad_*.qm').Count -lt 20) { throw 'Missing Pad translation catalogs' }
+if (Test-Path "$stage/share/antimicrox") { throw 'Legacy runtime directory shipped' }
 $savedPath = $env:PATH
 $savedPlugin = $env:QT_PLUGIN_PATH
 $savedPlatform = $env:QT_QPA_PLATFORM_PLUGIN_PATH

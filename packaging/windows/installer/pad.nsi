@@ -66,6 +66,16 @@ Section "Pad" SecApp
   SectionIn RO
   SetOutPath "$INSTDIR"
   File /r "${STAGE}\*.*"
+  ; Remove only obsolete application-owned runtime files after an upgrade.
+  ; User profiles/settings and unknown files are never touched.
+  Delete "$INSTDIR\share\antimicrox\translations\antimicrox*.qm"
+  RMDir "$INSTDIR\share\antimicrox\translations"
+  Delete "$INSTDIR\share\antimicrox\gamecontrollerdb.txt"
+  Delete "$INSTDIR\share\antimicrox\LICENSE_SDL_GameControllerDB"
+  RMDir "$INSTDIR\share\antimicrox"
+  Delete "$INSTDIR\bin\share\antimicrox\translations\antimicrox*.qm"
+  RMDir "$INSTDIR\bin\share\antimicrox\translations"
+  RMDir "$INSTDIR\bin\share\antimicrox"
   WriteUninstaller "$INSTDIR\uninstall.exe"
   CreateDirectory "$SMPROGRAMS\Pad"
   CreateShortcut "$SMPROGRAMS\Pad\Pad.lnk" "$INSTDIR\bin\pad.exe" "" "$INSTDIR\bin\pad.exe" 0

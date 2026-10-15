@@ -35,6 +35,23 @@ class ReleaseContractTests(unittest.TestCase):
         self.assertIn('dpkg-deb -f "${packages[0]}" Version', script)
         self.assertIn('dpkg-deb -f "${packages[0]}" Architecture', script)
 
+    def test_pad_runtime_layout_and_legacy_profile_safety(self):
+        cmake = (ROOT / 'CMakeLists.txt').read_text()
+        self.assertIn('add_subdirectory("share/pad/translations")', cmake)
+        self.assertNotIn('${CMAKE_INSTALL_DATAROOTDIR}/antimicrox', cmake)
+        catalogs = list((ROOT / 'share/pad/translations').glob('pad_*.ts'))
+        self.assertGreater(len(catalogs), 20)
+        self.assertFalse((ROOT / 'share/antimicrox').exists())
+        loader = (ROOT / 'src/common.cpp').read_text()
+        self.assertIn('translator->load("pad_" + language, root)', loader)
+        self.assertIn('translator->load("antimicrox_" + language, root)', loader)
+        # Historical settings are still copied, never renamed/deleted.
+        migration = (ROOT / 'src/pad/settingsmigration.h').read_text()
+        self.assertIn('antimicrox_settings.ini', migration)
+        self.assertIn('QFile::copy(from, to)', migration)
+        self.assertNotIn('QFile::remove', migration)
+        self.assertNotIn('QFile::rename', migration)
+
     def test_installer_identity_and_version_metadata(self):
         script = (ROOT / 'packaging/windows/installer/pad.nsi').read_text()
         for entry in ('Name "Pad"', 'VIProductVersion "${VERSION}.0"',
