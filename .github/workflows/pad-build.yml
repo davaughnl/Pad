@@ -23,9 +23,6 @@ jobs:
       - uses: actions/checkout@v4
       - name: Prepare configure-generated resource and run tests
         run: |
-          # Root CMake copies this file to src during configure. This test-only
-          # job does not configure Qt, so prepare the same generated resource.
-          if [ -f CHANGELOG.md ]; then cp CHANGELOG.md src/CHANGELOG.md; fi
           python3 -m unittest discover -s tests -p 'pad_branding_test.py' -v
           python3 tests/pad_release_test.py
 

@@ -1,8 +1,12 @@
-# Pad development build
+# Pad changelog
 
-- Pad application identity and Linux/Windows packaging.
-- Modern dark shell, Geist typography and Lucide icons.
-- Existing controller-to-keyboard/mouse mapping and profile engine retained.
-- Deterministic native profile and SDL-to-XTest regression tests.
+## 1.0.0
 
-This is an unsigned development build. Physical controller compatibility, Wayland and uinput still need validation.
+First release of Pad, a free controller-to-keyboard-and-mouse mapper for Windows and Linux.
+
+- Pad application identity, Linux and Windows packaging, and an in-app updater that checks the Pad GitHub releases.
+- Modern dark interface with Geist type and Lucide icons throughout.
+- Controller pictures for seven pad families, onboarding, auto-profiles, speed presets, gyro aim, battery indicator, stick tester and profile-switch notices.
+- Optional driver mode for games with anti-cheat that block software mouse input.
+- Mapping and profile engine from AntiMicroX, kept and extended. Existing `.amgp` profiles still work.
+- About shows the GPL-3.0-or-later license and credits AntiMicroX in the Legal tab.

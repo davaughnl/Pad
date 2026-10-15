@@ -36,6 +36,9 @@
 #include "keyboard/virtualmousepushbutton.h"
 #include "pad/padshell.h"
 #include "pad/paddevicetools.h"
+#include <QTcpServer>
+#include <QTcpSocket>
+#include <QNetworkAccessManager>
 #include "mousedialog/mousecontrolsticksettingsdialog.h"
 #include "gui/joybuttonslot.h"
 #include "gui/quicksetdialog.h"
@@ -61,6 +64,9 @@
 #include <QPushButton>
 #include <QPixmap>
 #include <QApplication>
+#include <QGroupBox>
+#include <QAbstractButton>
+#include <QFontInfo>
 #include <QScreen>
 #include <QDir>
 #include <QFile>
@@ -84,9 +90,28 @@ static void settle() { QTest::qWait(100); }
 static void click(QAbstractButton *button) { check(button->isEnabled(), "Control disabled"); button->click(); settle(); }
 static void spin(QDialog *dialog,const char *name,int value) { control<QSpinBox>(dialog,name)->setValue(value); settle(); }
 static void toggle(QDialog *dialog,const char *name) { click(control<QCheckBox>(dialog,name)); }
+static void fontCheckWidget(QWidget *root,const char *name){
+    int bad=0,seen=0;
+    const auto widgets=root->findChildren<QWidget*>();
+    for(QWidget *c:widgets){
+        if(!c->isVisible()) continue;
+        QString text;
+        if(auto *l=qobject_cast<QLabel*>(c)) text=l->text();
+        else if(auto *b=qobject_cast<QAbstractButton*>(c)) text=b->text();
+        else if(auto *e=qobject_cast<QLineEdit*>(c)) text=e->text().isEmpty()?e->placeholderText():e->text();
+        else if(auto *g=qobject_cast<QGroupBox*>(c)) text=g->title();
+        if(text.trimmed().isEmpty()) continue;
+        ++seen;
+        const QString fam=QFontInfo(c->font()).family();
+        if(fam!=QStringLiteral("Geist")){++bad;std::fprintf(stderr,"FONTBAD screen=%s class=%s text='%s' family=%s\n",name,c->metaObject()->className(),text.left(30).toUtf8().constData(),fam.toUtf8().constData());}
+    }
+    std::fprintf(stderr,"FONTCHECK screen=%s texts=%d bad=%d\n",name,seen,bad);
+    check(bad==0,"A screen renders text outside Geist");
+}
 static void capture(QDialog *dialog,const QString &output,const QString &name) {
     dialog->setAttribute(Qt::WA_DeleteOnClose,false); dialog->show(); dialog->raise(); dialog->activateWindow();
     QTest::qWait(750);
+    fontCheckWidget(dialog,name.toUtf8().constData());
     check(dialog->grab().save(output+"/"+name+"-window.png"),"Window grab failed");
     const auto screen=QApplication::primaryScreen();
     check(screen && screen->geometry().size()==QSize(1024,768), "Runner desktop must be 1024x768");
@@ -139,6 +164,7 @@ int main(int argc,char **argv) {
             window->makeJoystickTabs();window->fillButtons();
             window->resize(1000,700);window->show();window->raise();window->activateWindow();QTest::qWait(1000);
             auto *overview=control<QWidget>(window,"padOverview");check(overview->isVisible(),"Connected controller overview hidden");
+            fontCheckWidget(window,"main-window");
             check(window->grab().save(output+"/controller-overview-full.png"),"Overview full capture failed");
             auto *dialog=new GameControllerMappingDialog(joystick,settings,window);
             capture(dialog,output,"controller-mapping");
@@ -191,12 +217,13 @@ int main(int argc,char **argv) {
             delete statusjoy;
         } else if(test=="about") {
             auto *dialog=new AboutDialog;capture(dialog,output,test);
-            check(control<QLabel>(dialog,"versionLabel")->text()=="Development build","About display version is not Development build");
+            check(control<QLabel>(dialog,"versionLabel")->text()=="1.0.0","About display version is not 1.0.0");
             auto info=control<QTextBrowser>(dialog,"infoTextBrowser")->toPlainText();
-            check(info.contains("About Pad")&&info.contains("Open Source Licenses")&&!info.contains("3.6.1"),"About info copy missing or exposes inherited version");
+            check(info.contains("About Pad")&&!info.contains("1.0.0")&&!info.contains("antimicro",Qt::CaseInsensitive)&&!info.contains("open source",Qt::CaseInsensitive)&&!info.contains("open-source",Qt::CaseInsensitive)&&!info.contains("fork",Qt::CaseInsensitive),"About info copy missing or exposes upstream or open-source wording");
+            {auto legal=control<QTextBrowser>(dialog,"textBrowser_2")->toPlainText();check(legal.contains("Copyright (C) 2015 Travis Nickles")&&legal.contains("GNU GENERAL PUBLIC LICENSE")&&!legal.contains("antimicro",Qt::CaseInsensitive)&&!legal.contains("fork",Qt::CaseInsensitive),"Legal tab must keep copyright and GPL text without upstream product naming");}
             auto *tabs=control<QTabWidget>(dialog,"tabWidget");
             check(tabs->count()==2&&!dialog->findChild<QWidget*>("credits")&&!dialog->findChild<QWidget*>("aboutDev"),"Retired About tabs remain");
-            for(auto *browser:dialog->findChildren<QTextBrowser*>()){if(browser->objectName()=="textBrowser_2"||browser->objectName()=="infoTextBrowser")continue; /* License tab and owner-written Info copy: owner-approved attribution */ check(!browser->toPlainText().contains("antimicro",Qt::CaseInsensitive),"About contains old product branding");}
+            for(auto *browser:dialog->findChildren<QTextBrowser*>()){if(browser->objectName()=="textBrowser_2")continue; check(!browser->toPlainText().contains("antimicro",Qt::CaseInsensitive),"About contains old product branding");}
             closeDialog(dialog);
         } else if(test=="sensor-accel" || test=="sensor-gyro") {
             auto *sensor=set->getSensor(test=="sensor-accel"?ACCELEROMETER:GYROSCOPE);check(sensor,"Sensor model absent");
@@ -284,9 +311,28 @@ int main(int argc,char **argv) {
             QMap<SDL_JoystickID,InputDevice*> devices;
             devices.insert(SDL_JoystickInstanceID(joystick->getJoyHandle()),joystick);
             QList<InputDevice*> list; list.append(joystick);
+            auto fontCheck=[&](QWidget *root,const char *name){
+                int bad=0,seen=0;
+                const auto widgets=root->findChildren<QWidget*>();
+                for(QWidget *c:widgets){
+                    if(!c->isVisible()) continue;
+                    QString text;
+                    if(auto *l=qobject_cast<QLabel*>(c)) text=l->text();
+                    else if(auto *b=qobject_cast<QAbstractButton*>(c)) text=b->text();
+                    else if(auto *e=qobject_cast<QLineEdit*>(c)) text=e->text().isEmpty()?e->placeholderText():e->text();
+                    else if(auto *g=qobject_cast<QGroupBox*>(c)) text=g->title();
+                    if(text.trimmed().isEmpty()) continue;
+                    ++seen;
+                    const QString fam=QFontInfo(c->font()).family();
+                    if(fam!=QStringLiteral("Geist")){++bad;std::fprintf(stderr,"FONTBAD screen=%s class=%s text='%s' family=%s\n",name,c->metaObject()->className(),text.left(30).toUtf8().constData(),fam.toUtf8().constData());}
+                }
+                std::fprintf(stderr,"FONTCHECK screen=%s texts=%d bad=%d\n",name,seen,bad);
+                check(bad==0,"A screen renders text outside Geist");
+            };
             auto shot=[&](QWidget *w,const char *name){std::fprintf(stderr,"SHOT %s\n",name);std::fflush(stderr);
                 w->show();w->raise();w->activateWindow();QTest::qWait(600);
                 check(w->grab().save(output+"/screen-"+name+".png"),"Screen capture failed");
+                fontCheck(w,name);
             };
             auto *quick=new QuickSetDialog(joystick);shot(quick,"quickset");quick->hide();
             auto *names=new SetNamesDialog(joystick);shot(names,"setnames");names->hide();
@@ -312,6 +358,7 @@ int main(int argc,char **argv) {
                 const auto buttons=ob->findChildren<QPushButton*>();
                 for(int step=2;step<=3;++step){for(auto *b:buttons) if(b->text()=="Next"&&b->isVisible()){b->click();break;} shot(ob,(std::string("onboarding-")+std::to_string(step)).c_str());}
                 ob->hide();
+
                 // Device tools in each state, on the overview card background.
                 auto *sheet=new QFrame;sheet->setObjectName("padOverview");sheet->setFixedSize(520,230);
                 auto *sl=new QVBoxLayout(sheet);sl->setContentsMargins(20,12,20,12);

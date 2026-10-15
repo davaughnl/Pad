@@ -2,7 +2,7 @@
 
 Pad maps your game controller to keyboard and mouse controls. Plug in a pad, pick a game, assign a profile, and keep Pad running in the background while you play or work.
 
-Pad is a mapper. It reads your controller and sends keyboard and mouse input. It is not a virtual gamepad driver.
+Pad is free to use. It is a mapper. It reads your controller and sends keyboard and mouse input. It is not a virtual gamepad driver.
 
 Pad runs on Windows (x64) and Linux (Ubuntu 22.04 amd64, X11). macOS is not supported yet.
 

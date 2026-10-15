@@ -59,9 +59,9 @@ else()
 endif(NOT COMPILER_IS_MSVC)
 
 # The version number.
-set(ANTIMICROX_MAJOR_VERSION 3)
-set(ANTIMICROX_MINOR_VERSION 6)
-set(ANTIMICROX_PATCH_VERSION 1)
+set(ANTIMICROX_MAJOR_VERSION 1)
+set(ANTIMICROX_MINOR_VERSION 0)
+set(ANTIMICROX_PATCH_VERSION 0)
 
 if(UNIX)
     option(WITH_X11 "Compile with support for X11." ON)
@@ -93,7 +93,7 @@ if(ANTIMICROX_PKG_VERSION)
     add_compile_definitions(ANTIMICROX_PKG_VERSION="${ANTIMICROX_PKG_VERSION}")
 endif(ANTIMICROX_PKG_VERSION)
 
-set(PAD_VERSION "" CACHE STRING "Release version (x.y.z) shown in the app and used by the updater; empty for development builds")
+set(PAD_VERSION "1.0.0" CACHE STRING "Release version (x.y.z) shown in the app and used by the updater")
 if(PAD_VERSION)
     if(NOT PAD_VERSION MATCHES "^[0-9]+\\.[0-9]+\\.[0-9]+$")
         message(FATAL_ERROR "PAD_VERSION must look like 1.2.3")
@@ -698,12 +698,12 @@ if(UNIX)
     ecm_install_icons(ICONS share/icons/breeze_themed/48-apps-io.github.davaughnl.Pad.trayicon.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons THEME breeze)
     ecm_install_icons(ICONS src/images/48-apps-io.github.davaughnl.Pad.trayicon.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons)
 
-    install(FILES CHANGELOG.md DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/doc/Pad")
+    install(FILES PAD-CHANGELOG.md DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/doc/Pad")
     install(FILES other/io.github.davaughnl.Pad.desktop DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/applications")
     install(FILES other/io.github.antimicrox.antimicrox.xml DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/mime/packages")
 
     # Copy current Changelog file to location that the resource file expects.
-    install(FILES CHANGELOG.md DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/antimicrox")
+    install(FILES PAD-CHANGELOG.md DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/antimicrox")
 endif(UNIX)
 
 # Add man page for *nix platforms.
@@ -816,7 +816,7 @@ configure_file(
         "${PROJECT_BINARY_DIR}/config.h"
 )
 
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/CHANGELOG.md DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/src/)
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/PAD-CHANGELOG.md DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/src/)
 
 if(WITH_TESTS)
     enable_testing()
@@ -883,7 +883,7 @@ if(CPACK_GENERATOR STREQUAL "DEB")
 
     #Compress changelog and save it as share/doc/xournalpp/changelog.Debian.gz
     add_custom_command(TARGET package_docummentation PRE_BUILD
-            COMMAND gzip -c -9 -n "${PROJECT_SOURCE_DIR}/CHANGELOG.md" > "changelog.gz" VERBATIM)
+            COMMAND gzip -c -9 -n "${PROJECT_SOURCE_DIR}/PAD-CHANGELOG.md" > "changelog.gz" VERBATIM)
     install(FILES "${CMAKE_CURRENT_BINARY_DIR}/changelog.gz" DESTINATION "share/doc/Pad/")
 
     #Strip binaries from unnecessary notes, comments, etc
