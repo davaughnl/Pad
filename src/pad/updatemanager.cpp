@@ -24,7 +24,7 @@ QString tr(const char *text) { return QObject::tr(text); }
 
 QUrl UpdateManager::defaultApiUrl()
 {
-    return QUrl(QStringLiteral("https://api.github.com/repos/davaughnl/Pad1/releases/latest"));
+    return QUrl(QStringLiteral("https://api.github.com/repos/davaughnl/Pad/releases/latest"));
 }
 
 UpdateManager::UpdateManager(const QString &currentVersion, QObject *parent, const QUrl &apiUrl, const QString &testHost)

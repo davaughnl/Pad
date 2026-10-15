@@ -38,7 +38,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Press a key to see how Pad reads it: the system key value, the Qt value (if any) and Pad's own value. Pad uses the Qt value when it can. Unknown keys get a Pad prefix so they still work, but profiles that use them won't carry to other systems. If a key isn't recognized, &lt;a href="https://github.com/davaughnl/Pad1/issues"&gt;Report it on GitHub&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Press a key to see how Pad reads it: the system key value, the Qt value (if any) and Pad's own value. Pad uses the Qt value when it can. Unknown keys get a Pad prefix so they still work, but profiles that use them won't carry to other systems. If a key isn't recognized, &lt;a href="https://github.com/davaughnl/Pad/issues"&gt;Report it on GitHub&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="textFormat">
       <enum>Qt::AutoText</enum>

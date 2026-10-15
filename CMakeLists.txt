@@ -863,7 +863,7 @@ include(InstallRequiredSystemLibraries)
 
 
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Pad maps controllers to keyboard and mouse controls.")
-set(CPACK_PACKAGE_HOMEPAGE_URL "https://github.com/davaughnl/Pad1/")
+set(CPACK_PACKAGE_HOMEPAGE_URL "https://github.com/davaughnl/Pad/")
 
 
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
@@ -937,8 +937,8 @@ if(WIN32 AND NOT UNIX)
 
         set(CPACK_NSIS_DISPLAY_NAME "Pad")
         set(CPACK_NSIS_PACKAGE_NAME "Pad")
-        set(CPACK_NSIS_HELP_LINK "http:\\\\\\\\github.com/davaughnl/Pad1")
-        set(CPACK_NSIS_URL_INFO_ABOUT "http:\\\\\\\\github.com/davaughnl/Pad1")
+        set(CPACK_NSIS_HELP_LINK "http:\\\\\\\\github.com/davaughnl/Pad")
+        set(CPACK_NSIS_URL_INFO_ABOUT "http:\\\\\\\\github.com/davaughnl/Pad")
         set(CPACK_NSIS_MODIFY_PATH ON)
     else()
         set(CPACK_GENERATOR ZIP)
