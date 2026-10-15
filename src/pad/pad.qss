@@ -13,7 +13,7 @@ QFrame[frameShape="4"], QFrame[frameShape="5"] { color: #26262c; background: #26
 QLabel#padBrand { font-size: 15px; font-weight: 400; color: #f4f4f5; }
 QLabel#padTitle { font-size: 20px; font-weight: 400; color: #f4f4f5; }
 QLabel#padSubtitle, QLabel[padMuted="true"] { color: #9d9da5; }
-QLabel#padSection { color: #66666e; font-size: 11px; }
+QLabel#padSection { color: #9d9da5; font-size: 11px; }
 QLabel#padEmpty { color: #9d9da5; font-size: 14px; }
 QLabel#padDeviceName { font-size: 15px; font-weight: 400; color: #f4f4f5; }
 
