@@ -63,6 +63,14 @@ jobs:
           if (-not $found) { Write-Host "::error::OpenSSL 1.1.1 not found. $($log -join ' ;; ')"; exit 1 }
           "OPENSSL_DIR=$($found.DirectoryName)" | Out-File -Append -Encoding utf8 $env:GITHUB_ENV
           Write-Host "OpenSSL at $($found.FullName)"
+      - name: Test non-destructive settings and profile migration
+        run: |
+          cmake -S tests/settings -B settings-tests -G Ninja "-DCMAKE_PREFIX_PATH=$env:QT_ROOT_DIR"
+          if ($LASTEXITCODE -ne 0) { throw 'Settings test configure failed' }
+          cmake --build settings-tests
+          if ($LASTEXITCODE -ne 0) { throw 'Settings test build failed' }
+          ctest --test-dir settings-tests --output-on-failure
+          if ($LASTEXITCODE -ne 0) { throw 'Settings test failed' }
       - name: Test non-destructive profile association behavior
         run: |
           cmake -S packaging/windows/tests -B association-tests -G Ninja -DCMAKE_BUILD_TYPE=Release "-DCMAKE_PREFIX_PATH=$env:QT_ROOT_DIR"

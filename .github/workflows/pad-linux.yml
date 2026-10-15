@@ -21,6 +21,11 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y extra-cmake-modules qtbase5-dev qttools5-dev qttools5-dev-tools libsdl2-dev libxi-dev libxtst-dev libx11-dev itstool gettext dpkg-dev xvfb xauth xdotool imagemagick
+      - name: Test non-destructive settings and profile migration
+        run: |
+          cmake -S tests/settings -B settings-tests
+          cmake --build settings-tests --parallel 4
+          ctest --test-dir settings-tests --output-on-failure
       - name: Configure and build
         run: |
           cmake -S . -B build -G 'Unix Makefiles' -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DUSE_QT6_BY_DEFAULT=OFF -DCHECK_FOR_UPDATES=OFF -DCPACK_GENERATOR=DEB

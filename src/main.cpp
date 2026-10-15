@@ -426,7 +426,7 @@ int main(int argc, char *argv[])
 
     if (QDir(transPath).entryInfoList(QDir::NoDotAndDotDot | QDir::AllEntries).count() == 0)
     {
-        qtTranslator.load(QString("qt_").append(targetLang), "/app/share/antimicrox/translations");
+        qtTranslator.load(QString("qt_").append(targetLang), "/app/share/qt/translations");
     } else
     {
         qtTranslator.load(QString("qt_").append(targetLang), transPath);
@@ -437,14 +437,7 @@ int main(int argc, char *argv[])
 
     QTranslator myappTranslator;
 
-    if (QDir("/app/share/antimicrox").entryInfoList(QDir::NoDotAndDotDot | QDir::AllEntries).count() > 0)
-    {
-        myappTranslator.load(QString("antimicrox_").append(targetLang), "app/share/antimicrox/translations");
-    } else
-    {
-        myappTranslator.load(QString("antimicrox_").append(targetLang),
-                             QApplication::applicationDirPath().append("/../share/antimicrox/translations"));
-    }
+    PadderCommon::loadPadTranslation(&myappTranslator, targetLang);
 
     antimicrox.installTranslator(&myappTranslator);
 
