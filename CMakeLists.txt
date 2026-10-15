@@ -59,9 +59,9 @@ else()
 endif(NOT COMPILER_IS_MSVC)
 
 # The version number.
-set(ANTIMICROX_MAJOR_VERSION 3)
-set(ANTIMICROX_MINOR_VERSION 6)
-set(ANTIMICROX_PATCH_VERSION 1)
+set(ANTIMICROX_MAJOR_VERSION 1)
+set(ANTIMICROX_MINOR_VERSION 0)
+set(ANTIMICROX_PATCH_VERSION 0)
 
 if(UNIX)
     option(WITH_X11 "Compile with support for X11." ON)
@@ -101,30 +101,6 @@ if(PAD_VERSION)
     message("This build is release version ${PAD_VERSION}")
     add_compile_definitions(PAD_VERSION="${PAD_VERSION}")
 endif(PAD_VERSION)
-
-# Paid builds: require a license key before Pad opens. Off for development builds.
-# Store-specific code lives in one provider class in src/pad/padlicense.h; pick it with PAD_LICENSE_PROVIDER.
-option(PAD_LICENSE_GATE "Require a license key on first run" OFF)
-set(PAD_LICENSE_PROVIDER "dodo" CACHE STRING "License provider: dodo or lemonsqueezy")
-set(PAD_DODO_PRODUCT_ID "" CACHE STRING "Dodo Payments product ID that must own the license key")
-set(PAD_LS_STORE_ID "0" CACHE STRING "Lemon Squeezy store ID (lemonsqueezy provider only)")
-set(PAD_LS_PRODUCT_ID "0" CACHE STRING "Lemon Squeezy product ID (lemonsqueezy provider only)")
-set(PAD_BUY_URL "" CACHE STRING "Where the Buy a license button goes")
-set(PAD_TEST_TOKEN_SHA256 "" CACHE STRING "SHA-256 of the release-test token that skips the gate in smoke tests")
-if(PAD_LICENSE_GATE)
-    add_compile_definitions(PAD_LICENSE_GATE=1 PAD_BUY_URL="${PAD_BUY_URL}" PAD_TEST_TOKEN_SHA256="${PAD_TEST_TOKEN_SHA256}")
-    if(PAD_LICENSE_PROVIDER STREQUAL "lemonsqueezy")
-        if(PAD_LS_STORE_ID STREQUAL "0" OR PAD_LS_PRODUCT_ID STREQUAL "0")
-            message(FATAL_ERROR "PAD_LICENSE_GATE with lemonsqueezy needs PAD_LS_STORE_ID and PAD_LS_PRODUCT_ID")
-        endif()
-        add_compile_definitions(PAD_LICENSE_PROVIDER_LEMONSQUEEZY=1 PAD_LS_STORE_ID=${PAD_LS_STORE_ID} PAD_LS_PRODUCT_ID=${PAD_LS_PRODUCT_ID})
-    else()
-        if(PAD_DODO_PRODUCT_ID STREQUAL "")
-            message(FATAL_ERROR "PAD_LICENSE_GATE with dodo needs PAD_DODO_PRODUCT_ID")
-        endif()
-        add_compile_definitions(PAD_DODO_PRODUCT_ID="${PAD_DODO_PRODUCT_ID}")
-    endif()
-endif()
 
 if(CHECK_FOR_UPDATES)
     message("This build will check for updates using GitHub API.")
@@ -722,12 +698,12 @@ if(UNIX)
     ecm_install_icons(ICONS share/icons/breeze_themed/48-apps-io.github.davaughnl.Pad.trayicon.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons THEME breeze)
     ecm_install_icons(ICONS src/images/48-apps-io.github.davaughnl.Pad.trayicon.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons)
 
-    install(FILES CHANGELOG.md DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/doc/Pad")
+    install(FILES PAD-CHANGELOG.md DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/doc/Pad")
     install(FILES other/io.github.davaughnl.Pad.desktop DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/applications")
     install(FILES other/io.github.antimicrox.antimicrox.xml DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/mime/packages")
 
     # Copy current Changelog file to location that the resource file expects.
-    install(FILES CHANGELOG.md DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/antimicrox")
+    install(FILES PAD-CHANGELOG.md DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/antimicrox")
 endif(UNIX)
 
 # Add man page for *nix platforms.
@@ -840,7 +816,7 @@ configure_file(
         "${PROJECT_BINARY_DIR}/config.h"
 )
 
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/CHANGELOG.md DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/src/)
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/PAD-CHANGELOG.md DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/src/)
 
 if(WITH_TESTS)
     enable_testing()
@@ -907,7 +883,7 @@ if(CPACK_GENERATOR STREQUAL "DEB")
 
     #Compress changelog and save it as share/doc/xournalpp/changelog.Debian.gz
     add_custom_command(TARGET package_docummentation PRE_BUILD
-            COMMAND gzip -c -9 -n "${PROJECT_SOURCE_DIR}/CHANGELOG.md" > "changelog.gz" VERBATIM)
+            COMMAND gzip -c -9 -n "${PROJECT_SOURCE_DIR}/PAD-CHANGELOG.md" > "changelog.gz" VERBATIM)
     install(FILES "${CMAKE_CURRENT_BINARY_DIR}/changelog.gz" DESTINATION "share/doc/Pad/")
 
     #Strip binaries from unnecessary notes, comments, etc
