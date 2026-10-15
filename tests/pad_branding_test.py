@@ -54,7 +54,7 @@ class PadBrandingTests(unittest.TestCase):
                         self.assertIsNone(re.search(r'(?<![/])AntiMicroX(?![/])', translated), path.name + ': ' + source[:80])
 
     def test_catalogs_have_no_retired_upstream_ui_messages(self):
-        for path in (ROOT / 'share/antimicrox/translations').glob('*.ts'):
+        for path in (ROOT / 'share/pad/translations').glob('*.ts'):
             for message in ET.parse(path).findall('.//message'):
                 self.assertNotRegex(message.findtext('source') or '', r'(?i)antimicro')
                 translation = message.find('translation')
