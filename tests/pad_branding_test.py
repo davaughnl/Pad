@@ -53,6 +53,14 @@ class PadBrandingTests(unittest.TestCase):
                     if 'Pad' in source and not any(x in source for x in ('Later project', 'Originally developed')):
                         self.assertIsNone(re.search(r'(?<![/])AntiMicroX(?![/])', translated), path.name + ': ' + source[:80])
 
+    def test_catalogs_have_no_retired_upstream_ui_messages(self):
+        for path in (ROOT / 'share/pad/translations').glob('*.ts'):
+            for message in ET.parse(path).findall('.//message'):
+                self.assertNotRegex(message.findtext('source') or '', r'(?i)antimicro')
+                translation = message.find('translation')
+                if translation is not None and translation.get('type') not in ('obsolete', 'vanished'):
+                    self.assertNotRegex(''.join(translation.itertext()), r'(?i)antimicro')
+
     def test_licenses_are_installed_and_packaged(self):
         for name in ('LICENSE', 'src/pad/OFL.txt', 'src/pad/LUCIDE-LICENSE.txt', 'packaging/windows/Qt-LGPL-3.0.txt'):
             self.assertGreater((ROOT / name).stat().st_size, 100)
@@ -81,6 +89,17 @@ class PadBrandingTests(unittest.TestCase):
         self.assertIn('wikiPage = "https://github.com/davaughnl/Pad"', common)
         resources = (ROOT / 'src/resources.qrc').read_text()
         self.assertIn('../PAD-CHANGELOG.md', resources)
+
+    def test_about_overview_keeps_attribution_in_legal(self):
+        about = (ROOT / 'src/gui/aboutdialog.cpp').read_text()
+        overview = about.split('void AboutDialog::fillInfoTextBrowser()', 1)[1].split('void AboutDialog::changeEvent', 1)[0]
+        self.assertNotIn('AntiMicroX', overview)
+        self.assertIn('tr("Legal")', overview)
+        self.assertNotIn('Pad is based on AntiMicroX.', about)
+        self.assertNotIn('Source code:', about)
+        self.assertIn('<string>Legal</string>', (ROOT / 'src/gui/aboutdialog.ui').read_text())
+        retranslate = about.split('void AboutDialog::retranslateUi()', 1)[1]
+        self.assertIn('fillInfoTextBrowser();', retranslate)
 
     def test_regular_font_is_global_and_has_system_fallback(self):
         shell = (ROOT / 'src/pad/padshell.cpp').read_text()

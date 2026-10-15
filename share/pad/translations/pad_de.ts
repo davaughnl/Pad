@@ -24,44 +24,6 @@
         <translation>Änderungsprotokoll</translation>
     </message>
     <message>
-        <source>&quot;pktiuk&quot; (since August 2020) I just want to ensure, that this very useful piece of software will not be abandoned, I decided to conticue providing support for this project and make it as widely accessible as possible.
-
-&quot;juliagoda&quot; (since March, 2018 until 2020) Wanting only to play my favourite old games that din&apos;t support gamepads, I found this project (which map keyboard keys and mouse buttons to connected gamepads on Linux) as most proper and recent. But because of poor choices of such application on the internet and since it didn&apos;t compile properly, I decided to rescue the project. However, once I finished my work (enough to enjoy playing games) I thought about sharing this code with others. Of course all information about past programmers will be held.
-
-&quot;Ryochan7&quot; (since December 30, 2012 until 2017), I have been working on AntiMicro in my spare time. What originally started as a fork of QJoyPad and a way to learn proper event-driven programming has turned into something much bigger than I originally intended. Although I have spent a lot of time learning new techniques, finding out more about the domain of KB+M emulation, and spending Friday nights bashing my head against my keyboard, it has been a fun and enriching experience overall.
-
-The need for this program came from me using similar programs on Windows to play several games that did not provide native controller support. Although some alternatives existed on Linux, there wasn&apos;t really anything that I felt was good enough in terms of functionality or in-game controls in order to really enjoy games that I wanted to play with using KB+M emulation. QJoyPad was the main program that I had used in the past although it had aged a lot and it didn&apos;t provide some basic functionality that I thought was essential. The project was dead as it had not been updated in several years so I decided to make my own.
-
-Since then, I have tried to find out what the other programs do right and then improve upon it. I have also discovered some neat tricks along the way and I have learned more about how native gamepad controls are implemented in some games than I ever really wanted to know. Although there are definitely areas where this program could improve, I find that this program offers the best in-game control experience for playing older, and some newer, games that do not provide native controller support.
-
-Development of this program is not as high of a priority for me anymore. This is mainly due to the fact that the Steam Controller works pretty well for the task of playing PC games compared to using an Xbox 360 controller. However, it does look like there is still a reason for this program to exist for a while.
-
----
-
-As of May 24, 2016, this project has moved to https://github.com/AntiMicro/antimicro. 
-Additionally, project management has passed from Travis (Ryochan7) to the AntiMicro organization due to Travis having other interests and priorities.
-As next, project has been continued since 2018 by juliagoda on antimicroX project. 
-Later project has been once more moved to https://github.com/AntiMicroX/antimicrox and it&apos;s its maintenance is continued by organisation AntiMicroX created by pktiuk.</source>
-        <translation type="vanished">&quot;pktiuk&quot; (seit August 2020) Ich möchte sichergehen, dass diese nützliche Software nicht aufgegeben wird und habe mich entschlossen dieses Projekt weiter zu unterstützen und es so zugänglich wie möglich zu machen.
-
-&quot;juliagoda&quot; (seit März 2018 bis 2020) Da ich nur meine alten Lieblingsspiele spielen wollte, die keine Gamepads unterstützen, fand ich dieses Projekt (welches die Tastatur- und Maustasten auf verbundene Gamepads in Linux zuweist) als am besten geeignet und aktuellsten. Aber wegen der geringen Auswahl an solchen Anwendungen im Internet und weil es nicht richtig kompiliert wurde, habe ich beschlossen, das Projekt zu retten. Sobald ich jedoch meine Arbeit beendet hatte (genug, um das Spielen zu genießen), dachte ich darüber nach, diesen Code mit anderen zu teilen. Selbstverständlich werden alle Angaben über frühere Programmierer beihalten.
-
-&quot;Ryochan7&quot; (seit 30. Dezember 2012 bis 2017), ich habe in meiner Freizeit an AntiMicro gearbeitet. Was ursprünglich als Fork von QJoyPad und als Möglichkeit, die richtige ereignisgesteuerte Programmierung zu lernen, begann, hat sich zu etwas viel Größerem entwickelt, als ich ursprünglich vorhatte. Obwohl ich viel Zeit damit verbracht habe neue Techniken zu lernen, mehr über das Feld der KB+M-Emulation herauszufinden und Freitagabende damit zu verbringen, meinen Kopf auf die Tastatur zu hauen, war es insgesamt eine spaßige und bereichernde Erfahrung.
-
-Die Notwendigkeit für dieses Programm ergab sich daraus, dass ich ähnliche Programme unter Windows verwendete, um verschiedene Spiele zu spielen, die keine native Controller-Unterstützung boten. Obwohl es für Linux einige Alternativen gab, gab es nicht wirklich etwas, das meiner Meinung nach in Bezug auf die Funktionalität oder die Steuerung im Spiel gut genug war, um die Spiele, die ich mit der KB+M-Emulation spielen wollte, wirklich zu genießen. QJoyPad war das Programm, das ich in der Vergangenheit hauptsächlich verwendet hatte, obwohl es in die Jahre gekommen war und einige grundlegende Funktionen, die ich für wichtig hielt, nicht bieten konnte. Das Projekt war stillgelegt, da es seit mehreren Jahren nicht mehr aktualisiert worden war, und so beschloss ich, mein eigenes zu entwickeln.
-
-Seitdem habe ich versucht herauszufinden was die anderen Programme richtig machen und es dann zu verbessern. Dabei habe ich auch einige nützliche Tricks entdeckt und ich habe mehr darüber gelernt, wie die native Gamepad-Steuerung in einigen Spielen implementiert ist, als ich jemals wirklich wissen wollte. Obwohl es durchaus Bereiche gibt, in denen dieses Programm verbessert werden könnte, finde ich, dass dieses Programm das beste Steuerungserlebnis im Spiel bietet, um ältere und auch manche neuere Spiele zu spielen, die keine native Controller-Unterstützung bieten.
-
-Die Entwicklung dieses Programms hat für mich keine so hohe Priorität mehr. Das liegt vor allem daran, dass der Steam Controller für die Aufgabe, PC-Spiele zu spielen, im Vergleich zu einem Xbox 360-Controller ziemlich gut funktioniert. Es sieht jedoch so aus, als gäbe es für dieses Programm noch einen Grund für eine Weile zu bestehen.
-
----
-
-Seit dem 24. Mai 2016 ist dieses Projekt auf https://github.com/AntiMicro/antimicro umgezogen. 
-Zusätzlich ist die Projektleitung von Travis (Ryochan7) an die AntiMicro Organisation übergegangen, da Travis andere Interessen und Prioritäten hat.
-Danach wurde das Projekt seit 2018 von juliagoda im antimicroX Projekt weitergeführt. 
-Später wurde das Projekt noch einmal auf https://github.com/AntiMicroX/antimicrox verschoben und seine Instandhaltung wird von der von pktiuk gegründeten Organisation AntiMicroX fortgesetzt.</translation>
-    </message>
-    <message>
         <location filename="../../../src/gui/aboutdialog.ui" line="383"/>
         <source>Copyright: 2013 - 2022</source>
         <translation>Urheberrecht: 2013 - 2022</translation>
@@ -75,22 +37,6 @@ Später wurde das Projekt noch einmal auf https://github.com/AntiMicroX/antimicr
         <location filename="../../../src/gui/aboutdialog.ui" line="87"/>
         <source>Pad</source>
         <translation></translation>
-    </message>
-    <message>
-        <location filename="../../../src/gui/aboutdialog.ui" line="148"/>
-        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Geist'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Geist'; font-size:10pt;&quot;&gt;Originally developed by Travis Nickles &amp;lt;nickles.travis@gmail.com&amp;gt;. &lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Geist'; font-size:10pt;&quot;&gt;Next maintained by the AntiMicro group at &lt;/span&gt;&lt;a href=&quot;https://github.com/AntiMicro&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://github.com/AntiMicro&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Geist'; font-size:10pt;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Geist'; font-size:10pt;&quot;&gt;Then by juliagoda at &lt;/span&gt;&lt;a href=&quot;https://github.com/juliagoda&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://github.com/juliagoda&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Geist'; font-size:10pt;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Geist'; font-size:10pt;&quot;&gt;Now maintained at &lt;/span&gt;&lt;a href=&quot;https://github.com/AntiMicroX/antimicrox&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://github.com/AntiMicroX/antimicrox&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Geist'; font-size:10pt;&quot;&gt; by &lt;/span&gt;&lt;a href=&quot;https://github.com/pktiuk&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;pktiuk&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Geist'; font-size:10pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight: 400;&quot;&gt;Contributors:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;You can see full list of contributors &lt;a href=&quot;https://github.com/AntiMicroX/antimicrox/graphs/contributors&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;here&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../src/gui/aboutdialog.ui" line="195"/>
@@ -214,28 +160,6 @@ p, li { white-space: pre-wrap; }
         <location filename="../../../src/gui/aboutdialog.ui" line="339"/>
         <source>About Development</source>
         <translation>Über die Entwicklung</translation>
-    </message>
-    <message>
-        <location filename="../../../src/gui/aboutdialog.ui" line="353"/>
-        <source>&quot;pktiuk&quot; (since August 2020) I just want to ensure, that this very useful piece of software will not be abandoned, I decided to continue providing support for this project and make it as widely accessible as possible.
-
-&quot;juliagoda&quot; (since March, 2018 until 2020) Wanting only to play my favourite old games that din&apos;t support gamepads, I found this project (which map keyboard keys and mouse buttons to connected gamepads on Linux) as most proper and recent. But because of poor choices of such application on the internet and since it didn&apos;t compile properly, I decided to rescue the project. However, once I finished my work (enough to enjoy playing games) I thought about sharing this code with others. Of course all information about past programmers will be held.
-
-&quot;Ryochan7&quot; (since December 30, 2012 until 2017), I have been working on AntiMicro in my spare time. What originally started as a fork of QJoyPad and a way to learn proper event-driven programming has turned into something much bigger than I originally intended. Although I have spent a lot of time learning new techniques, finding out more about the domain of KB+M emulation, and spending Friday nights bashing my head against my keyboard, it has been a fun and enriching experience overall.
-
-The need for this program came from me using similar programs on Windows to play several games that did not provide native controller support. Although some alternatives existed on Linux, there wasn&apos;t really anything that I felt was good enough in terms of functionality or in-game controls in order to really enjoy games that I wanted to play with using KB+M emulation. QJoyPad was the main program that I had used in the past although it had aged a lot and it didn&apos;t provide some basic functionality that I thought was essential. The project was dead as it had not been updated in several years so I decided to make my own.
-
-Since then, I have tried to find out what the other programs do right and then improve upon it. I have also discovered some neat tricks along the way and I have learned more about how native gamepad controls are implemented in some games than I ever really wanted to know. Although there are definitely areas where this program could improve, I find that this program offers the best in-game control experience for playing older, and some newer, games that do not provide native controller support.
-
-Development of this program is not as high of a priority for me anymore. This is mainly due to the fact that the Steam Controller works pretty well for the task of playing PC games compared to using an Xbox 360 controller. However, it does look like there is still a reason for this program to exist for a while.
-
----
-
-As of May 24, 2016, this project has moved to https://github.com/AntiMicro/antimicro. 
-Additionally, project management has passed from Travis (Ryochan7) to the AntiMicro organization due to Travis having other interests and priorities.
-As next, project has been continued since 2018 by juliagoda on antimicroX project. 
-Later project has been once more moved to https://github.com/AntiMicroX/antimicrox and it&apos;s its maintenance is continued by organisation AntiMicroX created by pktiuk.</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../src/gui/aboutdialog.ui" line="180"/>
@@ -3956,11 +3880,6 @@ oder deaktivieren Sie das Ausblenden leerer Tasten.</translation>
         <translation>Fortgeschrittene</translation>
     </message>
     <message>
-        <location filename="../../../src/gui/mainsettingsdialog.ui" line="106"/>
-        <source>Auto Profile functionality is incompatible with Wayland session &lt;a href=&quot;https://github.com/AntiMicroX/antimicrox/issues/303&quot;&gt;more info&lt;/a&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../../src/gui/mainsettingsdialog.ui" line="155"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify the default directory that the program should use in file dialogs when loading a profile or saving a new profile.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Geben Sie das Standardverzeichnis an, dass das Programm im Dateidialog verwenden soll beim Laden oder Speichern eines Profils.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
@@ -4193,12 +4112,6 @@ durchgeführt werden.</translation>
         <location filename="../../../src/gui/mainsettingsdialog.ui" line="713"/>
         <source>Polski</source>
         <translation>Polski</translation>
-    </message>
-    <message>
-        <location filename="../../../src/gui/mainsettingsdialog.ui" line="721"/>
-        <source>You can help with translating Pad. Just click here: &lt;a
-                          href=&quot;https://hosted.weblate.org/projects/antimicrox/&quot;&gt;link&lt;/a&gt;</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../src/gui/mainsettingsdialog.ui" line="742"/>
@@ -5433,21 +5346,6 @@ auf Ihrem Bildschirm nutzen.</translation>
         <translation>Deine ursprünglichen Einstellungen (zuvor in %1 gespeichert) wurden kopiert nach
 %2
  Wenn du willst, kannst du das ursprüngliche Verzeichnis löschen oder es so lassen, wie es ist.</translation>
-    </message>
-    <message>
-        <location filename="../../../src/main.cpp" line="209"/>
-        <source>Some problem with settings migration occurred.
-Original configs are stored in 
-%1
- but their new location is: 
-%2
-You can migrate manually by renaming old directory and renaming file to antimicrox_settings.ini.</source>
-        <translation>Es ist ein Problem bei der Migration der Einstellungen aufgetreten.
-Originale Konfigurationen sind gespeichert in 
-%1
-aber ihr neuer Speicherort ist: 
-%2
-Sie können manuell migrieren, indem Sie das alte Verzeichnis umbenennen und die Datei in antimicrox_settings.ini umbenennen.</translation>
     </message>
     <message>
         <location filename="../../../src/main.cpp" line="603"/>

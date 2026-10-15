@@ -41,14 +41,14 @@ AboutDialog::AboutDialog(QWidget *parent)
     ui->setupUi(this);
     ui->versionLabel->setText(PadderCommon::displayVersion);
     fillInfoTextBrowser();
+    connect(ui->infoTextBrowser, &QTextBrowser::anchorClicked, this, [this](const QUrl &) {
+        ui->tabWidget->setCurrentIndex(ui->tabWidget->indexOf(ui->license));
+    });
     QFile licenseFile(QStringLiteral(":/pad/GPL-3.0.txt"));
     QString legalNotice = QStringLiteral("Pad\n"
         "Copyright (C) 2026 Pad\n\n"
         "Pad is free software, released under the GNU General Public License version 3 or later. "
         "You can copy, change and share it under that license. It comes with no warranty.\n\n"
-        "Source code: github.com/davaughnl/Pad\n\n"
-        "Portions Copyright (C) 2015 Travis Nickles, Copyright (C) 2020 Jagoda G\u00f3rska. "
-        "Qt and SDL are used under their own licenses.\n\n"
         "The full license text follows.\n\n");
     if (licenseFile.open(QIODevice::ReadOnly | QIODevice::Text))
         legalNotice += QString::fromUtf8(licenseFile.readAll());
@@ -61,11 +61,14 @@ AboutDialog::~AboutDialog() { delete ui; }
 
 void AboutDialog::fillInfoTextBrowser()
 {
+    // Product overview; license terms are available in Legal.
     ui->infoTextBrowser->setOpenLinks(false);
     ui->infoTextBrowser->setHtml(
-        QStringLiteral("<p style=\"font-size:15px\">%1</p><p>%2</p><p>%3</p>")
+        QStringLiteral("<p style=\"font-size:15px\">%1</p>"
+                       "<p>%2</p><p><a href=\"#licenses\" style=\"color:#f4f4f5\">%3</a></p><p>%4</p>")
             .arg(tr("About Pad"),
                  tr("Pad is a modern controller mapping application designed for a simple, reliable, and highly configurable experience."),
+                 tr("Legal"),
                  tr("(c) 2026 Pad")));
 }
 
@@ -82,6 +85,7 @@ void AboutDialog::retranslateUi()
     const QString legalNotice = ui->textBrowser_2->toPlainText();
     ui->retranslateUi(this);
     ui->textBrowser_2->setPlainText(legalNotice);
+    fillInfoTextBrowser();
 
     ui->versionLabel->setText(PadderCommon::displayVersion);
 }
