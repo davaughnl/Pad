@@ -71,7 +71,7 @@ int main(int argc, char **argv)
     check(QFileInfo(source).lastModified() == modified, "source timestamp unchanged");
     check(QFileInfo(source).permissions() == permissions, "source permissions unchanged");
     check(readFile(sibling) == "profile untouched", "upstream sibling profile untouched");
-    check(settingsImportMessage(result).contains(source) && settingsImportMessage(result).contains(destination), "real paths in success dialog");
+    check(settingsImportMessage(result).contains(QDir::toNativeSeparators(source)) && settingsImportMessage(result).contains(QDir::toNativeSeparators(destination)), "real paths in success dialog");
     QSettings settings(destination, QSettings::IniFormat);
     check(settings.value("NumberRecentProfiles").toInt() == 8, "copied settings readable by QSettings");
 
@@ -112,7 +112,7 @@ int main(int argc, char **argv)
     result = importSettings(blocked + "/pad_settings.ini", {source});
     check(result.status == SettingsImportStatus::Failed, "copy failure reported");
     check(readFile(source) == original, "source unchanged on copy failure");
-    check(settingsImportMessage(result).contains(result.source) && settingsImportMessage(result).contains(result.destination), "real paths in error dialog");
+    check(settingsImportMessage(result).contains(QDir::toNativeSeparators(result.source)) && settingsImportMessage(result).contains(QDir::toNativeSeparators(result.destination)), "real paths in error dialog");
     check(!settingsImportMessage(result).contains("renaming"), "failure does not suggest destructive migration");
     check(!settingsImportMessage(result).contains("AntiMicroX"), "dialog product identity is Pad");
     std::cout << "PASS: Pad paths, first import, no overwrite, no source, priority, legacy fallback, non-destructiveness, failure, dialog paths\n";
