@@ -78,7 +78,7 @@ class PadBrandingTests(unittest.TestCase):
                 value = text.text or ''
                 self.assertIsNone(re.search('antimicro', value, re.I), str(path))
         common = (ROOT / 'src/common.h').read_text()
-        self.assertIn('wikiPage = "https://github.com/davaughnl/Pad1"', common)
+        self.assertIn('wikiPage = "https://github.com/davaughnl/Pad"', common)
         resources = (ROOT / 'src/resources.qrc').read_text()
         self.assertIn('../PAD-CHANGELOG.md', resources)
 

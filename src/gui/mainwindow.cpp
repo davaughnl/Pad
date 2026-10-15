@@ -211,7 +211,7 @@ MainWindow::MainWindow(QMap<SDL_JoystickID, InputDevice *> *joysticks, CommandLi
     ui->updateButton->setVisible(false);
 #ifdef CHECK_FOR_UPDATES
     connect(&m_network_manager, &QNetworkAccessManager::finished, this, &MainWindow::networkManagerFinished);
-    QNetworkRequest request(QUrl("https://api.github.com/repos/davaughnl/Pad1/releases/latest"));
+    QNetworkRequest request(QUrl("https://api.github.com/repos/davaughnl/Pad/releases/latest"));
     m_network_manager.get(request);
 #endif
 
@@ -1717,7 +1717,7 @@ void MainWindow::networkManagerFinished(QNetworkReply *reply)
 void MainWindow::updateButtonPressed()
 {
     INFO() << "Opening update website";
-    QDesktopServices::openUrl(QUrl("https://github.com/davaughnl/Pad1/releases/latest"));
+    QDesktopServices::openUrl(QUrl("https://github.com/davaughnl/Pad/releases/latest"));
 }
 
 #endif
