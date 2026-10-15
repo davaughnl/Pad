@@ -217,7 +217,7 @@ int main(int argc,char **argv) {
             delete statusjoy;
         } else if(test=="about") {
             auto *dialog=new AboutDialog;capture(dialog,output,test);
-            check(control<QLabel>(dialog,"versionLabel")->text()=="Development build","About display version is not Development build");
+            check(control<QLabel>(dialog,"versionLabel")->text()=="1.0.0","About display version is not 1.0.0");
             auto info=control<QTextBrowser>(dialog,"infoTextBrowser")->toPlainText();
             check(info.contains("About Pad")&&!info.contains("1.0.0")&&!info.contains("antimicro",Qt::CaseInsensitive)&&!info.contains("open source",Qt::CaseInsensitive)&&!info.contains("open-source",Qt::CaseInsensitive)&&!info.contains("fork",Qt::CaseInsensitive),"About info copy missing or exposes upstream or open-source wording");
             {auto legal=control<QTextBrowser>(dialog,"textBrowser_2")->toPlainText();check(legal.contains("Copyright (C) 2015 Travis Nickles")&&legal.contains("GNU GENERAL PUBLIC LICENSE")&&!legal.contains("antimicro",Qt::CaseInsensitive)&&!legal.contains("fork",Qt::CaseInsensitive),"Legal tab must keep copyright and GPL text without upstream product naming");}

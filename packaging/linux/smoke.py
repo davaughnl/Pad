@@ -11,7 +11,7 @@ with tempfile.TemporaryDirectory(prefix='pad-deb-smoke-') as tmp:
     (output/'dependencies.txt').write_text(deps.stdout)
     env=dict(os.environ,XDG_CONFIG_HOME=str(root/'config'),XDG_DATA_HOME=str(root/'data'),QT_QPA_PLATFORM='xcb')
     version=subprocess.run([str(binary),'--version'],env=env,capture_output=True,text=True,timeout=10,check=True)
-    assert 'Pad Development build' in version.stdout and '1.0.0' not in version.stdout,version.stdout
+    assert 'Pad 1.0.0' in version.stdout,version.stdout
     (output/'version.txt').write_text(version.stdout)
     with (output/'startup.log').open('w') as log:
         app=subprocess.Popen([str(binary),'--show','--no-tray','--eventgen','xtest'],env=env,stdout=log,stderr=log)

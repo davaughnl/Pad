@@ -93,7 +93,7 @@ if(ANTIMICROX_PKG_VERSION)
     add_compile_definitions(ANTIMICROX_PKG_VERSION="${ANTIMICROX_PKG_VERSION}")
 endif(ANTIMICROX_PKG_VERSION)
 
-set(PAD_VERSION "" CACHE STRING "Release version (x.y.z) shown in the app and used by the updater; empty for development builds")
+set(PAD_VERSION "1.0.0" CACHE STRING "Release version (x.y.z) shown in the app and used by the updater")
 if(PAD_VERSION)
     if(NOT PAD_VERSION MATCHES "^[0-9]+\\.[0-9]+\\.[0-9]+$")
         message(FATAL_ERROR "PAD_VERSION must look like 1.2.3")
