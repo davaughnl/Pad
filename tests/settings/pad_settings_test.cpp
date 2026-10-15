@@ -97,7 +97,7 @@ int main(int argc, char **argv)
     check(result.status == SettingsImportStatus::NoSource, "missing upstream is no-op");
     check(!QFileInfo::exists(emptyDestination), "no blank settings file created by import");
 
-    const QString older = root + "/antimicroX/antimicroX_settings.ini";
+    const QString older = root + "/older-compatible/antimicroX_settings.ini";
     writeFile(older, "older settings");
     const QString priorityDestination = root + "/priority/pad_settings.ini";
     result = importSettings(priorityDestination, {source, older});
