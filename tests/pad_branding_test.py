@@ -82,6 +82,16 @@ class PadBrandingTests(unittest.TestCase):
         resources = (ROOT / 'src/resources.qrc').read_text()
         self.assertIn('../PAD-CHANGELOG.md', resources)
 
+    def test_about_overview_keeps_attribution_in_legal(self):
+        about = (ROOT / 'src/gui/aboutdialog.cpp').read_text()
+        overview = about.split('void AboutDialog::fillInfoTextBrowser()', 1)[1].split('void AboutDialog::changeEvent', 1)[0]
+        self.assertNotIn('AntiMicroX', overview)
+        self.assertIn('tr("Legal")', overview)
+        self.assertIn('Pad is based on AntiMicroX.', about)
+        self.assertIn('<string>Legal</string>', (ROOT / 'src/gui/aboutdialog.ui').read_text())
+        retranslate = about.split('void AboutDialog::retranslateUi()', 1)[1]
+        self.assertIn('fillInfoTextBrowser();', retranslate)
+
     def test_regular_font_is_global_and_has_system_fallback(self):
         shell = (ROOT / 'src/pad/padshell.cpp').read_text()
         self.assertIn('QFontDatabase::systemFont(QFontDatabase::GeneralFont)', shell)

@@ -6970,7 +6970,7 @@ LK</translation>
     <message>
         <location filename="../../../src/winextras.cpp" line="303"/>
         <source>Pad Profile</source>
-        <translation>AntiMicro配置</translation>
+        <translation>Pad配置</translation>
     </message>
 </context>
 <context>

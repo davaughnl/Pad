@@ -41,6 +41,9 @@ AboutDialog::AboutDialog(QWidget *parent)
     ui->setupUi(this);
     ui->versionLabel->setText(PadderCommon::displayVersion);
     fillInfoTextBrowser();
+    connect(ui->infoTextBrowser, &QTextBrowser::anchorClicked, this, [this](const QUrl &) {
+        ui->tabWidget->setCurrentIndex(ui->tabWidget->indexOf(ui->license));
+    });
     QFile licenseFile(QStringLiteral(":/pad/GPL-3.0.txt"));
     QString legalNotice = QStringLiteral("Pad\n"
         "Copyright (C) 2026 Pad\n\n"
@@ -61,20 +64,15 @@ AboutDialog::~AboutDialog() { delete ui; }
 
 void AboutDialog::fillInfoTextBrowser()
 {
-    // Owner-written copy. "Open Source Licenses" opens the License tab.
+    // Keep attribution and the full GPL notice in Legal, not the product overview.
     ui->infoTextBrowser->setOpenLinks(false);
     ui->infoTextBrowser->setHtml(
         QStringLiteral("<p style=\"font-size:15px\">%1</p>"
-                       "<p>%2</p><p>%3</p><p>%4 <a href=\"#licenses\">%5</a>.</p><p>%6</p>")
+                       "<p>%2</p><p><a href=\"#licenses\">%3</a></p><p>%4</p>")
             .arg(tr("About Pad"),
                  tr("Pad is a modern controller mapping application designed for a simple, reliable, and highly configurable experience."),
-                 tr("Pad incorporates and builds upon technology from AntiMicroX, an open-source controller mapping project licensed under the GNU General Public License (GPL)."),
-                 tr("Pad includes original development and design alongside components derived from or adapted from the AntiMicroX project. Applicable open-source licenses and source code are available through"),
-                 tr("Open Source Licenses"),
-                 tr("(c) 2026 Pad")));
-    connect(ui->infoTextBrowser, &QTextBrowser::anchorClicked, this, [this](const QUrl &) {
-        ui->tabWidget->setCurrentIndex(ui->tabWidget->indexOf(ui->license));
-    });
+                 tr("Legal"),
+                 tr("Copyright (C) 2026 Pad")));
 }
 
 void AboutDialog::changeEvent(QEvent *event)
@@ -90,6 +88,7 @@ void AboutDialog::retranslateUi()
     const QString legalNotice = ui->textBrowser_2->toPlainText();
     ui->retranslateUi(this);
     ui->textBrowser_2->setPlainText(legalNotice);
+    fillInfoTextBrowser();
 
     ui->versionLabel->setText(PadderCommon::displayVersion);
 }
