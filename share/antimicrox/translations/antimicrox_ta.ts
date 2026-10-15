@@ -14,33 +14,6 @@
         <translation>பதிப்பு</translation>
     </message>
     <message>
-        <location filename="../../../src/gui/aboutdialog.ui" line="148"/>
-        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Geist'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Geist'; font-size:10pt;&quot;&gt;Originally developed by Travis Nickles &amp;lt;nickles.travis@gmail.com&amp;gt;. &lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Geist'; font-size:10pt;&quot;&gt;Next maintained by the AntiMicro group at &lt;/span&gt;&lt;a href=&quot;https://github.com/AntiMicro&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://github.com/AntiMicro&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Geist'; font-size:10pt;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Geist'; font-size:10pt;&quot;&gt;Then by juliagoda at &lt;/span&gt;&lt;a href=&quot;https://github.com/juliagoda&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://github.com/juliagoda&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Geist'; font-size:10pt;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Geist'; font-size:10pt;&quot;&gt;Now maintained at &lt;/span&gt;&lt;a href=&quot;https://github.com/AntiMicroX/antimicrox&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://github.com/AntiMicroX/antimicrox&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Geist'; font-size:10pt;&quot;&gt; by &lt;/span&gt;&lt;a href=&quot;https://github.com/pktiuk&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;pktiuk&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Geist'; font-size:10pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight: 400;&quot;&gt;Contributors:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;You can see full list of contributors &lt;a href=&quot;https://github.com/AntiMicroX/antimicrox/graphs/contributors&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;here&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-பி, லி { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Geist'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Geist'; font-size:10pt;&quot;&gt;முதலில் டிராவிஸ் நிக்கிள்ஸ் என்பவரால் உருவாக்கப்பட்டது &amp;lt;nickles.travis@gmail.com&amp;gt;. &lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Geist'; font-size:10pt;&quot;&gt;அடுத்து ஆண்டிமைக்ரோ குழுவால் பராமரிக்கப்படுகிறதுஇல் &lt;/span&gt;&lt;a href=&quot;https://github.com/AntiMicro&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://github.com/AntiMicro&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Geist'; font-size:10pt;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Geist'; font-size:10pt;&quot;&gt;பின்னர் ஜூலியாகோடா மூலம் &lt;/span&gt;&lt;a href=&quot;https://github.com/juliagoda&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://github.com/juliagoda&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Geist'; font-size:10pt;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Geist'; font-size:10pt;&quot;&gt;இப்போது இதில் பராமரிக்கப்படுகிறது &lt;/span&gt;&lt;a href=&quot;https://github.com/AntiMicroX/antimicrox&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://github.com/AntiMicroX/antimicrox&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Geist'; font-size:10pt;&quot;&gt; by &lt;/span&gt;&lt;a href=&quot;https://github.com/pktiuk&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;pktiuk&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Geist'; font-size:10pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight: 400;&quot;&gt;பங்களிப்பாளர்கள்:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;You can see full list of contributors &lt;a href=&quot;https://github.com/AntiMicroX/antimicrox/graphs/contributors&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;here&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
         <location filename="../../../src/gui/aboutdialog.ui" line="170"/>
         <source>Info</source>
         <translation>தகவல்</translation>
@@ -280,45 +253,6 @@ p, li { white-space: pre-wrap; }
         <location filename="../../../src/gui/aboutdialog.ui" line="325"/>
         <source>Changelog</source>
         <translation>மாற்றபதிவு</translation>
-    </message>
-    <message>
-        <location filename="../../../src/gui/aboutdialog.ui" line="353"/>
-        <source>&quot;pktiuk&quot; (since August 2020) I just want to ensure, that this very useful piece of software will not be abandoned, I decided to continue providing support for this project and make it as widely accessible as possible.
-
-&quot;juliagoda&quot; (since March, 2018 until 2020) Wanting only to play my favourite old games that din&apos;t support gamepads, I found this project (which map keyboard keys and mouse buttons to connected gamepads on Linux) as most proper and recent. But because of poor choices of such application on the internet and since it didn&apos;t compile properly, I decided to rescue the project. However, once I finished my work (enough to enjoy playing games) I thought about sharing this code with others. Of course all information about past programmers will be held.
-
-&quot;Ryochan7&quot; (since December 30, 2012 until 2017), I have been working on AntiMicro in my spare time. What originally started as a fork of QJoyPad and a way to learn proper event-driven programming has turned into something much bigger than I originally intended. Although I have spent a lot of time learning new techniques, finding out more about the domain of KB+M emulation, and spending Friday nights bashing my head against my keyboard, it has been a fun and enriching experience overall.
-
-The need for this program came from me using similar programs on Windows to play several games that did not provide native controller support. Although some alternatives existed on Linux, there wasn&apos;t really anything that I felt was good enough in terms of functionality or in-game controls in order to really enjoy games that I wanted to play with using KB+M emulation. QJoyPad was the main program that I had used in the past although it had aged a lot and it didn&apos;t provide some basic functionality that I thought was essential. The project was dead as it had not been updated in several years so I decided to make my own.
-
-Since then, I have tried to find out what the other programs do right and then improve upon it. I have also discovered some neat tricks along the way and I have learned more about how native gamepad controls are implemented in some games than I ever really wanted to know. Although there are definitely areas where this program could improve, I find that this program offers the best in-game control experience for playing older, and some newer, games that do not provide native controller support.
-
-Development of this program is not as high of a priority for me anymore. This is mainly due to the fact that the Steam Controller works pretty well for the task of playing PC games compared to using an Xbox 360 controller. However, it does look like there is still a reason for this program to exist for a while.
-
----
-
-As of May 24, 2016, this project has moved to https://github.com/AntiMicro/antimicro. 
-Additionally, project management has passed from Travis (Ryochan7) to the AntiMicro organization due to Travis having other interests and priorities.
-As next, project has been continued since 2018 by juliagoda on antimicroX project. 
-Later project has been once more moved to https://github.com/AntiMicroX/antimicrox and it&apos;s its maintenance is continued by organisation AntiMicroX created by pktiuk.</source>
-        <translation>&quot;பி.கே.டி.யுக்&quot; (ஆகச்ட் 2020 முதல்) நான் உறுதிப்படுத்த விரும்புகிறேன், இந்த மிகவும் பயனுள்ள மென்பொருள் கைவிடப்படாது என்பதை உறுதிப்படுத்த விரும்புகிறேன், இந்தத் திட்டத்திற்கு தொடர்ந்து ஆதரவை வழங்கவும், முடிந்தவரை பரவலாக அணுகவும் முடிவு செய்தேன்.
-
- &quot;சூலியாகோடா&quot; (மார்ச், 2018 முதல் 2020 வரை) கேம்பேடுகளை ஆதரிக்காத எனக்குப் பிடித்த பழைய விளையாட்டுகளை மட்டுமே விளையாட விரும்புவதால், இந்தத் திட்டத்தை (விசைப்பலகை விசைகள் மற்றும் சுட்டி பொத்தான்களை லினக்சில் இணைக்கப்பட்ட கேம்பேடுகளுக்கு வரைபடமாக்குகிறது) மிகவும் சரியான மற்றும் சமீபத்தியதாகக் கண்டேன். ஆனால் இணையத்தில் இது போன்ற பயன்பாட்டின் மோசமான தேர்வுகள் மற்றும் அது சரியாகத் தொகுக்கப்படாததால், திட்டத்தை மீட்க முடிவு செய்தேன். இருப்பினும், நான் எனது வேலையை முடித்தவுடன் (விளையாடுவதை ரசிக்கப் போதுமானது) இந்தக் குறியீட்டை மற்றவர்களுடன் பகிர்வது பற்றி நினைத்தேன். கடந்தகால புரோகிராமர்களைப் பற்றிய அனைத்து தகவல்களும் நடத்தப்படும்.
-
- &quot;ரியோச்சன் 7&quot; (டிசம்பர் 30, 2012 முதல் 2017 வரை), எனது ஓய்வு நேரத்தில் ஆண்டிமிக்ரோவில் வேலை செய்கிறேன். முதலில் க்சாய்பாட்டின் ஒரு முட்கரண்டி மற்றும் சரியான நிகழ்வு-உந்துதல் நிரலாக்கத்தைக் கற்றுக்கொள்வதற்கான ஒரு வழி நான் முதலில் நினைத்ததை விட மிகப் பெரிய ஒன்றாக மாறியுள்ளது. நான் புதிய நுட்பங்களைக் கற்றுக்கொள்வதற்கும், KB+M எமுலேசனின் களத்தைப் பற்றி மேலும் அறிந்துகொள்வதற்கும், வெள்ளிக்கிழமை இரவுகளை எனது விசைப்பலகைக்கு எதிராக என் தலையைத் துடைப்பதற்கும் நான் நிறைய நேரம் செலவிட்டிருந்தாலும், இது ஒட்டுமொத்தமாக ஒரு வேடிக்கையான மற்றும் வளமான அனுபவமாக இருந்தது.
-
- இந்த நிரலின் தேவை என்னிடமிருந்து வந்தது, சாளரங்களில் இதே போன்ற நிரல்களைப் பயன்படுத்தி சொந்த கட்டுப்பாட்டு ஆதரவை வழங்காத பல விளையாட்டுகளை விளையாடுகிறது. லினக்சில் சில மாற்று வழிகள் இருந்தபோதிலும், கேபி+எம் எமுலேசனைப் பயன்படுத்துவதன் மூலம் நான் விளையாட விரும்பும் விளையாட்டுகளை உண்மையில் அனுபவிப்பதற்காகச் செயல்பாடு அல்லது விளையாட்டுக் கட்டுப்பாடுகள் ஆகியவற்றின் அடிப்படையில் நான் போதுமானதாக இல்லை என்று நான் உணர்ந்த எதுவும் இல்லை. கடந்த காலங்களில் நான் பயன்படுத்திய முக்கிய திட்டமாக க்சாய்பாட் இருந்தது, அது நிறைய வயதாகிவிட்டாலும், அது தேவை என்று நான் நினைத்த சில அடிப்படை செயல்பாடுகளை வழங்கவில்லை. பல ஆண்டுகளில் புதுப்பிக்கப்படாததால் இந்தத் திட்டம் இறந்துவிட்டது, எனவே நான் சொந்தமாக உருவாக்க முடிவு செய்தேன்.
-
- அப்போதிருந்து, மற்ற நிரல்கள் சரியாக என்ன செய்கின்றன என்பதைக் கண்டுபிடித்து அதை மேம்படுத்த முயற்சித்தேன். வழியில் சில தூய்மையான தந்திரங்களையும் நான் கண்டுபிடித்தேன், நான் உண்மையிலேயே தெரிந்து கொள்ள விரும்பியதை விடச் சில விளையாட்டுகளில் கேம்பேட் கட்டுப்பாடுகள் எவ்வாறு செயல்படுத்தப்படுகின்றன என்பதைப் பற்றி மேலும் கற்றுக்கொண்டேன். இந்த நிரல் மேம்படுத்தக்கூடிய பகுதிகள் நிச்சயமாக இருந்தாலும், இந்த நிரல் பழைய விளையாடுவதற்கான சிறந்த விளையாட்டு கட்டுப்பாட்டு அனுபவத்தையும், சொந்த கட்டுப்பாட்டு ஆதரவை வழங்காத சில புதிய, விளையாட்டுகளையும் வழங்குகிறது என்பதை நான் காண்கிறேன்.
-
- இந்தத் திட்டத்தின் வளர்ச்சி இனி எனக்கு முன்னுரிமை இல்லை. எக்ச்பாக்ச் 360 கட்டுப்படுத்தியைப் பயன்படுத்துவதை ஒப்பிடும்போது, பிசி கேம்களை விளையாடும் பணிக்கு நீராவி கட்டுப்படுத்தி மிகவும் சிறப்பாகச் செயல்படுவதால் இது முக்கியமாக உள்ளது. இருப்பினும், இந்தத் திட்டம் சிறிது நேரம் இருக்க இன்னும் ஒரு காரணம் இருப்பது போல் தெரிகிறது.
-
- ---
-
- மே 24, 2016 நிலவரப்படி, இந்தத் திட்டம் https://github.com/AntiMicro/antimicro க்கு மாற்றப்பட்டுள்ளது.
- கூடுதலாக, டிராவிச் பிற நலன்களையும் முன்னுரிமைகளையும் கொண்டிருப்பதால் டிராவிசிலிருந்து (ரியோச்சன் 7) ஆண்டிமிக்ரோ அமைப்புக்குத் திட்ட மேலாண்மை கடந்துவிட்டது.
- அடுத்ததாக, ஆண்டிமிக்ராக்ச் திட்டத்தில் சூலியாகோடா 2018 முதல் திட்டம் தொடர்கிறது.
- பின்னர் திட்டம் மீண்டும் ஒரு முறை https://github.com/AntiMicroX/antimicrox க்கு நகர்த்தப்பட்டுள்ளது, மேலும் அதன் பராமரிப்பு பி.கே.டி.யுக் உருவாக்கிய அமைப்பு ஆண்டிமிக்ராக்சால் தொடர்கிறது.</translation>
     </message>
     <message>
         <location filename="../../../src/gui/aboutdialog.ui" line="133"/>
@@ -4059,11 +3993,6 @@ to buttons or disable hiding empty buttons.</source>
         <translation>மேம்பட்ட</translation>
     </message>
     <message>
-        <location filename="../../../src/gui/mainsettingsdialog.ui" line="106"/>
-        <source>Auto Profile functionality is incompatible with Wayland session &lt;a href=&quot;https://github.com/AntiMicroX/antimicrox/issues/303&quot;&gt;more info&lt;/a&gt;</source>
-        <translation>ஆட்டோ சுயவிவர செயல்பாடு வேலண்ட் அமர்வுடன் பொருந்தாது &lt;a href=&quot;https://github.com/AntiMicroX/antimicrox/issues/303&quot;&gt; மேலும் செய்தி &lt;/a&gt;</translation>
-    </message>
-    <message>
         <location filename="../../../src/gui/mainsettingsdialog.ui" line="155"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify the default directory that the program should use in file dialogs when loading a profile or saving a new profile.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt; &lt;head/&gt; &lt;body&gt; &lt;p&gt; சுயவிவரத்தை ஏற்றும்போது அல்லது புதிய சுயவிவரத்தைச் சேமிக்கும்போது நிரல் கோப்பு உரையாடல்களில் பயன்படுத்த வேண்டிய இயல்புநிலை கோப்பகத்தைக் குறிப்பிடவும். &lt;/p&gt; &lt;/body&gt; &lt;/html&gt;</translation>
@@ -4301,13 +4230,6 @@ per seconds.</source>
         <location filename="../../../src/gui/mainsettingsdialog.ui" line="713"/>
         <source>Polski</source>
         <translation>மெருகூட்டல்</translation>
-    </message>
-    <message>
-        <location filename="../../../src/gui/mainsettingsdialog.ui" line="721"/>
-        <source>You can help with translating Pad. Just click here: &lt;a
-                          href=&quot;https://hosted.weblate.org/projects/antimicrox/&quot;&gt;link&lt;/a&gt;</source>
-        <translation>ஆண்டிமிக்ராக்சை மொழிபெயர்க்க நீங்கள் உதவலாம். இங்கே சொடுக்கு செய்க: &lt;a
-                          href=&quot;https://hosted.weblate.org/projects/antimicrox/&quot;&gt;இணைப்பு &lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../../../src/gui/mainsettingsdialog.ui" line="742"/>
@@ -5537,21 +5459,6 @@ of your screen.</source>
         <translation>உங்கள் அசல் அமைப்புகள் (முன்பு %1 இல் சேமிக்கப்பட்டன) நகலெடுக்கப்பட்டுள்ளன
  %2
  நீங்கள் விரும்பினால் அசல் கோப்பகத்தை நீக்கலாம் அல்லது அப்படியே விட்டுவிடலாம்.</translation>
-    </message>
-    <message>
-        <location filename="../../../src/main.cpp" line="209"/>
-        <source>Some problem with settings migration occurred.
-Original configs are stored in 
-%1
- but their new location is: 
-%2
-You can migrate manually by renaming old directory and renaming file to antimicrox_settings.ini.</source>
-        <translation>அமைப்புகள் இடம்பெயர்வதில் சில சிக்கல் ஏற்பட்டது.
- அசல் உள்ளமைவுகள் சேமிக்கப்படுகின்றன
- %1
- ஆனால் அவர்களின் புதிய இடம்:
- %2
- பழைய கோப்பகத்தை மறுபெயரிட்டு கோப்பை ஆண்டிமிக்ராக்ச்_செட்டிங்ச்.இனிக்கு மறுபெயரிடுவதன் மூலம் நீங்கள் கைமுறையாக இடம்பெயரலாம்.</translation>
     </message>
     <message>
         <location filename="../../../src/main.cpp" line="603"/>

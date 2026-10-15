@@ -605,7 +605,7 @@ int main(int argc, char *argv[])
     inputEventThread->start(QThread::HighPriority);
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0) && defined(Q_OS_UNIX)
     QDBusConnection connection = QDBusConnection::sessionBus();
-    QString dbusServiceName = QStringLiteral("io.github.antimicrox");
+    QString dbusServiceName = QStringLiteral("io.github.davaughnl.Pad");
     if (!connection.registerService(dbusServiceName))
     {
         qWarning("Failed to register service %s on session bus. "

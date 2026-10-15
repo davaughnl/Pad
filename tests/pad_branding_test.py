@@ -53,6 +53,14 @@ class PadBrandingTests(unittest.TestCase):
                     if 'Pad' in source and not any(x in source for x in ('Later project', 'Originally developed')):
                         self.assertIsNone(re.search(r'(?<![/])AntiMicroX(?![/])', translated), path.name + ': ' + source[:80])
 
+    def test_catalogs_have_no_retired_upstream_ui_messages(self):
+        for path in (ROOT / 'share/antimicrox/translations').glob('*.ts'):
+            for message in ET.parse(path).findall('.//message'):
+                self.assertNotRegex(message.findtext('source') or '', r'(?i)antimicro')
+                translation = message.find('translation')
+                if translation is not None and translation.get('type') not in ('obsolete', 'vanished'):
+                    self.assertNotRegex(''.join(translation.itertext()), r'(?i)antimicro')
+
     def test_licenses_are_installed_and_packaged(self):
         for name in ('LICENSE', 'src/pad/OFL.txt', 'src/pad/LUCIDE-LICENSE.txt', 'packaging/windows/Qt-LGPL-3.0.txt'):
             self.assertGreater((ROOT / name).stat().st_size, 100)

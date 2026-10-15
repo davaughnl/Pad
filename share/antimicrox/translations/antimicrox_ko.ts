@@ -14,22 +14,6 @@
         <translation>버전</translation>
     </message>
     <message>
-        <location filename="../../../src/gui/aboutdialog.ui" line="148"/>
-        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Geist'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Geist'; font-size:10pt;&quot;&gt;Originally developed by Travis Nickles &amp;lt;nickles.travis@gmail.com&amp;gt;. &lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Geist'; font-size:10pt;&quot;&gt;Next maintained by the AntiMicro group at &lt;/span&gt;&lt;a href=&quot;https://github.com/AntiMicro&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://github.com/AntiMicro&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Geist'; font-size:10pt;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Geist'; font-size:10pt;&quot;&gt;Then by juliagoda at &lt;/span&gt;&lt;a href=&quot;https://github.com/juliagoda&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://github.com/juliagoda&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Geist'; font-size:10pt;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Geist'; font-size:10pt;&quot;&gt;Now maintained at &lt;/span&gt;&lt;a href=&quot;https://github.com/AntiMicroX/antimicrox&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://github.com/AntiMicroX/antimicrox&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Geist'; font-size:10pt;&quot;&gt; by &lt;/span&gt;&lt;a href=&quot;https://github.com/pktiuk&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;pktiuk&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Geist'; font-size:10pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight: 400;&quot;&gt;Contributors:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;You can see full list of contributors &lt;a href=&quot;https://github.com/AntiMicroX/antimicrox/graphs/contributors&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;here&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../../src/gui/aboutdialog.ui" line="170"/>
         <source>Info</source>
         <translation>정보</translation>
@@ -158,28 +142,6 @@ p, li { white-space: pre-wrap; }
         <translation>변경 내역</translation>
     </message>
     <message>
-        <location filename="../../../src/gui/aboutdialog.ui" line="353"/>
-        <source>&quot;pktiuk&quot; (since August 2020) I just want to ensure, that this very useful piece of software will not be abandoned, I decided to continue providing support for this project and make it as widely accessible as possible.
-
-&quot;juliagoda&quot; (since March, 2018 until 2020) Wanting only to play my favourite old games that din&apos;t support gamepads, I found this project (which map keyboard keys and mouse buttons to connected gamepads on Linux) as most proper and recent. But because of poor choices of such application on the internet and since it didn&apos;t compile properly, I decided to rescue the project. However, once I finished my work (enough to enjoy playing games) I thought about sharing this code with others. Of course all information about past programmers will be held.
-
-&quot;Ryochan7&quot; (since December 30, 2012 until 2017), I have been working on AntiMicro in my spare time. What originally started as a fork of QJoyPad and a way to learn proper event-driven programming has turned into something much bigger than I originally intended. Although I have spent a lot of time learning new techniques, finding out more about the domain of KB+M emulation, and spending Friday nights bashing my head against my keyboard, it has been a fun and enriching experience overall.
-
-The need for this program came from me using similar programs on Windows to play several games that did not provide native controller support. Although some alternatives existed on Linux, there wasn&apos;t really anything that I felt was good enough in terms of functionality or in-game controls in order to really enjoy games that I wanted to play with using KB+M emulation. QJoyPad was the main program that I had used in the past although it had aged a lot and it didn&apos;t provide some basic functionality that I thought was essential. The project was dead as it had not been updated in several years so I decided to make my own.
-
-Since then, I have tried to find out what the other programs do right and then improve upon it. I have also discovered some neat tricks along the way and I have learned more about how native gamepad controls are implemented in some games than I ever really wanted to know. Although there are definitely areas where this program could improve, I find that this program offers the best in-game control experience for playing older, and some newer, games that do not provide native controller support.
-
-Development of this program is not as high of a priority for me anymore. This is mainly due to the fact that the Steam Controller works pretty well for the task of playing PC games compared to using an Xbox 360 controller. However, it does look like there is still a reason for this program to exist for a while.
-
----
-
-As of May 24, 2016, this project has moved to https://github.com/AntiMicro/antimicro. 
-Additionally, project management has passed from Travis (Ryochan7) to the AntiMicro organization due to Travis having other interests and priorities.
-As next, project has been continued since 2018 by juliagoda on antimicroX project. 
-Later project has been once more moved to https://github.com/AntiMicroX/antimicrox and it&apos;s its maintenance is continued by organisation AntiMicroX created by pktiuk.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../../src/gui/aboutdialog.ui" line="133"/>
         <source>Credits</source>
         <translation>크레딧</translation>
@@ -188,65 +150,6 @@ Later project has been once more moved to https://github.com/AntiMicroX/antimicr
         <location filename="../../../src/gui/aboutdialog.ui" line="87"/>
         <source>Pad</source>
         <translation>Pad</translation>
-    </message>
-    <message>
-        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Geist'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Originally developed by Travis Nickles &amp;lt;nickles.travis@gmail.com&amp;gt;. &lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Next maintained by the AntiMicro group at https://github.com/AntiMicro.&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Then by juliagoda at https://github.com/juliagoda.&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Now maintained at https://github.com/AntiMicroX/antimicrox.&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Geist'; font-size:9pt; font-weight: 400;&quot;&gt;Contributors:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Geist'; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;https://github.com/AntiMicroX/antimicrox/graphs/contributors&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Geist'; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Geist'; font-weight: 400;&quot;&gt;Translators:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Geist'; font-weight: 400;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Geist'; font-size:9pt;&quot;&gt;VaGNaroK &amp;lt;vagnarokalkimist@gmail.com&amp;gt; - Brazilian Portuguese&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Geist'; font-size:9pt;&quot;&gt;zzpxyx - Chinese&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Geist'; font-size:9pt;&quot;&gt;Belleguic Terence &amp;lt;hizo@free.fr&amp;gt; - French&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Geist'; font-size:9pt;&quot;&gt;Leonard Koenig &amp;lt;leonard.r.koenig@googlemail.com&amp;gt; - German&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Geist'; font-size:9pt;&quot;&gt;phob - German&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Geist'; font-size:9pt;&quot;&gt;tou omiya - Japanese&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Geist'; font-size:9pt;&quot;&gt;Dmitriy Koshel &amp;lt;form.eater@gmail.com&amp;gt; - Russian&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Geist'; font-size:9pt;&quot;&gt;Jay Alexander Fleming &amp;lt;tito.nehru.naser@gmail.com&amp;gt; - Serbian&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Geist'; font-size:9pt;&quot;&gt;burunduk - Ukrainian&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Geist'; font-size:9pt;&quot;&gt;Flavio HR &amp;lt;flavio.hrx@gmail.com&amp;gt; - Spanish&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Geist'; font-size:9pt;&quot;&gt;WAZAAAAA - wazaaaaa00&amp;lt;@&amp;gt;gmail&amp;lt;.&amp;gt;com - Italian&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Geist'; font-size:9pt;&quot;&gt;juliagoda &amp;lt;juliagoda.pl@protonmail.com&amp;gt; - Polish&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Geist'; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="vanished">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Geist'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;원래 Travis Nickles가 개발 &amp;lt;nickles.travis@gmail.com&amp;gt;. &lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;다음은 https://github.com/AntiMicro 의 AntiMicro 그룹에서 유지 관리합니다.&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;그런 다음 https://github.com/juliagoda 에서 juliagoda가 작성합니다.&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;이제 https://github.com/AntiMicroX/antimicrox 에서 유지 관리됩니다.&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Geist'; font-size:9pt; font-weight: 400;&quot;&gt;기여자:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Geist'; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;https://github.com/AntiMicroX/antimicrox/graphs/contributors&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Geist'; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Geist'; font-weight: 400;&quot;&gt;번역가:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Geist'; font-weight: 400;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Geist'; font-size:9pt;&quot;&gt;DDinghoya &amp;lt;ddinghoya@gmail.com&amp;gt; - 한국어&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Geist'; font-size:9pt;&quot;&gt;VaGNaroK &amp;lt;vagnarokalkimist@gmail.com&amp;gt; - 브라질 포르투갈어&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Geist'; font-size:9pt;&quot;&gt;zzpxyx - 중국어&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Geist'; font-size:9pt;&quot;&gt;Belleguic Terence &amp;lt;hizo@free.fr&amp;gt; - 프랑스어&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Geist'; font-size:9pt;&quot;&gt;Leonard Koenig &amp;lt;leonard.r.koenig@googlemail.com&amp;gt; - 독일어&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Geist'; font-size:9pt;&quot;&gt;phob - 독일어&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Geist'; font-size:9pt;&quot;&gt;tou omiya - 일본어&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Geist'; font-size:9pt;&quot;&gt;Dmitriy Koshel &amp;lt;form.eater@gmail.com&amp;gt; - 러시아어&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Geist'; font-size:9pt;&quot;&gt;Jay Alexander Fleming &amp;lt;tito.nehru.naser@gmail.com&amp;gt; - 세르비아어&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Geist'; font-size:9pt;&quot;&gt;burunduk - 우크라이나어&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Geist'; font-size:9pt;&quot;&gt;Flavio HR &amp;lt;flavio.hrx@gmail.com&amp;gt; - 스페인어&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Geist'; font-size:9pt;&quot;&gt;WAZAAAAA - &amp;lt;wazaaaaa00@gmail.com&amp;gt; - 이탈리아어&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Geist'; font-size:9pt;&quot;&gt;juliagoda &amp;lt;juliagoda.pl@protonmail.com&amp;gt; - 폴란드어&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Geist'; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -482,44 +385,6 @@ p, li { white-space: pre-wrap; }
         <location filename="../../../src/gui/aboutdialog.ui" line="339"/>
         <source>About Development</source>
         <translation>개발 정보</translation>
-    </message>
-    <message>
-        <source>&quot;pktiuk&quot; (since August 2020) I just want to ensure, that this very useful piece of software will not be abandoned, I decided to conticue providing support for this project and make it as widely accessible as possible.
-
-&quot;juliagoda&quot; (since March, 2018 until 2020) Wanting only to play my favourite old games that din&apos;t support gamepads, I found this project (which map keyboard keys and mouse buttons to connected gamepads on Linux) as most proper and recent. But because of poor choices of such application on the internet and since it didn&apos;t compile properly, I decided to rescue the project. However, once I finished my work (enough to enjoy playing games) I thought about sharing this code with others. Of course all information about past programmers will be held.
-
-&quot;Ryochan7&quot; (since December 30, 2012 until 2017), I have been working on AntiMicro in my spare time. What originally started as a fork of QJoyPad and a way to learn proper event-driven programming has turned into something much bigger than I originally intended. Although I have spent a lot of time learning new techniques, finding out more about the domain of KB+M emulation, and spending Friday nights bashing my head against my keyboard, it has been a fun and enriching experience overall.
-
-The need for this program came from me using similar programs on Windows to play several games that did not provide native controller support. Although some alternatives existed on Linux, there wasn&apos;t really anything that I felt was good enough in terms of functionality or in-game controls in order to really enjoy games that I wanted to play with using KB+M emulation. QJoyPad was the main program that I had used in the past although it had aged a lot and it didn&apos;t provide some basic functionality that I thought was essential. The project was dead as it had not been updated in several years so I decided to make my own.
-
-Since then, I have tried to find out what the other programs do right and then improve upon it. I have also discovered some neat tricks along the way and I have learned more about how native gamepad controls are implemented in some games than I ever really wanted to know. Although there are definitely areas where this program could improve, I find that this program offers the best in-game control experience for playing older, and some newer, games that do not provide native controller support.
-
-Development of this program is not as high of a priority for me anymore. This is mainly due to the fact that the Steam Controller works pretty well for the task of playing PC games compared to using an Xbox 360 controller. However, it does look like there is still a reason for this program to exist for a while.
-
----
-
-As of May 24, 2016, this project has moved to https://github.com/AntiMicro/antimicro. 
-Additionally, project management has passed from Travis (Ryochan7) to the AntiMicro organization due to Travis having other interests and priorities.
-As next, project has been continued since 2018 by juliagoda on antimicroX project. 
-Later project has been once more moved to https://github.com/AntiMicroX/antimicrox and it&apos;s its maintenance is continued by organisation AntiMicroX created by pktiuk.</source>
-        <translation type="vanished">&quot;pktiuk&quot; (2020년 8월 이후) 저는 이 매우 유용한 소프트웨어가 버려지지 않도록 이 프로젝트를 계속 지원하고 가능한 한 널리 접속할 수 있도록 하기로 결정했습니다. 
- 
-&quot;juliagoda&quot; (2018년 3월부터 2020년까지) 게임패드를 지원하지 않는 내가 좋아하는 오래된 게임만 하고 싶어서 이 프로젝트 (키보드 키와 마우스 버튼을 리눅스의 연결된 게임패드에 매핑)가 가장 적절하고 최근에 발견되었습니다. 그러나 인터넷에서 그러한 응용 프로그램을 잘못 선택하고 제대로 컴파일되지 않았기 때문에 프로젝트를 구출하기로 결정했습니다. 그러나 일단 작업을 마치면 (게임을 즐길 수 있을 만큼) 이 코드를 다른 사람들과 공유할 생각을 했습니다. 물론 과거 프로그래머에 대한 모든 정보는 보관됩니다. 
- 
-&quot;Ryochan7&quot; (2012년 12월 30일부터 2017년까지), 저는 여가 시간에 AntiMicro 작업을 하고 있습니다. 원래 QJoyPad의 포크로 시작했고 적절한 이벤트 중심 프로그래밍을 배우는 방법은 원래 의도했던 것보다 훨씬 더 큰 것으로 바뀌었습니다. 새로운 기술을 배우고 KB+M 에뮬레이션의 영역에 대해 더 많이 알아보고 금요일 밤에 키보드에 머리를 부딪히는 데 많은 시간을 보냈지만 전반적으로 재미있고 풍부한 경험이었습니다. 
- 
-이 프로그램의 필요성은 기본 컨트롤러 지원을 제공하지 않는 여러 게임을 플레이하기 위해 윈도우즈에서 유사한 프로그램을 사용하는 데서 비롯되었습니다. 리눅스에 몇 가지 대안이 있었지만 KB+M 에뮬레이션을 사용하여 플레이하고 싶은 게임을 실제로 즐기기에 기능이나 게임 내 컨트롤 면에서 충분히 좋다고 느낀 것은 없었습니다. QJoyPad는 예전에 많이 사용하던 메인 프로그램이었지만, 제가 꼭 필요하다고 생각하는 기본적인 기능은 제공하지 못했습니다. 프로젝트는 몇 년 동안 업데이트되지 않았기 때문에 죽었습니다. 그래서 직접 만들기로 결정했습니다. 
- 
-그 이후로 나는 다른 프로그램이 잘하는 것을 찾아 개선하려고 노력했습니다. 또한 그 과정에서 몇 가지 멋진 트릭을 발견했으며 일부 게임에서 기본 게임패드 컨트롤이 구현되는 방식에 대해 제가 정말 알고 싶었던 것보다 더 많이 배웠습니다. 이 프로그램이 개선될 수 있는 부분이 분명히 있지만 이 프로그램은 기본 컨트롤러 지원을 제공하지 않는 구형 및 일부 최신 게임을 플레이하는 데 최고의 게임 내 제어 경험을 제공한다는 것을 알았습니다. 
- 
-이 프로그램의 개발은 더 이상 나에게 높은 우선 순위가 아닙니다. 이는 주로 스팀 컨트롤러가 Xbox 360 컨트롤러를 사용하는 것과 비교하여 PC 게임을 플레이하는 작업에 꽤 잘 작동한다는 사실 때문입니다. 하지만 이 프로그램이 당분간 존재해야 할 이유가 있는 것 같습니다. 
- 
---- 
- 
-2016년 5월 24일 현재 이 프로젝트는 https://github.com/AntiMicro/antimicro 로 이동했습니다. 
-또한 Travis가 다른 관심사와 우선 순위를 갖고 있기 때문에 프로젝트 관리가 Travis(Ryochan7)에서 AntiMicro 조직으로 넘어갔습니다. 
-다음으로, 프로젝트는 antimicroX 프로젝트의 juliagoda에 의해 2018년부터 계속되었습니다. 
-이후 프로젝트는 다시 https://github.com/AntiMicroX/antimicrox 로 이동되었으며 pktiuk에서 만든 AntiMicroX 조직에서 유지 관리를 계속하고 있습니다.</translation>
     </message>
     <message>
         <location filename="../../../src/gui/aboutdialog.ui" line="383"/>
@@ -4245,11 +4110,6 @@ to buttons or disable hiding empty buttons.</source>
         <translation>고급</translation>
     </message>
     <message>
-        <location filename="../../../src/gui/mainsettingsdialog.ui" line="106"/>
-        <source>Auto Profile functionality is incompatible with Wayland session &lt;a href=&quot;https://github.com/AntiMicroX/antimicrox/issues/303&quot;&gt;more info&lt;/a&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../../src/gui/mainsettingsdialog.ui" line="155"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify the default directory that the program should use in file dialogs when loading a profile or saving a new profile.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;프로파일을 불러오거나 새로운 프로파일을 저장할 때 프로그램이 파일 대화상자에서 사용해야 하는 기본 디렉터리를 지정합니다.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
@@ -4487,13 +4347,6 @@ per seconds.</source>
         <location filename="../../../src/gui/mainsettingsdialog.ui" line="713"/>
         <source>Polski</source>
         <translation>폴란드어</translation>
-    </message>
-    <message>
-        <location filename="../../../src/gui/mainsettingsdialog.ui" line="721"/>
-        <source>You can help with translating Pad. Just click here: &lt;a
-                          href=&quot;https://hosted.weblate.org/projects/antimicrox/&quot;&gt;link&lt;/a&gt;</source>
-        <translation>Pad 번역에 참여하세요. 여기를 클릭하세요: &lt;a
-                          href=&quot;https://hosted.weblate.org/projects/antimicrox/&quot;&gt;바로가기&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../../../src/gui/mainsettingsdialog.ui" line="742"/>
@@ -5722,21 +5575,6 @@ of your screen.</source>
         <translation>원래 설정(이전에는 %1에 저장됨)이 
 %2 
  원하는 경우 원래 디렉토리를 삭제하거나 그대로 둘 수 있습니다.</translation>
-    </message>
-    <message>
-        <location filename="../../../src/main.cpp" line="209"/>
-        <source>Some problem with settings migration occurred.
-Original configs are stored in 
-%1
- but their new location is: 
-%2
-You can migrate manually by renaming old directory and renaming file to antimicrox_settings.ini.</source>
-        <translation>설정 마이그레이션에 문제가 발생했습니다. 
-원본 구성은 다음 위치에 저장합니다 
-%1 
- 그러나 그것들의 새 위치는 다음과 같습니다: 
-%2 
-이전 디렉토리의 이름을 바꾸고 파일의 이름을 antimicrox_settings.ini로 변경하여 수동으로 마이그레이션 할 수 있습니다.</translation>
     </message>
     <message>
         <location filename="../../../src/main.cpp" line="603"/>
