@@ -36,6 +36,10 @@
 #include "keyboard/virtualmousepushbutton.h"
 #include "pad/padshell.h"
 #include "pad/paddevicetools.h"
+#include "pad/padlicense.h"
+#include <QTcpServer>
+#include <QTcpSocket>
+#include <QNetworkAccessManager>
 #include "mousedialog/mousecontrolsticksettingsdialog.h"
 #include "gui/joybuttonslot.h"
 #include "gui/quicksetdialog.h"
@@ -61,6 +65,9 @@
 #include <QPushButton>
 #include <QPixmap>
 #include <QApplication>
+#include <QGroupBox>
+#include <QAbstractButton>
+#include <QFontInfo>
 #include <QScreen>
 #include <QDir>
 #include <QFile>
@@ -84,9 +91,28 @@ static void settle() { QTest::qWait(100); }
 static void click(QAbstractButton *button) { check(button->isEnabled(), "Control disabled"); button->click(); settle(); }
 static void spin(QDialog *dialog,const char *name,int value) { control<QSpinBox>(dialog,name)->setValue(value); settle(); }
 static void toggle(QDialog *dialog,const char *name) { click(control<QCheckBox>(dialog,name)); }
+static void fontCheckWidget(QWidget *root,const char *name){
+    int bad=0,seen=0;
+    const auto widgets=root->findChildren<QWidget*>();
+    for(QWidget *c:widgets){
+        if(!c->isVisible()) continue;
+        QString text;
+        if(auto *l=qobject_cast<QLabel*>(c)) text=l->text();
+        else if(auto *b=qobject_cast<QAbstractButton*>(c)) text=b->text();
+        else if(auto *e=qobject_cast<QLineEdit*>(c)) text=e->text().isEmpty()?e->placeholderText():e->text();
+        else if(auto *g=qobject_cast<QGroupBox*>(c)) text=g->title();
+        if(text.trimmed().isEmpty()) continue;
+        ++seen;
+        const QString fam=QFontInfo(c->font()).family();
+        if(fam!=QStringLiteral("Geist")){++bad;std::fprintf(stderr,"FONTBAD screen=%s class=%s text='%s' family=%s\n",name,c->metaObject()->className(),text.left(30).toUtf8().constData(),fam.toUtf8().constData());}
+    }
+    std::fprintf(stderr,"FONTCHECK screen=%s texts=%d bad=%d\n",name,seen,bad);
+    check(bad==0,"A screen renders text outside Geist");
+}
 static void capture(QDialog *dialog,const QString &output,const QString &name) {
     dialog->setAttribute(Qt::WA_DeleteOnClose,false); dialog->show(); dialog->raise(); dialog->activateWindow();
     QTest::qWait(750);
+    fontCheckWidget(dialog,name.toUtf8().constData());
     check(dialog->grab().save(output+"/"+name+"-window.png"),"Window grab failed");
     const auto screen=QApplication::primaryScreen();
     check(screen && screen->geometry().size()==QSize(1024,768), "Runner desktop must be 1024x768");
@@ -139,6 +165,7 @@ int main(int argc,char **argv) {
             window->makeJoystickTabs();window->fillButtons();
             window->resize(1000,700);window->show();window->raise();window->activateWindow();QTest::qWait(1000);
             auto *overview=control<QWidget>(window,"padOverview");check(overview->isVisible(),"Connected controller overview hidden");
+            fontCheckWidget(window,"main-window");
             check(window->grab().save(output+"/controller-overview-full.png"),"Overview full capture failed");
             auto *dialog=new GameControllerMappingDialog(joystick,settings,window);
             capture(dialog,output,"controller-mapping");
@@ -193,10 +220,11 @@ int main(int argc,char **argv) {
             auto *dialog=new AboutDialog;capture(dialog,output,test);
             check(control<QLabel>(dialog,"versionLabel")->text()=="Development build","About display version is not Development build");
             auto info=control<QTextBrowser>(dialog,"infoTextBrowser")->toPlainText();
-            check(info.contains("About Pad")&&info.contains("Open Source Licenses")&&!info.contains("3.6.1"),"About info copy missing or exposes inherited version");
+            check(info.contains("About Pad")&&!info.contains("3.6.1")&&!info.contains("antimicro",Qt::CaseInsensitive)&&!info.contains("open source",Qt::CaseInsensitive)&&!info.contains("open-source",Qt::CaseInsensitive)&&!info.contains("fork",Qt::CaseInsensitive),"About info copy missing or exposes upstream or open-source wording");
+            {auto legal=control<QTextBrowser>(dialog,"textBrowser_2")->toPlainText();check(legal.contains("Copyright (C) 2015 Travis Nickles")&&legal.contains("GNU GENERAL PUBLIC LICENSE")&&!legal.contains("antimicro",Qt::CaseInsensitive)&&!legal.contains("fork",Qt::CaseInsensitive),"Legal tab must keep copyright and GPL text without upstream product naming");}
             auto *tabs=control<QTabWidget>(dialog,"tabWidget");
             check(tabs->count()==2&&!dialog->findChild<QWidget*>("credits")&&!dialog->findChild<QWidget*>("aboutDev"),"Retired About tabs remain");
-            for(auto *browser:dialog->findChildren<QTextBrowser*>()){if(browser->objectName()=="textBrowser_2"||browser->objectName()=="infoTextBrowser")continue; /* License tab and owner-written Info copy: owner-approved attribution */ check(!browser->toPlainText().contains("antimicro",Qt::CaseInsensitive),"About contains old product branding");}
+            for(auto *browser:dialog->findChildren<QTextBrowser*>()){if(browser->objectName()=="textBrowser_2")continue; check(!browser->toPlainText().contains("antimicro",Qt::CaseInsensitive),"About contains old product branding");}
             closeDialog(dialog);
         } else if(test=="sensor-accel" || test=="sensor-gyro") {
             auto *sensor=set->getSensor(test=="sensor-accel"?ACCELEROMETER:GYROSCOPE);check(sensor,"Sensor model absent");
@@ -284,9 +312,28 @@ int main(int argc,char **argv) {
             QMap<SDL_JoystickID,InputDevice*> devices;
             devices.insert(SDL_JoystickInstanceID(joystick->getJoyHandle()),joystick);
             QList<InputDevice*> list; list.append(joystick);
+            auto fontCheck=[&](QWidget *root,const char *name){
+                int bad=0,seen=0;
+                const auto widgets=root->findChildren<QWidget*>();
+                for(QWidget *c:widgets){
+                    if(!c->isVisible()) continue;
+                    QString text;
+                    if(auto *l=qobject_cast<QLabel*>(c)) text=l->text();
+                    else if(auto *b=qobject_cast<QAbstractButton*>(c)) text=b->text();
+                    else if(auto *e=qobject_cast<QLineEdit*>(c)) text=e->text().isEmpty()?e->placeholderText():e->text();
+                    else if(auto *g=qobject_cast<QGroupBox*>(c)) text=g->title();
+                    if(text.trimmed().isEmpty()) continue;
+                    ++seen;
+                    const QString fam=QFontInfo(c->font()).family();
+                    if(fam!=QStringLiteral("Geist")){++bad;std::fprintf(stderr,"FONTBAD screen=%s class=%s text='%s' family=%s\n",name,c->metaObject()->className(),text.left(30).toUtf8().constData(),fam.toUtf8().constData());}
+                }
+                std::fprintf(stderr,"FONTCHECK screen=%s texts=%d bad=%d\n",name,seen,bad);
+                check(bad==0,"A screen renders text outside Geist");
+            };
             auto shot=[&](QWidget *w,const char *name){std::fprintf(stderr,"SHOT %s\n",name);std::fflush(stderr);
                 w->show();w->raise();w->activateWindow();QTest::qWait(600);
                 check(w->grab().save(output+"/screen-"+name+".png"),"Screen capture failed");
+                fontCheck(w,name);
             };
             auto *quick=new QuickSetDialog(joystick);shot(quick,"quickset");quick->hide();
             auto *names=new SetNamesDialog(joystick);shot(names,"setnames");names->hide();
@@ -312,6 +359,68 @@ int main(int argc,char **argv) {
                 const auto buttons=ob->findChildren<QPushButton*>();
                 for(int step=2;step<=3;++step){for(auto *b:buttons) if(b->text()=="Next"&&b->isVisible()){b->click();break;} shot(ob,(std::string("onboarding-")+std::to_string(step)).c_str());}
                 ob->hide();
+
+                // ---- License gate: logic against a local fake of the Lemon Squeezy API, then the screens.
+                {
+                    QTcpServer fake; check(fake.listen(QHostAddress::LocalHost,0),"fake license server");
+                    QStringList replies; QStringList seen;
+                    QObject::connect(&fake,&QTcpServer::newConnection,[&](){
+                        auto *c=fake.nextPendingConnection();
+                        QObject::connect(c,&QTcpSocket::readyRead,[c,&replies,&seen](){
+                            static QByteArray buf; buf+=c->readAll(); int h=buf.indexOf("\r\n\r\n"); if(h<0)return;
+                            int cl=0; for(auto &l:buf.left(h).split('\n')) if(l.toLower().startsWith("content-length:")) cl=l.mid(15).trimmed().toInt();
+                            if(buf.size()<h+4+cl)return; seen<<QString::fromUtf8(buf.left(h).split('\n').first().trimmed())+" | "+QString::fromUtf8(buf.mid(h+4,cl)); buf.clear();
+                            QString rep=replies.isEmpty()?QString("{}"):replies.takeFirst(); QByteArray code="200 OK"; if(rep.size()>4&&rep[3]==':'){code=rep.left(3).toUtf8()+" X"; rep=rep.mid(4);} QByteArray body=rep.toUtf8();
+                            c->write("HTTP/1.1 "+code+"\r\nContent-Type: application/json\r\nConnection: close\r\nContent-Length: "+QByteArray::number(body.size())+"\r\n\r\n"+body); c->disconnectFromHost();});});
+                    const QString base=QString("http://127.0.0.1:%1").arg(fake.serverPort());
+                    QTemporaryDir tmp; const QString cache=tmp.path()+"/license.json";
+                    QNetworkAccessManager net; PadLicense lic(std::make_unique<LemonSqueezyProvider>(&net,7,9,base),cache);
+                    auto run=[&](std::function<void(std::function<void(PadLicenseResult)>)> go){PadLicenseResult out;bool done=false;go([&](PadLicenseResult r){out=r;done=true;});
+                        for(int i=0;i<200&&!done;++i)QTest::qWait(50); check(done,"license call timed out"); return out;};
+                    check(!lic.hasCached(),"fresh PC must not have a cached license");
+                    replies<<R"({"activated":false,"error":"license_key not found.","license_key":null,"instance":null,"meta":null})";
+                    auto r=run([&](auto cb){lic.activate("nope",cb);}); check(r.kind==PadLicenseResult::Invalid,"unknown key must be Invalid"); check(!lic.hasCached(),"invalid key must not be cached");
+                    replies<<R"({"activated":false,"error":"This license key has reached the activation limit.","license_key":{"status":"active"},"instance":null,"meta":null})";
+                    r=run([&](auto cb){lic.activate("limit",cb);}); check(r.kind==PadLicenseResult::Limit,"limit must be Limit");
+                    replies<<R"({"activated":true,"error":null,"license_key":{"status":"active"},"instance":{"id":"inst-1","name":"x"},"meta":{"store_id":7,"product_id":99}})";
+                    r=run([&](auto cb){lic.activate("other-product",cb);}); check(r.kind==PadLicenseResult::WrongProduct,"other product must be refused"); check(!lic.hasCached(),"wrong product must not be cached");
+                    replies<<R"({"activated":true,"error":null,"license_key":{"status":"active"},"instance":{"id":"inst-1","name":"x"},"meta":{"store_id":7,"product_id":9}})";
+                    r=run([&](auto cb){lic.activate("  good-key ",cb);}); check(r.kind==PadLicenseResult::Ok,"good key must activate"); check(lic.hasCached(),"good key must be cached");
+                    check(seen.last().contains("license_key=good-key")&&seen.last().contains("instance_name="),"activate body");
+                    replies<<R"({"valid":true,"error":null,"license_key":{"status":"active"},"instance":{"id":"inst-1"},"meta":{"store_id":7,"product_id":9}})";
+                    r=run([&](auto cb){lic.validate(cb);}); check(r.kind==PadLicenseResult::Ok,"validate ok"); check(seen.last().contains("instance_id=inst-1"),"validate sends the instance");
+                    replies<<R"({"valid":false,"error":"license_key is disabled.","license_key":{"status":"disabled"},"instance":null,"meta":null})";
+                    r=run([&](auto cb){lic.validate(cb);}); check(r.kind==PadLicenseResult::Disabled,"disabled key must be refused on re-check");
+                    {   // Dodo Payments provider: same PadLicense logic, different store API.
+                        PadLicense d(std::make_unique<DodoProvider>(&net,"pdt_test",base),tmp.path()+"/dodo.json");
+                        replies<<R"(404:{"code":"NOT_FOUND","message":"nope"})";
+                        auto q=run([&](auto cb){d.activate("nope",cb);}); check(q.kind==PadLicenseResult::Invalid,"dodo 404 must be Invalid"); check(!d.hasCached(),"dodo invalid must not be cached");
+                        replies<<R"(422:{"code":"LIMIT","message":"limit"})";
+                        q=run([&](auto cb){d.activate("limit",cb);}); check(q.kind==PadLicenseResult::Limit,"dodo 422 must be Limit");
+                        replies<<R"(403:{"code":"INACTIVE","message":"inactive"})";
+                        q=run([&](auto cb){d.activate("off",cb);}); check(q.kind==PadLicenseResult::Disabled,"dodo 403 must be Disabled");
+                        replies<<R"(201:{"id":"lki_1","name":"x","product":{"product_id":"pdt_other","name":"o"}})";
+                        q=run([&](auto cb){d.activate("other",cb);}); check(q.kind==PadLicenseResult::WrongProduct,"dodo other product refused"); check(!d.hasCached(),"dodo wrong product not cached");
+                        replies<<R"(201:{"id":"lki_1","name":"x","product":{"product_id":"pdt_test","name":"p"}})";
+                        q=run([&](auto cb){d.activate(" good ",cb);}); check(q.kind==PadLicenseResult::Ok,"dodo good key activates"); check(d.hasCached(),"dodo good key cached");
+                        check(seen.last().contains("\"license_key\":\"good\""),"dodo sends trimmed key as JSON");
+                        replies<<R"({"valid":true})";
+                        q=run([&](auto cb){d.validate(cb);}); check(q.kind==PadLicenseResult::Ok,"dodo validate ok"); check(seen.last().contains("lki_1"),"dodo validate sends the instance");
+                        replies<<R"({"valid":false})";
+                        q=run([&](auto cb){d.validate(cb);}); check(q.kind==PadLicenseResult::Invalid,"dodo valid=false is a refusal");
+                        replies<<R"(500:{})";
+                        q=run([&](auto cb){d.validate(cb);}); check(q.kind==PadLicenseResult::Network,"dodo 5xx is not a refusal");
+                    }
+                    fake.close(); PadLicense offline(std::make_unique<LemonSqueezyProvider>(&net,7,9,base),cache);
+                    r=run([&](auto cb){offline.validate(cb);}); check(r.kind==PadLicenseResult::Network,"offline re-check must be Network, not a refusal");
+                    check(offline.hasCached(),"going offline must not remove the saved activation");
+                    std::fprintf(stderr,"LICENSE logic ok (%d requests)\n",int(seen.size()));
+                    PadLicense shown(std::make_unique<LemonSqueezyProvider>(&net,7,9,base),tmp.path()+"/none.json");
+                    auto *act=padCreateActivationDialog(nullptr,&shown,"https://example.com/buy");shot(act,"activation-1");
+                    if(auto *e=act->findChild<QLabel*>("padLicenseError"))e->setText("That license key was not recognised. Check it and try again.");
+                    if(auto *k=act->findChild<QLineEdit*>("padLicenseKey"))k->setText("AAAA1111-BBBB-2222-CCCC-3333DDDD4444");
+                    shot(act,"activation-2");act->hide();
+                }
                 // Device tools in each state, on the overview card background.
                 auto *sheet=new QFrame;sheet->setObjectName("padOverview");sheet->setFixedSize(520,230);
                 auto *sl=new QVBoxLayout(sheet);sl->setContentsMargins(20,12,20,12);
