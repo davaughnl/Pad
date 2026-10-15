@@ -101,7 +101,7 @@ jobs:
       - name: Build installer
         run: ./packaging/windows/make-installer.ps1 -StageDir "dist/Pad-$env:PAD_VERSION-Windows-x64" -Version $env:PAD_VERSION -OutputDir dist
       - name: Test silent install, upgrade and uninstall
-        run: ./packaging/windows/test-installer.ps1 -Installer (Resolve-Path "dist/Pad-$env:PAD_VERSION-Windows-x64-Setup.exe").Path -Version $env:PAD_VERSION
+        run: ./packaging/windows/test-installer.ps1 -Installer (Resolve-Path "dist/Pad-$env:PAD_VERSION-Windows-x64-Setup.exe").Path -Version $env:PAD_VERSION -ExpectedAppVersion $env:PAD_VERSION
       - name: Verify checksums
         run: |
           Get-ChildItem dist -Filter *.sha256 | ForEach-Object {

@@ -1,5 +1,5 @@
 [CmdletBinding()]
-param([Parameter(Mandatory)][string]$Installer, [Parameter(Mandatory)][string]$Version)
+param([Parameter(Mandatory)][string]$Installer, [Parameter(Mandatory)][string]$Version, [string]$ExpectedAppVersion = '')
 $ErrorActionPreference = 'Stop'
 $target = Join-Path $env:RUNNER_TEMP 'pad-install-test'
 if (Test-Path $target) { Remove-Item $target -Recurse -Force }
@@ -19,6 +19,23 @@ foreach ($f in 'bin\pad.exe','bin\SDL2.dll','bin\libssl-1_1-x64.dll','bin\libcry
 }
 $reg = Get-ItemProperty $key
 if ($reg.DisplayVersion -ne $Version) { throw "DisplayVersion $($reg.DisplayVersion) != $Version" }
+if ($reg.DisplayName -ne 'Pad' -or $reg.Publisher -ne 'Pad') { throw 'Wrong installed app identity' }
+if ($reg.InstallLocation -ne $target) { throw 'Wrong uninstall InstallLocation' }
+# Run the installed executable without Qt/SDL/build tooling on PATH.
+$savedPath = $env:PATH
+try {
+    $env:PATH = "$env:SystemRoot/System32;$env:SystemRoot"
+    foreach ($arg in '--version','--list') {
+        $stdout = Join-Path $env:RUNNER_TEMP "pad-installed-$($arg.TrimStart('-')).txt"
+        $p = Start-Process (Join-Path $target 'bin\pad.exe') -ArgumentList $arg -PassThru -RedirectStandardOutput $stdout
+        if (-not $p.WaitForExit(30000)) { $p.Kill(); throw "Installed app timed out: $arg" }
+        if ($p.ExitCode -ne 0) { throw "Installed app failed: $arg ($($p.ExitCode))" }
+        if ($arg -eq '--version' -and $ExpectedAppVersion) {
+            $reported = Get-Content $stdout -Raw
+            if ($reported -notmatch ('(?<![0-9.])' + [regex]::Escape($ExpectedAppVersion) + '(?![0-9.])')) { throw "Wrong installed app version: $reported" }
+        }
+    }
+} finally { $env:PATH = $savedPath }
 # Settings written by the user must survive an upgrade and uninstall.
 New-Item -ItemType Directory -Force (Join-Path $target 'bin\profiles') | Out-Null
 Set-Content (Join-Path $target 'bin\profiles\keep-me.gamecontroller.amgp') 'user data'
